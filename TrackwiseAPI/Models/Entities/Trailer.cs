@@ -17,7 +17,7 @@ namespace TrackwiseAPI.Models.Entities
 
         //Foreign Key for Trailer Status
         public int Trailer_Status_ID { get; set; }
-        [ForeignKey("Trailer_Type_ID")]
+        [ForeignKey("Trailer_Status_ID")]
         public TrailerStatus TrailerStatus { get; set; }
 
         public ICollection<Truck> Trucks { get; set; }
