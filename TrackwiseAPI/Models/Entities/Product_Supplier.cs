@@ -7,6 +7,7 @@ namespace TrackwiseAPI.Models.Entities
     {
         [Key]
         public int Product_Supplier_ID { get; set; }
+
         public int Supplierid { get; set; }
         public Supplier Supplier { get; set; }
 

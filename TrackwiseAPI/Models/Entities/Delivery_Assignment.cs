@@ -6,6 +6,8 @@ namespace TrackwiseAPI.Models.Entities
     {
         [Key]
         public int Delivery_Assignment_ID { get; set; }
+        public DateTime Date { get; set; }
+
         public int Deliveryid { get; set; }
         public Delivery Delivery { get; set; }
 

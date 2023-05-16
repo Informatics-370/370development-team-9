@@ -29,7 +29,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Product_Supplier> Product_Suppliers { get; set; }
         public DbSet<User> users { get; set; }
         public DbSet<Delivery> deliveries { get; set; }
-        public DbSet<Delivery_Assignment> delivery_Assignments { get; set; }
+        public DbSet<Delivery_Assignment> Delivery_Assignments { get; set; }
         public DbSet<Job> jobs { get; set; }
         public DbSet<JobStatus> jobsStatus { get; set; }
         public DbSet<JobType> jobTypes { get; set; }
@@ -139,6 +139,87 @@ namespace TrackwiseAPI.DBContext
                 .WithMany(tt => tt.Trailers)
                 .HasForeignKey(t => t.Trailer_Type_ID);
 
+            //Driver and Delivery has a many-many
+            modelBuilder.Entity<Delivery_Assignment>()
+                .HasKey(da => new { da.Driverid, da.Deliveryid });
+
+            modelBuilder.Entity<Delivery_Assignment>()
+                .HasOne(da => da.Driver)
+                .WithMany(d => d.Delivery_Assignments)
+                .HasForeignKey(da => da.Driverid)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Delivery_Assignment>()
+                .HasOne(da => da.Delivery)
+                .WithMany(d => d.Delivery_Assignments)
+                .HasForeignKey(da => da.Deliveryid)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //Job and Delivery has a one-many
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Job)
+                .WithMany(j => j.Deliveries)
+                .HasForeignKey(d => d.Job_ID);
+
+            //Job and JobType has a many-one
+            modelBuilder.Entity<Job>()
+                .HasOne(j => j.JobType)
+                .WithMany(jt => jt.jobs)
+                .HasForeignKey(j => j.Job_Type_ID);
+
+            //Job and JobStatus has a many-one
+            modelBuilder.Entity<Job>()
+                .HasOne(j => j.JobStatus)
+                .WithMany(js => js.jobs)
+                .HasForeignKey(j => j.Job_Status_ID);
+                
+            //Client and Job has a one-many
+            modelBuilder.Entity<Job>()
+                .HasOne(j => j.Client)
+                .WithMany(c => c.jobs)
+                .HasForeignKey(j => j.Client_ID);
+
+            //Admin and Job has a one-many
+            modelBuilder.Entity<Job>()
+                .HasOne(j => j.Admin)
+                .WithMany(c => c.jobs)
+                .HasForeignKey(j => j.Admin_ID);
+
+            //Driver and DriverStatus has a many-one
+            modelBuilder.Entity<Driver>()
+                .HasOne(j => j.DriverStatus)
+                .WithMany(js => js.Drivers)
+                .HasForeignKey(j => j.Driver_Status_ID);
+
+            //Driver and Truck has a one-many
+            modelBuilder.Entity<Truck>()
+                .HasOne(t => t.Driver)
+                .WithMany(d => d.Trucks)
+                .HasForeignKey(t => t.Driver_ID);
+
+            //Truck and TruckStatus has a many-one
+            modelBuilder.Entity<Truck>()
+                .HasOne(t => t.TruckStatus)
+                .WithMany(ts => ts.Trucks)
+                .HasForeignKey(t => t.Truck_Status_ID);
+
+            //Truck and Trailer has a many-one
+            modelBuilder.Entity<Truck>()
+                .HasOne(t => t.Trailer)
+                .WithMany(tl => tl.Trucks)
+                .HasForeignKey(t => t.Trailer_License);
+
+            //Trailer and TrailerStatus has a many-one
+            modelBuilder.Entity<Trailer>()
+                .HasOne(t => t.TrailerStatus)
+                .WithMany(ts => ts.Trailers)
+                .HasForeignKey(t => t.Trailer_Status_ID);
+
+            //Trailer and TrailerType has a many-one
+            modelBuilder.Entity<Trailer>()
+                .HasOne(t => t.TrailerType)
+                .WithMany(ts => ts.Trailers)
+                .HasForeignKey(t => t.Trailer_Type_ID);
 
             //
             // adding some data
