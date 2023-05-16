@@ -28,6 +28,12 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Order_Line> Order_Lines { get; set; }
         public DbSet<Product_Supplier> Product_Suppliers { get; set; }
         public DbSet<User> users { get; set; }
+        public DbSet<Delivery> deliveries { get; set; }
+        public DbSet<Delivery_Assignment> delivery_Assignments { get; set; }
+        public DbSet<Job> jobs { get; set; }
+        public DbSet<JobStatus> jobsStatus { get; set; }
+        public DbSet<JobType> jobTypes { get; set; }
+        
 
         /// 
         /// 
@@ -114,6 +120,24 @@ namespace TrackwiseAPI.DBContext
                 .HasOne(p => p.PaymentType)
                 .WithMany(pt => pt.Payments)
                 .HasForeignKey(p => p.Payment_Type_ID);
+
+            //Truck and TruckStatus has a many-one relationship
+            modelBuilder.Entity<Truck>()
+                .HasOne(t => t.TruckStatus)
+                .WithMany(ts => ts.Trucks)
+                .HasForeignKey(t => t.Truck_Status_ID);
+
+            //Trailer and TrailerStatus has a many-one relationship
+            modelBuilder.Entity<Trailer>()
+                .HasOne(t => t.TrailerStatus)
+                .WithMany(ts => ts.Trailers)
+                .HasForeignKey(t => t.Trailer_Status_ID);
+
+            //Trailer and TrailerType has a many-one relationship
+            modelBuilder.Entity<Trailer>()
+                .HasOne(t => t.TrailerType)
+                .WithMany(tt => tt.Trailers)
+                .HasForeignKey(t => t.Trailer_Type_ID);
 
 
             //
