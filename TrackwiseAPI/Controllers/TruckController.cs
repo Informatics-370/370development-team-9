@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
+using TrackwiseAPI.Models.ViewModels;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -18,8 +19,8 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllCustomers")]
-        public async Task<IActionResult> GetAllCustomers()
+        [Route("GetAllTrucks")]
+        public async Task<IActionResult> GetAllTrucks()
         {
             try
             {
@@ -54,7 +55,7 @@ namespace TrackwiseAPI.Controllers
         //Add a truck
         [HttpPost]
         [Route("AddTruck")]
-        public async Task<IActionResult> AddTruck(TruckVM tvm)
+        public async Task<IActionResult> AddTruck(Models.ViewModels.TruckVM tvm)
         {
             var truck = new Truck { Model = tvm.Model };
 
@@ -75,7 +76,7 @@ namespace TrackwiseAPI.Controllers
         //update truck
         [HttpPut]
         [Route("EditTruck/{truckLicense}")]
-        public async Task<ActionResult<TruckVM>> EditTruck(string truckLicense, TruckVM tvm)
+        public async Task<ActionResult<Models.ViewModels.TruckVM>> EditTruck(string truckLicense, TruckVM tvm)
         {
             try
             {
