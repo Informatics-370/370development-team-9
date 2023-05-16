@@ -20,7 +20,11 @@ builder.Services.AddDbContext<TwDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
 builder.Services.AddScoped<ITruckRepository, TruckRepository>();
+
+builder.Services.AddScoped<ITrailerRepository, TrailerRepository>();
+
 //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 
