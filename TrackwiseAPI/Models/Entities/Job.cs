@@ -6,7 +6,7 @@ namespace TrackwiseAPI.Models.Entities
     public class Job
     {
         [Key]
-        public string Job_ID { get; set; }
+        public int Job_ID { get; set; }
         public DateTime Date { get; set; }
         public string Pickup_Location { get; set; }
         public string Dropoff_Location { get; set; }
