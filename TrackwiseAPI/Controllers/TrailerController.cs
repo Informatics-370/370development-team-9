@@ -15,6 +15,7 @@ namespace TrackwiseAPI.Controllers
             _trailerRepository = trailerRepository;
         }
 
+        //get trailers
         [HttpGet]
         [Route("GetAllTrailer")]
         public async Task<IActionResult> GetAllTrailers()
