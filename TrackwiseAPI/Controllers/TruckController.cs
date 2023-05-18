@@ -35,12 +35,12 @@ namespace TrackwiseAPI.Controllers
 
         //Get a specific truck
         [HttpGet]
-        [Route("GetTruck/{truckLicense}")]
-        public async Task<IActionResult> GetTruckAsync(string truckLicense)
+        [Route("GetTruck/{TruckID}")]
+        public async Task<IActionResult> GetTruckAsync(int TruckID)
         {
             try
             {
-                var result = await _truckRepository.GetTruckAsync(truckLicense);
+                var result = await _truckRepository.GetTruckAsync(TruckID);
 
                 if (result == null) return NotFound("Truck does not exist");
 
@@ -55,9 +55,9 @@ namespace TrackwiseAPI.Controllers
         //Add a truck
         [HttpPost]
         [Route("AddTruck")]
-        public async Task<IActionResult> AddTruck(Models.ViewModels.TruckVM tvm)
+        public async Task<IActionResult> AddTruck(TruckVM tvm)
         {
-            var truck = new Truck { Model = tvm.Model };
+            var truck = new Truck { Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID};
 
             try
             {
@@ -75,16 +75,17 @@ namespace TrackwiseAPI.Controllers
 
         //update truck
         [HttpPut]
-        [Route("EditTruck/{truckLicense}")]
-        public async Task<ActionResult<Models.ViewModels.TruckVM>> EditTruck(string truckLicense, TruckVM tvm)
+        [Route("EditTruck/{TruckID}")]
+        public async Task<ActionResult<TruckVM>> EditTruck(int TruckID, TruckVM tvm)
         {
             try
             {
-                var existingTruck = await _truckRepository.GetTruckAsync(truckLicense);
+                var existingTruck = await _truckRepository.GetTruckAsync(TruckID);
                 if (existingTruck == null) return NotFound($"The truck does not exist");
 
+                existingTruck.Truck_License = tvm.Truck_License;
                 existingTruck.Model = tvm.Model;
-
+                existingTruck.Truck_Status_ID = tvm.Truck_Status_ID;
                 if (await _truckRepository.SaveChangesAsync())
                 {
                     return Ok(existingTruck);
@@ -99,12 +100,12 @@ namespace TrackwiseAPI.Controllers
 
         //Remove truck
         [HttpDelete]
-        [Route("DeleteTruck/{truckLicense}")]
-        public async Task<IActionResult> DeleteTruck(string truckLicense)
+        [Route("DeleteTruck/{TruckID}")]
+        public async Task<IActionResult> DeleteTruck(int TruckID)
         {
             try
             {
-                var existingTruck = await _truckRepository.GetTruckAsync(truckLicense);
+                var existingTruck = await _truckRepository.GetTruckAsync(TruckID);
 
                 if (existingTruck == null) return NotFound($"The truck does not exist");
                 _truckRepository.Delete(existingTruck);

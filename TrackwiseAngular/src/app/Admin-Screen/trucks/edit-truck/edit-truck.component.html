@@ -1,0 +1,39 @@
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Edit Truck</h2>
+      
+    <form #form="ngForm" (ngSubmit)="EditTruck()">
+        <div class="mb-3">
+          <label for="truck_License" class="form-label">Truck License</label>
+          <input type="text" class="form-control" id="truck_License" aria-describedby="truck_License" [(ngModel)] = "truckDetails.truck_License"     
+          name="name" [(ngModel)]="truckDetails.truck_License" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="model" class="form-label">Model</label>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "truckDetails.model"  
+                 name="duration" [(ngModel)]="truckDetails.model">
+        </div>
+      
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" [(ngModel)]="truckDetails.truck_Status_ID" name="status">
+              <option value="1">Available</option>
+              <option value="2">Unavailable</option>
+              <option value="3">Under Maintenance</option>
+            </select>
+          </div>
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/trucks">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  

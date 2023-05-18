@@ -22,6 +22,6 @@ namespace TrackwiseAPI.Models.Entities
                 public User User { get; set; }*/
 
         public ICollection<Delivery_Assignment> Delivery_Assignments { get; set; }
-        public ICollection<Truck> Trucks { get; set; }
+        /*public ICollection<Truck> Trucks { get; set; }*/
     }
 }
