@@ -11,6 +11,8 @@ import { SuppliersComponent } from './Admin-Screen/suppliers/suppliers.component
 import { ClientsComponent } from './Admin-Screen/clients/clients.component';
 import { TrucksComponent } from './Admin-Screen/trucks/trucks.component';
 import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
+import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
+import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
 
 
 const routes: Routes = [
@@ -22,6 +24,8 @@ const routes: Routes = [
   {path: 'Admin-Screen/suppliers', component: SuppliersComponent},
   {path: 'Admin-Screen/clients', component: ClientsComponent},
   {path: 'Admin-Screen/trucks', component: TrucksComponent},
+  {path: 'Admin-Screen/trucks/add-trucks', component: AddTrucksComponent},
+  {path: 'Admin-Screen/trucks/edit-truck/:truckID', component:EditTruckComponent},
   {path: 'Admin-Screen/trailers', component: TrailersComponent},
 
 ];

@@ -24,13 +24,13 @@ namespace TrackwiseAPI.Models.Repositories
         }
         public async Task<Truck[]> GetAllTrucksAsync()
         {
-            IQueryable<Truck> query = _context.Trucks /*_context.Trucks.Include(c => c.Truck_License)*//*.ThenInclude(c => c.payments)*/;
+            IQueryable<Truck> query = _context.Trucks.Include(t => t.TruckStatus);
             return await query.ToArrayAsync();
         }
 
-        public async Task<Truck> GetTruckAsync(string truckLicense)
+        public async Task<Truck> GetTruckAsync(int TruckID)
         {
-            IQueryable<Truck> query = _context.Trucks.Where(c => c.Truck_License == truckLicense);
+            IQueryable<Truck> query = _context.Trucks.Where(t => t.TruckID == TruckID).Include(t => t.TruckStatus);
             return await query.FirstOrDefaultAsync();
         }
 

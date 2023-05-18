@@ -16,9 +16,9 @@ namespace TrackwiseAPI.Models.Entities
         public Job Job { get; set; }
 
         //Foreign Key for Truck
-        public string Truck_License { get; set; }
+    /*    public string Truck_License { get; set; }
         [ForeignKey("Truck_License")]
-        public Truck Truck { get; set; }
+        public Truck Truck { get; set; }*/
 
         public ICollection<Delivery_Assignment> Delivery_Assignments { get; set; }
 

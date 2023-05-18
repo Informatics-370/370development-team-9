@@ -15,7 +15,7 @@
           </div>
         </div>
         <div class="col-lg-3">
-            <button type="button" class="btn create-btn">Add Truck</button>
+            <button type="button" class="btn create-btn" routerLink="add-trucks">Add Truck</button>
         </div>
       </div>
       <br>
@@ -32,26 +32,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>DR25RTGP</td>
-            <td>MAN</td>
-            <td>Available</td>
-            <td><button type="button" class="btn edit-btn">Edit</button></td>
-            <td><button type="button" class="btn remove-btn">Remove</button></td>
-          </tr>
-          <tr>
-            <td>JK59POGP</td>
-            <td>Volvo</td>
-            <td>Unavailable</td>
-            <td><button type="button" class="btn edit-btn">Edit</button></td>
-            <td><button type="button" class="btn remove-btn">Remove</button></td>
-          </tr>
-          <tr>
-            <td>YH48POGP</td>
-            <td>Mercedez-Benz</td>
-            <td>Under Maintenance</td>
-            <td><button type="button" class="btn edit-btn">Edit</button></td>
-            <td><button type="button" class="btn remove-btn">Remove</button></td>
+          <tr *ngFor="let truck of trucks">
+            <td>{{truck.truck_License}}</td>
+            <td>{{truck.model}}</td>
+            <td>{{truck.truckStatus.status}}</td>
+            <td><button type="button" class="btn edit-btn" [routerLink]="['edit-truck', truck.truckID]">Edit</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="DeleteTruck(truck.truckID)">Remove</button></td>
           </tr>
         </tbody>
       </table>

@@ -192,10 +192,10 @@ namespace TrackwiseAPI.DBContext
                 .HasForeignKey(j => j.Driver_Status_ID);
 
             //Driver and Truck has a one-many
-            modelBuilder.Entity<Truck>()
+/*            modelBuilder.Entity<Truck>()
                 .HasOne(t => t.Driver)
                 .WithMany(d => d.Trucks)
-                .HasForeignKey(t => t.Driver_ID);
+                .HasForeignKey(t => t.Driver_ID);*/
 
             //Truck and TruckStatus has a many-one
             modelBuilder.Entity<Truck>()
@@ -204,10 +204,10 @@ namespace TrackwiseAPI.DBContext
                 .HasForeignKey(t => t.Truck_Status_ID);
 
             //Truck and Trailer has a many-one
-            modelBuilder.Entity<Truck>()
+/*            modelBuilder.Entity<Truck>()
                 .HasOne(t => t.Trailer)
                 .WithMany(tl => tl.Trucks)
-                .HasForeignKey(t => t.Trailer_License);
+                .HasForeignKey(t => t.Trailer_License);*/
 
             //Trailer and TrailerStatus has a many-one
             modelBuilder.Entity<Trailer>()
@@ -308,6 +308,12 @@ namespace TrackwiseAPI.DBContext
                 new Product_Supplier { Product_Supplier_ID = 2, Productid = 2, Supplierid = 1 },
                 new Product_Supplier { Product_Supplier_ID = 3, Productid = 2, Supplierid = 2 },
                 new Product_Supplier { Product_Supplier_ID = 4, Productid = 3, Supplierid = 2 }
+            );
+
+            modelBuilder.Entity<TruckStatus>().HasData(
+                new TruckStatus { Truck_Status_ID = 1, Status = "Available", Description = "Truck is available for job" },
+                new TruckStatus { Truck_Status_ID = 2, Status = "Unavailable", Description = "Truck is busy with a job" },
+                new TruckStatus { Truck_Status_ID = 3, Status = "Under Maintenance", Description = "Truck is undergoing maintenace" }
             );
 
         }

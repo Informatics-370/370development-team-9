@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +16,9 @@ import { TrucksComponent } from './Admin-Screen/trucks/trucks.component';
 import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
 
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
+import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
 
 
 
@@ -31,11 +35,16 @@ import { CommonModule } from '@angular/common';
     ClientsComponent,
     TrucksComponent,
     TrailersComponent,
+    AddTrucksComponent,
+    EditTruckComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CommonModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
   
   ],
   providers: [],
