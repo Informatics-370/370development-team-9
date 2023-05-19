@@ -24,7 +24,7 @@ namespace TrackwiseAPI.Models.Repositories
         }
         public async Task<Trailer[]> GetAllTrailerAsync()
         {
-            IQueryable<Trailer> query = _context.Trailers;/*.Include(c=>c.TrailerType).Include(c=> c.TrailerStatus);*/
+            IQueryable<Trailer> query = _context.Trailers.Include(c=>c.TrailerType).Include(c=> c.TrailerStatus);
             return await query.ToArrayAsync();
         }
 

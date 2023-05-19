@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
 import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
+import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
 
 
 
@@ -38,6 +40,8 @@ import { MaterialModule } from 'src/app/shared/material.module';
     TrailersComponent,
     AddTrucksComponent,
     EditTruckComponent,
+    AddTrailersComponent,
+    EditTrailerComponent,
   ],
   imports: [
     BrowserModule,

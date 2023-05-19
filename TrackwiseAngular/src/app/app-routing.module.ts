@@ -13,6 +13,8 @@ import { TrucksComponent } from './Admin-Screen/trucks/trucks.component';
 import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
 import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
+import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
+import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
 
 
 const routes: Routes = [
@@ -27,6 +29,8 @@ const routes: Routes = [
   {path: 'Admin-Screen/trucks/add-trucks', component: AddTrucksComponent},
   {path: 'Admin-Screen/trucks/edit-truck/:truckID', component:EditTruckComponent},
   {path: 'Admin-Screen/trailers', component: TrailersComponent},
+  {path: 'Admin-Screen/trailers/add-trailers', component: AddTrailersComponent},
+  {path: 'Admin-Screen/trailers/edit-trailers:trailerID', component: EditTrailerComponent},
 
 ];
 
