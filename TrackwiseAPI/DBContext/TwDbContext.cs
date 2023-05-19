@@ -325,6 +325,12 @@ namespace TrackwiseAPI.DBContext
                 new TrailerType { Trailer_Type_ID = 2, Name = "Feul", Description = "Fuel transportation trailer" }
             );
 
+            modelBuilder.Entity<DriverStatus>().HasData(
+                new DriverStatus { Driver_Status_ID = 1, Status = "Available", Description = "Driver is available" },
+                new DriverStatus { Driver_Status_ID = 2, Status = "Unavailable", Description = "Driver is busy with a job" },
+                new DriverStatus { Driver_Status_ID = 3, Status = "Busy", Description = "Driver is unable to do a job" }
+            );
+
         }
     }
 }
