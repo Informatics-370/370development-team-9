@@ -315,6 +315,15 @@ namespace TrackwiseAPI.DBContext
                 new TruckStatus { Truck_Status_ID = 2, Status = "Unavailable", Description = "Truck is busy with a job" },
                 new TruckStatus { Truck_Status_ID = 3, Status = "Under Maintenance", Description = "Truck is undergoing maintenace" }
             );
+            modelBuilder.Entity<TrailerStatus>().HasData(
+                new TrailerStatus { Trailer_Status_ID = 1, Status = "Available", Description = "Trailer is available for job" },
+                new TrailerStatus { Trailer_Status_ID = 2, Status = "Unavailable", Description = "Trailer is busy with a job" },
+                new TrailerStatus { Trailer_Status_ID = 3, Status = "Under Maintenance", Description = "Trailer is undergoing maintenace" }
+            );
+            modelBuilder.Entity<TrailerType>().HasData(
+                new TrailerType { Trailer_Type_ID = 1, Name = "Coal", Description = "Coal transportation trailer" },
+                new TrailerType { Trailer_Type_ID = 2, Name = "Feul", Description = "Fuel transportation trailer" }
+            );
 
         }
     }
