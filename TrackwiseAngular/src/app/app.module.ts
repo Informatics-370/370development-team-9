@@ -17,11 +17,17 @@ import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
 
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { MaterialModule } from 'src/app/shared/material.module';
+
+import { AddDriverComponent } from './Admin-screen/drivers/add-driver/add-driver.component';
+import { EditDriverComponent } from './Admin-screen/drivers/edit-driver/edit-driver.component';
+
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
 import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
-import { MaterialModule } from 'src/app/shared/material.module';
+
 import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
 import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
+
 
 
 
@@ -42,6 +48,8 @@ import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-
     EditTruckComponent,
     AddTrailersComponent,
     EditTrailerComponent,
+    AddDriverComponent,
+    EditDriverComponent,
   ],
   imports: [
     BrowserModule,
