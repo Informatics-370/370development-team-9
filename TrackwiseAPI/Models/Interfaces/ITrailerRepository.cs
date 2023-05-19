@@ -10,6 +10,6 @@ namespace TrackwiseAPI.Models.Interfaces
 
         // Customer
         Task<Trailer[]> GetAllTrailerAsync();
-        Task<Trailer> GetTrailerAsync(string trailerLicense);
+        Task<Trailer> GetTrailerAsync(int TrailerID);
     }
 }

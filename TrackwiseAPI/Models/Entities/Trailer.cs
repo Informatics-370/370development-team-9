@@ -6,6 +6,7 @@ namespace TrackwiseAPI.Models.Entities
     public class Trailer
     {
         [Key]
+        public int TrailerID { get; set; }
         public string Trailer_License { get; set; }
         public string Model { get; set; }
         public double Weight { get; set; }
