@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable, Subject } from 'rxjs';
-import { Truck } from 'src/shared/truck';
+import { Truck } from 'src/app/shared/truck';
 
 @Injectable({
   providedIn: 'root'

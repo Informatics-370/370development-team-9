@@ -19,6 +19,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
 import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
+import { MaterialModule } from 'src/app/shared/material.module';
 
 
 
@@ -45,7 +46,7 @@ import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-  
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

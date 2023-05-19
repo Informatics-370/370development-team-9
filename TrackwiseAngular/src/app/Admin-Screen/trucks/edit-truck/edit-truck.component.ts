@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from 'src/services/data.service';
-import { Truck } from 'src/shared/truck';
+import { DataService } from 'src/app/services/data.service';
+import { Truck } from 'src/app/shared/truck';
 
 @Component({
   selector: 'app-edit-truck',
