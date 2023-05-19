@@ -33,6 +33,8 @@ builder.Services.AddScoped<ITruckRepository, TruckRepository>();
 
 builder.Services.AddScoped<ITrailerRepository, TrailerRepository>();
 
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+
 //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 
