@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable, Subject } from 'rxjs';
+import { Driver } from '../shared/driver';
 import { Truck } from 'src/app/shared/truck';
 import { Trailer } from '../shared/trailer';
 
@@ -18,6 +19,34 @@ export class DataService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
+  /*DRIVER SECTION*/
+  GetDrivers(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Driver/GetAllDrivers`)
+    .pipe(map(result => result))
+  }
+
+  AddDriver(AddDriverReq: Driver): Observable<Driver>
+  {
+    return this.httpClient.post<Driver>(`${this.apiUrl}Driver/AddDriver/`, AddDriverReq)
+    .pipe(map(result => result))
+
+  }
+
+  GetDriver(driver_ID: Number): Observable<Driver>
+  {
+    return this.httpClient.get<Driver>(`${this.apiUrl}Driver/GetDriver/${driver_ID}` );
+  }
+
+  EditDriver(driver_ID: number , EditDriverReq: Driver):Observable<Driver>
+  {
+      return this.httpClient.put<Driver>(`${this.apiUrl}Driver/EditDriver/${driver_ID}`, EditDriverReq);
+  }
+
+  DeleteDriver(driver_ID: number):Observable<Driver>
+  {
+      return this.httpClient.delete<Driver>(`${this.apiUrl}Driver/DeleteDriver/${driver_ID}`);
+  }
 
   /*TRUCK SECTION*/ 
   GetTrucks(): Observable<any>{
