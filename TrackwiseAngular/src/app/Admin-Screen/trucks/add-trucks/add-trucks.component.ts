@@ -30,7 +30,7 @@ export class AddTrucksComponent {
   AddTruck()
   {
     this.dataService.AddTruck(this.AddTruckRequest).subscribe({
-      next: (course) => {this.router.navigate(['/Admin-Screen/trucks'])}
+      next: (truck) => {this.router.navigate(['/Admin-Screen/trucks'])}
     })
   }
 }
