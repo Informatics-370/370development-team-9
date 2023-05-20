@@ -6,51 +6,44 @@
       
       <!-- Search bar -->
       <br>
-        <div class="row">
-            <div class="col-lg-9">
-                <!-- Search Textbox/bar -->
-                <!-- Enter the placeholder text that you want to display in the bar ------------------------------------------------------->
-                <div class="input-group">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                    aria-describedby="search-addon" />
-                    <!-- Search Button -->
-                    <button type="button" class="btn btn-outline-primary">Search</button>
-                </div>
-            </div>
-            
-            <!-- Add button -->
-            <!-- Change the button name to suit your use case ---------------------------------------------------------------------------->
-            <div class="col-lg-3">
-                <button type="button" class="btn create-btn">Add (What you want to add)</button>
-            </div>
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="input-group">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+              aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+            <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
+          </div>
         </div>
+        <div class="col-lg-3">
+          <button type="button" class="btn create-btn" routerLink="add-supplier">Add Supplier</button>
+        </div>
+      </div>
       <br>
-  
-      <!-- Table -->
-      <!-- Enter your own table heading and table data to check the layout(hard code data for now) -------------------------------------->
-      <table class="table table-hover">
-        <thead id="header">
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+        
+            <!-- Table -->
+            <table class="table table-hover">
+              <thead id="header">
+                <tr>
+                  <th>Supplier Name</th>
+                  <th>Supplier Email</th>
+                  <th>Contact Number</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="suppliers.length === 0">
+                  <td colspan="5">No results were found.</td>
+                </tr>
+                <tr *ngFor="let supplier of suppliers">
+                  <td>{{supplier.name}}</td>
+                  <td>{{supplier.email}}</td>
+                  <td>{{supplier.contactNumber}}</td>
+            <td><button type="button" class="btn edit-btn" [routerLink]="['edit-supplier', supplier.supplier_ID]">Edit</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="DeleteSupplier(supplier.supplier_ID)">Remove</button></td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><button type="button" class="btn edit-btn">Edit</button></td>
-            <td><button type="button" class="btn remove-btn">Remove</button></td>
-          </tr>
-          
-        <!-- Insert more rows if you want to----------------------------------------------------- -->
-
         </tbody>
       </table>
     </div>
   </div>
-</div>
+</div>  

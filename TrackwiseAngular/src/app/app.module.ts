@@ -35,6 +35,11 @@ import { EditAdminComponent } from './Admin-Screen/admin/edit-admin/edit-admin.c
 import { AddClientComponent } from './Admin-Screen/clients/add-client/add-client.component';
 import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-client.component';
 
+import { EditSupplierComponent } from './Admin-Screen/suppliers/edit-supplier/edit-supplier.component';
+import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-supplier.component';
+
+
+
 
 
 
@@ -62,6 +67,11 @@ import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-cli
     EditAdminComponent,
     AddClientComponent,
     EditClientComponent,
+
+    EditSupplierComponent,
+      AddSupplierComponent,
+   
+ 
   ],
   imports: [
     BrowserModule,
