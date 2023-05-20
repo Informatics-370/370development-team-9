@@ -4,7 +4,7 @@
 <div class="col-lg-7 main-content">
 <div class="container container-fluid">
 
-    <h2>Add Truck</h2>
+    <h2>Add Driver</h2>
       
     <form #form="ngForm" (ngSubmit)="AddDriver()">
         <div class="mb-3">
@@ -24,7 +24,7 @@
               <select class="form-select" id="status" [(ngModel)]="driverDetails.driver_Status_ID" name="status">
                 <option value="1">Available</option>
                 <option value="2">Unavailable</option>
-                <option value="3">Busy</option>
+                <option value="3">Busy</option> 
               </select>
             </div>
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Add Driver</button>&nbsp;
