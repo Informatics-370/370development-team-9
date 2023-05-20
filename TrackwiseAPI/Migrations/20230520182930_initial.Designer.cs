@@ -12,7 +12,7 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    [Migration("20230520140224_initial")]
+    [Migration("20230520182930_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -361,21 +361,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = 1,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7706),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6809),
                             Order_ID = 1,
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = 2,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7708),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6811),
                             Order_ID = 2,
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = 3,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7709),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6811),
                             Order_ID = 3,
                             Total_Amount = 450.0
                         });
@@ -500,7 +500,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 1,
                             Customer_ID = 1,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7614),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6751),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -508,7 +508,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 2,
                             Customer_ID = 2,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7630),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6763),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -516,7 +516,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 3,
                             Customer_ID = 3,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7632),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6764),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -612,7 +612,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 1,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7732),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6825),
                             Order_ID = 1,
                             Payment_Type_ID = 1,
                             amount_paid = 150.5
@@ -620,7 +620,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 2,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7733),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6826),
                             Order_ID = 1,
                             Payment_Type_ID = 2,
                             amount_paid = 50.0
@@ -628,7 +628,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 3,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7734),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6827),
                             Order_ID = 2,
                             Payment_Type_ID = 3,
                             amount_paid = 75.200000000000003
@@ -636,7 +636,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 4,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7735),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6828),
                             Order_ID = 3,
                             Payment_Type_ID = 1,
                             amount_paid = 200.0
@@ -644,7 +644,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 5,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7736),
+                            Date = new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6831),
                             Order_ID = 3,
                             Payment_Type_ID = 2,
                             amount_paid = 250.0
@@ -972,8 +972,9 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Supplier_ID"));
 
-                    b.Property<int>("Admin_ID")
-                        .HasColumnType("int");
+                    b.Property<string>("Contact_Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -985,22 +986,20 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Supplier_ID");
 
-                    b.HasIndex("Admin_ID");
-
                     b.ToTable("Suppliers");
 
                     b.HasData(
                         new
                         {
                             Supplier_ID = 1,
-                            Admin_ID = 1,
+                            Contact_Number = "0125554789",
                             Email = "abc@gmail.com",
                             Name = "ABC Suppliers"
                         },
                         new
                         {
                             Supplier_ID = 2,
-                            Admin_ID = 2,
+                            Contact_Number = "0125554789",
                             Email = "xyz@gmail.com",
                             Name = "XYZ Suppliers"
                         });
@@ -1399,17 +1398,6 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Supplier", b =>
-                {
-                    b.HasOne("TrackwiseAPI.Models.Entities.Admin", "Admin")
-                        .WithMany("Suppliers")
-                        .HasForeignKey("Admin_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-                });
-
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trailer", b =>
                 {
                     b.HasOne("TrackwiseAPI.Models.Entities.TrailerStatus", "TrailerStatus")
@@ -1442,8 +1430,6 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Admin", b =>
                 {
-                    b.Navigation("Suppliers");
-
                     b.Navigation("jobs");
                 });
 

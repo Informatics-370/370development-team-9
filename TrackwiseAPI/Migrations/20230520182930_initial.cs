@@ -144,6 +144,21 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Supplier_ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contact_Number = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Supplier_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TrailerStatuses",
                 columns: table => new
                 {
@@ -195,27 +210,6 @@ namespace TrackwiseAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_users", x => x.User_ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Suppliers",
-                columns: table => new
-                {
-                    Supplier_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Admin_ID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Suppliers", x => x.Supplier_ID);
-                    table.ForeignKey(
-                        name: "FK_Suppliers_Admins_Admin_ID",
-                        column: x => x.Admin_ID,
-                        principalTable: "Admins",
-                        principalColumn: "Admin_ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -642,6 +636,15 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Suppliers",
+                columns: new[] { "Supplier_ID", "Contact_Number", "Email", "Name" },
+                values: new object[,]
+                {
+                    { 1, "0125554789", "abc@gmail.com", "ABC Suppliers" },
+                    { 2, "0125554789", "xyz@gmail.com", "XYZ Suppliers" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "TrailerStatuses",
                 columns: new[] { "Trailer_Status_ID", "Description", "Status" },
                 values: new object[,]
@@ -675,9 +678,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Order_ID", "Customer_ID", "Date", "Status", "Total" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7614), "Ordered", 2897.0 },
-                    { 2, 2, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7630), "Ordered", 2997.0 },
-                    { 3, 3, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7632), "Ordered", 2998.0 }
+                    { 1, 1, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6751), "Ordered", 2897.0 },
+                    { 2, 2, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6763), "Ordered", 2997.0 },
+                    { 3, 3, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6764), "Ordered", 2998.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -698,22 +701,13 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Suppliers",
-                columns: new[] { "Supplier_ID", "Admin_ID", "Email", "Name" },
-                values: new object[,]
-                {
-                    { 1, 1, "abc@gmail.com", "ABC Suppliers" },
-                    { 2, 2, "xyz@gmail.com", "XYZ Suppliers" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Invoice",
                 columns: new[] { "Invoice_number", "Date", "Order_ID", "Total_Amount" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7706), 1, 200.5 },
-                    { 2, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7708), 2, 75.200000000000003 },
-                    { 3, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7709), 3, 450.0 }
+                    { 1, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6809), 1, 200.5 },
+                    { 2, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6811), 2, 75.200000000000003 },
+                    { 3, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6811), 3, 450.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -721,11 +715,11 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7732), 1, 1, 150.5 },
-                    { 2, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7733), 1, 2, 50.0 },
-                    { 3, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7734), 2, 3, 75.200000000000003 },
-                    { 4, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7735), 3, 1, 200.0 },
-                    { 5, new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7736), 3, 2, 250.0 }
+                    { 1, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6825), 1, 1, 150.5 },
+                    { 2, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6826), 1, 2, 50.0 },
+                    { 3, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6827), 2, 3, 75.200000000000003 },
+                    { 4, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6828), 3, 1, 200.0 },
+                    { 5, new DateTime(2023, 5, 20, 20, 29, 30, 357, DateTimeKind.Local).AddTicks(6831), 3, 2, 250.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -855,11 +849,6 @@ namespace TrackwiseAPI.Migrations
                 name: "IX_Products_Product_Category_ID",
                 table: "Products",
                 column: "Product_Category_ID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_Admin_ID",
-                table: "Suppliers",
-                column: "Admin_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trailers_Trailer_Status_ID",

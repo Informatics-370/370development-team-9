@@ -16,6 +16,9 @@ import { ReportsComponent } from './Admin-Screen/reports/reports.component';
 
 import { SuppliersComponent } from './Admin-Screen/suppliers/suppliers.component';
 
+import { EditSupplierComponent } from './Admin-Screen/suppliers/edit-supplier/edit-supplier.component';
+
+
 import { ClientsComponent } from './Admin-Screen/clients/clients.component';
 import { AddClientComponent } from './Admin-Screen/clients/add-client/add-client.component';
 import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-client.component';
@@ -30,6 +33,9 @@ import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.
 import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
 import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
 import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
+import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-supplier.component';
+
+
 
 
 const routes: Routes = [
@@ -46,6 +52,8 @@ const routes: Routes = [
   {path: 'Admin-Screen/reports', component: ReportsComponent},
 
   {path: 'Admin-Screen/suppliers', component: SuppliersComponent},
+  {path: 'Admin-Screen/suppliers/add-supplier', component: AddSupplierComponent},
+  {path: 'Admin-Screen/suppliers/edit-supplier/:supplier_ID', component:EditSupplierComponent},
 
   {path: 'Admin-Screen/clients', component: ClientsComponent},
   {path: 'Admin-Screen/clients/add-client', component: AddClientComponent},

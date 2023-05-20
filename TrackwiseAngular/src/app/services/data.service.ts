@@ -6,6 +6,7 @@ import { Truck } from 'src/app/shared/truck';
 import { Trailer } from '../shared/trailer';
 import { Admin } from '../shared/admin';
 import { Client } from '../shared/client';
+import { Supplier } from '../shared/supplier';
 
 @Injectable({
   providedIn: 'root'
@@ -161,5 +162,35 @@ export class DataService {
   DeleteClient(client_ID: number):Observable<Client>
   {
       return this.httpClient.delete<Client>(`${this.apiUrl}Client/DeleteClient/${client_ID}`);
+  }
+
+
+  /*Supplier Section */
+
+  GetSuppliers(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Supplier/GetAllSuppliers`)
+    .pipe(map(result => result))
+  }
+
+  AddSupplier(AddSupplierReq: Supplier): Observable<Supplier>
+  {
+    return this.httpClient.post<Supplier>(`${this.apiUrl}Supplier/AddSupplier/`, AddSupplierReq)
+    .pipe(map(result => result))
+
+  }
+
+  GetSupplier(supplier_ID: Number): Observable<Supplier>
+  {
+    return this.httpClient.get<Supplier>(`${this.apiUrl}Supplier/GetSupplier/${supplier_ID}` );
+  }
+
+  EditSupplier(supplier_ID: number , EditSupplierReq: Supplier):Observable<Supplier>
+  {
+      return this.httpClient.put<Supplier>(`${this.apiUrl}Supplier/EditSupplier/${supplier_ID}`, EditSupplierReq);
+  }
+
+  DeleteSupplier(supplier_ID: number):Observable<Supplier>
+  {
+      return this.httpClient.delete<Supplier>(`${this.apiUrl}Supplier/DeleteSupplier/${supplier_ID}`);
   }
 }

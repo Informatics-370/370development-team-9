@@ -44,12 +44,7 @@ namespace TrackwiseAPI.DBContext
         {
             base.OnModelCreating(modelBuilder);
 
-            //Admin 1-to-many with supplier
-            modelBuilder.Entity<Supplier>()
-                .HasOne(s => s.Admin)
-                .WithMany(a => a.Suppliers)
-                .HasForeignKey(s => s.Admin_ID)
-                .OnDelete(DeleteBehavior.Cascade);
+
 
             //Supplier and product many-many
             modelBuilder.Entity<Product_Supplier>()
@@ -299,8 +294,8 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Supplier>().HasData(
-                new Supplier { Supplier_ID = 1, Name = "ABC Suppliers", Email = "abc@gmail.com", Admin_ID = 1 },
-                new Supplier { Supplier_ID = 2, Name = "XYZ Suppliers", Email = "xyz@gmail.com", Admin_ID = 2 }
+                new Supplier { Supplier_ID = 1, Name = "ABC Suppliers", Email = "abc@gmail.com", Contact_Number = "0125554789" },
+                new Supplier { Supplier_ID = 2, Name = "XYZ Suppliers", Email = "xyz@gmail.com", Contact_Number = "0125554789" }
             );
 
             modelBuilder.Entity<Product_Supplier>().HasData(
