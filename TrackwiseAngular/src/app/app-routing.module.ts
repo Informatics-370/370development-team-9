@@ -5,8 +5,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { CustomersComponent } from './Admin-Screen/customers/customers.component';
 
 import { DriversComponent } from './Admin-Screen/drivers/drivers.component';
-import { AddDriverComponent } from './Admin-screen/drivers/add-driver/add-driver.component';
-import { EditDriverComponent } from './Admin-screen/drivers/edit-driver/edit-driver.component';
+import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
+import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
 
@@ -50,7 +50,7 @@ const routes: Routes = [
 
   {path: 'Admin-Screen/trailers', component: TrailersComponent},
   {path: 'Admin-Screen/trailers/add-trailers', component: AddTrailersComponent},
-  {path: 'Admin-Screen/trailers/edit-trailers:trailerID', component: EditTrailerComponent},
+  {path: 'Admin-Screen/trailers/edit-trailer/:trailerID', component: EditTrailerComponent},
 
 ];
 

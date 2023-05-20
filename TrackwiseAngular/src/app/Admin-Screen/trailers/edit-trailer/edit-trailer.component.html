@@ -1,1 +1,54 @@
-<p>edit-trailer works!</p>
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Edit Trailer</h2>
+      
+    <form #form="ngForm" (ngSubmit)="EditTrailer()">
+        <div class="mb-3">
+          <label for="trailer_License" class="form-label">Trailer License</label>
+          <input type="text" class="form-control" id="trailer_License" aria-describedby="trailer_License" [(ngModel)] = "trailerDetails.trailer_License"     
+          name="trailer_License" [(ngModel)]="trailerDetails.trailer_License" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="model" class="form-label">Model</label>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "trailerDetails.model"  
+                 name="model" [(ngModel)]="trailerDetails.model">
+        </div>
+
+        <div class="mb-3">
+            <label for="weight" class="form-label">Weight</label>
+            <input type="text" class="form-control" id="weight" [(ngModel)] = "trailerDetails.weight"  
+                   name="weight" [(ngModel)]="trailerDetails.weight">
+          </div>
+      
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" [(ngModel)]="trailerDetails.trailer_Status_ID" name="status">
+              <option value="1">Available</option>
+              <option value="2">Unavailable</option>
+              <option value="3">Under Maintenance</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select class="form-select" id="type" [(ngModel)]="trailerDetails.trailer_Type_ID" name="type">
+              <option value="1">Available</option>
+              <option value="2">Unavailable</option>
+              <option value="3">Under Maintenance</option>
+            </select>
+        </div>
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/trailers">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  

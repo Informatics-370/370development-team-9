@@ -15,7 +15,7 @@ export class AddTrailersComponent {
     trailer_License:"",
     model:"",
     weight:0,
-    trailer_Status_ID:0,
+    trailer_Status_ID:1,
     trailerStatus:{
       trailer_Status_ID:0,
       status:"",
@@ -28,6 +28,12 @@ export class AddTrailersComponent {
       description:""
     },
   };
+
+  trailerStatusOptions = [
+    { trailer_Status_ID: 1, status: "Available" },
+    { trailer_Status_ID: 2, status: "Unavailable" },
+    { trailer_Status_ID: 3, status: "Busy" }
+  ];
 
   constructor(private dataService: DataService, private router:Router) { }
 
