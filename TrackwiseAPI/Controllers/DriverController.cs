@@ -35,7 +35,7 @@ namespace TrackwiseAPI.Controllers
         //Get a specific Driver
         [HttpGet]
         [Route("GetDriver/{Driver_ID}")]
-        public async Task<IActionResult> GetTruckAsync(int Driver_ID)
+        public async Task<IActionResult> GetDriverAsync(int Driver_ID)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace TrackwiseAPI.Controllers
             return Ok(driver);
         }
 
-        //update truck
+        //update Driver
         [HttpPut]
         [Route("EditDriver/{Driver_ID}")]
         public async Task<ActionResult<DriverVM>> EditDriver(int Driver_ID, DriverVM dvm)
@@ -100,19 +100,19 @@ namespace TrackwiseAPI.Controllers
             return BadRequest("Your request is invalid.");
         }
 
-        //Remove truck
+        //Remove Driver
         [HttpDelete]
         [Route("DeleteDriver/{Driver_ID}")]
-        public async Task<IActionResult> DeleteTruck(int Driver_ID)
+        public async Task<IActionResult> DeleteDriver(int Driver_ID)
         {
             try
             {
-                var existingTruck = await _driverRepository.GetDriverAsync(Driver_ID);
+                var existingDriver = await _driverRepository.GetDriverAsync(Driver_ID);
 
-                if (existingTruck == null) return NotFound($"The driver does not exist");
-                _driverRepository.Delete(existingTruck);
+                if (existingDriver == null) return NotFound($"The driver does not exist");
+                _driverRepository.Delete(existingDriver);
 
-                if (await _driverRepository.SaveChangesAsync()) return Ok(existingTruck);
+                if (await _driverRepository.SaveChangesAsync()) return Ok(existingDriver);
 
             }
             catch (Exception)
