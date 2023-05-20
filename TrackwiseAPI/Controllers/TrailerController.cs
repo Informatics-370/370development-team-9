@@ -20,7 +20,7 @@ namespace TrackwiseAPI.Controllers
 
         //Get all trailers
         [HttpGet]
-        [Route("GetAllTrailer")]
+        [Route("GetAllTrailers")]
         public async Task<IActionResult> GetAllTrailers()
         {
             try
