@@ -8,6 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(
+                include =>
+                {
+                    include.AllowAnyHeader();
+                    include.AllowAnyMethod();
+                    include.AllowAnyOrigin();
+                }));
+
 builder.Services.AddControllers().AddNewtonsoftJson(options => 
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
@@ -20,6 +28,17 @@ builder.Services.AddDbContext<TwDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+
+builder.Services.AddScoped<ITruckRepository, TruckRepository>();
+
+builder.Services.AddScoped<ITrailerRepository, TrailerRepository>();
+
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
 //builder.Services.AddScoped<IProductRepository, ProductRepository>();
 //builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 
@@ -35,6 +54,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapControllers();
 
