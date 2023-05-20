@@ -8,7 +8,7 @@ import { Trailer } from 'src/app/shared/trailer';
   styleUrls: ['./trailers.component.scss']
 })
 export class TrailersComponent {
-  trailers:Trailer[] = []
+  trailers: Trailer[] = [];
 
   searchQuery: string='';
   filteredTrailer: Trailer[]=[];
@@ -17,9 +17,9 @@ export class TrailersComponent {
   constructor( private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.GetTrailers()
-
+    this.GetTrailers();
   }
+
 
   GetTrailers()
   {
