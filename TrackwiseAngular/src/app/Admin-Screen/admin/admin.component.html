@@ -1,1 +1,51 @@
-<p>admin works!</p>
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+      
+      <!-- Search bar -->
+      <br>
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="input-group">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+              aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+            <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <button type="button" class="btn create-btn" routerLink="add-admin">Add Admin</button>
+        </div>
+      </div>
+      <br>
+        
+            <!-- Table -->
+            <table class="table table-hover">
+              <thead id="header">
+                <tr>
+                  <th>Admin Name</th>
+                  <th>Admin Surname</th>
+                  <th>Email</th>
+                  <th>Password</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="admins.length === 0">
+                  <td colspan="5">No results were found.</td>
+                </tr>
+                <tr *ngFor="let admin of admins">
+                  <td>{{admin.name}}</td>
+                  <td>{{admin.lastname}}</td>
+                  <td>{{admin.email}}</td>
+                  <td>{{admin.password}}</td>
+            <td><button type="button" class="btn edit-btn" [routerLink]="['edit-admin', admin.admin_ID]">Edit</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="DeleteAdmin(admin.driver_ID)">Remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>  
