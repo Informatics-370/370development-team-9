@@ -37,7 +37,7 @@ namespace TrackwiseAPI.Controllers
         //Get a specific trailer
         [HttpGet]
         [Route("GetTrailer/{TrailerID}")]
-        public async Task<IActionResult> GetTruckAsync(int TrailerID)
+        public async Task<IActionResult> GetTrailerAsync(int TrailerID)
         {
             try
             {
@@ -77,7 +77,7 @@ namespace TrackwiseAPI.Controllers
         //update trailer
         [HttpPut]
         [Route("EditTrailer/{TrailerID}")]
-        public async Task<ActionResult<TrailerVM>> EditTruck(int TrailerID, TrailerVM tvm)
+        public async Task<ActionResult<TrailerVM>> EditTrailer(int TrailerID, TrailerVM tvm)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace TrackwiseAPI.Controllers
         //Remove trailer
         [HttpDelete]
         [Route("DeleteTrailer/{TrailerID}")]
-        public async Task<IActionResult> DeleteTruck(int TrailerID)
+        public async Task<IActionResult> DeleteTrailer(int TrailerID)
         {
             try
             {
