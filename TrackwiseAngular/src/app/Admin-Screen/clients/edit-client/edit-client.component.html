@@ -1,1 +1,39 @@
-<p>edit-client works!</p>
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Edit Driver</h2>
+      
+    <form #form="ngForm" (ngSubmit)="EditClient()">
+        <div class="mb-3">
+          <label for="Name" class="form-label">Client Name</label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "clientDetails.name"     
+          name="Name" [(ngModel)]="clientDetails.name" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="lastname" class="form-label">Client Surname</label>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.lastname"  
+                 name="lastname" [(ngModel)]="clientDetails.lastname">
+        </div>
+
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.phoneNumber"  
+                 name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber">
+        </div>
+      
+        
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/clients">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  
+

@@ -27,9 +27,11 @@ import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.
 
 import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
 import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
+
 import { AdminComponent } from './Admin-Screen/admin/admin.component';
 import { AddAdminComponent } from './Admin-Screen/admin/add-admin/add-admin.component';
 import { EditAdminComponent } from './Admin-Screen/admin/edit-admin/edit-admin.component';
+
 import { AddClientComponent } from './Admin-Screen/clients/add-client/add-client.component';
 import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-client.component';
 

@@ -4,6 +4,8 @@ import { map, Observable, Subject } from 'rxjs';
 import { Driver } from '../shared/driver';
 import { Truck } from 'src/app/shared/truck';
 import { Trailer } from '../shared/trailer';
+import { Admin } from '../shared/admin';
+import { Client } from '../shared/client';
 
 @Injectable({
   providedIn: 'root'
@@ -104,5 +106,60 @@ export class DataService {
       return this.httpClient.delete<Trailer>(`${this.apiUrl}Trailer/DeleteTrailer/${trailerID}`);
   }
 
+  /*Admin SECTION*/
+  GetAdmins(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Admin/GetAllAdmin`)
+    .pipe(map(result => result))
+  }
 
+  AddAdmin(AddAdminReq: Admin): Observable<Admin>
+  {
+    return this.httpClient.post<Admin>(`${this.apiUrl}Admin/AddAdmin/`, AddAdminReq)
+    .pipe(map(result => result))
+
+  }
+
+
+  GetAdmin(admin_ID: Number): Observable<Admin>
+  {
+    return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}` );
+  }
+
+  EditAdmin(admin_ID: number , EditAdminReq: Admin):Observable<Admin>
+  {
+      return this.httpClient.put<Admin>(`${this.apiUrl}Admin/EditAdmin/${admin_ID}`, EditAdminReq);
+  }
+
+  DeleteAdmin(admin_ID: number):Observable<Admin>
+  {
+      return this.httpClient.delete<Admin>(`${this.apiUrl}Admin/DeleteAdmin/${admin_ID}`);
+  }
+
+  /*Client SECTION*/
+  GetClients(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Client/GetAllClients`)
+    .pipe(map(result => result))
+  }
+
+  AddClient(AddClientReq: Client): Observable<Client>
+  {
+    return this.httpClient.post<Client>(`${this.apiUrl}Client/AddClient/`, AddClientReq)
+    .pipe(map(result => result))
+
+  }
+
+  GetClient(client_ID: Number): Observable<Client>
+  {
+    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetDriver/${client_ID}` );
+  }
+
+  EditClient(client_ID: number , EditClientReq: Client):Observable<Client>
+  {
+      return this.httpClient.put<Client>(`${this.apiUrl}Client/EditClient/${client_ID}`, EditClientReq);
+  }
+
+  DeleteClient(client_ID: number):Observable<Client>
+  {
+      return this.httpClient.delete<Client>(`${this.apiUrl}Client/DeleteClient/${client_ID}`);
+  }
 }
