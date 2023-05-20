@@ -17,6 +17,11 @@ import { ReportsComponent } from './Admin-Screen/reports/reports.component';
 import { SuppliersComponent } from './Admin-Screen/suppliers/suppliers.component';
 
 import { ClientsComponent } from './Admin-Screen/clients/clients.component';
+import { AddClientComponent } from './Admin-Screen/clients/add-client/add-client.component';
+import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-client.component';
+import { AdminComponent } from './Admin-Screen/admin/admin.component';
+import { AddAdminComponent } from './Admin-Screen/admin/add-admin/add-admin.component';
+import { EditAdminComponent } from './Admin-Screen/admin/edit-admin/edit-admin.component';
 
 import { TrucksComponent } from './Admin-Screen/trucks/trucks.component';
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
@@ -43,6 +48,12 @@ const routes: Routes = [
   {path: 'Admin-Screen/suppliers', component: SuppliersComponent},
 
   {path: 'Admin-Screen/clients', component: ClientsComponent},
+  {path: 'Admin-Screen/clients/add-client', component: AddClientComponent},
+  {path: 'Admin-Screen/clients/edit-client/:clientID', component:EditClientComponent},
+
+  {path: 'Admin-Screen/admin', component: AdminComponent},
+  {path: 'Admin-Screen/admin/add-admin', component: AddAdminComponent},
+  {path: 'Admin-Screen/admin/edit-admin/:adminID', component:EditAdminComponent},
 
   {path: 'Admin-Screen/trucks', component: TrucksComponent},
   {path: 'Admin-Screen/trucks/add-trucks', component: AddTrucksComponent},
