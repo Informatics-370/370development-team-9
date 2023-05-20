@@ -17,7 +17,7 @@ export class TrailersComponent {
   constructor( private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.GetTrailers()
+    this.GetTrailers();
 
   }
 

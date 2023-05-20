@@ -19,8 +19,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/shared/material.module';
 
-import { AddDriverComponent } from './Admin-screen/drivers/add-driver/add-driver.component';
-import { EditDriverComponent } from './Admin-screen/drivers/edit-driver/edit-driver.component';
+import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
+import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
 import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.component';
