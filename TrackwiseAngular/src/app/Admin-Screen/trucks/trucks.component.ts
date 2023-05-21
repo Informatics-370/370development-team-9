@@ -12,10 +12,8 @@ import { Truck } from 'src/app/shared/truck';
 export class TrucksComponent implements OnInit {
 
   trucks:Truck[] = []
-
-  searchQuery: string='';
-  filteredTrucks: Truck[]=[];
-
+  searchText: string = '';
+  originalTrucks: Truck[]=[];
 
   constructor( private dataService: DataService) { }
 
@@ -24,17 +22,48 @@ export class TrucksComponent implements OnInit {
 
   }
 
-
-
   GetTrucks()
   {
     this.dataService.GetTrucks().subscribe(result => {
       let truckList:any[] = result
+      this.originalTrucks = [...truckList]; // Store a copy of the original trailer data
       truckList.forEach((element) => {
         this.trucks.push(element)
-        console.log(element)
       });
     })
+  }
+
+  search() {
+    if (this.searchText.trim() === '') {
+      // If search text is empty, revert back to original trailer data
+      this.trucks = [...this.originalTrucks];
+    } else {
+      const searchTextLower = this.searchText.toLowerCase();
+
+      // Filter the trailers based on the search text
+      const filteredTrailers = this.originalTrucks.filter(trailer => {
+        const license = trailer.truck_License.toLowerCase();
+        const model = trailer.model.toLowerCase();
+        const status = trailer.truckStatus.status.toLowerCase();
+        return (
+          license.includes(searchTextLower)||
+          model.includes(searchTextLower) || 
+          status.includes(searchTextLower) ||
+          (searchTextLower === 'available' && status === 'available') ||
+          (searchTextLower === 'unavailable' && status === 'unavailable') ||
+          (searchTextLower === 'busy' && status === 'busy')
+        );
+      });
+
+      // Update the drivers array with the filtered results
+      this.trucks = filteredTrailers;
+    }
+  }
+
+  handleKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.search();
+    }
   }
 
   DeleteTruck(TruckID:number)

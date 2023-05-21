@@ -120,7 +120,6 @@ export class DataService {
 
   }
 
-
   GetAdmin(admin_ID: Number): Observable<Admin>
   {
     return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}` );
@@ -176,7 +175,6 @@ export class DataService {
   {
     return this.httpClient.post<Supplier>(`${this.apiUrl}Supplier/AddSupplier/`, AddSupplierReq)
     .pipe(map(result => result))
-
   }
 
   GetSupplier(supplier_ID: Number): Observable<Supplier>

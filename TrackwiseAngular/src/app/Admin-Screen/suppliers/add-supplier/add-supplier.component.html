@@ -9,20 +9,20 @@
     <form #form="ngForm" (ngSubmit)="AddSupplier()">
         <div class="mb-3">
             <label for="Name" class="form-label">Supplier Name</label>
-            <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "supplierDetails.name"
-            name="Name" [(ngModel)]="supplierDetails.name" >
+            <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "AddSupplierReq.name"
+            name="Name" [(ngModel)]="AddSupplierReq.name" >
           </div>
 
           <div class="mb-3">
             <label for="email" class="form-label">Supplier Email</label>
-            <input type="email" class="form-control" id="model" [(ngModel)] = "supplierDetails.email"
-                   name="email" [(ngModel)]="supplierDetails.email">
+            <input type="email" class="form-control" id="email" [(ngModel)] = "AddSupplierReq.email"
+                   name="email" [(ngModel)]="AddSupplierReq.email">
           </div>
 
           <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Contact Number</label>
-            <input type="tel" class="form-control" id="model" [(ngModel)] = "supplierDetails.contactNumber"
-                   name="phoneNumber" [(ngModel)]="supplierDetails.contactNumber">
+            <label for="contact_Number" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="contact_Number" [(ngModel)] = "AddSupplierReq.contact_Number"
+                   name="contact_Number" [(ngModel)]="AddSupplierReq.contact_Number">
           </div>
 
 

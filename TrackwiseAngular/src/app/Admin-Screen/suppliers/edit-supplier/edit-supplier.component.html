@@ -9,20 +9,20 @@
     <form #form="ngForm" (ngSubmit)="EditSupplier()">
         <div class="mb-3">
           <label for="Name" class="form-label">Supplier Name</label>
-          <input type="text" class="form-control" id="Name" aria-describedby="Name" required [(ngModel)] = "supplierDetails.name"     
-          name="Name" [(ngModel)]="supplierDetails.name" >
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" required [(ngModel)] = "EditSupplierReq.name"     
+          name="Name" [(ngModel)]="EditSupplierReq.name" >
         </div>
       
         <div class="mb-3">
-          <label for="lastname" class="form-label">Supplier Email</label>
-          <input type="text" class="form-control" id="model" [(ngModel)] = "supplierDetails.email"  
-                 name="lastname" [(ngModel)]="supplierDetails.email">
+          <label for="email" class="form-label">Supplier Email</label>
+          <input type="text" class="form-control" id="email" [(ngModel)] = "EditSupplierReq.email"  
+                 name="email" [(ngModel)]="EditSupplierReq.email">
         </div>
 
         <div class="mb-3">
-          <label for="phoneNumber" class="form-label">Contact Number</label>
-          <input type="text" class="form-control" id="model" [(ngModel)] = "supplierDetails.contactNumber"  
-                 name="phoneNumber" [(ngModel)]="supplierDetails.contactNumber">
+          <label for="contact_Number" class="form-label">Contact Number</label>
+          <input type="text" class="form-control" id="contact_Number" [(ngModel)] = "EditSupplierReq.contact_Number"  
+                 name="contact_Number" [(ngModel)]="EditSupplierReq.contact_Number">
         </div>
     
           
