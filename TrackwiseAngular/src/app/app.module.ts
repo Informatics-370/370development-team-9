@@ -67,9 +67,8 @@ import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-
     EditAdminComponent,
     AddClientComponent,
     EditClientComponent,
-
     EditSupplierComponent,
-      AddSupplierComponent,
+    AddSupplierComponent,
    
  
   ],

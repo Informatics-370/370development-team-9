@@ -12,12 +12,12 @@ import { Supplier } from 'src/app/shared/supplier';
 })
 export class EditSupplierComponent implements OnInit{
 
- supplierDetails: Supplier =
+  EditSupplierReq: Supplier =
   {
     supplier_ID: 0,
     name: '',
     email:'',
-    contactNumber:'',
+    contact_Number:'',
   };
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
@@ -28,7 +28,7 @@ export class EditSupplierComponent implements OnInit{
 
           this.dataService.GetSupplier(params['supplier_ID']).subscribe({
             next: (response) => {
-              this.supplierDetails = response;
+              this.EditSupplierReq = response;
             }
           })
 
@@ -38,7 +38,7 @@ export class EditSupplierComponent implements OnInit{
 
   EditSupplier()
   {    
-    this.dataService.EditSupplier(this.supplierDetails.supplier_ID, this.supplierDetails).subscribe({
+    this.dataService.EditSupplier(this.EditSupplierReq.supplier_ID, this.EditSupplierReq).subscribe({
       next: (response) => {this.router.navigate(['/Admin-Screen/suppliers'])}
     })
     console.log('yes')

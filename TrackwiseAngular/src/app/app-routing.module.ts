@@ -15,7 +15,7 @@ import { OrdersComponent } from './Admin-Screen/orders/orders.component';
 import { ReportsComponent } from './Admin-Screen/reports/reports.component';
 
 import { SuppliersComponent } from './Admin-Screen/suppliers/suppliers.component';
-
+import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-supplier.component';
 import { EditSupplierComponent } from './Admin-Screen/suppliers/edit-supplier/edit-supplier.component';
 
 
@@ -33,7 +33,7 @@ import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.
 import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
 import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
 import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
-import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-supplier.component';
+
 
 
 

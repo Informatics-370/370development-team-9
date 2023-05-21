@@ -40,10 +40,10 @@ export class SuppliersComponent {
       const filteredsuppliers = this.originalSuppliers.filter(supplier => {
         const name = supplier.name.toLowerCase();
         const email = supplier.email.toLowerCase();
-        const contactNumber = supplier.contactNumber.toLowerCase();
+        const contactNumber = supplier.contact_Number.toLowerCase();
         return (
           name.includes(searchTextLower) ||
-          supplier.lastname.toLowerCase().includes(searchTextLower) ||
+          email.includes(searchTextLower) ||
           contactNumber.includes(searchTextLower)
         );
       });

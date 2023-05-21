@@ -10,12 +10,12 @@ import { Supplier } from 'src/app/shared/supplier';
 })
 export class AddSupplierComponent {
 
-  supplierDetails: Supplier =
+  AddSupplierReq: Supplier =
   {
     supplier_ID: 0,
     name: '',
     email:'',
-    contactNumber:'',
+    contact_Number:'',
   };
 
   constructor(private dataService: DataService, private router:Router) { }
@@ -25,7 +25,7 @@ export class AddSupplierComponent {
 
   AddSupplier()
   {
-    this.dataService.AddSupplier(this.supplierDetails).subscribe({
+    this.dataService.AddSupplier(this.AddSupplierReq).subscribe({
       next: (supplier) => {this.router.navigate(['/Admin-Screen/suppliers'])}
     })
   }
