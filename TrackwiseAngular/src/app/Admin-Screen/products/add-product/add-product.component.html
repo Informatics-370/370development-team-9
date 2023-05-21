@@ -1,0 +1,47 @@
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Add Product</h2>
+      
+    <form #form="ngForm" (ngSubmit)="AddProduct()">
+        <div class="mb-3">
+          <label for="product_name" class="form-label">Product Name</label>
+          <input type="text" class="form-control" id="product_name" aria-describedby="product_name" required [(ngModel)] = "AddProductRequest.product_name"     
+          name="product_name" [(ngModel)]="AddProductRequest.product_name" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" required [(ngModel)] = "AddProductRequest.description"  
+                 name="description" [(ngModel)]="AddProductRequest.description">
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="text" class="form-control" id="price" required [(ngModel)] = "AddProductRequest.price"  
+                   name="price" [(ngModel)]="AddProductRequest.price">
+          </div>
+   
+
+
+
+        <div class="mb-3">
+            <label for="type" class="form-label">Category</label>
+            <select class="form-select" id="type" [(ngModel)]="AddProductRequest.productCategory" name="type">
+              <option value="1">Coal</option>
+              <option value="2">Feul</option>
+            </select>
+        </div>
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Add Product</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/products">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  

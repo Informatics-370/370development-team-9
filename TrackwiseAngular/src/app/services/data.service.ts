@@ -7,6 +7,7 @@ import { Trailer } from '../shared/trailer';
 import { Admin } from '../shared/admin';
 import { Client } from '../shared/client';
 import { Supplier } from '../shared/supplier';
+import { Product } from '../shared/product';
 
 @Injectable({
   providedIn: 'root'
@@ -190,5 +191,35 @@ export class DataService {
   DeleteSupplier(supplier_ID: number):Observable<Supplier>
   {
       return this.httpClient.delete<Supplier>(`${this.apiUrl}Supplier/DeleteSupplier/${supplier_ID}`);
+  }
+
+
+
+  /*Product Section */
+
+  GetProducts(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Product/GetAllProducts`)
+    .pipe(map(result => result))
+  }
+
+  AddProduct(AddProductReq: Product): Observable<Product>
+  {
+    return this.httpClient.post<Product>(`${this.apiUrl}Product/AddProduct/`, AddProductReq)
+    .pipe(map(result => result))
+  }
+
+  GetProduct(product_ID: Number): Observable<Product>
+  {
+    return this.httpClient.get<Product>(`${this.apiUrl}Product/GetProduct/${product_ID}` );
+  }
+
+  EditProduct(product_ID: number , EditProductReq: Product):Observable<Product>
+  {
+      return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq);
+  }
+
+  DeleteProduct(product_ID: number):Observable<Product>
+  {
+      return this.httpClient.delete<Product>(`${this.apiUrl}Product/DeleteProduct/${product_ID}`);
   }
 }
