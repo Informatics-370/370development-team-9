@@ -1,0 +1,48 @@
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Edit Product</h2>
+      
+    <form #form="ngForm" (ngSubmit)="EditProduct()">
+        <div class="mb-3">
+          <label for="product_name" class="form-label">Product Name</label>
+          <input type="text" class="form-control" id="product_name" aria-describedby="trailer_License" [(ngModel)] = "productDetails.product_name"     
+          name="product_name" [(ngModel)]="productDetails.product_name" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" [(ngModel)] = "productDetails.description"  
+                 name="description" [(ngModel)]="productDetails.description">
+        </div>
+
+        <div class="mb-3">
+            <label for="price" class="form-label">Price</label>
+            <input type="text" class="form-control" id="price" [(ngModel)] = "productDetails.price"  
+                   name="price" [(ngModel)]="productDetails.price">
+          </div>
+      
+        <div class="mb-3">
+            <label for="status" class="form-label">Category</label>
+            <select class="form-select" id="status" [(ngModel)]="productDetails.productCategory" name="status">
+              <option value="1">Available</option>
+              <option value="2">Unavailable</option>
+              <option value="3">Under Maintenance</option>
+            </select>
+        </div>
+
+
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/trailers">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  
+

@@ -38,6 +38,10 @@ import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-cli
 import { EditSupplierComponent } from './Admin-Screen/suppliers/edit-supplier/edit-supplier.component';
 import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-supplier.component';
 
+import { ProductsComponent } from './Admin-Screen/products/products.component';
+import { AddProductComponent } from './Admin-Screen/products/add-product/add-product.component';
+import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
+
 
 
 
@@ -69,6 +73,9 @@ import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-
     EditClientComponent,
     EditSupplierComponent,
     AddSupplierComponent,
+    ProductsComponent,
+    AddProductComponent,
+    EditProductComponent,
    
  
   ],
