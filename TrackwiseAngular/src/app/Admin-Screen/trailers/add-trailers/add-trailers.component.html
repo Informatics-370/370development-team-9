@@ -27,7 +27,7 @@
       
           <div class="mb-3">
             <label for="type" class="form-label">Status</label>
-            <select class="form-select" id="type" [(ngModel)]="AddTrailerRequest.trailer_Status_ID" name="type">
+            <select class="form-select" id="type" [(ngModel)]="AddTrailerRequest.trailer_Status_ID" name="type" required>
               <option value="1">Available</option>
               <option value="2">Unavailable</option>
               <option value="3">Under Maintenance</option>
@@ -35,10 +35,9 @@
         </div>
 
 
-
         <div class="mb-3">
             <label for="type" class="form-label">Type</label>
-            <select class="form-select" id="type" [(ngModel)]="AddTrailerRequest.trailer_Type_ID" name="type">
+            <select class="form-select" id="type" [(ngModel)]="AddTrailerRequest.trailer_Type_ID" name="type" required>
               <option value="1">Coal</option>
               <option value="2">Feul</option>
             </select>

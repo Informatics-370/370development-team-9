@@ -21,8 +21,10 @@
 
         <div class="mb-3">
           <label for="contact_Number" class="form-label">Contact Number</label>
-          <input type="text" class="form-control" id="contact_Number" [(ngModel)] = "EditSupplierReq.contact_Number"  
-                 name="contact_Number" [(ngModel)]="EditSupplierReq.contact_Number">
+          <input type="number" class="form-control" id="contact_Number" [(ngModel)] = "EditSupplierReq.contact_Number"  
+                 name="contact_Number" [(ngModel)]="EditSupplierReq.contact_Number"
+                 maxlength="10"
+                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
         </div>
     
           
