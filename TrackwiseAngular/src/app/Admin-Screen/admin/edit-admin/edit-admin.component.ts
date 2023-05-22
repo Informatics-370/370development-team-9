@@ -39,7 +39,7 @@ export class EditAdminComponent implements OnInit {
   EditAdmin()
   {    
     this.dataService.EditAdmin(this.adminDetails.admin_ID, this.adminDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/admin'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/admins'])}
     })
     console.log('yes')
   }

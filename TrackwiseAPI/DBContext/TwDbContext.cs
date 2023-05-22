@@ -66,10 +66,10 @@ namespace TrackwiseAPI.DBContext
                 .WithOne(p => p.Inventory)
                 .HasForeignKey<Inventory>(i => i.Product_ID);
 
-            //Product_Type 1-many with product_category
-            modelBuilder.Entity<ProductCategory>()
+            //Product 1-many with product_type
+            modelBuilder.Entity<Product>()
                 .HasOne(p => p.ProductType)
-                .WithMany(pt => pt.productCategories)
+                .WithMany(pt => pt.Products)
                 .HasForeignKey(p => p.Product_Type_ID);
 
             //Product 1-many with product_category
@@ -226,27 +226,27 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<ProductCategory>().HasData(
-                new ProductCategory { Product_Category_ID = 1, Name = "Engine", Description = "products for engines", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 2, Name = "Transmission", Description = "products for transmissions", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 3, Name = "Suspension", Description = "products for suspensions", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 4, Name = "Electrical", Description = "products for electrical", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 5, Name = "Electrical", Description = "products for electrical", Product_Type_ID = 2 },
-                new ProductCategory { Product_Category_ID = 6, Name = "Body", Description = "products for body", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 7, Name = "Brake", Description = "products for brakes", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 8, Name = "Wheel", Description = "products for wheels", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 9, Name = "Consumables", Description = "bolts,nuts ect..", Product_Type_ID = 1 },
-                new ProductCategory { Product_Category_ID = 10, Name = "Consumables", Description = "bolts,nuts ect..", Product_Type_ID = 2 }
+                new ProductCategory { Product_Category_ID = 1, Name = "Engine", Description = "products for engines"},
+                new ProductCategory { Product_Category_ID = 2, Name = "Transmission", Description = "products for transmissions" },
+                new ProductCategory { Product_Category_ID = 3, Name = "Suspension", Description = "products for suspensions"},
+                new ProductCategory { Product_Category_ID = 4, Name = "Electrical", Description = "products for electrical" },
+                new ProductCategory { Product_Category_ID = 5, Name = "Electrical", Description = "products for electrical" },
+                new ProductCategory { Product_Category_ID = 6, Name = "Body", Description = "products for body"},
+                new ProductCategory { Product_Category_ID = 7, Name = "Brake", Description = "products for brakes"},
+                new ProductCategory { Product_Category_ID = 8, Name = "Wheel", Description = "products for wheels"},
+                new ProductCategory { Product_Category_ID = 9, Name = "Consumables", Description = "bolts,nuts ect.." },
+                new ProductCategory { Product_Category_ID = 10, Name = "Consumables", Description = "bolts,nuts ect.."}
             );
 
             modelBuilder.Entity<Product>().HasData(
-                new Product { Product_ID = 1, Product_Name = "Feul Pump", Product_Description = "FUEL PRIMER PUMP/K5", Product_Price = 999, Product_Category_ID = 4 },
-                new Product { Product_ID = 2, Product_Name = "SEAL RING", Product_Description = "SEAL RING MB-S48", Product_Price = 899, Product_Category_ID = 9 },
-                new Product { Product_ID = 3, Product_Name = "CLUTCH", Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", Product_Price = 1499, Product_Category_ID = 7 },
-                new Product { Product_ID = 4, Product_Name = "AXLE NUT", Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)", Product_Price = 1199, Product_Category_ID = 10 },
-                new Product { Product_ID = 5, Product_Name = "BEARING", Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM", Product_Price = 9.99, Product_Category_ID = 10 },
-                new Product { Product_ID = 6, Product_Name = "SEAL OIL", Product_Description = "SEAL OIL STEERING M/B AXOR-S46", Product_Price = 119.99, Product_Category_ID = 9 },
-                new Product { Product_ID = 7, Product_Name = "BRAKEPAD", Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", Product_Price = 799, Product_Category_ID = 7 },
-                new Product { Product_ID = 8, Product_Name = "FAN BELT", Product_Description = "FAN BELT 9PK2300-U7", Product_Price = 455, Product_Category_ID = 1 }
+                new Product { Product_ID = 1, Product_Name = "Feul Pump", Product_Description = "FUEL PRIMER PUMP/K5", Product_Price = 999, Product_Category_ID = 4, Product_Type_ID = 2 },
+                new Product { Product_ID = 2, Product_Name = "SEAL RING", Product_Description = "SEAL RING MB-S48", Product_Price = 899, Product_Category_ID = 9, Product_Type_ID = 1 },
+                new Product { Product_ID = 3, Product_Name = "CLUTCH", Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", Product_Price = 1499, Product_Category_ID = 7, Product_Type_ID = 2 },
+                new Product { Product_ID = 4, Product_Name = "AXLE NUT", Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)", Product_Price = 1199, Product_Category_ID = 10, Product_Type_ID = 1 },
+                new Product { Product_ID = 5, Product_Name = "BEARING", Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM", Product_Price = 9.99, Product_Category_ID = 10, Product_Type_ID = 1 },
+                new Product { Product_ID = 6, Product_Name = "SEAL OIL", Product_Description = "SEAL OIL STEERING M/B AXOR-S46", Product_Price = 119.99, Product_Category_ID = 9, Product_Type_ID = 1 },
+                new Product { Product_ID = 7, Product_Name = "BRAKEPAD", Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", Product_Price = 799, Product_Category_ID = 7, Product_Type_ID = 1 },
+                new Product { Product_ID = 8, Product_Name = "FAN BELT", Product_Description = "FAN BELT 9PK2300-U7", Product_Price = 455, Product_Category_ID = 1, Product_Type_ID = 1}
             );
 
             modelBuilder.Entity<Order>().HasData(

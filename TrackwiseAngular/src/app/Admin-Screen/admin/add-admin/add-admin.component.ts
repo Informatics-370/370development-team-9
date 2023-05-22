@@ -28,7 +28,7 @@ export class AddAdminComponent {
   AddAdmin()
   {
     this.dataService.AddAdmin(this.adminDetails).subscribe({
-      next: (admin) => {this.router.navigate(['/Admin-Screen/admin'])}
+      next: (admin) => {this.router.navigate(['/Admin-Screen/admins'])}
     })
   }
 }

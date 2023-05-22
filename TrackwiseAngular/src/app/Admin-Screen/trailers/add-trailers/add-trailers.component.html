@@ -25,11 +25,12 @@
                    name="weight" [(ngModel)]="AddTrailerRequest.weight">
           </div>
       
-        <div class="mb-3">
-            <label for="status" class="form-label">Status</label>
-
-            <select class="form-select" id="status" [(ngModel)]="AddTrailerRequest.trailer_Status_ID" name="status" required>
-              <option *ngFor="let data of trailerStatusOptions" [value]="data.trailer_Status_ID">{{data.status}}</option>
+          <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select class="form-select" id="type" [(ngModel)]="AddTrailerRequest.trailer_Status_ID" name="type">
+              <option value="1">Available</option>
+              <option value="2">Unavailable</option>
+              <option value="3">Under Maintenance</option>
             </select>
         </div>
 

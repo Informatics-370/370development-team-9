@@ -42,7 +42,7 @@
                   <td>{{admin.email}}</td>
                   <td>{{admin.password}}</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-admin', admin.admin_ID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="DeleteAdmin(admin.driver_ID)">Remove</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="DeleteAdmin(admin.admin_ID)">Remove</button></td>
           </tr>
         </tbody>
       </table>
