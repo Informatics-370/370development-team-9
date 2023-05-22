@@ -60,7 +60,7 @@ const routes: Routes = [
 
   {path: 'Admin-Screen/clients', component: ClientsComponent},
   {path: 'Admin-Screen/clients/add-client', component: AddClientComponent},
-  {path: 'Admin-Screen/clients/edit-client/:clientID', component:EditClientComponent},
+  {path: 'Admin-Screen/clients/edit-client/:client_ID', component:EditClientComponent},
 
   {path: 'Admin-Screen/admins', component: AdminComponent},
   {path: 'Admin-Screen/admins/add-admin', component: AddAdminComponent},

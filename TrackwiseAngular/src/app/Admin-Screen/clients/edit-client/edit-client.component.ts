@@ -10,11 +10,11 @@ import { Client } from 'src/app/shared/client';
 })
 export class EditClientComponent implements OnInit {
 
-  clientDetails: Client =
+  EditClientReq: Client =
   {
     client_ID:0,
-    name:"",
-    phoneNumber:"",
+    name:'',
+    phoneNumber:'',
     
   };
 
@@ -26,7 +26,7 @@ export class EditClientComponent implements OnInit {
 
           this.dataService.GetClient(params['client_ID']).subscribe({
             next: (response) => {
-              this.clientDetails = response;
+              this.EditClientReq = response;
             }
           })
 
@@ -36,9 +36,8 @@ export class EditClientComponent implements OnInit {
 
   EditClient()
   {    
-    this.dataService.EditClient(this.clientDetails.client_ID, this.clientDetails).subscribe({
+    this.dataService.EditClient(this.EditClientReq.client_ID, this.EditClientReq).subscribe({
       next: (response) => {this.router.navigate(['/Admin-Screen/clients'])}
     })
-    console.log('yes')
   }
 }
