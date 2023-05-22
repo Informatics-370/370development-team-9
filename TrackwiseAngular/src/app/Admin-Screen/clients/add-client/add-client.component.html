@@ -16,8 +16,8 @@
           <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
             <input type="number" class="form-control" id="model" [(ngModel)] = "clientDetails.phoneNumber"  
-                   name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber" required 
-                   maxlength="10"
+                   name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber" required
+                   maxlength="10" 
                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
         

@@ -29,4 +29,5 @@ export class AddClientComponent {
       next: (client) => {this.router.navigate(['/Admin-Screen/clients'])}
     })
   }
+
 }
