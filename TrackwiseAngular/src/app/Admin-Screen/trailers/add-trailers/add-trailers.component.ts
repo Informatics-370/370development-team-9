@@ -29,12 +29,6 @@ export class AddTrailersComponent {
     },
   };
 
-  trailerStatusOptions = [
-    { trailer_Status_ID: 1, status: "Available" },
-    { trailer_Status_ID: 2, status: "Unavailable" },
-    { trailer_Status_ID: 3, status: "Busy" }
-  ];
-
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {

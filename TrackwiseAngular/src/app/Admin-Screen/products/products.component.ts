@@ -28,6 +28,7 @@ export class ProductsComponent {
         this.originalProducts = [...productList]; // Store a copy of the original trailer data
         productList.forEach((element) => {
           this.products.push(element)
+          console.log(element);
         });
       })
     }
@@ -41,9 +42,9 @@ export class ProductsComponent {
   
         // Filter the trailers based on the search text
         const filteredProducts = this.originalProducts.filter(product => {
-          const name = product.product_name.toLowerCase();
-          const description = product.description.toLowerCase();
-          const price = product.price;
+          const name = product.product_Name.toLowerCase();
+          const description = product.product_Description.toLowerCase();
+          const price = product.product_Price;
           const category = product.productCategory.name.toLowerCase();
           
           return (

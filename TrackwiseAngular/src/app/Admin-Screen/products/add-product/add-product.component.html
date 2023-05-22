@@ -9,24 +9,22 @@
     <form #form="ngForm" (ngSubmit)="AddProduct()">
         <div class="mb-3">
           <label for="product_name" class="form-label">Product Name</label>
-          <input type="text" class="form-control" id="product_name" aria-describedby="product_name" required [(ngModel)] = "AddProductRequest.product_name"     
-          name="product_name" [(ngModel)]="AddProductRequest.product_name" >
+          <input type="text" class="form-control" id="product_name" aria-describedby="product_name" required [(ngModel)] = "AddProductRequest.product_Name"     
+          name="product_name" [(ngModel)]="AddProductRequest.product_Name" >
         </div>
       
         <div class="mb-3">
           <label for="description" class="form-label">Description</label>
-          <input type="text" class="form-control" id="description" required [(ngModel)] = "AddProductRequest.description"  
-                 name="description" [(ngModel)]="AddProductRequest.description">
+          <input type="text" class="form-control" id="description" required [(ngModel)] = "AddProductRequest.product_Description"  
+                 name="description" [(ngModel)]="AddProductRequest.product_Description">
         </div>
 
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="text" class="form-control" id="price" required [(ngModel)] = "AddProductRequest.price"  
-                   name="price" [(ngModel)]="AddProductRequest.price">
+            <input type="text" class="form-control" id="price" required [(ngModel)] = "AddProductRequest.product_Price"  
+                   name="price" [(ngModel)]="AddProductRequest.product_Price">
           </div>
    
-
-
 
         <div class="mb-3">
             <label for="type" class="form-label">Category</label>

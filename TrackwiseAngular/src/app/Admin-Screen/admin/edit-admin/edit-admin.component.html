@@ -1,1 +1,42 @@
-<p>edit-admin works!</p>
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Edit Admin</h2>
+      
+    <form #form="ngForm" (ngSubmit)="EditAdmin()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" aria-describedby="name" [(ngModel)] = "adminDetails.name"     
+          name="name" [(ngModel)]="adminDetails.name" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="lastname" class="form-label">Surname</label>
+          <input type="text" class="form-control" id="lastname" [(ngModel)] = "adminDetails.lastname"  
+                 name="lastname" [(ngModel)]="adminDetails.lastname">
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="text" class="form-control" id="email" [(ngModel)] = "adminDetails.email"  
+                   name="email" [(ngModel)]="adminDetails.email">
+          </div>
+      
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="text" class="form-control" id="password" [(ngModel)] = "adminDetails.password"  
+                    name="password" [(ngModel)]="adminDetails.password">
+        </div>
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/admins">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  
