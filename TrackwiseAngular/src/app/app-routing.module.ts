@@ -59,9 +59,9 @@ const routes: Routes = [
   {path: 'Admin-Screen/clients/add-client', component: AddClientComponent},
   {path: 'Admin-Screen/clients/edit-client/:clientID', component:EditClientComponent},
 
-  {path: 'Admin-Screen/admin', component: AdminComponent},
-  {path: 'Admin-Screen/admin/add-admin', component: AddAdminComponent},
-  {path: 'Admin-Screen/admin/edit-admin/:adminID', component:EditAdminComponent},
+  {path: 'Admin-Screen/admins', component: AdminComponent},
+  {path: 'Admin-Screen/admins/add-admin', component: AddAdminComponent},
+  {path: 'Admin-Screen/admins/edit-admin/:admin_ID', component:EditAdminComponent},
 
   {path: 'Admin-Screen/trucks', component: TrucksComponent},
   {path: 'Admin-Screen/trucks/add-trucks', component: AddTrucksComponent},
