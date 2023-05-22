@@ -47,8 +47,6 @@ import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-
 
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
