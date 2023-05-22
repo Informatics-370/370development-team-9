@@ -12,8 +12,8 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    [Migration("20230513083120_initial1")]
-    partial class initial1
+    [Migration("20230522173632_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,7 +80,7 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Client_ID"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -88,7 +88,7 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -152,6 +152,53 @@ namespace TrackwiseAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
+                {
+                    b.Property<int>("Delivery_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Delivery_ID"));
+
+                    b.Property<int>("Job_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TruckID")
+                        .HasColumnType("int");
+
+                    b.Property<double>("weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("Delivery_ID");
+
+                    b.HasIndex("Job_ID");
+
+                    b.HasIndex("TruckID");
+
+                    b.ToTable("deliveries");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery_Assignment", b =>
+                {
+                    b.Property<int>("Driverid")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Deliveryid")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Delivery_Assignment_ID")
+                        .HasColumnType("int");
+
+                    b.HasKey("Driverid", "Deliveryid");
+
+                    b.HasIndex("Deliveryid");
+
+                    b.ToTable("Delivery_Assignments");
+                });
+
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
                 {
                     b.Property<int>("Driver_ID")
@@ -163,10 +210,6 @@ namespace TrackwiseAPI.Migrations
                     b.Property<int>("Driver_Status_ID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Lastname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -175,7 +218,7 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -205,6 +248,26 @@ namespace TrackwiseAPI.Migrations
                     b.HasKey("Driver_Status_ID");
 
                     b.ToTable("DriverStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Driver_Status_ID = 1,
+                            Description = "Driver is available",
+                            Status = "Available"
+                        },
+                        new
+                        {
+                            Driver_Status_ID = 2,
+                            Description = "Driver is busy with a job",
+                            Status = "Unavailable"
+                        },
+                        new
+                        {
+                            Driver_Status_ID = 3,
+                            Description = "Driver is unable to do a job",
+                            Status = "Busy"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Help", b =>
@@ -298,24 +361,111 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = 1,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6535),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6731),
                             Order_ID = 1,
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = 2,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6536),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6732),
                             Order_ID = 2,
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = 3,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6537),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6733),
                             Order_ID = 3,
                             Total_Amount = 450.0
                         });
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Job", b =>
+                {
+                    b.Property<int>("Job_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Job_ID"));
+
+                    b.Property<int>("Admin_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Client_ID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Dropoff_Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Job_Status_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Job_Type_ID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Pickup_Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("Job_ID");
+
+                    b.HasIndex("Admin_ID");
+
+                    b.HasIndex("Client_ID");
+
+                    b.HasIndex("Job_Status_ID");
+
+                    b.HasIndex("Job_Type_ID");
+
+                    b.ToTable("jobs");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobStatus", b =>
+                {
+                    b.Property<int>("Job_Status_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Job_Status_ID"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Job_Status_ID");
+
+                    b.ToTable("jobsStatus");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobType", b =>
+                {
+                    b.Property<int>("Job_Type_ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Job_Type_ID"));
+
+                    b.Property<int>("Description")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
+
+                    b.HasKey("Job_Type_ID");
+
+                    b.ToTable("jobTypes");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
@@ -350,7 +500,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 1,
                             Customer_ID = 1,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6489),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6662),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -358,7 +508,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 2,
                             Customer_ID = 2,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6499),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6679),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -366,7 +516,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 3,
                             Customer_ID = 3,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6500),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6680),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -462,7 +612,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 1,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6547),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6746),
                             Order_ID = 1,
                             Payment_Type_ID = 1,
                             amount_paid = 150.5
@@ -470,7 +620,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 2,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6548),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6747),
                             Order_ID = 1,
                             Payment_Type_ID = 2,
                             amount_paid = 50.0
@@ -478,7 +628,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 3,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6549),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6748),
                             Order_ID = 2,
                             Payment_Type_ID = 3,
                             amount_paid = 75.200000000000003
@@ -486,7 +636,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 4,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6549),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6748),
                             Order_ID = 3,
                             Payment_Type_ID = 1,
                             amount_paid = 200.0
@@ -494,7 +644,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 5,
-                            Date = new DateTime(2023, 5, 13, 10, 31, 20, 471, DateTimeKind.Local).AddTicks(6550),
+                            Date = new DateTime(2023, 5, 22, 19, 36, 32, 17, DateTimeKind.Local).AddTicks(6749),
                             Order_ID = 3,
                             Payment_Type_ID = 2,
                             amount_paid = 250.0
@@ -564,9 +714,14 @@ namespace TrackwiseAPI.Migrations
                     b.Property<double>("Product_Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("Product_Type_ID")
+                        .HasColumnType("int");
+
                     b.HasKey("Product_ID");
 
                     b.HasIndex("Product_Category_ID");
+
+                    b.HasIndex("Product_Type_ID");
 
                     b.ToTable("Products");
 
@@ -577,15 +732,17 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 4,
                             Product_Description = "FUEL PRIMER PUMP/K5",
                             Product_Name = "Feul Pump",
-                            Product_Price = 999.0
+                            Product_Price = 999.0,
+                            Product_Type_ID = 2
                         },
                         new
                         {
                             Product_ID = 2,
-                            Product_Category_ID = 9,
+                            Product_Category_ID = 5,
                             Product_Description = "SEAL RING MB-S48",
                             Product_Name = "SEAL RING",
-                            Product_Price = 899.0
+                            Product_Price = 899.0,
+                            Product_Type_ID = 1
                         },
                         new
                         {
@@ -593,31 +750,35 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 7,
                             Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10",
                             Product_Name = "CLUTCH",
-                            Product_Price = 1499.0
+                            Product_Price = 1499.0,
+                            Product_Type_ID = 2
                         },
                         new
                         {
                             Product_ID = 4,
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 7,
                             Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)",
                             Product_Name = "AXLE NUT",
-                            Product_Price = 1199.0
+                            Product_Price = 1199.0,
+                            Product_Type_ID = 1
                         },
                         new
                         {
                             Product_ID = 5,
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 8,
                             Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM",
                             Product_Name = "BEARING",
-                            Product_Price = 9.9900000000000002
+                            Product_Price = 9.9900000000000002,
+                            Product_Type_ID = 1
                         },
                         new
                         {
                             Product_ID = 6,
-                            Product_Category_ID = 9,
+                            Product_Category_ID = 6,
                             Product_Description = "SEAL OIL STEERING M/B AXOR-S46",
                             Product_Name = "SEAL OIL",
-                            Product_Price = 119.98999999999999
+                            Product_Price = 119.98999999999999,
+                            Product_Type_ID = 1
                         },
                         new
                         {
@@ -625,7 +786,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 7,
                             Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279",
                             Product_Name = "BRAKEPAD",
-                            Product_Price = 799.0
+                            Product_Price = 799.0,
+                            Product_Type_ID = 1
                         },
                         new
                         {
@@ -633,7 +795,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 1,
                             Product_Description = "FAN BELT 9PK2300-U7",
                             Product_Name = "FAN BELT",
-                            Product_Price = 455.0
+                            Product_Price = 455.0,
+                            Product_Type_ID = 1
                         });
                 });
 
@@ -653,12 +816,7 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Product_Type_ID")
-                        .HasColumnType("int");
-
                     b.HasKey("Product_Category_ID");
-
-                    b.HasIndex("Product_Type_ID");
 
                     b.ToTable("ProductCategories");
 
@@ -667,71 +825,49 @@ namespace TrackwiseAPI.Migrations
                         {
                             Product_Category_ID = 1,
                             Description = "products for engines",
-                            Name = "Engine",
-                            Product_Type_ID = 1
+                            Name = "Engine"
                         },
                         new
                         {
                             Product_Category_ID = 2,
                             Description = "products for transmissions",
-                            Name = "Transmission",
-                            Product_Type_ID = 1
+                            Name = "Transmission"
                         },
                         new
                         {
                             Product_Category_ID = 3,
                             Description = "products for suspensions",
-                            Name = "Suspension",
-                            Product_Type_ID = 1
+                            Name = "Suspension"
                         },
                         new
                         {
                             Product_Category_ID = 4,
                             Description = "products for electrical",
-                            Name = "Electrical",
-                            Product_Type_ID = 1
+                            Name = "Electrical"
                         },
                         new
                         {
                             Product_Category_ID = 5,
-                            Description = "products for electrical",
-                            Name = "Electrical",
-                            Product_Type_ID = 2
+                            Description = "products for body",
+                            Name = "Body"
                         },
                         new
                         {
                             Product_Category_ID = 6,
-                            Description = "products for body",
-                            Name = "Body",
-                            Product_Type_ID = 1
+                            Description = "products for brakes",
+                            Name = "Brake"
                         },
                         new
                         {
                             Product_Category_ID = 7,
-                            Description = "products for brakes",
-                            Name = "Brake",
-                            Product_Type_ID = 1
+                            Description = "products for wheels",
+                            Name = "Wheel"
                         },
                         new
                         {
                             Product_Category_ID = 8,
-                            Description = "products for wheels",
-                            Name = "Wheel",
-                            Product_Type_ID = 1
-                        },
-                        new
-                        {
-                            Product_Category_ID = 9,
                             Description = "bolts,nuts ect..",
-                            Name = "Consumables",
-                            Product_Type_ID = 1
-                        },
-                        new
-                        {
-                            Product_Category_ID = 10,
-                            Description = "bolts,nuts ect..",
-                            Name = "Consumables",
-                            Product_Type_ID = 2
+                            Name = "Consumables"
                         });
                 });
 
@@ -822,8 +958,9 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Supplier_ID"));
 
-                    b.Property<int>("Admin_ID")
-                        .HasColumnType("int");
+                    b.Property<string>("Contact_Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -835,22 +972,20 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Supplier_ID");
 
-                    b.HasIndex("Admin_ID");
-
                     b.ToTable("Suppliers");
 
                     b.HasData(
                         new
                         {
                             Supplier_ID = 1,
-                            Admin_ID = 1,
+                            Contact_Number = "0125554789",
                             Email = "abc@gmail.com",
                             Name = "ABC Suppliers"
                         },
                         new
                         {
                             Supplier_ID = 2,
-                            Admin_ID = 2,
+                            Contact_Number = "0125554789",
                             Email = "xyz@gmail.com",
                             Name = "XYZ Suppliers"
                         });
@@ -858,22 +993,19 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trailer", b =>
                 {
-                    b.Property<int>("Trailer_License")
+                    b.Property<int>("TrailerID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Trailer_License"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrailerID"));
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Trailer_License")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Total_Trips")
-                        .HasColumnType("float");
 
                     b.Property<int>("Trailer_Status_ID")
                         .HasColumnType("int");
@@ -881,7 +1013,12 @@ namespace TrackwiseAPI.Migrations
                     b.Property<int>("Trailer_Type_ID")
                         .HasColumnType("int");
 
-                    b.HasKey("Trailer_License");
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
+
+                    b.HasKey("TrailerID");
+
+                    b.HasIndex("Trailer_Status_ID");
 
                     b.HasIndex("Trailer_Type_ID");
 
@@ -907,6 +1044,26 @@ namespace TrackwiseAPI.Migrations
                     b.HasKey("Trailer_Status_ID");
 
                     b.ToTable("TrailerStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Trailer_Status_ID = 1,
+                            Description = "Trailer is available for job",
+                            Status = "Available"
+                        },
+                        new
+                        {
+                            Trailer_Status_ID = 2,
+                            Description = "Trailer is busy with a job",
+                            Status = "Unavailable"
+                        },
+                        new
+                        {
+                            Trailer_Status_ID = 3,
+                            Description = "Trailer is undergoing maintenace",
+                            Status = "Under Maintenance"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TrailerType", b =>
@@ -917,76 +1074,7 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Trailer_Type_ID"));
 
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Trailer_Type_ID");
-
-                    b.ToTable("TrailerTypes");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trip", b =>
-                {
-                    b.Property<int>("Trip_ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Trip_ID"));
-
-                    b.Property<double>("Feul_consumed")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Feul_input")
-                        .HasColumnType("float");
-
-                    b.Property<double>("FinalMileage")
-                        .HasColumnType("float");
-
-                    b.Property<double>("initialMileage")
-                        .HasColumnType("float");
-
-                    b.HasKey("Trip_ID");
-
-                    b.ToTable("Trip");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trip_Truck", b =>
-                {
-                    b.Property<int>("triptruck_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("triptruck_id"));
-
-                    b.Property<int>("Tripid")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Truckid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("triptruck_id");
-
-                    b.HasIndex("Tripid");
-
-                    b.HasIndex("Truckid");
-
-                    b.ToTable("Trip_Truck");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Truck", b =>
-                {
-                    b.Property<int>("Truck_License")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Truck_License"));
-
-                    b.Property<string>("Model")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -994,10 +1082,45 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasKey("Trailer_Type_ID");
+
+                    b.ToTable("TrailerTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Trailer_Type_ID = 1,
+                            Description = "Coal transportation trailer",
+                            Name = "Coal"
+                        },
+                        new
+                        {
+                            Trailer_Type_ID = 2,
+                            Description = "Fuel transportation trailer",
+                            Name = "Feul"
+                        });
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Truck", b =>
+                {
+                    b.Property<int>("TruckID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TruckID"));
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Truck_License")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Truck_Status_ID")
                         .HasColumnType("int");
 
-                    b.HasKey("Truck_License");
+                    b.HasKey("TruckID");
 
                     b.HasIndex("Truck_Status_ID");
 
@@ -1023,6 +1146,26 @@ namespace TrackwiseAPI.Migrations
                     b.HasKey("Truck_Status_ID");
 
                     b.ToTable("TruckStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Truck_Status_ID = 1,
+                            Description = "Truck is available for job",
+                            Status = "Available"
+                        },
+                        new
+                        {
+                            Truck_Status_ID = 2,
+                            Description = "Truck is busy with a job",
+                            Status = "Unavailable"
+                        },
+                        new
+                        {
+                            Truck_Status_ID = 3,
+                            Description = "Truck is undergoing maintenace",
+                            Status = "Under Maintenance"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.User", b =>
@@ -1036,6 +1179,40 @@ namespace TrackwiseAPI.Migrations
                     b.HasKey("User_ID");
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
+                {
+                    b.HasOne("TrackwiseAPI.Models.Entities.Job", "Job")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("Job_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrackwiseAPI.Models.Entities.Truck", null)
+                        .WithMany("Deliveries")
+                        .HasForeignKey("TruckID");
+
+                    b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery_Assignment", b =>
+                {
+                    b.HasOne("TrackwiseAPI.Models.Entities.Delivery", "Delivery")
+                        .WithMany("Delivery_Assignments")
+                        .HasForeignKey("Deliveryid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("TrackwiseAPI.Models.Entities.Driver", "Driver")
+                        .WithMany("Delivery_Assignments")
+                        .HasForeignKey("Driverid")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Driver");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
@@ -1080,6 +1257,41 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Job", b =>
+                {
+                    b.HasOne("TrackwiseAPI.Models.Entities.Admin", "Admin")
+                        .WithMany("jobs")
+                        .HasForeignKey("Admin_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrackwiseAPI.Models.Entities.Client", "Client")
+                        .WithMany("jobs")
+                        .HasForeignKey("Client_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrackwiseAPI.Models.Entities.JobStatus", "JobStatus")
+                        .WithMany("jobs")
+                        .HasForeignKey("Job_Status_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrackwiseAPI.Models.Entities.JobType", "JobType")
+                        .WithMany("jobs")
+                        .HasForeignKey("Job_Type_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Admin");
+
+                    b.Navigation("Client");
+
+                    b.Navigation("JobStatus");
+
+                    b.Navigation("JobType");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
@@ -1139,16 +1351,13 @@ namespace TrackwiseAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductCategory");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.ProductCategory", b =>
-                {
                     b.HasOne("TrackwiseAPI.Models.Entities.ProductType", "ProductType")
-                        .WithMany("productCategories")
+                        .WithMany("Products")
                         .HasForeignKey("Product_Type_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ProductCategory");
 
                     b.Navigation("ProductType");
                 });
@@ -1172,22 +1381,11 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("Supplier");
                 });
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Supplier", b =>
-                {
-                    b.HasOne("TrackwiseAPI.Models.Entities.Admin", "Admin")
-                        .WithMany("Suppliers")
-                        .HasForeignKey("Admin_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
-                });
-
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trailer", b =>
                 {
                     b.HasOne("TrackwiseAPI.Models.Entities.TrailerStatus", "TrailerStatus")
                         .WithMany("Trailers")
-                        .HasForeignKey("Trailer_Type_ID")
+                        .HasForeignKey("Trailer_Status_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1200,25 +1398,6 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("TrailerStatus");
 
                     b.Navigation("TrailerType");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trip_Truck", b =>
-                {
-                    b.HasOne("TrackwiseAPI.Models.Entities.Trip", "Trip")
-                        .WithMany("Trip_Trucks")
-                        .HasForeignKey("Tripid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrackwiseAPI.Models.Entities.Truck", "Truck")
-                        .WithMany("Trip_Trucks")
-                        .HasForeignKey("Truckid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Trip");
-
-                    b.Navigation("Truck");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Truck", b =>
@@ -1234,12 +1413,27 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Admin", b =>
                 {
-                    b.Navigation("Suppliers");
+                    b.Navigation("jobs");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Client", b =>
+                {
+                    b.Navigation("jobs");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Customer", b =>
                 {
                     b.Navigation("orders");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
+                {
+                    b.Navigation("Delivery_Assignments");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
+                {
+                    b.Navigation("Delivery_Assignments");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.DriverStatus", b =>
@@ -1250,6 +1444,21 @@ namespace TrackwiseAPI.Migrations
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.HelpCategory", b =>
                 {
                     b.Navigation("Helps");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Job", b =>
+                {
+                    b.Navigation("Deliveries");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobStatus", b =>
+                {
+                    b.Navigation("jobs");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobType", b =>
+                {
+                    b.Navigation("jobs");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
@@ -1283,7 +1492,7 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.ProductType", b =>
                 {
-                    b.Navigation("productCategories");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Supplier", b =>
@@ -1301,14 +1510,9 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("Trailers");
                 });
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trip", b =>
-                {
-                    b.Navigation("Trip_Trucks");
-                });
-
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Truck", b =>
                 {
-                    b.Navigation("Trip_Trucks");
+                    b.Navigation("Deliveries");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TruckStatus", b =>

@@ -1,0 +1,47 @@
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Edit Driver</h2>
+      
+    <form #form="ngForm" (ngSubmit)="EditDriver()">
+        <div class="mb-3">
+          <label for="Name" class="form-label">Driver Name</label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "driverDetails.name"     
+          name="Name" [(ngModel)]="driverDetails.name" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="lastname" class="form-label">Driver Surname</label>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "driverDetails.lastname"  
+                 name="lastname" [(ngModel)]="driverDetails.lastname">
+        </div>
+
+        <div class="mb-3">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input type="number" class="form-control" id="model" [(ngModel)] = "driverDetails.phoneNumber"  
+                 name="phoneNumber" [(ngModel)]="driverDetails.phoneNumber"
+                 maxlength="10"
+                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+        </div>
+      
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-select" id="status" [(ngModel)]="driverDetails.driver_Status_ID" name="status">
+              <option value="1">Available</option>
+              <option value="2">Unavailable</option>
+              <option value="3">Busy</option>
+            </select>
+          </div>
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/drivers">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  

@@ -19,6 +19,11 @@ namespace TrackwiseAPI.Models.Entities
         [ForeignKey("Product_Category_ID")]
         public ProductCategory ProductCategory { get; set; }
 
+        //Foreign Key for Product_Type
+        public int Product_Type_ID { get; set; }
+        [ForeignKey("Product_Type_ID")]
+        public ProductType ProductType { get; set; }
+
         public ICollection<Product_Supplier> Product_Suppliers { get; set; }
         public ICollection<Order_Line> OrderLines { get; set; }
 
