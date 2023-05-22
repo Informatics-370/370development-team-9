@@ -17,15 +17,15 @@ export class EditProductComponent {
     product_Description:"",
     product_Price:0,
     
-    product_category_ID:0,
+    product_Category_ID:0,
     productCategory:{
-      product_category_ID:0,
+      product_Category_ID:0,
       name:"",
       description:""
     },
-    product_type_ID:0,
+    product_Type_ID:0,
     productType:{
-      product_type_ID:0,
+      product_Type_ID:0,
       name:"",
       description:""
     }
@@ -39,7 +39,7 @@ export class EditProductComponent {
     this.route.params.subscribe({
       next: (params) => {
 
-          this.dataService.GetProduct(params['productID']).subscribe({
+          this.dataService.GetProduct(params['product_ID']).subscribe({
             next: (response) => {
               this.productDetails = response;
             }
@@ -54,7 +54,6 @@ export class EditProductComponent {
     this.dataService.EditProduct(this.productDetails.product_ID, this.productDetails).subscribe({
       next: (response) => {this.router.navigate(['/Admin-Screen/products'])}
     })
-    console.log('yes')
   }
 
 }
