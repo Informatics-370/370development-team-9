@@ -10,19 +10,21 @@
         <div class="mb-3">
             <label for="Name" class="form-label">Client Name</label>
             <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "clientDetails.name"     
-            name="Name" [(ngModel)]="clientDetails.name" >
+            name="Name" [(ngModel)]="clientDetails.name" required>
           </div>
         
           <div class="mb-3">
             <label for="lastname" class="form-label">Client Surname</label>
             <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.lastname"  
-                   name="lastname" [(ngModel)]="clientDetails.lastname">
+                   name="lastname" [(ngModel)]="clientDetails.lastname" required>
           </div>
 
           <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.phoneNumber"  
-                   name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber">
+            <input type="number" class="form-control" id="model" [(ngModel)] = "clientDetails.phoneNumber"  
+                   name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber" required 
+                   maxlength="10"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
         
          

@@ -10,19 +10,21 @@
         <div class="mb-3">
             <label for="Name" class="form-label">Supplier Name</label>
             <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "AddSupplierReq.name"
-            name="Name" [(ngModel)]="AddSupplierReq.name" >
+            name="Name" [(ngModel)]="AddSupplierReq.name" required>
           </div>
 
           <div class="mb-3">
             <label for="email" class="form-label">Supplier Email</label>
             <input type="email" class="form-control" id="email" [(ngModel)] = "AddSupplierReq.email"
-                   name="email" [(ngModel)]="AddSupplierReq.email">
+                   name="email" [(ngModel)]="AddSupplierReq.email" required>
           </div>
 
           <div class="mb-3">
             <label for="contact_Number" class="form-label">Contact Number</label>
-            <input type="text" class="form-control" id="contact_Number" [(ngModel)] = "AddSupplierReq.contact_Number"
-                   name="contact_Number" [(ngModel)]="AddSupplierReq.contact_Number">
+            <input type="number" class="form-control" id="contact_Number" [(ngModel)] = "AddSupplierReq.contact_Number"
+                   name="contact_Number" [(ngModel)]="AddSupplierReq.contact_Number" required
+                   maxlength="10"
+                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
           </div>
 
 
