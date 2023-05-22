@@ -151,7 +151,7 @@ export class DataService {
 
   GetClient(client_ID: Number): Observable<Client>
   {
-    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetDriver/${client_ID}` );
+    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetClient/${client_ID}` );
   }
 
   EditClient(client_ID: number , EditClientReq: Client):Observable<Client>
