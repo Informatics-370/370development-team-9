@@ -358,21 +358,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = 1,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7055),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7591),
                             Order_ID = 1,
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = 2,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7056),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7594),
                             Order_ID = 2,
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = 3,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7056),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7596),
                             Order_ID = 3,
                             Total_Amount = 450.0
                         });
@@ -497,7 +497,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 1,
                             Customer_ID = 1,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(6951),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7383),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -505,7 +505,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 2,
                             Customer_ID = 2,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(6986),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7403),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -513,7 +513,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 3,
                             Customer_ID = 3,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(6987),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7446),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -609,7 +609,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 1,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7074),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7635),
                             Order_ID = 1,
                             Payment_Type_ID = 1,
                             amount_paid = 150.5
@@ -617,7 +617,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 2,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7076),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7637),
                             Order_ID = 1,
                             Payment_Type_ID = 2,
                             amount_paid = 50.0
@@ -625,7 +625,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 3,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7077),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7640),
                             Order_ID = 2,
                             Payment_Type_ID = 3,
                             amount_paid = 75.200000000000003
@@ -633,7 +633,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 4,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7078),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7641),
                             Order_ID = 3,
                             Payment_Type_ID = 1,
                             amount_paid = 200.0
@@ -641,7 +641,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 5,
-                            Date = new DateTime(2023, 5, 22, 14, 10, 3, 562, DateTimeKind.Local).AddTicks(7078),
+                            Date = new DateTime(2023, 5, 22, 19, 32, 41, 460, DateTimeKind.Local).AddTicks(7643),
                             Order_ID = 3,
                             Payment_Type_ID = 2,
                             amount_paid = 250.0
@@ -735,7 +735,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Product_ID = 2,
-                            Product_Category_ID = 9,
+                            Product_Category_ID = 5,
                             Product_Description = "SEAL RING MB-S48",
                             Product_Name = "SEAL RING",
                             Product_Price = 899.0,
@@ -753,7 +753,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Product_ID = 4,
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 7,
                             Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)",
                             Product_Name = "AXLE NUT",
                             Product_Price = 1199.0,
@@ -762,7 +762,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Product_ID = 5,
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 8,
                             Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM",
                             Product_Name = "BEARING",
                             Product_Price = 9.9900000000000002,
@@ -771,7 +771,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Product_ID = 6,
-                            Product_Category_ID = 9,
+                            Product_Category_ID = 6,
                             Product_Description = "SEAL OIL STEERING M/B AXOR-S46",
                             Product_Name = "SEAL OIL",
                             Product_Price = 119.98999999999999,
@@ -845,36 +845,24 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Product_Category_ID = 5,
-                            Description = "products for electrical",
-                            Name = "Electrical"
-                        },
-                        new
-                        {
-                            Product_Category_ID = 6,
                             Description = "products for body",
                             Name = "Body"
                         },
                         new
                         {
-                            Product_Category_ID = 7,
+                            Product_Category_ID = 6,
                             Description = "products for brakes",
                             Name = "Brake"
                         },
                         new
                         {
-                            Product_Category_ID = 8,
+                            Product_Category_ID = 7,
                             Description = "products for wheels",
                             Name = "Wheel"
                         },
                         new
                         {
-                            Product_Category_ID = 9,
-                            Description = "bolts,nuts ect..",
-                            Name = "Consumables"
-                        },
-                        new
-                        {
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 8,
                             Description = "bolts,nuts ect..",
                             Name = "Consumables"
                         });
