@@ -16,15 +16,15 @@ export class AddProductComponent {
     product_Name:"",
     product_Description:"",
     product_Price:0,
-    product_category_ID:1,
+    product_Category_ID:1,
     productCategory:{
-      product_category_ID:0,
+      product_Category_ID:0,
       name:"",
       description:""
     },
-    product_type_ID:1,
+    product_Type_ID:1,
     productType:{
-      product_type_ID:0,
+      product_Type_ID:0,
       name:"",
       description:""
     },

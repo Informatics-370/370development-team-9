@@ -3,15 +3,15 @@ export interface Product {
     product_Name: string;
     product_Description: string;
     product_Price:number;
-    product_category_ID:number;
+    product_Category_ID:number;
     productCategory:{
-        product_category_ID:number;
+        product_Category_ID:number;
         name:string;
         description:string;
     };
-    product_type_ID:number;
+    product_Type_ID:number;
         productType:{
-        product_type_ID:number;
+        product_Type_ID:number;
         name:string;
         description:string;
     };
