@@ -26,7 +26,6 @@
               <thead id="header">
                 <tr>
                   <th>Client Name</th>
-                  <th>Client Surname</th>
                   <th>Phone Number</th>
                   <th></th>
                   <th></th>
@@ -38,7 +37,6 @@
                 </tr>
                 <tr *ngFor="let client of clients">
                   <td>{{client.name}}</td>
-                  <td>{{client.lastname}}</td>
                   <td>{{client.phoneNumber}}</td>
                   
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-client', client.client_ID]">Edit</button></td>
