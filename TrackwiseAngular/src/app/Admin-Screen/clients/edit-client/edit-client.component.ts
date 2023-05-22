@@ -14,7 +14,6 @@ export class EditClientComponent implements OnInit {
   {
     client_ID:0,
     name:"",
-    lastname:"",
     phoneNumber:"",
     
   };

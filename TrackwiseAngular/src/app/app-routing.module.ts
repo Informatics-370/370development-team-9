@@ -78,6 +78,8 @@ const routes: Routes = [
   {path: 'Admin-Screen/products/add-product', component: AddProductComponent},
   {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
+  {path: '', redirectTo: 'Admin-Screen/admins', pathMatch:'full'},
+
 ];
 
 @NgModule({

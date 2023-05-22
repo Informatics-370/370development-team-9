@@ -58,7 +58,7 @@ namespace TrackwiseAPI.Controllers
         [Route("AddClient")]
         public async Task<IActionResult> AddClient(ClientVM cvm)
         {
-            var client = new Client { Name = cvm.Name, LastName = cvm.LastName, PhoneNumber = cvm.PhoneNumber };
+            var client = new Client { Name = cvm.Name, PhoneNumber = cvm.PhoneNumber };
 
             try
             {
@@ -85,7 +85,6 @@ namespace TrackwiseAPI.Controllers
                 if (existingClient == null) return NotFound($"The client does not exist");
 
                 existingClient.Name = cvm.Name;
-                existingClient.LastName = cvm.LastName;
                 existingClient.PhoneNumber = cvm.PhoneNumber;
 
                 if (await _clientRepository.SaveChangesAsync())
