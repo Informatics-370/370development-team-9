@@ -52,6 +52,5 @@ export class EditTrailerComponent {
     this.dataService.EditTrailer(this.trailerDetails.trailerID, this.trailerDetails).subscribe({
       next: (response) => {this.router.navigate(['/Admin-Screen/trailers'])}
     })
-    console.log('yes')
   }
 }

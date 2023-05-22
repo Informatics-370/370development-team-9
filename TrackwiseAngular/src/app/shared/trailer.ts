@@ -1,6 +1,6 @@
 export interface Trailer {
     trailerID: number;
-    trailer_License: string;
+    trailer_License: String;
     model:String;
     weight: number;
     trailer_Status_ID:number;
