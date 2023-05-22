@@ -13,12 +13,18 @@ export class AddProductComponent {
   AddProductRequest: Product =
   {
     product_ID:0,
-    product_name:"",
-    description:"",
-    price:0,
+    product_Name:"",
+    product_Description:"",
+    product_Price:0,
     product_category_ID:1,
     productCategory:{
       product_category_ID:0,
+      name:"",
+      description:""
+    },
+    product_type_ID:1,
+    productType:{
+      product_type_ID:0,
       name:"",
       description:""
     },

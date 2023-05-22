@@ -33,6 +33,9 @@ import { EditTruckComponent } from './Admin-Screen/trucks/edit-truck/edit-truck.
 import { TrailersComponent } from './Admin-Screen/trailers/trailers.component';
 import { AddTrailersComponent } from './Admin-Screen/trailers/add-trailers/add-trailers.component';
 import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-trailer.component';
+import { ProductsComponent } from './Admin-Screen/products/products.component';
+import { AddProductComponent } from './Admin-Screen/products/add-product/add-product.component';
+import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 
 
 
@@ -70,6 +73,10 @@ const routes: Routes = [
   {path: 'Admin-Screen/trailers', component: TrailersComponent},
   {path: 'Admin-Screen/trailers/add-trailers', component: AddTrailersComponent},
   {path: 'Admin-Screen/trailers/edit-trailer/:trailerID', component: EditTrailerComponent},
+
+  {path: 'Admin-Screen/products', component: ProductsComponent},
+  {path: 'Admin-Screen/products/add-product', component: AddProductComponent},
+  {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
 ];
 

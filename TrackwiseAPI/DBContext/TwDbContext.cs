@@ -230,12 +230,10 @@ namespace TrackwiseAPI.DBContext
                 new ProductCategory { Product_Category_ID = 2, Name = "Transmission", Description = "products for transmissions" },
                 new ProductCategory { Product_Category_ID = 3, Name = "Suspension", Description = "products for suspensions"},
                 new ProductCategory { Product_Category_ID = 4, Name = "Electrical", Description = "products for electrical" },
-                new ProductCategory { Product_Category_ID = 5, Name = "Electrical", Description = "products for electrical" },
-                new ProductCategory { Product_Category_ID = 6, Name = "Body", Description = "products for body"},
-                new ProductCategory { Product_Category_ID = 7, Name = "Brake", Description = "products for brakes"},
-                new ProductCategory { Product_Category_ID = 8, Name = "Wheel", Description = "products for wheels"},
-                new ProductCategory { Product_Category_ID = 9, Name = "Consumables", Description = "bolts,nuts ect.." },
-                new ProductCategory { Product_Category_ID = 10, Name = "Consumables", Description = "bolts,nuts ect.."}
+                new ProductCategory { Product_Category_ID = 5, Name = "Body", Description = "products for body"},
+                new ProductCategory { Product_Category_ID = 6, Name = "Brake", Description = "products for brakes"},
+                new ProductCategory { Product_Category_ID = 7, Name = "Wheel", Description = "products for wheels"},
+                new ProductCategory { Product_Category_ID = 8, Name = "Consumables", Description = "bolts,nuts ect.." }
             );
 
             modelBuilder.Entity<Product>().HasData(
