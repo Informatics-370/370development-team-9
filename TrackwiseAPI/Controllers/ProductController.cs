@@ -80,6 +80,14 @@ namespace TrackwiseAPI.Controllers
                 var existingProduct = await _productRepository.GetProductAsync(productId);
                 if (existingProduct == null) return NotFound($"The product does not exist");
 
+                if (existingProduct.Product_Name == productModel.Product_Name &&
+                    existingProduct.Product_Description == productModel.Product_Description &&
+                    existingProduct.Product_Price == productModel.Product_Price)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingProduct);
+                }
+
                 existingProduct.Product_Name = productModel.Product_Name;
                 existingProduct.Product_Description = productModel.Product_Description;
                 existingProduct.Product_Price = productModel.Product_Price;

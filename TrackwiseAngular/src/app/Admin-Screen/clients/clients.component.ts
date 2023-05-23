@@ -40,12 +40,10 @@ export class ClientsComponent implements OnInit {
 
       // Filter the clients based on the search text
       const filteredClients = this.originalClients.filter(client => {
-        const fullName = client.name.toLowerCase() + ' ' + client.lastname.toLowerCase();
-       
+        const fullName = client.name.toLowerCase();
         const phoneNumber = client.phoneNumber.toLowerCase();
         return (
           fullName.includes(searchTextLower) ||
-          client.lastname.toLowerCase().includes(searchTextLower) ||
           phoneNumber.includes(searchTextLower)
          
         );

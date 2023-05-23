@@ -83,6 +83,14 @@ namespace TrackwiseAPI.Controllers
                 var existingTruck = await _truckRepository.GetTruckAsync(TruckID);
                 if (existingTruck == null) return NotFound($"The truck does not exist");
 
+                if (existingTruck.Truck_License == tvm.Truck_License &&
+                    existingTruck.Model == tvm.Model &&
+                    existingTruck.Truck_Status_ID == tvm.Truck_Status_ID)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingTruck);
+                }
+
                 existingTruck.Truck_License = tvm.Truck_License;
                 existingTruck.Model = tvm.Model;
                 existingTruck.Truck_Status_ID = tvm.Truck_Status_ID;

@@ -84,6 +84,15 @@ namespace TrackwiseAPI.Controllers
                 var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
                 if (existingAdmin == null) return NotFound($"The admin does not exist");
 
+                if (existingAdmin.Name == avm.Name &&
+                    existingAdmin.Lastname == avm.Lastname &&
+                    existingAdmin.Email == avm.Email &&
+                    existingAdmin.Password == avm.Password)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingAdmin);
+                }
+
                 existingAdmin.Name = avm.Name;
                 existingAdmin.Lastname = avm.Lastname;
                 existingAdmin.Email = avm.Email;

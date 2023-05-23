@@ -79,6 +79,14 @@ namespace TrackwiseAPI.Controllers
                 var existingSupplier = await _supplierRepository.GetSupplierAsync(supplierId);
                 if (existingSupplier == null) return NotFound($"The supplier does not exist");
 
+                if (existingSupplier.Name == supplierModel.Name &&
+                    existingSupplier.Email == supplierModel.Email &&
+                    existingSupplier.Contact_Number == supplierModel.Contact_Number)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingSupplier);
+                }
+
                 existingSupplier.Name = supplierModel.Name;
                 existingSupplier.Email = supplierModel.Email;
                 existingSupplier.Contact_Number = supplierModel.Contact_Number;

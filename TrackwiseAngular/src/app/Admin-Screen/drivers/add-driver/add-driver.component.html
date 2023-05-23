@@ -21,10 +21,10 @@
 
           <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="number" class="form-control" id="model" [(ngModel)] = "driverDetails.phoneNumber"  
-                   name="phoneNumber" [(ngModel)]="driverDetails.phoneNumber" required
-                   maxlength="10"
-                   oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+            <input type="tel" class="form-control" id="phoneNumber" [(ngModel)]="driverDetails.phoneNumber"  
+              name="phoneNumber" [(ngModel)]="driverDetails.phoneNumber" required
+              pattern="0[0-9]{9}" maxlength="10">
+            <small class="text-muted">Please enter a 10-digit phone number starting with 0.</small>
           </div>
         
           <div class="mb-3">

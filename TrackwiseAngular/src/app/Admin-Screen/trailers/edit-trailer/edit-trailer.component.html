@@ -7,11 +7,10 @@
     <h2>Edit Trailer</h2>
       
     <form #form="ngForm" (ngSubmit)="EditTrailer()">
-        <div class="mb-3">
-          <label for="trailer_License" class="form-label">Trailer License</label>
-          <input type="text" class="form-control" id="trailer_License" aria-describedby="trailer_License" [(ngModel)] = "trailerDetails.trailer_License"     
-          name="trailer_License" [(ngModel)]="trailerDetails.trailer_License" >
-        </div>
+      <input type="text" class="form-control" id="trailer_License" aria-describedby="trailer_License" required 
+      [(ngModel)]="trailerDetails.trailer_License" name="trailer_License" [(ngModel)]="trailerDetails.trailer_License"
+      [ngModelOptions]="{standalone: true}" (input)="trailerDetails.trailer_License = trailerDetails.trailer_License.toUpperCase()"
+      maxlength="8">
       
         <div class="mb-3">
           <label for="model" class="form-label">Model</label>

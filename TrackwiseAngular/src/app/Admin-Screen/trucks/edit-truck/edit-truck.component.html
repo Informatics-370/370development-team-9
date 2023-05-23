@@ -7,11 +7,13 @@
     <h2>Edit Truck</h2>
       
     <form #form="ngForm" (ngSubmit)="EditTruck()">
-        <div class="mb-3">
-          <label for="truck_License" class="form-label">Truck License</label>
-          <input type="text" class="form-control" id="truck_License" aria-describedby="truck_License" [(ngModel)] = "truckDetails.truck_License"     
-          name="name" [(ngModel)]="truckDetails.truck_License" >
-        </div>
+      <div class="mb-3">
+        <label for="truck_License" class="form-label">Truck License</label>
+        <input type="text" class="form-control" id="truck_License" aria-describedby="truck_License" required [(ngModel)]="truckDetails.truck_License"
+          name="truck_License" [(ngModel)]="truckDetails.truck_License"
+          [ngModelOptions]="{standalone: true}" (input)="truckDetails.truck_License = truckDetails.truck_License.toUpperCase()"
+          maxlength="8">
+      </div>
       
         <div class="mb-3">
           <label for="model" class="form-label">Model</label>

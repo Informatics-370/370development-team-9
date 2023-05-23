@@ -10,36 +10,38 @@ import { Client } from 'src/app/shared/client';
 })
 export class EditClientComponent implements OnInit {
 
-  clientDetails: Client =
-  {
-    client_ID:0,
-    name:"",
-    lastname:"",
-    phoneNumber:"",
-    
+  clientDetails: Client = {
+    client_ID: 0,
+    name: "",
+    phoneNumber: ""
   };
+  originalPhoneNumber = '';
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({
       next: (params) => {
-
-          this.dataService.GetClient(params['client_ID']).subscribe({
-            next: (response) => {
-              this.clientDetails = response;
-            }
-          })
-
+        this.dataService.GetClient(params['client_ID']).subscribe({
+          next: (response) => {
+            this.clientDetails = response;
+          }
+        });
       }
-    })
+    });
   }
 
-  EditClient()
-  {    
+  KeepZeros() {
+    if (this.clientDetails.phoneNumber) {
+      this.originalPhoneNumber = this.clientDetails.phoneNumber.toString();
+    }
+  }
+
+  EditClient() {
     this.dataService.EditClient(this.clientDetails.client_ID, this.clientDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/clients'])}
-    })
-    console.log('yes')
+      next: (response) => {
+        this.router.navigate(['/Admin-Screen/clients']);
+      }
+    });
   }
 }
