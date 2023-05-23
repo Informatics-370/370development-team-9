@@ -82,6 +82,16 @@ namespace TrackwiseAPI.Controllers
             {
                 var existingDriver = await _driverRepository.GetDriverAsync(Driver_ID);
 
+                // Check if any changes are made to the driver details
+                if (existingDriver.Name == dvm.Name &&
+                    existingDriver.Lastname == dvm.Lastname &&
+                    existingDriver.PhoneNumber == dvm.PhoneNumber &&
+                    existingDriver.Driver_Status_ID == dvm.Driver_Status_ID)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingDriver);
+                }
+
                 if (existingDriver == null) return NotFound($"The driver does not exist");
                 existingDriver.Name = dvm.Name;
                 existingDriver.Lastname = dvm.Lastname;

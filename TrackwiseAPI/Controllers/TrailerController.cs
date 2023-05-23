@@ -84,6 +84,16 @@ namespace TrackwiseAPI.Controllers
                 var existingTrailer = await _trailerRepository.GetTrailerAsync(TrailerID);
                 if (existingTrailer == null) return NotFound($"The trailer does not exist");
 
+                if (existingTrailer.Trailer_License == tvm.Trailer_License &&
+                    existingTrailer.Model == tvm.Model &&
+                    existingTrailer.Weight == tvm.Weight &&
+                    existingTrailer.Trailer_Status_ID == tvm.Trailer_Status_ID &&
+                    existingTrailer.Trailer_Type_ID == tvm.Trailer_Type_ID)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingTrailer);
+                }
+
                 existingTrailer.Trailer_License = tvm.Trailer_License;
                 existingTrailer.Model = tvm.Model;
                 existingTrailer.Weight = tvm.Weight;
