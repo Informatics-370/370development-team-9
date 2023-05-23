@@ -84,6 +84,13 @@ namespace TrackwiseAPI.Controllers
                 var existingClient = await _clientRepository.GetClientAsync(ClientID);
                 if (existingClient == null) return NotFound($"The client does not exist");
 
+                if (existingClient.Name == cvm.Name &&
+                    existingClient.PhoneNumber == cvm.PhoneNumber)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingClient);
+                }
+
                 existingClient.Name = cvm.Name;
                 existingClient.PhoneNumber = cvm.PhoneNumber;
 

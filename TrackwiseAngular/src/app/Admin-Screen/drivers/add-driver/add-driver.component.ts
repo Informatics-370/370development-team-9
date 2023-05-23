@@ -16,7 +16,7 @@ export class AddDriverComponent {
     name:"",
     lastname:"",
     phoneNumber:"",
-    driver_Status_ID:0,
+    driver_Status_ID:1,
     driverStatus:{
       driver_Status_ID:0,
       status:"",

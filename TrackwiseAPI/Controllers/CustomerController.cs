@@ -75,17 +75,26 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
-                var existingCourse = await _customerRepository.GetCustomerAsync(customerId);
-                if (existingCourse == null) return NotFound($"The course does not exist");
+                var existingCustomer = await _customerRepository.GetCustomerAsync(customerId);
+                if (existingCustomer == null) return NotFound($"The course does not exist");
 
-                existingCourse.Name = customerModel.Name;
-                existingCourse.LastName = customerModel.LastName;
-                existingCourse.Email = customerModel.Email;
-                existingCourse.Password = customerModel.Password;
+                if (existingCustomer.Name == customerModel.Name &&
+                    existingCustomer.LastName == customerModel.LastName &&
+                    existingCustomer.Email == customerModel.Email &&
+                    existingCustomer.Password == customerModel.Password)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingCustomer);
+                }
+
+                existingCustomer.Name = customerModel.Name;
+                existingCustomer.LastName = customerModel.LastName;
+                existingCustomer.Email = customerModel.Email;
+                existingCustomer.Password = customerModel.Password;
 
                 if (await _customerRepository.SaveChangesAsync())
                 {
-                    return Ok(existingCourse);
+                    return Ok(existingCustomer);
                 }
             }
             catch (Exception)
