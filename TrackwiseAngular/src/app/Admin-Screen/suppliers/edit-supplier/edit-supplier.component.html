@@ -14,17 +14,19 @@
         </div>
       
         <div class="mb-3">
-          <label for="email" class="form-label">Supplier Email</label>
-          <input type="text" class="form-control" id="email" [(ngModel)] = "EditSupplierReq.email"  
-                 name="email" [(ngModel)]="EditSupplierReq.email">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input type="email" class="form-control" id="email" [(ngModel)]="EditSupplierReq.email"  
+          name="email" [(ngModel)]="EditSupplierReq.email" required
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+        <small class="text-muted">Please enter a valid email address.</small>
         </div>
 
         <div class="mb-3">
-          <label for="contact_Number" class="form-label">Contact Number</label>
-          <input type="number" class="form-control" id="contact_Number" [(ngModel)] = "EditSupplierReq.contact_Number"  
-                 name="contact_Number" [(ngModel)]="EditSupplierReq.contact_Number"
-                 maxlength="10"
-                 oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);">
+          <label for="phoneNumber" class="form-label">Phone Number</label>
+          <input type="tel" class="form-control" id="phoneNumber" [(ngModel)]="EditSupplierReq.contact_Number"  
+            name="phoneNumber" [(ngModel)]="EditSupplierReq.contact_Number" required
+            pattern="0[0-9]{9}" maxlength="10">
+          <small class="text-muted">Please enter a 10-digit phone number starting with 0.</small>
         </div>
     
           

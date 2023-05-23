@@ -20,9 +20,11 @@
           </div>
 
           <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" id="model" [(ngModel)] = "adminDetails.email"  
-                   name="email" [(ngModel)]="adminDetails.email" required>
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="adminDetails.email"  
+            name="email" [(ngModel)]="adminDetails.email" required
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+          <small class="text-muted">Please enter a valid email address.</small>
           </div>
 
           <div class="mb-3">

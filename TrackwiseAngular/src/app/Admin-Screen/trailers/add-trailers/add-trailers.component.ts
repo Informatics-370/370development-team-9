@@ -21,7 +21,7 @@ export class AddTrailersComponent {
       status:"",
       description:""
     },
-    trailer_Type_ID:0,
+    trailer_Type_ID:1,
     trailerType:{
       trailer_Type_ID:0,
       name:"",
