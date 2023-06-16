@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.DBContext
 {
-    public class TwDbContext : DbContext
+    public class TwDbContext : IdentityDbContext<AppUser>
     {
         public TwDbContext(DbContextOptions<TwDbContext> options) : base(options) { }
 
