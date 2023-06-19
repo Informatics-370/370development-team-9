@@ -11,6 +11,7 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class AdminController : ControllerBase
     {
         private readonly IAdminRepository _adminRepository;
@@ -23,7 +24,7 @@ namespace TrackwiseAPI.Controllers
         //Get all admins
         [HttpGet]
         [Route("GetAllAdmin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        
         public async Task<IActionResult> GetAllAdmins()
         {
             try
@@ -40,7 +41,7 @@ namespace TrackwiseAPI.Controllers
         //Get a specific admin
         [HttpGet]
         [Route("GetAdmin/{AdminID}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> GetAdminAsync(int AdminID)
         {
             try
@@ -60,7 +61,7 @@ namespace TrackwiseAPI.Controllers
         //Add a admin
         [HttpPost]
         [Route("AddAdmin")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> AddAdmin(AdminVM avm)
         {
             var admin = new Admin { Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password, };
@@ -82,7 +83,7 @@ namespace TrackwiseAPI.Controllers
         //update admin
         [HttpPut]
         [Route("EditAdmin/{AdminID}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<ActionResult<AdminVM>> EditAdmin(int AdminID, AdminVM avm)
         {
             try
@@ -119,7 +120,6 @@ namespace TrackwiseAPI.Controllers
         //Remove admin
         [HttpDelete]
         [Route("DeleteAdmin/{AdminID}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteAdmin(int AdminID)
         {
             try

@@ -65,6 +65,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireDigit = true;
     options.User.RequireUniqueEmail = true;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<TwDbContext>()
 .AddDefaultTokenProviders();
 
@@ -120,5 +121,38 @@ app.UseAuthentication();
 app.UseCors(policy => policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    var Roles = new[] { "Admin", "Client", "Customer", "Driver" };
+
+    foreach (var role in Roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role))
+            await roleManager.CreateAsync(new IdentityRole(role));
+    }
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+
+    string email = "admin@admin.com";
+    string password = "Test1234";
+
+    if (await userManager.FindByEmailAsync(email) == null) ;
+    {
+        var user = new AppUser();
+        user.UserName = email;
+        user.Email = email;
+
+        await userManager.CreateAsync(user, password);
+
+        await userManager.AddToRoleAsync(user, "Admin");
+    }
+
+}
 
 app.Run();

@@ -70,6 +70,8 @@ namespace TrackwiseAPI.Controllers
 
                 var result = await _userManager.CreateAsync(user, uvm.password);
 
+                await _userManager.AddToRoleAsync(user, "Customer");
+
                 if (result.Errors.Count() > 0) return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
             }
             else
@@ -91,9 +93,7 @@ namespace TrackwiseAPI.Controllers
             {
                 try
                 {
-                    //var principal = await _claimsPrincipalFactory.CreateAsync(user);
-                    //await HttpContext.SignInAsync(IdentityConstants.ApplicationScheme, principal);
-                    return GenerateJWTToken(user);
+                    return await GenerateJWTToken(user);
                 }
                 catch (Exception)
                 {
@@ -102,24 +102,27 @@ namespace TrackwiseAPI.Controllers
             }
             else
             {
-                return NotFound("Does not exist");
+                return NotFound("User does not exist or invalid credentials");
             }
-
-            //var loggedInUser = new UserViewModel { EmailAddress = uvm.EmailAddress, Password = uvm.Password };
-
-            //return Ok(loggedInUser);
         }
 
+
+
         [HttpGet]
-        private ActionResult GenerateJWTToken(AppUser user)
+        private async Task<ActionResult> GenerateJWTToken(AppUser user)
         {
-            // Create JWT Token
-            var claims = new[]
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+    };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
-            };
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -128,17 +131,13 @@ namespace TrackwiseAPI.Controllers
                 _configuration["Tokens:Issuer"],
                 _configuration["Tokens:Audience"],
                 claims,
-                signingCredentials: credentials,
-                expires: DateTime.UtcNow.AddHours(3)
+                expires: DateTime.UtcNow.AddHours(3),
+                signingCredentials: credentials
             );
 
-            return Created("", new
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                user = user.UserName
-            });
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return Ok(new { token = tokenString, user = user.UserName });
         }
-
-
     }
-}
+   }
