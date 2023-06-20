@@ -9,6 +9,7 @@ using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
+using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -52,6 +53,44 @@ namespace TrackwiseAPI.Controllers
             _trailerRepository = trailerRepository;
             _truckRepository = truckRepository;
         }
+/*
+        [HttpPost]
+        [Route("AddNewAdmin")]
+        public async Task<IActionResult> AddNewAdmin(AdminVM avm)
+        {
+            var adminId = Guid.NewGuid().ToString();
+
+            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password };
+
+            try
+            {
+                _adminRepository.Add(admin);
+                await _adminRepository.SaveChangesAsync();
+
+                var user = new AppUser
+                {
+                    Id = adminId,
+                    UserName = avm.Email,
+                    Email = avm.Email
+                };
+
+                var result = await _userManager.CreateAsync(user, avm.Password);
+
+                await _userManager.AddToRoleAsync(user, "Admin");
+
+                if (result.Errors.Count() > 0)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid transaction");
+            }
+
+            return Ok(admin);
+        }
+*/
+
 
         [HttpPost]
         [Route("Register")]
