@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.DBContext
 {
-    public class TwDbContext : DbContext
+    public class TwDbContext : IdentityDbContext<AppUser>
     {
         public TwDbContext(DbContextOptions<TwDbContext> options) : base(options) { }
 
@@ -287,8 +288,8 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Admin>().HasData(
-                new Admin { Admin_ID = 1, Name = "Hanru", Lastname = "du Plessis", Email = "hanruduplessis@gmail.com", Password = "hanru123" },
-                new Admin { Admin_ID = 2, Name = "admin", Lastname="admin", Email="admin@gmail.com",Password="admin123" }
+                new Admin { Admin_ID = "1", Name = "Hanru", Lastname = "du Plessis", Email = "hanruduplessis@gmail.com", Password = "hanru123" },
+                new Admin { Admin_ID = "2", Name = "admin", Lastname="admin", Email="admin@gmail.com",Password="admin123" }
             );
 
             modelBuilder.Entity<Supplier>().HasData(
