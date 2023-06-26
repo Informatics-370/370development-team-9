@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,6 +45,8 @@ import { AddSupplierComponent } from './Admin-Screen/suppliers/add-supplier/add-
 import { ProductsComponent } from './Admin-Screen/products/products.component';
 import { AddProductComponent } from './Admin-Screen/products/add-product/add-product.component';
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
+import { LoginComponent } from './Authentication/login/login.component';
+import { RegisterComponent } from './Authentication/register/register.component';
 
 
 
@@ -75,11 +78,14 @@ import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-
     ProductsComponent,
     AddProductComponent,
     EditProductComponent,
+    LoginComponent,
+    RegisterComponent,
    
  
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     CommonModule,
     HttpClientModule,
