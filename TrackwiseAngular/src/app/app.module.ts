@@ -47,6 +47,7 @@ import { AddProductComponent } from './Admin-Screen/products/add-product/add-pro
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
+import { HomeComponent } from './Customer-Screen/home/home.component';
 
 
 
@@ -80,6 +81,7 @@ import { RegisterComponent } from './Authentication/register/register.component'
     EditProductComponent,
     LoginComponent,
     RegisterComponent,
+    HomeComponent,
    
  
   ],
