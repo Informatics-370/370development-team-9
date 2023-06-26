@@ -36,12 +36,15 @@ import { EditTrailerComponent } from './Admin-Screen/trailers/edit-trailer/edit-
 import { ProductsComponent } from './Admin-Screen/products/products.component';
 import { AddProductComponent } from './Admin-Screen/products/add-product/add-product.component';
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
+import { LoginComponent } from './Authentication/login/login.component';
 
 
 
 
 
 const routes: Routes = [
+  {path: 'Authentication/login', component: LoginComponent},
+
   {path: 'Admin-Screen/customers', component: CustomersComponent},
 
   {path: 'Admin-Screen/drivers', component: DriversComponent},
@@ -78,7 +81,7 @@ const routes: Routes = [
   {path: 'Admin-Screen/products/add-product', component: AddProductComponent},
   {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
-  {path: '', redirectTo: 'Admin-Screen/admins', pathMatch:'full'},
+  {path: '', redirectTo: 'Authentication/login', pathMatch:'full'},
 
 ];
 

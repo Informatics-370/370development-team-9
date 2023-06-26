@@ -8,6 +8,8 @@ import { Admin } from '../shared/admin';
 import { Client } from '../shared/client';
 import { Supplier } from '../shared/supplier';
 import { Product } from '../shared/product';
+import { LoginUser } from '../shared/login-user';
+import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +25,11 @@ export class DataService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
+  /*LOGIN*/
+  LoginUser(loginUser: LoginUser){
+    return this.httpClient.post<User>(`${this.apiUrl}Authentication/Login`, loginUser, this.httpOptions)
+  }
 
   /*DRIVER SECTION*/
   GetDrivers(): Observable<any>{

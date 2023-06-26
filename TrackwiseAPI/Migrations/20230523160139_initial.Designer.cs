@@ -12,7 +12,7 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    [Migration("20230522214241_initial")]
+    [Migration("20230523160139_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -357,21 +357,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = 1,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1611),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4513),
                             Order_ID = 1,
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = 2,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1612),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4514),
                             Order_ID = 2,
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = 3,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1613),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4515),
                             Order_ID = 3,
                             Total_Amount = 450.0
                         });
@@ -496,7 +496,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 1,
                             Customer_ID = 1,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1558),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4457),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -504,7 +504,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 2,
                             Customer_ID = 2,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1569),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4467),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -512,7 +512,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 3,
                             Customer_ID = 3,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1570),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4468),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -608,7 +608,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 1,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1624),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4525),
                             Order_ID = 1,
                             Payment_Type_ID = 1,
                             amount_paid = 150.5
@@ -616,7 +616,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 2,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1625),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4526),
                             Order_ID = 1,
                             Payment_Type_ID = 2,
                             amount_paid = 50.0
@@ -624,7 +624,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 3,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1631),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4527),
                             Order_ID = 2,
                             Payment_Type_ID = 3,
                             amount_paid = 75.200000000000003
@@ -632,7 +632,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 4,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1632),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4527),
                             Order_ID = 3,
                             Payment_Type_ID = 1,
                             amount_paid = 200.0
@@ -640,7 +640,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 5,
-                            Date = new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1633),
+                            Date = new DateTime(2023, 5, 23, 18, 1, 39, 407, DateTimeKind.Local).AddTicks(4564),
                             Order_ID = 3,
                             Payment_Type_ID = 2,
                             amount_paid = 250.0
