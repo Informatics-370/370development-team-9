@@ -6,7 +6,7 @@ namespace TrackwiseAPI.Models.Entities
     public class Admin
     {
         [Key]
-        public int Admin_ID { get; set; }
+        public string Admin_ID { get; set; }
         public string Name { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
@@ -17,7 +17,6 @@ namespace TrackwiseAPI.Models.Entities
         //[ForeignKey("User_ID")]
         //public User User { get; set; }
 
-        public ICollection<Supplier> Suppliers { get; set; }
         public ICollection<Job> jobs { get; set; }
     }
 }

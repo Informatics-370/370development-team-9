@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-
-
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +8,31 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'TrackWiseAngular';
 
-
-
+  @ViewChild('sidenav', {static:true}) sidenav!: MatSidenav;
+  isLoggedIn = false;
+  constructor(private router: Router) {}
+  
+  toggleSidenav(){
+    this.sidenav.toggle();
+  }
  
+  ngAfterContentChecked(){
+    if(localStorage.getItem('User'))
+    {
+      this.isLoggedIn = true;
+    }
+    else{
+      this.isLoggedIn = false;
+    }
+  }
+
+  logout(){
+    if(localStorage.getItem('User'))
+    {
+      localStorage.removeItem('User')
+      this.router.navigateByUrl('login');
+    }
+  }
+
 }

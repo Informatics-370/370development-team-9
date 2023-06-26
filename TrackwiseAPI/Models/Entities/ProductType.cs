@@ -8,6 +8,6 @@ namespace TrackwiseAPI.Models.Entities
         public int Product_Type_ID { get; set; }
         public string Name { get;  set; }
         public string Description { get; set; }
-        public ICollection<ProductCategory>  productCategories { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

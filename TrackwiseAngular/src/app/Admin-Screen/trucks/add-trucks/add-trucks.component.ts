@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Truck } from 'src/shared/truck';
-import { DataService } from 'src/services/data.service';
+import { Truck } from 'src/app/shared/truck';
+import { DataService } from 'src/app/services/data.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,7 +14,7 @@ export class AddTrucksComponent {
     truckID:0,
     truck_License:"",
     model:"",
-    truck_Status_ID:0,
+    truck_Status_ID:1,
     truckStatus:{
       truck_Status_ID:0,
       status:"",
@@ -30,7 +30,7 @@ export class AddTrucksComponent {
   AddTruck()
   {
     this.dataService.AddTruck(this.AddTruckRequest).subscribe({
-      next: (course) => {this.router.navigate(['/Admin-Screen/trucks'])}
+      next: (truck) => {this.router.navigate(['/Admin-Screen/trucks'])}
     })
   }
 }

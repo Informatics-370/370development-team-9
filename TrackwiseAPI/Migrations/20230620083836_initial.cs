@@ -17,8 +17,7 @@ namespace TrackwiseAPI.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    Admin_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Admin_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -30,13 +29,51 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
                 {
                     Client_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -130,6 +167,20 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    Product_Category_ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => x.Product_Category_ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductTypes",
                 columns: table => new
                 {
@@ -141,6 +192,21 @@ namespace TrackwiseAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductTypes", x => x.Product_Type_ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Supplier_ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Contact_Number = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Supplier_ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -164,7 +230,7 @@ namespace TrackwiseAPI.Migrations
                     Trailer_Type_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -198,23 +264,108 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Suppliers",
+                name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Supplier_ID = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Admin_ID = table.Column<int>(type: "int", nullable: false)
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Suppliers", x => x.Supplier_ID);
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Suppliers_Admins_Admin_ID",
-                        column: x => x.Admin_ID,
-                        principalTable: "Admins",
-                        principalColumn: "Admin_ID",
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -293,7 +444,7 @@ namespace TrackwiseAPI.Migrations
                     Dropoff_Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
                     Client_ID = table.Column<int>(type: "int", nullable: false),
-                    Admin_ID = table.Column<int>(type: "int", nullable: false),
+                    Admin_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Job_Type_ID = table.Column<int>(type: "int", nullable: false),
                     Job_Status_ID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -327,20 +478,28 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductCategories",
+                name: "Products",
                 columns: table => new
                 {
-                    Product_Category_ID = table.Column<int>(type: "int", nullable: false)
+                    Product_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Product_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Product_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Product_Price = table.Column<double>(type: "float", nullable: false),
+                    Product_Category_ID = table.Column<int>(type: "int", nullable: false),
                     Product_Type_ID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCategories", x => x.Product_Category_ID);
+                    table.PrimaryKey("PK_Products", x => x.Product_ID);
                     table.ForeignKey(
-                        name: "FK_ProductCategories_ProductTypes_Product_Type_ID",
+                        name: "FK_Products_ProductCategories_Product_Category_ID",
+                        column: x => x.Product_Category_ID,
+                        principalTable: "ProductCategories",
+                        principalColumn: "Product_Category_ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Products_ProductTypes_Product_Type_ID",
                         column: x => x.Product_Type_ID,
                         principalTable: "ProductTypes",
                         principalColumn: "Product_Type_ID",
@@ -351,7 +510,9 @@ namespace TrackwiseAPI.Migrations
                 name: "Trailers",
                 columns: table => new
                 {
-                    Trailer_License = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TrailerID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Trailer_License = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
                     Trailer_Type_ID = table.Column<int>(type: "int", nullable: false),
@@ -359,7 +520,7 @@ namespace TrackwiseAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Trailers", x => x.Trailer_License);
+                    table.PrimaryKey("PK_Trailers", x => x.TrailerID);
                     table.ForeignKey(
                         name: "FK_Trailers_TrailerStatuses_Trailer_Status_ID",
                         column: x => x.Trailer_Status_ID,
@@ -445,54 +606,6 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    Product_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Product_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Product_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Product_Price = table.Column<double>(type: "float", nullable: false),
-                    Product_Category_ID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.Product_ID);
-                    table.ForeignKey(
-                        name: "FK_Products_ProductCategories_Product_Category_ID",
-                        column: x => x.Product_Category_ID,
-                        principalTable: "ProductCategories",
-                        principalColumn: "Product_Category_ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "deliveries",
-                columns: table => new
-                {
-                    Delivery_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    weight = table.Column<double>(type: "float", nullable: false),
-                    Job_ID = table.Column<int>(type: "int", nullable: false),
-                    TruckID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_deliveries", x => x.Delivery_ID);
-                    table.ForeignKey(
-                        name: "FK_deliveries_Trucks_TruckID",
-                        column: x => x.TruckID,
-                        principalTable: "Trucks",
-                        principalColumn: "TruckID");
-                    table.ForeignKey(
-                        name: "FK_deliveries_jobs_Job_ID",
-                        column: x => x.Job_ID,
-                        principalTable: "jobs",
-                        principalColumn: "Job_ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Inventory",
                 columns: table => new
                 {
@@ -566,6 +679,32 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "deliveries",
+                columns: table => new
+                {
+                    Delivery_ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    weight = table.Column<double>(type: "float", nullable: false),
+                    Job_ID = table.Column<int>(type: "int", nullable: false),
+                    TruckID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_deliveries", x => x.Delivery_ID);
+                    table.ForeignKey(
+                        name: "FK_deliveries_Trucks_TruckID",
+                        column: x => x.TruckID,
+                        principalTable: "Trucks",
+                        principalColumn: "TruckID");
+                    table.ForeignKey(
+                        name: "FK_deliveries_jobs_Job_ID",
+                        column: x => x.Job_ID,
+                        principalTable: "jobs",
+                        principalColumn: "Job_ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Delivery_Assignments",
                 columns: table => new
                 {
@@ -596,8 +735,8 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Admin_ID", "Email", "Lastname", "Name", "Password" },
                 values: new object[,]
                 {
-                    { 1, "hanruduplessis@gmail.com", "du Plessis", "Hanru", "hanru123" },
-                    { 2, "admin@gmail.com", "admin", "admin", "admin123" }
+                    { "1", "hanruduplessis@gmail.com", "du Plessis", "Hanru", "hanru123" },
+                    { "2", "admin@gmail.com", "admin", "admin", "admin123" }
                 });
 
             migrationBuilder.InsertData(
@@ -611,6 +750,16 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "DriverStatuses",
+                columns: new[] { "Driver_Status_ID", "Description", "Status" },
+                values: new object[,]
+                {
+                    { 1, "Driver is available", "Available" },
+                    { 2, "Driver is busy with a job", "Unavailable" },
+                    { 3, "Driver is unable to do a job", "Busy" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "PaymentType",
                 columns: new[] { "Payment_Type_ID", "Descrtipion", "Name" },
                 values: new object[,]
@@ -621,12 +770,55 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ProductCategories",
+                columns: new[] { "Product_Category_ID", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "products for engines", "Engine" },
+                    { 2, "products for transmissions", "Transmission" },
+                    { 3, "products for suspensions", "Suspension" },
+                    { 4, "products for electrical", "Electrical" },
+                    { 5, "products for body", "Body" },
+                    { 6, "products for brakes", "Brake" },
+                    { 7, "products for wheels", "Wheel" },
+                    { 8, "bolts,nuts ect..", "Consumables" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "ProductTypes",
                 columns: new[] { "Product_Type_ID", "Description", "Name" },
                 values: new object[,]
                 {
                     { 1, "Product has trailer components", "Truck" },
                     { 2, "Product has truck components", "Trailer" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Suppliers",
+                columns: new[] { "Supplier_ID", "Contact_Number", "Email", "Name" },
+                values: new object[,]
+                {
+                    { 1, "0125554789", "abc@gmail.com", "ABC Suppliers" },
+                    { 2, "0125554789", "xyz@gmail.com", "XYZ Suppliers" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TrailerStatuses",
+                columns: new[] { "Trailer_Status_ID", "Description", "Status" },
+                values: new object[,]
+                {
+                    { 1, "Trailer is available for job", "Available" },
+                    { 2, "Trailer is busy with a job", "Unavailable" },
+                    { 3, "Trailer is undergoing maintenace", "Under Maintenance" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TrailerTypes",
+                columns: new[] { "Trailer_Type_ID", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Coal transportation trailer", "Coal" },
+                    { 2, "Fuel transportation trailer", "Feul" }
                 });
 
             migrationBuilder.InsertData(
@@ -644,35 +836,24 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Order_ID", "Customer_ID", "Date", "Status", "Total" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(350), "Ordered", 2897.0 },
-                    { 2, 2, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(367), "Ordered", 2997.0 },
-                    { 3, 3, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(369), "Ordered", 2998.0 }
+                    { 1, 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7784), "Ordered", 2897.0 },
+                    { 2, 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7796), "Ordered", 2997.0 },
+                    { 3, 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7798), "Ordered", 2998.0 }
                 });
 
             migrationBuilder.InsertData(
-                table: "ProductCategories",
-                columns: new[] { "Product_Category_ID", "Description", "Name", "Product_Type_ID" },
+                table: "Products",
+                columns: new[] { "Product_ID", "Product_Category_ID", "Product_Description", "Product_Name", "Product_Price", "Product_Type_ID" },
                 values: new object[,]
                 {
-                    { 1, "products for engines", "Engine", 1 },
-                    { 2, "products for transmissions", "Transmission", 1 },
-                    { 3, "products for suspensions", "Suspension", 1 },
-                    { 4, "products for electrical", "Electrical", 1 },
-                    { 5, "products for electrical", "Electrical", 2 },
-                    { 6, "products for body", "Body", 1 },
-                    { 7, "products for brakes", "Brake", 1 },
-                    { 8, "products for wheels", "Wheel", 1 },
-                    { 9, "bolts,nuts ect..", "Consumables", 1 },
-                    { 10, "bolts,nuts ect..", "Consumables", 2 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Suppliers",
-                columns: new[] { "Supplier_ID", "Admin_ID", "Email", "Name" },
-                values: new object[,]
-                {
-                    { 1, 1, "abc@gmail.com", "ABC Suppliers" },
-                    { 2, 2, "xyz@gmail.com", "XYZ Suppliers" }
+                    { 1, 4, "FUEL PRIMER PUMP/K5", "Feul Pump", 999.0, 2 },
+                    { 2, 5, "SEAL RING MB-S48", "SEAL RING", 899.0, 1 },
+                    { 3, 7, "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", "CLUTCH", 1499.0, 2 },
+                    { 4, 7, "SAF AXLE NUT LEFT M75x1.5 (85mm)", "AXLE NUT", 1199.0, 1 },
+                    { 5, 8, "BEARING INN ROCKWELL TM 218248/210/HM", "BEARING", 9.9900000000000002, 1 },
+                    { 6, 6, "SEAL OIL STEERING M/B AXOR-S46", "SEAL OIL", 119.98999999999999, 1 },
+                    { 7, 7, "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", "BRAKEPAD", 799.0, 1 },
+                    { 8, 1, "FAN BELT 9PK2300-U7", "FAN BELT", 455.0, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -680,36 +861,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Invoice_number", "Date", "Order_ID", "Total_Amount" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(445), 1, 200.5 },
-                    { 2, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(447), 2, 75.200000000000003 },
-                    { 3, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(448), 3, 450.0 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Payment",
-                columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(530), 1, 1, 150.5 },
-                    { 2, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(532), 1, 2, 50.0 },
-                    { 3, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(533), 2, 3, 75.200000000000003 },
-                    { 4, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(534), 3, 1, 200.0 },
-                    { 5, new DateTime(2023, 5, 18, 19, 52, 50, 243, DateTimeKind.Local).AddTicks(535), 3, 2, 250.0 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "Product_ID", "Product_Category_ID", "Product_Description", "Product_Name", "Product_Price" },
-                values: new object[,]
-                {
-                    { 1, 4, "FUEL PRIMER PUMP/K5", "Feul Pump", 999.0 },
-                    { 2, 9, "SEAL RING MB-S48", "SEAL RING", 899.0 },
-                    { 3, 7, "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", "CLUTCH", 1499.0 },
-                    { 4, 10, "SAF AXLE NUT LEFT M75x1.5 (85mm)", "AXLE NUT", 1199.0 },
-                    { 5, 10, "BEARING INN ROCKWELL TM 218248/210/HM", "BEARING", 9.9900000000000002 },
-                    { 6, 9, "SEAL OIL STEERING M/B AXOR-S46", "SEAL OIL", 119.98999999999999 },
-                    { 7, 7, "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", "BRAKEPAD", 799.0 },
-                    { 8, 1, "FAN BELT 9PK2300-U7", "FAN BELT", 455.0 }
+                    { 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7881), 1, 200.5 },
+                    { 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7883), 2, 75.200000000000003 },
+                    { 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7884), 3, 450.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -724,6 +878,18 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Payment",
+                columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7910), 1, 1, 150.5 },
+                    { 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7912), 1, 2, 50.0 },
+                    { 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7913), 2, 3, 75.200000000000003 },
+                    { 4, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7914), 3, 1, 200.0 },
+                    { 5, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7916), 3, 2, 250.0 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Product_Suppliers",
                 columns: new[] { "Productid", "Supplierid", "Product_Supplier_ID" },
                 values: new object[,]
@@ -733,6 +899,45 @@ namespace TrackwiseAPI.Migrations
                     { 2, 2, 3 },
                     { 3, 2, 4 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_deliveries_Job_ID",
@@ -816,19 +1021,14 @@ namespace TrackwiseAPI.Migrations
                 column: "Productid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCategories_Product_Type_ID",
-                table: "ProductCategories",
-                column: "Product_Type_ID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_Product_Category_ID",
                 table: "Products",
                 column: "Product_Category_ID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Suppliers_Admin_ID",
-                table: "Suppliers",
-                column: "Admin_ID");
+                name: "IX_Products_Product_Type_ID",
+                table: "Products",
+                column: "Product_Type_ID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trailers_Trailer_Status_ID",
@@ -849,6 +1049,21 @@ namespace TrackwiseAPI.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
             migrationBuilder.DropTable(
                 name: "Delivery_Assignments");
 
@@ -875,6 +1090,12 @@ namespace TrackwiseAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Drivers");
@@ -919,6 +1140,9 @@ namespace TrackwiseAPI.Migrations
                 name: "ProductCategories");
 
             migrationBuilder.DropTable(
+                name: "ProductTypes");
+
+            migrationBuilder.DropTable(
                 name: "TruckStatuses");
 
             migrationBuilder.DropTable(
@@ -932,9 +1156,6 @@ namespace TrackwiseAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "jobsStatus");
-
-            migrationBuilder.DropTable(
-                name: "ProductTypes");
         }
     }
 }

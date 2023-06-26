@@ -3,54 +3,47 @@
 <div class="col-lg-3 main-content"></div>
 <div class="col-lg-7 main-content">
 <div class="container container-fluid">
+  <h2>Client List</h2>
       
       <!-- Search bar -->
       <br>
-        <div class="row">
-            <div class="col-lg-9">
-                <!-- Search Textbox/bar -->
-                <!-- Enter the placeholder text that you want to display in the bar ------------------------------------------------------->
-                <div class="input-group">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                    aria-describedby="search-addon" />
-                    <!-- Search Button -->
-                    <button type="button" class="btn btn-outline-primary">Search</button>
-                </div>
-            </div>
-            
-            <!-- Add button -->
-            <!-- Change the button name to suit your use case ---------------------------------------------------------------------------->
-            <div class="col-lg-3">
-                <button type="button" class="btn create-btn">Add (What you want to add)</button>
-            </div>
+      <div class="row">
+        <div class="col-lg-9">
+          <div class="input-group">
+            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+              aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+            <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
+          </div>
         </div>
+        <div class="col-lg-3">
+          <button type="button" class="btn create-btn" routerLink="add-client">Add Client</button>
+        </div>
+      </div>
       <br>
-  
-      <!-- Table -->
-      <!-- Enter your own table heading and table data to check the layout(hard code data for now) -------------------------------------->
-      <table class="table table-hover">
-        <thead id="header">
-          <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
+        
+            <!-- Table -->
+            <table class="table table-hover">
+              <thead id="header">
+                <tr>
+                  <th>Client Name</th>
+                  <th>Phone Number</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="clients.length === 0">
+                  <td colspan="5">No results were found.</td>
+                </tr>
+                <tr *ngFor="let client of clients">
+                  <td>{{client.name}}</td>
+                  <td>{{client.phoneNumber}}</td>
+                  
+            <td><button type="button" class="btn edit-btn" [routerLink]="['edit-client', client.client_ID]">Edit</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="DeleteClient(client.client_ID)">Remove</button></td>
           </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><button type="button" class="btn edit-btn">Edit</button></td>
-            <td><button type="button" class="btn remove-btn">Remove</button></td>
-          </tr>
-          
-        <!-- Insert more rows if you want to----------------------------------------------------- -->
-
         </tbody>
       </table>
     </div>
   </div>
-</div>
+</div>  

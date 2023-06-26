@@ -1,0 +1,43 @@
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Add Admin</h2>
+      
+    <form #form="ngForm" (ngSubmit)="AddAdmin()">
+        <div class="mb-3">
+            <label for="Name" class="form-label">Admin Name</label>
+            <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+            name="Name" [(ngModel)]="adminDetails.name" required>
+          </div>
+        
+          <div class="mb-3">
+            <label for="lastname" class="form-label">Admin Surname</label>
+            <input type="text" class="form-control" id="model" [(ngModel)] = "adminDetails.lastname"  
+                   name="lastname" [(ngModel)]="adminDetails.lastname" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="email" class="form-control" id="email" [(ngModel)]="adminDetails.email"  
+            name="email" [(ngModel)]="adminDetails.email" required
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+          <small class="text-muted">Please enter a valid email address.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="text" class="form-control" id="model" [(ngModel)] = "adminDetails.password"  
+                   name="password" [(ngModel)]="adminDetails.password" required>
+          </div>
+        
+          <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Add Admin</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/admins">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  
