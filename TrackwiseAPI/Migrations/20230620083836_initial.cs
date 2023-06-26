@@ -17,8 +17,7 @@ namespace TrackwiseAPI.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    Admin_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Admin_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -27,6 +26,45 @@ namespace TrackwiseAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Admins", x => x.Admin_ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -226,6 +264,112 @@ namespace TrackwiseAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -300,7 +444,7 @@ namespace TrackwiseAPI.Migrations
                     Dropoff_Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
                     Client_ID = table.Column<int>(type: "int", nullable: false),
-                    Admin_ID = table.Column<int>(type: "int", nullable: false),
+                    Admin_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Job_Type_ID = table.Column<int>(type: "int", nullable: false),
                     Job_Status_ID = table.Column<int>(type: "int", nullable: false)
                 },
@@ -591,8 +735,8 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Admin_ID", "Email", "Lastname", "Name", "Password" },
                 values: new object[,]
                 {
-                    { 1, "hanruduplessis@gmail.com", "du Plessis", "Hanru", "hanru123" },
-                    { 2, "admin@gmail.com", "admin", "admin", "admin123" }
+                    { "1", "hanruduplessis@gmail.com", "du Plessis", "Hanru", "hanru123" },
+                    { "2", "admin@gmail.com", "admin", "admin", "admin123" }
                 });
 
             migrationBuilder.InsertData(
@@ -692,9 +836,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Order_ID", "Customer_ID", "Date", "Status", "Total" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1558), "Ordered", 2897.0 },
-                    { 2, 2, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1569), "Ordered", 2997.0 },
-                    { 3, 3, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1570), "Ordered", 2998.0 }
+                    { 1, 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7784), "Ordered", 2897.0 },
+                    { 2, 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7796), "Ordered", 2997.0 },
+                    { 3, 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7798), "Ordered", 2998.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -717,9 +861,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Invoice_number", "Date", "Order_ID", "Total_Amount" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1611), 1, 200.5 },
-                    { 2, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1612), 2, 75.200000000000003 },
-                    { 3, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1613), 3, 450.0 }
+                    { 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7881), 1, 200.5 },
+                    { 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7883), 2, 75.200000000000003 },
+                    { 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7884), 3, 450.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -738,11 +882,11 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1624), 1, 1, 150.5 },
-                    { 2, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1625), 1, 2, 50.0 },
-                    { 3, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1631), 2, 3, 75.200000000000003 },
-                    { 4, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1632), 3, 1, 200.0 },
-                    { 5, new DateTime(2023, 5, 22, 23, 42, 41, 706, DateTimeKind.Local).AddTicks(1633), 3, 2, 250.0 }
+                    { 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7910), 1, 1, 150.5 },
+                    { 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7912), 1, 2, 50.0 },
+                    { 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7913), 2, 3, 75.200000000000003 },
+                    { 4, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7914), 3, 1, 200.0 },
+                    { 5, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7916), 3, 2, 250.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -755,6 +899,45 @@ namespace TrackwiseAPI.Migrations
                     { 2, 2, 3 },
                     { 3, 2, 4 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_deliveries_Job_ID",
@@ -867,6 +1050,21 @@ namespace TrackwiseAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "Delivery_Assignments");
 
             migrationBuilder.DropTable(
@@ -892,6 +1090,12 @@ namespace TrackwiseAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "users");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Drivers");

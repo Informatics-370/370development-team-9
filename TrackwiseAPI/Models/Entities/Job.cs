@@ -18,7 +18,7 @@ namespace TrackwiseAPI.Models.Entities
         public Client Client { get; set; }
 
         //Foreign key for Admin
-        public int Admin_ID { get; set; }
+        public string Admin_ID { get; set; }
         [ForeignKey("Admin_ID")]
         public Admin Admin { get; set; }
 
