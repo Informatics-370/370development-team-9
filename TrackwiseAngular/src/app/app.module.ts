@@ -18,6 +18,7 @@ import { CustomersComponent } from './Admin-Screen/customers/customers.component
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
@@ -47,7 +48,8 @@ import { AddProductComponent } from './Admin-Screen/products/add-product/add-pro
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
-import { HomeComponent } from './Customer-Screen/home/home.component';
+
+import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing-page/customer-landing-page.component';
 
 
 
@@ -81,7 +83,7 @@ import { HomeComponent } from './Customer-Screen/home/home.component';
     EditProductComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent,
+    CustomerLandingPageComponent,
    
  
   ],
@@ -93,7 +95,8 @@ import { HomeComponent } from './Customer-Screen/home/home.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

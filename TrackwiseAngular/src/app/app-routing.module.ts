@@ -39,6 +39,8 @@ import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-
 import { LoginComponent } from './Authentication/login/login.component';
 
 
+//Customer components-----------------------------------------------------------
+import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing-page/customer-landing-page.component';
 
 
 
@@ -82,6 +84,9 @@ const routes: Routes = [
   {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
   {path: '', redirectTo: 'Authentication/login', pathMatch:'full'},
+
+  //Customer components--------------------------------------------------
+  {path: 'Customer-Screen/customer-landing-page', component: CustomerLandingPageComponent},
 
 ];
 

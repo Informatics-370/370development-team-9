@@ -35,4 +35,12 @@ export class AppComponent {
     }
   }
 
+  isAdminScreen(): boolean {
+    return this.router.url.includes('/Admin-Screen');
+  }
+
+  isCustomerScreen(): boolean {
+    return this.router.url.includes('/Customer-Screen');
+  }
+
 }
