@@ -19,6 +19,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/shared/material.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
@@ -96,7 +99,10 @@ import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

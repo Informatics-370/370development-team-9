@@ -42,5 +42,49 @@
   background-color: #ccc;
 }
 
-  
-  
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #004F9E;
+  color: white;
+}
+
+.navbar-title {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  max-width: 100px; /* Adjust the width as needed */
+  height: auto; /* Preserve the aspect ratio */
+  border-radius: 5%;
+}
+
+.navbar-buttons {
+  margin-left: 8px;
+}
+
+.navbar-buttons button {
+  background-color: transparent;
+  transition: background-color 0.5s ease;
+  font-weight: bold;
+}
+
+.navbar-buttons button:hover {
+  background-color: #f2f2f2;
+  color: #004F9E;
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  // padding: 4px;
+  border-radius: 50%;
+  margin-left: 4px;
+}

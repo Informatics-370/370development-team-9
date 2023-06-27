@@ -47,12 +47,41 @@
 
 <div *ngIf="isCustomerScreen()">
   <mat-toolbar class="navbar">
-    <span>My Navbar</span>
+
+    <span class="navbar-title">
+      <img class="logo-image" src="/assets/LTTLogo.jpg" alt="Logo">
+    </span>
+
+    <div class="navbar-buttons">
+      <button mat-button [routerLink]="'/Customer-Screen/customer-landing-page'">Products</button>
+      <button mat-button [routerLink]="'/Customer-Screen/about-us'">About Us</button>
+      <button mat-button [routerLink]="'/Customer-Screen/orders'">Orders</button>
+    </div>
+
     <span class="spacer"></span>
-    <button mat-button>Home</button>
-    <button mat-button>About</button>
-    <button mat-button>Contact</button>
+
+    <div class="navbar-buttons">
+      <mat-menu #userMenu="matMenu">
+        <button mat-icon-button [matMenuTriggerFor]="userMenu">person</button>
+        <button mat-menu-item [routerLink]="'/Customer-Screen/login'">Login</button>
+        <button mat-menu-item [routerLink]="'/Customer-Screen/register'">Register</button>
+        <button mat-menu-item [routerLink]="'/Customer-Screen/view-profile'">View Profile</button>
+        <button mat-menu-item>Sign Out</button>
+      </mat-menu>
+      <button mat-icon-button [routerLink]="'/Customer-Screen/cart'">
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="badge">5</span>
+      </button>
+    </div>
+
   </mat-toolbar>
 
   <router-outlet></router-outlet>
 </div>
+
+
+
+
+
+
+
