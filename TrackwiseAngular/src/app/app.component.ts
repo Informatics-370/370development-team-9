@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements AfterContentChecked{
   title: any;
@@ -50,5 +50,13 @@ export class AppComponent implements AfterContentChecked{
       this.router.navigateByUrl('Authentication/login');
     }
   } 
+
+  isAdminScreen(): boolean {
+    return this.router.url.includes('/Admin-Screen');
+  }
+
+  isCustomerScreen(): boolean {
+    return this.router.url.includes('/Customer-Screen');
+  }
 
 }
