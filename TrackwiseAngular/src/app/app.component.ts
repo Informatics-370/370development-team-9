@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, AfterContentChecked,ViewChild, AfterContentInit, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 
@@ -7,32 +7,48 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-
-  @ViewChild('sidenav', {static:true}) sidenav!: MatSidenav;
+export class AppComponent implements AfterContentChecked{
+  title: any;
   isLoggedIn = false;
+  isAdmin = false;
+  isCustomer = false;
   constructor(private router: Router) {}
   
+  @ViewChild('sidenav', {static:true}) sidenav!: MatSidenav;
+
+
   toggleSidenav(){
     this.sidenav.toggle();
   }
- 
-  ngAfterContentChecked(){
-    if(localStorage.getItem('User'))
-    {
-      this.isLoggedIn = true;
-    }
-    else{
-      this.isLoggedIn = false;
-    }
-  }
 
-  logout(){
+  ngAfterContentChecked(): void {
+    this.getRole();
+  }
+  
+  getRole(): void {
+    var role = JSON.parse(localStorage.getItem("Role")!)
+    console.log('Role:', role); // Add this line
+    if (role == "Admin") {
+      this.isLoggedIn = true;
+      this.isAdmin = true;
+      console.log('Admin',this.isAdmin);
+    } else if(role == "Customer"){
+      this.isLoggedIn = true;
+      this.isCustomer = true;
+      console.log('Customer',this.isCustomer);
+    }
+  } 
+ 
+    logout(){
     if(localStorage.getItem('User'))
     {
-      localStorage.removeItem('User')
-      this.router.navigateByUrl('login');
+      this.isLoggedIn = false;
+      this.isCustomer = false;
+      this.isAdmin = false;
+      localStorage.removeItem('User');
+      localStorage.removeItem('Role');
+      this.router.navigateByUrl('Authentication/login');
     }
-  }
+  } 
 
 }

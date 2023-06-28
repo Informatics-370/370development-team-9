@@ -10,6 +10,7 @@ using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
 using TrackwiseAPI.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -132,7 +133,16 @@ namespace TrackwiseAPI.Controllers
             {
                 try
                 {
-                    return await GenerateJWTToken(user);
+                    var token = await GenerateJWTToken(user); // Generate the JWT token
+
+                    var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
+
+                    var response = new
+                    {
+                        Token = token,
+                        Role = roles.FirstOrDefault()
+                    };
+                    return Ok(response);
                 }
                 catch (Exception)
                 {
