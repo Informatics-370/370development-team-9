@@ -31,7 +31,7 @@ namespace TrackwiseAPI.Controllers
         private readonly ITruckRepository _truckRepository;
 
         public AdminController(UserManager<AppUser> userManager,
-     IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
+            IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             IAdminRepository adminRepository,
             IClientRepository clientRepository,
@@ -231,7 +231,8 @@ namespace TrackwiseAPI.Controllers
             {
                 var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
 
-                if (existingAdmin == null) return NotFound($"The admin does not exist");
+                if (existingAdmin == null) 
+                    return NotFound($"The admin does not exist");
 
                 var user = await _userManager.FindByEmailAsync(existingAdmin.Email);
                 if (user != null)
