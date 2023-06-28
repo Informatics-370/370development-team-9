@@ -50,7 +50,6 @@ import { MatTableModule } from '@angular/material/table';
   exports: [
     MatAutocompleteModule,
     MatCheckboxModule,
-    MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatFormFieldModule,

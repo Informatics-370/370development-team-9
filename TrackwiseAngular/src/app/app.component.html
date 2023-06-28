@@ -1,22 +1,19 @@
-
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-     <button mat-icon-button *ngIf="isLoggedIn">
+    <button mat-icon-button  *ngIf="isLoggedIn">
       <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
     </button>
     <h1>TrackWise</h1>
-   
   </mat-toolbar-row>
-
 </mat-toolbar>
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" opened="true" class="side-container" *ngIf="isLoggedIn">
-    <mat-nav-list>
 
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened="true" class="side-container" *ngIf="isAdmin">
+    <mat-nav-list>
       <a mat-list-item [routerLink]="'Admin-Screen/admins'">Admins</a>
       <a mat-list-item [routerLink]="'Admin-Screen/clients'">Clients</a>
       <a mat-list-item [routerLink]="'Admin-Screen/customers'">Customers</a>
-      <a mat-list-item [routerLink]="'Admin-Screen/drivers'">Drivers</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/drivers'">Drivers</a>  
       <a mat-list-item [routerLink]="'Admin-Screen/jobs'">Jobs</a>
       <a mat-list-item [routerLink]="'Admin-Screen/orders'">Orders</a>
       <a mat-list-item [routerLink]="'Admin-Screen/products'">Products</a>
@@ -25,9 +22,17 @@
       <a mat-list-item [routerLink]="'Admin-Screen/trailers'">Trailers</a>
       <a mat-list-item [routerLink]="'Admin-Screen/trucks'">Trucks</a>
       <a mat-list-item (click)="logout()"> Logout </a>
-
     </mat-nav-list>
   </mat-sidenav>
+
+  <mat-sidenav #sidenav mode="side" opened="true" class="side-container" *ngIf="isCustomer">
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="'Admin-Screen/admins'">Admins</a>
+        <a mat-list-item (click)="logout()"> Logout </a>
+      </mat-nav-list>
+  </mat-sidenav>
+
+
   <mat-sidenav-content class="content-container">
     <div style="height: 88vh;">
       <router-outlet></router-outlet>
