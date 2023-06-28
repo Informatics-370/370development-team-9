@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
@@ -12,6 +15,7 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ClientController : ControllerBase
     {
 
@@ -95,7 +99,7 @@ namespace TrackwiseAPI.Controllers
 
                 var result = await _userManager.CreateAsync(user, cvm.Password);
 
-                await _userManager.AddToRoleAsync(user, "Admin");
+                await _userManager.AddToRoleAsync(user, "Client");
 
                 if (result.Errors.Count() > 0)
                     return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
