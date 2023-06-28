@@ -20,6 +20,10 @@ import { CustomersComponent } from './Admin-Screen/customers/customers.component
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/shared/material.module';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
@@ -49,7 +53,14 @@ import { AddProductComponent } from './Admin-Screen/products/add-product/add-pro
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
-import { HomeComponent } from './Customer-Screen/home/home.component';
+
+
+import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing-page/customer-landing-page.component';
+import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
+import { CartComponent } from './Customer-Screen/cart/cart.component';
+import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
+
+
 
 
 @NgModule({
@@ -82,8 +93,12 @@ import { HomeComponent } from './Customer-Screen/home/home.component';
     EditProductComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent,
-   
+
+    CustomerLandingPageComponent,
+    CustomerOrdersComponent,
+    CartComponent,
+    AboutUsComponent
+
  
   ],
   imports: [
@@ -99,7 +114,11 @@ import { HomeComponent } from './Customer-Screen/home/home.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
