@@ -13,7 +13,7 @@ namespace TrackwiseAPI.Models.Entities
         public double Weight { get; set; }
 
         //Foreign key for Client
-        public int Client_ID { get; set; }
+        public string Client_ID { get; set; }
         [ForeignKey("Client_ID")]
         public Client Client { get; set; }
 

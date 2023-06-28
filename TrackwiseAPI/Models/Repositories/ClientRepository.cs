@@ -28,7 +28,7 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.ToArrayAsync();
         }
 
-        public async Task<Client> GetClientAsync(int ClientID)
+        public async Task<Client> GetClientAsync(string ClientID)
         {
             IQueryable<Client> query = _context.Clients.Where(c => c.Client_ID == ClientID);
             return await query.FirstOrDefaultAsync();
