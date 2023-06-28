@@ -10,24 +10,26 @@
         <div class="mb-3">
             <label for="Name" class="form-label">Driver Name</label>
             <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "driverDetails.name"     
-            name="Name" [(ngModel)]="driverDetails.name" >
+            name="Name" [(ngModel)]="driverDetails.name" required>
           </div>
         
           <div class="mb-3">
             <label for="lastname" class="form-label">Driver Surname</label>
             <input type="text" class="form-control" id="model" [(ngModel)] = "driverDetails.lastname"  
-                   name="lastname" [(ngModel)]="driverDetails.lastname">
+                   name="lastname" [(ngModel)]="driverDetails.lastname" required>
           </div>
 
           <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
-            <input type="text" class="form-control" id="model" [(ngModel)] = "driverDetails.phoneNumber"  
-                   name="phoneNumber" [(ngModel)]="driverDetails.phoneNumber">
+            <input type="tel" class="form-control" id="phoneNumber" [(ngModel)]="driverDetails.phoneNumber"  
+              name="phoneNumber" [(ngModel)]="driverDetails.phoneNumber" required
+              pattern="0[0-9]{9}" maxlength="10">
+            <small class="text-muted">Please enter a 10-digit phone number starting with 0.</small>
           </div>
         
           <div class="mb-3">
               <label for="status" class="form-label">Status</label>
-              <select class="form-select" id="status" [(ngModel)]="driverDetails.driver_Status_ID" name="status">
+              <select class="form-select" id="status" [(ngModel)]="driverDetails.driver_Status_ID" name="status" required>
                 <option value="1">Available</option>
                 <option value="2">Unavailable</option>
                 <option value="3">Busy</option> 

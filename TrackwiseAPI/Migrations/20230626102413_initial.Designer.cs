@@ -12,7 +12,7 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    [Migration("20230520140224_initial")]
+    [Migration("20230626102413_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -25,13 +25,208 @@ namespace TrackwiseAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Admin", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<int>("Admin_ID")
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Admin_ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.DBContext.AppUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Admin", b =>
+                {
+                    b.Property<string>("Admin_ID")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -56,7 +251,7 @@ namespace TrackwiseAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Admin_ID = 1,
+                            Admin_ID = "1",
                             Email = "hanruduplessis@gmail.com",
                             Lastname = "du Plessis",
                             Name = "Hanru",
@@ -64,7 +259,7 @@ namespace TrackwiseAPI.Migrations
                         },
                         new
                         {
-                            Admin_ID = 2,
+                            Admin_ID = "2",
                             Email = "admin@gmail.com",
                             Lastname = "admin",
                             Name = "admin",
@@ -79,10 +274,6 @@ namespace TrackwiseAPI.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Client_ID"));
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -361,21 +552,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = 1,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7706),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(237),
                             Order_ID = 1,
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = 2,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7708),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(239),
                             Order_ID = 2,
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = 3,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7709),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(240),
                             Order_ID = 3,
                             Total_Amount = 450.0
                         });
@@ -389,8 +580,9 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Job_ID"));
 
-                    b.Property<int>("Admin_ID")
-                        .HasColumnType("int");
+                    b.Property<string>("Admin_ID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Client_ID")
                         .HasColumnType("int");
@@ -500,7 +692,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 1,
                             Customer_ID = 1,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7614),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(148),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -508,7 +700,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 2,
                             Customer_ID = 2,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7630),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(159),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -516,7 +708,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = 3,
                             Customer_ID = 3,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7632),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(160),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -612,7 +804,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 1,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7732),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(255),
                             Order_ID = 1,
                             Payment_Type_ID = 1,
                             amount_paid = 150.5
@@ -620,7 +812,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 2,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7733),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(256),
                             Order_ID = 1,
                             Payment_Type_ID = 2,
                             amount_paid = 50.0
@@ -628,7 +820,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 3,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7734),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(257),
                             Order_ID = 2,
                             Payment_Type_ID = 3,
                             amount_paid = 75.200000000000003
@@ -636,7 +828,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 4,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7735),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(258),
                             Order_ID = 3,
                             Payment_Type_ID = 1,
                             amount_paid = 200.0
@@ -644,7 +836,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 5,
-                            Date = new DateTime(2023, 5, 20, 16, 2, 23, 954, DateTimeKind.Local).AddTicks(7736),
+                            Date = new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(259),
                             Order_ID = 3,
                             Payment_Type_ID = 2,
                             amount_paid = 250.0
@@ -714,9 +906,14 @@ namespace TrackwiseAPI.Migrations
                     b.Property<double>("Product_Price")
                         .HasColumnType("float");
 
+                    b.Property<int>("Product_Type_ID")
+                        .HasColumnType("int");
+
                     b.HasKey("Product_ID");
 
                     b.HasIndex("Product_Category_ID");
+
+                    b.HasIndex("Product_Type_ID");
 
                     b.ToTable("Products");
 
@@ -727,15 +924,17 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 4,
                             Product_Description = "FUEL PRIMER PUMP/K5",
                             Product_Name = "Feul Pump",
-                            Product_Price = 999.0
+                            Product_Price = 999.0,
+                            Product_Type_ID = 2
                         },
                         new
                         {
                             Product_ID = 2,
-                            Product_Category_ID = 9,
+                            Product_Category_ID = 5,
                             Product_Description = "SEAL RING MB-S48",
                             Product_Name = "SEAL RING",
-                            Product_Price = 899.0
+                            Product_Price = 899.0,
+                            Product_Type_ID = 1
                         },
                         new
                         {
@@ -743,31 +942,35 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 7,
                             Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10",
                             Product_Name = "CLUTCH",
-                            Product_Price = 1499.0
+                            Product_Price = 1499.0,
+                            Product_Type_ID = 2
                         },
                         new
                         {
                             Product_ID = 4,
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 7,
                             Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)",
                             Product_Name = "AXLE NUT",
-                            Product_Price = 1199.0
+                            Product_Price = 1199.0,
+                            Product_Type_ID = 1
                         },
                         new
                         {
                             Product_ID = 5,
-                            Product_Category_ID = 10,
+                            Product_Category_ID = 8,
                             Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM",
                             Product_Name = "BEARING",
-                            Product_Price = 9.9900000000000002
+                            Product_Price = 9.9900000000000002,
+                            Product_Type_ID = 1
                         },
                         new
                         {
                             Product_ID = 6,
-                            Product_Category_ID = 9,
+                            Product_Category_ID = 6,
                             Product_Description = "SEAL OIL STEERING M/B AXOR-S46",
                             Product_Name = "SEAL OIL",
-                            Product_Price = 119.98999999999999
+                            Product_Price = 119.98999999999999,
+                            Product_Type_ID = 1
                         },
                         new
                         {
@@ -775,7 +978,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 7,
                             Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279",
                             Product_Name = "BRAKEPAD",
-                            Product_Price = 799.0
+                            Product_Price = 799.0,
+                            Product_Type_ID = 1
                         },
                         new
                         {
@@ -783,7 +987,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Category_ID = 1,
                             Product_Description = "FAN BELT 9PK2300-U7",
                             Product_Name = "FAN BELT",
-                            Product_Price = 455.0
+                            Product_Price = 455.0,
+                            Product_Type_ID = 1
                         });
                 });
 
@@ -803,12 +1008,7 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Product_Type_ID")
-                        .HasColumnType("int");
-
                     b.HasKey("Product_Category_ID");
-
-                    b.HasIndex("Product_Type_ID");
 
                     b.ToTable("ProductCategories");
 
@@ -817,71 +1017,49 @@ namespace TrackwiseAPI.Migrations
                         {
                             Product_Category_ID = 1,
                             Description = "products for engines",
-                            Name = "Engine",
-                            Product_Type_ID = 1
+                            Name = "Engine"
                         },
                         new
                         {
                             Product_Category_ID = 2,
                             Description = "products for transmissions",
-                            Name = "Transmission",
-                            Product_Type_ID = 1
+                            Name = "Transmission"
                         },
                         new
                         {
                             Product_Category_ID = 3,
                             Description = "products for suspensions",
-                            Name = "Suspension",
-                            Product_Type_ID = 1
+                            Name = "Suspension"
                         },
                         new
                         {
                             Product_Category_ID = 4,
                             Description = "products for electrical",
-                            Name = "Electrical",
-                            Product_Type_ID = 1
+                            Name = "Electrical"
                         },
                         new
                         {
                             Product_Category_ID = 5,
-                            Description = "products for electrical",
-                            Name = "Electrical",
-                            Product_Type_ID = 2
+                            Description = "products for body",
+                            Name = "Body"
                         },
                         new
                         {
                             Product_Category_ID = 6,
-                            Description = "products for body",
-                            Name = "Body",
-                            Product_Type_ID = 1
+                            Description = "products for brakes",
+                            Name = "Brake"
                         },
                         new
                         {
                             Product_Category_ID = 7,
-                            Description = "products for brakes",
-                            Name = "Brake",
-                            Product_Type_ID = 1
+                            Description = "products for wheels",
+                            Name = "Wheel"
                         },
                         new
                         {
                             Product_Category_ID = 8,
-                            Description = "products for wheels",
-                            Name = "Wheel",
-                            Product_Type_ID = 1
-                        },
-                        new
-                        {
-                            Product_Category_ID = 9,
                             Description = "bolts,nuts ect..",
-                            Name = "Consumables",
-                            Product_Type_ID = 1
-                        },
-                        new
-                        {
-                            Product_Category_ID = 10,
-                            Description = "bolts,nuts ect..",
-                            Name = "Consumables",
-                            Product_Type_ID = 2
+                            Name = "Consumables"
                         });
                 });
 
@@ -972,8 +1150,9 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Supplier_ID"));
 
-                    b.Property<int>("Admin_ID")
-                        .HasColumnType("int");
+                    b.Property<string>("Contact_Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -985,22 +1164,20 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Supplier_ID");
 
-                    b.HasIndex("Admin_ID");
-
                     b.ToTable("Suppliers");
 
                     b.HasData(
                         new
                         {
                             Supplier_ID = 1,
-                            Admin_ID = 1,
+                            Contact_Number = "0125554789",
                             Email = "abc@gmail.com",
                             Name = "ABC Suppliers"
                         },
                         new
                         {
                             Supplier_ID = 2,
-                            Admin_ID = 2,
+                            Contact_Number = "0125554789",
                             Email = "xyz@gmail.com",
                             Name = "XYZ Suppliers"
                         });
@@ -1196,6 +1373,57 @@ namespace TrackwiseAPI.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("TrackwiseAPI.DBContext.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("TrackwiseAPI.DBContext.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrackwiseAPI.DBContext.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("TrackwiseAPI.DBContext.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
                 {
                     b.HasOne("TrackwiseAPI.Models.Entities.Job", "Job")
@@ -1366,16 +1594,13 @@ namespace TrackwiseAPI.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductCategory");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.ProductCategory", b =>
-                {
                     b.HasOne("TrackwiseAPI.Models.Entities.ProductType", "ProductType")
-                        .WithMany("productCategories")
+                        .WithMany("Products")
                         .HasForeignKey("Product_Type_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ProductCategory");
 
                     b.Navigation("ProductType");
                 });
@@ -1397,17 +1622,6 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Supplier");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Supplier", b =>
-                {
-                    b.HasOne("TrackwiseAPI.Models.Entities.Admin", "Admin")
-                        .WithMany("Suppliers")
-                        .HasForeignKey("Admin_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Admin");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trailer", b =>
@@ -1442,8 +1656,6 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Admin", b =>
                 {
-                    b.Navigation("Suppliers");
-
                     b.Navigation("jobs");
                 });
 
@@ -1523,7 +1735,7 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.ProductType", b =>
                 {
-                    b.Navigation("productCategories");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Supplier", b =>

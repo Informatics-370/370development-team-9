@@ -16,13 +16,13 @@ export class EditTrailerComponent {
     model:"",
     weight:0,
     
-    trailer_Status_ID:0,
+    trailer_Status_ID:1,
     trailerStatus:{
       trailer_Status_ID:0,
       status:"",
       description:""
     },
-    trailer_Type_ID:0,
+    trailer_Type_ID:1,
     trailerType:{
       trailer_Type_ID:0,
       name:"",
@@ -52,6 +52,5 @@ export class EditTrailerComponent {
     this.dataService.EditTrailer(this.trailerDetails.trailerID, this.trailerDetails).subscribe({
       next: (response) => {this.router.navigate(['/Admin-Screen/trailers'])}
     })
-    console.log('yes')
   }
 }

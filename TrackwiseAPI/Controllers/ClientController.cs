@@ -58,7 +58,7 @@ namespace TrackwiseAPI.Controllers
         [Route("AddClient")]
         public async Task<IActionResult> AddClient(ClientVM cvm)
         {
-            var client = new Client { Name = cvm.Name, LastName = cvm.LastName, PhoneNumber = cvm.PhoneNumber };
+            var client = new Client { Name = cvm.Name, PhoneNumber = cvm.PhoneNumber };
 
             try
             {
@@ -84,8 +84,14 @@ namespace TrackwiseAPI.Controllers
                 var existingClient = await _clientRepository.GetClientAsync(ClientID);
                 if (existingClient == null) return NotFound($"The client does not exist");
 
+                if (existingClient.Name == cvm.Name &&
+                    existingClient.PhoneNumber == cvm.PhoneNumber)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingClient);
+                }
+
                 existingClient.Name = cvm.Name;
-                existingClient.LastName = cvm.LastName;
                 existingClient.PhoneNumber = cvm.PhoneNumber;
 
                 if (await _clientRepository.SaveChangesAsync())

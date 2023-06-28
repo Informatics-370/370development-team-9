@@ -6,6 +6,10 @@ import { Truck } from 'src/app/shared/truck';
 import { Trailer } from '../shared/trailer';
 import { Admin } from '../shared/admin';
 import { Client } from '../shared/client';
+import { Supplier } from '../shared/supplier';
+import { Product } from '../shared/product';
+import { LoginUser } from '../shared/login-user';
+import { User } from '../shared/user';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +25,11 @@ export class DataService {
   }
 
   constructor(private httpClient: HttpClient) { }
+
+  /*LOGIN*/
+  LoginUser(loginUser: LoginUser){
+    return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
+  }
 
   /*DRIVER SECTION*/
   GetDrivers(): Observable<any>{
@@ -119,7 +128,6 @@ export class DataService {
 
   }
 
-
   GetAdmin(admin_ID: Number): Observable<Admin>
   {
     return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}` );
@@ -150,7 +158,7 @@ export class DataService {
 
   GetClient(client_ID: Number): Observable<Client>
   {
-    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetDriver/${client_ID}` );
+    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetClient/${client_ID}` );
   }
 
   EditClient(client_ID: number , EditClientReq: Client):Observable<Client>
@@ -161,5 +169,64 @@ export class DataService {
   DeleteClient(client_ID: number):Observable<Client>
   {
       return this.httpClient.delete<Client>(`${this.apiUrl}Client/DeleteClient/${client_ID}`);
+  }
+
+
+  /*Supplier Section */
+
+  GetSuppliers(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Supplier/GetAllSuppliers`)
+    .pipe(map(result => result))
+  }
+
+  AddSupplier(AddSupplierReq: Supplier): Observable<Supplier>
+  {
+    return this.httpClient.post<Supplier>(`${this.apiUrl}Supplier/AddSupplier/`, AddSupplierReq)
+    .pipe(map(result => result))
+  }
+
+  GetSupplier(supplier_ID: Number): Observable<Supplier>
+  {
+    return this.httpClient.get<Supplier>(`${this.apiUrl}Supplier/GetSupplier/${supplier_ID}` );
+  }
+
+  EditSupplier(supplier_ID: number , EditSupplierReq: Supplier):Observable<Supplier>
+  {
+      return this.httpClient.put<Supplier>(`${this.apiUrl}Supplier/EditSupplier/${supplier_ID}`, EditSupplierReq);
+  }
+
+  DeleteSupplier(supplier_ID: number):Observable<Supplier>
+  {
+      return this.httpClient.delete<Supplier>(`${this.apiUrl}Supplier/DeleteSupplier/${supplier_ID}`);
+  }
+
+
+
+  /*Product Section */
+
+  GetProducts(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Product/GetAllProducts`)
+    .pipe(map(result => result))
+  }
+
+  AddProduct(AddProductReq: Product): Observable<Product>
+  {
+    return this.httpClient.post<Product>(`${this.apiUrl}Product/AddProduct/`, AddProductReq)
+    .pipe(map(result => result))
+  }
+
+  GetProduct(product_ID: Number): Observable<Product>
+  {
+    return this.httpClient.get<Product>(`${this.apiUrl}Product/GetProduct/${product_ID}` );
+  }
+
+  EditProduct(product_ID: number , EditProductReq: Product):Observable<Product>
+  {
+      return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq);
+  }
+
+  DeleteProduct(product_ID: number):Observable<Product>
+  {
+      return this.httpClient.delete<Product>(`${this.apiUrl}Product/DeleteProduct/${product_ID}`);
   }
 }

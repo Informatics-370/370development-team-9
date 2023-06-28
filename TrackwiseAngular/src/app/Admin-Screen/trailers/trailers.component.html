@@ -3,22 +3,19 @@
 <div class="col-lg-3 main-content"></div>
 <div class="col-lg-7 main-content">
 <div class="container container-fluid">
-
+  <h2>Trailer List</h2>
       <!-- Search bar -->
       <br>
       <div class="row">
         <div class="col-lg-9">
           <div class="input-group">
-            
             <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-              aria-describedby="search-addon" />
-           
-            <button class="btn btn-primary" type="button">Search</button>
-
+              aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+            <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
           </div>
         </div>
         <div class="col-lg-3">
-            <button type="button" class="btn create-btn" routerLink="add-trailers">Add Trailer</button>
+          <button type="button" class="btn create-btn" routerLink="add-trailers">Add Trailer</button>
         </div>
       </div>
       <br>
@@ -37,6 +34,9 @@
           </tr>
         </thead>
         <tbody>
+          <tr *ngIf="trailers.length === 0">
+            <td colspan="5">No results were found.</td>
+          </tr>
           <tr *ngFor="let trailer of trailers">
             <td>{{trailer.trailer_License}}</td>
             <td>{{trailer.model}}</td>

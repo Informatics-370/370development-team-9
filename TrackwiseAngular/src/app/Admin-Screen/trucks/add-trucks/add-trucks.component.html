@@ -7,11 +7,13 @@
     <h2>Add Truck</h2>
       
     <form #form="ngForm" (ngSubmit)="AddTruck()">
-        <div class="mb-3">
-          <label for="truck_License" class="form-label">Truck License</label>
-          <input type="text" class="form-control" id="truck_License" aria-describedby="truck_License" required [(ngModel)] = "AddTruckRequest.truck_License"     
-          name="name" [(ngModel)]="AddTruckRequest.truck_License" >
-        </div>
+      <div class="mb-3">
+        <label for="truck_License" class="form-label">Truck License</label>
+        <input type="text" class="form-control" id="truck_License" aria-describedby="truck_License" required [(ngModel)]="AddTruckRequest.truck_License"
+          name="truck_License" [(ngModel)]="AddTruckRequest.truck_License"
+          [ngModelOptions]="{standalone: true}" (input)="AddTruckRequest.truck_License = AddTruckRequest.truck_License.toUpperCase()"
+          maxlength="8">
+      </div>
       
         <div class="mb-3">
           <label for="model" class="form-label">Model</label>
@@ -21,12 +23,12 @@
       
         <div class="mb-3">
             <label for="status" class="form-label">Status</label>
-            <select class="form-select" id="status" [(ngModel)]="AddTruckRequest.truck_Status_ID" name="status">
+            <select class="form-select" id="status" [(ngModel)]="AddTruckRequest.truck_Status_ID" name="status" required>
               <option value="1">Available</option>
               <option value="2">Unavailable</option>
               <option value="3">Under Maintenance</option>
             </select>
-          </div>
+        </div>
           
         
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Add Truck</button>&nbsp;

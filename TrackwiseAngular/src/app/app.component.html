@@ -1,41 +1,41 @@
-<!--TEST COMMENT-->
-<!-- Top Row Of The Page -->
-<div class="side-nav">
-  <div class="row top-row">
-    <div class="col-lg-3">
-      <!-- TrackWise Logo -->  
-      <img src="/assets/TrackWiseLogo.jpg" style="width: 20%; height: auto;">
-    </div>
-    <div class="col-lg-2"></div>
-    <div class="col-lg-1">
-      <img src="/assets/Mail.jpg" style="display: block; width: 37%; height: auto; margin: 10px;">
-    </div>
-    <div class="col-lg-1">
-      <img src="/assets/User Icon.jpg" style="display: inline-block; width: 26%; height: auto; margin: 10px;">  
-      <p style="display: inline-block; color: white;"><u>User Name</u></p>  
-      
-    </div>
-    
-    
-  </div>
-  
-  <!-- Side NavBar -->  
-  <ul>
-    <li><a routerLink="/">Home</a></li>
-    <li><a routerLink="Admin-Screen/clients">Clients</a></li>
-    <li><a routerLink="Admin-Screen/customers">Customers</a></li>
-    <li><a routerLink="Admin-Screen/drivers">Drivers</a></li>
-    <li><a routerLink="Admin-Screen/jobs">Jobs</a></li>
-    <li><a routerLink="Admin-Screen/orders">Orders</a></li>
-    <li><a routerLink="Admin-Screen/reports">Reports</a></li>
-    <li><a routerLink="Admin-Screen/suppliers">Suppliers</a></li>
-    <li><a routerLink="Admin-Screen/trailers">Trailers</a></li>
-    <li><a routerLink="Admin-Screen/trucks">Trucks</a></li>
-  </ul>
-</div>
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <button mat-icon-button  *ngIf="isLoggedIn">
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <h1>TrackWise</h1>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-<div class="app-container">
-  <div class="main-content" style="margin-top: 60px;">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+<mat-sidenav-container>
+  <mat-sidenav #sidenav mode="side" opened="true" class="side-container" *ngIf="isAdmin">
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="'Admin-Screen/admins'">Admins</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/clients'">Clients</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/customers'">Customers</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/drivers'">Drivers</a>  
+      <a mat-list-item [routerLink]="'Admin-Screen/jobs'">Jobs</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/orders'">Orders</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/products'">Products</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/reports'">Reports</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/suppliers'">Suppliers</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/trailers'">Trailers</a>
+      <a mat-list-item [routerLink]="'Admin-Screen/trucks'">Trucks</a>
+      <a mat-list-item (click)="logout()"> Logout </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav #sidenav mode="side" opened="true" class="side-container" *ngIf="isCustomer">
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="'Admin-Screen/admins'">Admins</a>
+        <a mat-list-item (click)="logout()"> Logout </a>
+      </mat-nav-list>
+  </mat-sidenav>
+
+
+  <mat-sidenav-content class="content-container">
+    <div style="height: 88vh;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -18,7 +18,7 @@ export class EditTruckComponent implements OnInit{
     truckID:0,
     truck_License:"",
     model:"",
-    truck_Status_ID:0,
+    truck_Status_ID:1,
     truckStatus:{
       truck_Status_ID:0,
       status:"",

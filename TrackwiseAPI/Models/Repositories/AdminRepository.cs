@@ -28,7 +28,7 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.ToArrayAsync();
         }
 
-        public async Task<Admin> GetAdminAsync(int AdminID)
+        public async Task<Admin> GetAdminAsync(string AdminID)
         {
             IQueryable<Admin> query = _context.Admins.Where(c => c.Admin_ID == AdminID);
             return await query.FirstOrDefaultAsync();
