@@ -1,4 +1,4 @@
-.side-nav {
+/* .side-nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -29,7 +29,7 @@
   }
 
   .user-icon {
-    /* ... */
+    
     background-image: url('/assets/TrackWiseLogo.jpg');
     background-size: 16px 16px;
     background-position: center;
@@ -41,6 +41,19 @@
   border-radius: 50%;
   background-color: #ccc;
 }
+
+ */
+  
+ .side-container {
+  min-width: 200px;
+ 
+}
+
+.content-container {
+  padding: 10px;
+ 
+}
+
 
 .navbar {
   display: flex;
@@ -140,6 +153,7 @@
 //   align-items: center;
 //   gap: 10px;
 // }
+
 
 
 

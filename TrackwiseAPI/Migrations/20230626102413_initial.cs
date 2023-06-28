@@ -836,9 +836,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Order_ID", "Customer_ID", "Date", "Status", "Total" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7784), "Ordered", 2897.0 },
-                    { 2, 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7796), "Ordered", 2997.0 },
-                    { 3, 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7798), "Ordered", 2998.0 }
+                    { 1, 1, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(148), "Ordered", 2897.0 },
+                    { 2, 2, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(159), "Ordered", 2997.0 },
+                    { 3, 3, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(160), "Ordered", 2998.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -861,9 +861,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Invoice_number", "Date", "Order_ID", "Total_Amount" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7881), 1, 200.5 },
-                    { 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7883), 2, 75.200000000000003 },
-                    { 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7884), 3, 450.0 }
+                    { 1, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(237), 1, 200.5 },
+                    { 2, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(239), 2, 75.200000000000003 },
+                    { 3, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(240), 3, 450.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -882,11 +882,11 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7910), 1, 1, 150.5 },
-                    { 2, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7912), 1, 2, 50.0 },
-                    { 3, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7913), 2, 3, 75.200000000000003 },
-                    { 4, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7914), 3, 1, 200.0 },
-                    { 5, new DateTime(2023, 6, 20, 10, 38, 36, 354, DateTimeKind.Local).AddTicks(7916), 3, 2, 250.0 }
+                    { 1, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(255), 1, 1, 150.5 },
+                    { 2, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(256), 1, 2, 50.0 },
+                    { 3, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(257), 2, 3, 75.200000000000003 },
+                    { 4, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(258), 3, 1, 200.0 },
+                    { 5, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(259), 3, 2, 250.0 }
                 });
 
             migrationBuilder.InsertData(
