@@ -2,13 +2,15 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
 import { OrdersComponent } from './Admin-Screen/orders/orders.component';
-
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { DriversComponent } from './Admin-Screen/drivers/drivers.component';
 
 import { ReportsComponent } from './Admin-Screen/reports/reports.component';
@@ -49,7 +51,6 @@ import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,8 +86,13 @@ import { RegisterComponent } from './Authentication/register/register.component'
   ],
   imports: [
     BrowserModule,
+    MatInputModule ,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MatToolbarModule,
     CommonModule,
     HttpClientModule,
     FormsModule,
