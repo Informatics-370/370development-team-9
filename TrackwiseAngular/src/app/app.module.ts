@@ -53,6 +53,9 @@ import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
 
 import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing-page/customer-landing-page.component';
+import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
+import { CartComponent } from './Customer-Screen/cart/cart.component';
+import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
 
 
 
@@ -87,7 +90,9 @@ import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing
     LoginComponent,
     RegisterComponent,
     CustomerLandingPageComponent,
-   
+    CustomerOrdersComponent,
+    CartComponent,
+    AboutUsComponent
  
   ],
   imports: [
@@ -102,7 +107,7 @@ import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing
     MatToolbarModule,
     MatIconModule,
     MatBadgeModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

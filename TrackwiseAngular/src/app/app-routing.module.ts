@@ -41,6 +41,9 @@ import { LoginComponent } from './Authentication/login/login.component';
 
 //Customer components-----------------------------------------------------------
 import { CustomerLandingPageComponent } from './Customer-Screen/customer-landing-page/customer-landing-page.component';
+import { CartComponent } from './Customer-Screen/cart/cart.component';
+import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
+import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
 
 
 
@@ -87,6 +90,11 @@ const routes: Routes = [
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-landing-page', component: CustomerLandingPageComponent},
+  {path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent},
+  {path: 'Customer-Screen/about-us', component: AboutUsComponent},
+  {path: 'Customer-Screen/cart', component: CartComponent},
+
+
 
 ];
 

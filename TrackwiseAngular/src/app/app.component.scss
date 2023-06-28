@@ -88,3 +88,58 @@
   border-radius: 50%;
   margin-left: 4px;
 }
+
+.dropdown-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-icon {
+  margin-left: 5px;
+  margin-right: -5px; /* Add this to offset the icon position */
+}
+
+.dropdown-menu {
+  margin-left: -10px;
+  margin-right: -5px; /* Add this to adjust the menu position */
+}
+
+.menu-icon {
+  margin-right: 5px;
+}
+
+.search-bar-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px; /* Adjust the height as needed */
+}
+
+// .rounded-search {
+//   border-radius: 20px;
+//   overflow: hidden;
+//   background-color: #f2f2f2;
+//   padding: 2px; /* Adjust the padding as needed */
+//   width: 150px; /* Adjust the width as needed */
+// }
+
+// .search-icon {
+//   color: gray;
+//   margin-right: 5px;
+//   font-size: 16px; /* Adjust the font size as needed */
+// }
+
+// .mat-form-field {
+//   margin-bottom: 0; /* Adjust the margin as needed */
+// }
+
+// .navbar-buttons {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+
+
