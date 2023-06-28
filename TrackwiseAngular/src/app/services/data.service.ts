@@ -145,7 +145,9 @@ export class DataService {
 
   /*Admin SECTION*/
   GetAdmins(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Admin/GetAllAdmin`)
+    let token = localStorage.getItem('Token'); // Retrieve the token from localStorage
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Admin/GetAllAdmin`, {headers})
     .pipe(map(result => result))
   }
 
