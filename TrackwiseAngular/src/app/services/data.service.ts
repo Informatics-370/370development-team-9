@@ -24,7 +24,35 @@ export class DataService {
     })
   }
 
-  constructor(private httpClient: HttpClient) { }
+
+  // TEMPORARY LOCALSTORAGE
+  constructor(private httpClient: HttpClient) {
+
+    if(!localStorage.getItem('product')){
+      let product = [
+        {
+          "id": 1,
+          "product_Name": "Oil",
+          "description": "American",
+          "product_Price": 499,
+        },
+        {
+          "id": 2,
+          "product_Name": "Grease VXP-2",
+          "description": "American",
+          "product_Price": 250,
+        },
+        {
+        "id": 3,
+        "product_Name": "Oil Filter",
+        "description": "American",
+        "product_Price": 365,
+        }
+      ]
+      localStorage.setItem('product', JSON.stringify(product))
+    }
+
+   }
 
   /*LOGIN*/
   LoginUser(loginUser: LoginUser){
@@ -203,6 +231,9 @@ export class DataService {
 
 
   /*Product Section */
+
+
+
 
   GetProducts(): Observable<any>{
     return this.httpClient.get(`${this.apiUrl}Product/GetAllProducts`)
