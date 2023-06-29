@@ -10,6 +10,6 @@ namespace TrackwiseAPI.Models.Interfaces
 
         // Customer
         Task<Customer[]> GetAllCustomerAsync();
-        Task<Customer> GetCustomerAsync(int customerId);
+        Task<Customer> GetCustomerAsync(string customerId);
     }
 }

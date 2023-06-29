@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrackwiseAPI.DBContext;
 
@@ -11,9 +12,11 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    partial class TwDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230629121636_dropCustomerTable")]
+    partial class dropCustomerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -290,58 +293,6 @@ namespace TrackwiseAPI.Migrations
                     b.ToTable("Clients");
                 });
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Customer", b =>
-                {
-                    b.Property<string>("Customer_ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Customer_ID");
-
-                    b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Customer_ID = "1",
-                            Email = "johndoe@gmail.com",
-                            LastName = "Doe",
-                            Name = "John",
-                            Password = "john123"
-                        },
-                        new
-                        {
-                            Customer_ID = "2",
-                            Email = "janesmith@gmail.com",
-                            LastName = "Smith",
-                            Name = "Jane",
-                            Password = "jane123"
-                        },
-                        new
-                        {
-                            Customer_ID = "3",
-                            Email = "joemama@gmail.com",
-                            LastName = "Mama",
-                            Name = "Joe",
-                            Password = "joe123"
-                        });
-                });
-
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
                 {
                     b.Property<int>("Delivery_ID")
@@ -551,21 +502,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = 1,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5317),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9160),
                             Order_ID = 1,
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = 2,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5319),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9172),
                             Order_ID = 2,
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = 3,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5320),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9173),
                             Order_ID = 3,
                             Total_Amount = 450.0
                         });
@@ -668,10 +619,6 @@ namespace TrackwiseAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_ID"));
 
-                    b.Property<string>("Customer_ID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -684,35 +631,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Order_ID");
 
-                    b.HasIndex("Customer_ID");
-
                     b.ToTable("Orders");
-
-                    b.HasData(
-                        new
-                        {
-                            Order_ID = 1,
-                            Customer_ID = "1",
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5231),
-                            Status = "Ordered",
-                            Total = 2897.0
-                        },
-                        new
-                        {
-                            Order_ID = 2,
-                            Customer_ID = "2",
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5242),
-                            Status = "Ordered",
-                            Total = 2997.0
-                        },
-                        new
-                        {
-                            Order_ID = 3,
-                            Customer_ID = "3",
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5245),
-                            Status = "Ordered",
-                            Total = 2998.0
-                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order_Line", b =>
@@ -805,7 +724,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 1,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5341),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9197),
                             Order_ID = 1,
                             Payment_Type_ID = 1,
                             amount_paid = 150.5
@@ -813,7 +732,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 2,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5343),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9198),
                             Order_ID = 1,
                             Payment_Type_ID = 2,
                             amount_paid = 50.0
@@ -821,7 +740,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 3,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5344),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9200),
                             Order_ID = 2,
                             Payment_Type_ID = 3,
                             amount_paid = 75.200000000000003
@@ -829,7 +748,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 4,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5345),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9201),
                             Order_ID = 3,
                             Payment_Type_ID = 1,
                             amount_paid = 200.0
@@ -837,7 +756,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = 5,
-                            Date = new DateTime(2023, 6, 29, 14, 19, 5, 582, DateTimeKind.Local).AddTicks(5347),
+                            Date = new DateTime(2023, 6, 29, 14, 16, 35, 739, DateTimeKind.Local).AddTicks(9202),
                             Order_ID = 3,
                             Payment_Type_ID = 2,
                             amount_paid = 250.0
@@ -1538,17 +1457,6 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("JobType");
                 });
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
-                {
-                    b.HasOne("TrackwiseAPI.Models.Entities.Customer", "Customer")
-                        .WithMany("orders")
-                        .HasForeignKey("Customer_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order_Line", b =>
                 {
                     b.HasOne("TrackwiseAPI.Models.Entities.Order", "Order")
@@ -1663,11 +1571,6 @@ namespace TrackwiseAPI.Migrations
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Client", b =>
                 {
                     b.Navigation("jobs");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Customer", b =>
-                {
-                    b.Navigation("orders");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>

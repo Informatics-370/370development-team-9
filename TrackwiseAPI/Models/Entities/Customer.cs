@@ -6,7 +6,7 @@ namespace TrackwiseAPI.Models.Entities
     public class Customer
     {
         [Key]
-        public int Customer_ID { get; set; }
+        public string Customer_ID { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
