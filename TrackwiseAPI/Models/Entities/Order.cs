@@ -12,7 +12,7 @@ namespace TrackwiseAPI.Models.Entities
         public string Status { get; set; }
 
         //Foreign Key for Customer_ID
-        public int Customer_ID { get; set; }
+        public string Customer_ID { get; set; }
         [ForeignKey("Customer_ID")]
         public Customer Customer { get; set; }
 
