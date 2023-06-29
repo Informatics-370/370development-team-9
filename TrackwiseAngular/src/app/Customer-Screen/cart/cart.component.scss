@@ -1,0 +1,86 @@
+table {
+    width: 70%;
+    border-collapse: collapse;
+    background-color: rgb(241, 241, 241);
+    margin: 0 auto;
+    border-radius: 15px;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .qtyBtn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .qtyBtn:hover {
+    background-color: #004F9E;
+    color: white;
+    border: 1px solid white;
+  }
+  
+  .removeBtn {
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: white;
+  }
+  
+  .removeBtn:hover {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+
+  .continueBtn{
+    width: 160px;
+    border: 2px solid #117fca;
+    border-radius: 5px;
+    background-color: white;
+    color: #117fca;
+    font-weight: bold;
+  }
+  
+  .checkoutBtn{
+    width: 160px;
+    border: 2px solid green;
+    border-radius: 5px;
+    background-color: white;
+    color: green;
+    font-weight: bold;
+  }
+
+  .continueBtn:hover{
+    width: 160px;
+    border: 2px solid #117fca;
+    border-radius: 5px;
+    background-color: #117fca;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .checkoutBtn:hover{
+    width: 160px;
+    border: 2px solid green;
+    border-radius: 5px;
+    background-color: green;
+    color: white;
+    font-weight: bold;
+  }
