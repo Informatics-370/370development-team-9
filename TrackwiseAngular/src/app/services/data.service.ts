@@ -28,7 +28,7 @@ export class DataService {
 
   /*LOGIN*/
   LoginUser(loginUser: LoginUser){
-    return this.httpClient.post<User>(`${this.apiUrl}Authentication/Login`, loginUser, this.httpOptions)
+    return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
 
   /*DRIVER SECTION*/
