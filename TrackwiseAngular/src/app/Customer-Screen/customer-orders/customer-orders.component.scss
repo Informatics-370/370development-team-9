@@ -1,0 +1,51 @@
+table {
+    width: 70%;
+    border-collapse: collapse;
+    background-color: rgb(241, 241, 241);
+    margin: 0 auto;
+    border-radius: 15px;
+  }
+  
+  th, td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .removeBtn {
+    width: 80px;
+    border: 2px solid red;
+    color: red;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: white;
+  }
+  
+  .removeBtn:hover {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+
+  .continueBtn{
+    width: 80px;
+    border: 2px solid #117fca;
+    border-radius: 5px;
+    background-color: white;
+    color: #117fca;
+    font-weight: bold;
+  }
+
+  .continueBtn:hover{
+    border: 2px solid #117fca;
+    border-radius: 5px;
+    background-color: #117fca;
+    color: white;
+    font-weight: bold;
+  }
+  
