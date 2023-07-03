@@ -106,86 +106,116 @@ export class DataService {
 
   /*DRIVER SECTION*/
   GetDrivers(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Driver/GetAllDrivers`)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Driver/GetAllDrivers`, {headers})
     .pipe(map(result => result))
   }
 
   AddDriver(AddDriverReq: Driver): Observable<Driver>
   {
-    return this.httpClient.post<Driver>(`${this.apiUrl}Driver/AddDriver/`, AddDriverReq)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Driver>(`${this.apiUrl}Driver/AddDriver/`, AddDriverReq, {headers})
     .pipe(map(result => result))
 
   }
 
   GetDriver(driver_ID: Number): Observable<Driver>
   {
-    return this.httpClient.get<Driver>(`${this.apiUrl}Driver/GetDriver/${driver_ID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Driver>(`${this.apiUrl}Driver/GetDriver/${driver_ID}`, {headers} );
   }
 
   EditDriver(driver_ID: number , EditDriverReq: Driver):Observable<Driver>
   {
-      return this.httpClient.put<Driver>(`${this.apiUrl}Driver/EditDriver/${driver_ID}`, EditDriverReq);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Driver>(`${this.apiUrl}Driver/EditDriver/${driver_ID}`, EditDriverReq, {headers});
   }
 
   DeleteDriver(driver_ID: number):Observable<Driver>
   {
-      return this.httpClient.delete<Driver>(`${this.apiUrl}Driver/DeleteDriver/${driver_ID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Driver>(`${this.apiUrl}Driver/DeleteDriver/${driver_ID}`, {headers});
   }
 
   /*TRUCK SECTION*/ 
   GetTrucks(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Truck/GetAllTrucks`)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Truck/GetAllTrucks`, {headers})
     .pipe(map(result => result))
   }
 
   AddTruck(AddTruckRequest: Truck): Observable<Truck>
   {
-    return this.httpClient.post<Truck>(`${this.apiUrl}Truck/AddTruck/`, AddTruckRequest)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Truck>(`${this.apiUrl}Truck/AddTruck/`, AddTruckRequest, {headers})
     .pipe(map(result => result))
 
   }
 
   GetTruck(truckID: Number): Observable<Truck>
   {
-    return this.httpClient.get<Truck>(`${this.apiUrl}Truck/GetTruck/${truckID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Truck>(`${this.apiUrl}Truck/GetTruck/${truckID}`, {headers} );
   }
 
   EditTruck(truckID: number , EditTruckRequest: Truck):Observable<Truck>
   {
-      return this.httpClient.put<Truck>(`${this.apiUrl}Truck/EditTruck/${truckID}`, EditTruckRequest);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Truck>(`${this.apiUrl}Truck/EditTruck/${truckID}`, EditTruckRequest, {headers});
   }
 
   DeleteTruck(truckID: number):Observable<Truck>
   {
-      return this.httpClient.delete<Truck>(`${this.apiUrl}Truck/DeleteTruck/${truckID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Truck>(`${this.apiUrl}Truck/DeleteTruck/${truckID}`, {headers});
   }
 
   /*TRAILER SECTION*/ 
   GetTrailers(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Trailer/GetAllTrailers`)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Trailer/GetAllTrailers`, {headers})
     .pipe(map(result => result))
   }
 
   AddTrailer(AddTrailerRequest: Trailer): Observable<Trailer>
   {
-    return this.httpClient.post<Trailer>(`${this.apiUrl}Trailer/AddTrailer/`, AddTrailerRequest)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Trailer>(`${this.apiUrl}Trailer/AddTrailer/`, AddTrailerRequest, {headers})
     .pipe(map(result => result))
 
   }
 
   GetTrailer(trailerID: Number): Observable<Trailer>
   {
-    return this.httpClient.get<Trailer>(`${this.apiUrl}Trailer/GetTrailer/${trailerID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Trailer>(`${this.apiUrl}Trailer/GetTrailer/${trailerID}`, {headers} );
   }
 
   EditTrailer(trailerID: number , EditTrailerRequest: Trailer):Observable<Trailer>
   {
-      return this.httpClient.put<Trailer>(`${this.apiUrl}Trailer/EditTrailer/${trailerID}`, EditTrailerRequest);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Trailer>(`${this.apiUrl}Trailer/EditTrailer/${trailerID}`, EditTrailerRequest, {headers});
   }
 
   DeleteTrailer(trailerID: number):Observable<Trailer>
   {
-      return this.httpClient.delete<Trailer>(`${this.apiUrl}Trailer/DeleteTrailer/${trailerID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Trailer>(`${this.apiUrl}Trailer/DeleteTrailer/${trailerID}`, {headers});
   }
 
   /*Admin SECTION*/
