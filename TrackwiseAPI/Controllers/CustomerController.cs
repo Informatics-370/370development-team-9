@@ -34,10 +34,7 @@ namespace TrackwiseAPI.Controllers
             _configuration = configuration;
             _customerRepository = customerRepository;
         }
-        /*        public CustomerController(ICustomerRepository customerRepository)
-                {
-                    _customerRepository = customerRepository;
-                }*/
+
 
         [HttpGet]
         [Route("GetAllCustomers")]
@@ -63,7 +60,7 @@ namespace TrackwiseAPI.Controllers
             {
                 var result = await _customerRepository.GetCustomerAsync(customerId);
 
-                if (result == null) return NotFound("Course does not exist. You need to create it first");
+                if (result == null) return NotFound("Customer does not exist. You need to create it first");
 
                 return Ok(result);
             }
@@ -108,6 +105,7 @@ namespace TrackwiseAPI.Controllers
 
             return Ok(customer);
         }
+
         [HttpPut]
         [Route("EditCustomer/{customerId}")]
         public async Task<ActionResult<CustomerVM>> EditCustomer(string customerId, CustomerVM cvm)
@@ -115,7 +113,8 @@ namespace TrackwiseAPI.Controllers
             try
             {
                 var existingCustomer = await _customerRepository.GetCustomerAsync(customerId);
-                if (existingCustomer == null) return NotFound($"The course does not exist");
+                if (existingCustomer == null) 
+                    return NotFound($"The customer does not exist");
 
                 var existingUser = await _userManager.FindByIdAsync(customerId);
                 if (existingUser == null)

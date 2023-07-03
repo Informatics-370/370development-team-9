@@ -1,5 +1,9 @@
 export interface User {
-    token?: string
-    user?: string
+    token:{
+        value:{
+            token:string;
+            user:string;
+        }
+    };
     role?: string
 }

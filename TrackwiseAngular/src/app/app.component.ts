@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, AfterContentChecked,ViewChild, AfterContentInit, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
+import { DataService } from './services/data.service';
+import { Data } from 'popper.js';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +11,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements AfterContentChecked{
   title: any;
-  isLoggedIn = false;
-  isAdmin = false;
-  isCustomer = false;
-  constructor(private router: Router) {}
+
+  constructor(private router: Router, public dataService: DataService) {}
   
   @ViewChild('sidenav', {static:true}) sidenav!: MatSidenav;
 
@@ -22,34 +22,10 @@ export class AppComponent implements AfterContentChecked{
   }
 
   ngAfterContentChecked(): void {
-    this.getRole();
+    this.dataService.getRole();
   }
   
-  getRole(): void {
-    var role = JSON.parse(localStorage.getItem("Role")!)
-    console.log('Role:', role); // Add this line
-    if (role == "Admin") {
-      this.isLoggedIn = true;
-      this.isAdmin = true;
-      console.log('Admin',this.isAdmin);
-    } else if(role == "Customer"){
-      this.isLoggedIn = true;
-      this.isCustomer = true;
-      console.log('Customer',this.isCustomer);
-    }
-  } 
- 
-    logout(){
-    if(localStorage.getItem('User'))
-    {
-      this.isLoggedIn = false;
-      this.isCustomer = false;
-      this.isAdmin = false;
-      localStorage.removeItem('User');
-      localStorage.removeItem('Role');
-      this.router.navigateByUrl('Authentication/login');
-    }
-  } 
+
 
   isAdminScreen(): boolean {
     return this.router.url.includes('/Admin-Screen');

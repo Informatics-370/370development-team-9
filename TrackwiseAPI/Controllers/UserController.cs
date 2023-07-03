@@ -21,38 +21,18 @@ namespace TrackwiseAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
-        private readonly IAdminRepository _adminRepository;
-        private readonly IClientRepository _clientRepository;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IDriverRepository _driverRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly ISupplierRepository _supplierRepository;
-        private readonly ITrailerRepository _trailerRepository;
-        private readonly ITruckRepository _truckRepository;
+
 
         public UserController(UserManager<AppUser> userManager,
      IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IAdminRepository adminRepository,
-            IClientRepository clientRepository,
-            ICustomerRepository customerRepository,
-            IDriverRepository driverRepository,
-            IProductRepository productRepository,
-            ISupplierRepository supplierRepository,
-            ITrailerRepository trailerRepository,
-            ITruckRepository truckRepository)
+            ICustomerRepository customerRepository)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
-            _adminRepository = adminRepository;
-            _clientRepository = clientRepository;
             _customerRepository = customerRepository;
-            _driverRepository = driverRepository;
-            _productRepository = productRepository;
-            _supplierRepository = supplierRepository;
-            _trailerRepository = trailerRepository;
-            _truckRepository = truckRepository;
         }
 /*
         [HttpPost]

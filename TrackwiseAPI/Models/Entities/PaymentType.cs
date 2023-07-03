@@ -5,7 +5,7 @@ namespace TrackwiseAPI.Models.Entities
     public class PaymentType
     {
         [Key]
-        public int Payment_Type_ID { get; set; }
+        public string Payment_Type_ID { get; set; }
         public string Name { get; set; }
         public string Descrtipion { get; set; }
 

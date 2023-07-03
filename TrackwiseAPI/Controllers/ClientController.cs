@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
@@ -15,6 +16,7 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ClientController : ControllerBase
     {
@@ -99,6 +101,7 @@ namespace TrackwiseAPI.Controllers
 
                 var result = await _userManager.CreateAsync(user, cvm.Password);
 
+                await _userManager.AddToRoleAsync(user, "Client");
                 await _userManager.AddToRoleAsync(user, "Client");
 
                 if (result.Errors.Count() > 0)

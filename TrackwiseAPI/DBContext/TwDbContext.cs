@@ -222,43 +222,43 @@ namespace TrackwiseAPI.DBContext
             // adding some data
             //
             modelBuilder.Entity<ProductType>().HasData(
-                new ProductType { Product_Type_ID = 1, Name = "Truck", Description = "Product has trailer components" },
-                new ProductType { Product_Type_ID = 2, Name = "Trailer", Description = "Product has truck components" }
+                new ProductType { Product_Type_ID = "1", Name = "Truck", Description = "Product has trailer components" },
+                new ProductType { Product_Type_ID = "2", Name = "Trailer", Description = "Product has truck components" }
             );
 
             modelBuilder.Entity<ProductCategory>().HasData(
-                new ProductCategory { Product_Category_ID = 1, Name = "Engine", Description = "products for engines"},
-                new ProductCategory { Product_Category_ID = 2, Name = "Transmission", Description = "products for transmissions" },
-                new ProductCategory { Product_Category_ID = 3, Name = "Suspension", Description = "products for suspensions"},
-                new ProductCategory { Product_Category_ID = 4, Name = "Electrical", Description = "products for electrical" },
-                new ProductCategory { Product_Category_ID = 5, Name = "Body", Description = "products for body"},
-                new ProductCategory { Product_Category_ID = 6, Name = "Brake", Description = "products for brakes"},
-                new ProductCategory { Product_Category_ID = 7, Name = "Wheel", Description = "products for wheels"},
-                new ProductCategory { Product_Category_ID = 8, Name = "Consumables", Description = "bolts,nuts ect.." }
+                new ProductCategory { Product_Category_ID = "1", Name = "Engine", Description = "products for engines"},
+                new ProductCategory { Product_Category_ID = "2", Name = "Transmission", Description = "products for transmissions" },
+                new ProductCategory { Product_Category_ID = "3", Name = "Suspension", Description = "products for suspensions"},
+                new ProductCategory { Product_Category_ID = "4", Name = "Electrical", Description = "products for electrical" },
+                new ProductCategory { Product_Category_ID = "5", Name = "Body", Description = "products for body"},
+                new ProductCategory { Product_Category_ID = "6", Name = "Brake", Description = "products for brakes"},
+                new ProductCategory { Product_Category_ID = "7", Name = "Wheel", Description = "products for wheels"},
+                new ProductCategory { Product_Category_ID = "8", Name = "Consumables", Description = "bolts,nuts ect.." }
             );
 
             modelBuilder.Entity<Product>().HasData(
-                new Product { Product_ID = 1, Product_Name = "Fuel Pump", Product_Description = "FUEL PRIMER PUMP/K5", Product_Price = 999, Product_Category_ID = 4, Product_Type_ID = 2 },
-                new Product { Product_ID = 2, Product_Name = "SEAL RING", Product_Description = "SEAL RING MB-S48", Product_Price = 899, Product_Category_ID = 5, Product_Type_ID = 1 },
-                new Product { Product_ID = 3, Product_Name = "CLUTCH", Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", Product_Price = 1499, Product_Category_ID = 7, Product_Type_ID = 2 },
-                new Product { Product_ID = 4, Product_Name = "AXLE NUT", Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)", Product_Price = 1199, Product_Category_ID = 7, Product_Type_ID = 1 },
-                new Product { Product_ID = 5, Product_Name = "BEARING", Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM", Product_Price = 9.99, Product_Category_ID = 8, Product_Type_ID = 1 },
-                new Product { Product_ID = 6, Product_Name = "SEAL OIL", Product_Description = "SEAL OIL STEERING M/B AXOR-S46", Product_Price = 119.99, Product_Category_ID = 6, Product_Type_ID = 1 },
-                new Product { Product_ID = 7, Product_Name = "BRAKEPAD", Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", Product_Price = 799, Product_Category_ID = 7, Product_Type_ID = 1 },
-                new Product { Product_ID = 8, Product_Name = "FAN BELT", Product_Description = "FAN BELT 9PK2300-U7", Product_Price = 455, Product_Category_ID = 1, Product_Type_ID = 1}
+                new Product { Product_ID = "1", Product_Name = "Fuel Pump", Product_Description = "FUEL PRIMER PUMP/K5", Product_Price = 999, Product_Category_ID = "4", Product_Type_ID = "2" },
+                new Product { Product_ID = "2", Product_Name = "SEAL RING", Product_Description = "SEAL RING MB-S48", Product_Price = 899, Product_Category_ID = "5", Product_Type_ID = "1" },
+                new Product { Product_ID = "3", Product_Name = "CLUTCH", Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", Product_Price = 1499, Product_Category_ID = "7", Product_Type_ID = "2" },
+                new Product { Product_ID = "4", Product_Name = "AXLE NUT", Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)", Product_Price = 1199, Product_Category_ID = "7", Product_Type_ID = "1" },
+                new Product { Product_ID = "5", Product_Name = "BEARING", Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM", Product_Price = 9.99, Product_Category_ID = "8", Product_Type_ID = "1" },
+                new Product { Product_ID = "6", Product_Name = "SEAL OIL", Product_Description = "SEAL OIL STEERING M/B AXOR-S46", Product_Price = 119.99, Product_Category_ID = "6", Product_Type_ID = "1" },
+                new Product { Product_ID = "7", Product_Name = "BRAKEPAD", Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", Product_Price = 799, Product_Category_ID = "7", Product_Type_ID = "1" },
+                new Product { Product_ID = "8", Product_Name = "FAN BELT", Product_Description = "FAN BELT 9PK2300-U7", Product_Price = 455, Product_Category_ID = "1", Product_Type_ID = "1"}
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Order_ID = 1, Date = DateTime.Now, Status="Ordered", Total = 2897, Customer_ID = "1" },
-                new Order { Order_ID = 2, Date = DateTime.Now, Status = "Ordered", Total = 2997, Customer_ID = "2" },
-                new Order { Order_ID = 3, Date = DateTime.Now, Status = "Ordered", Total = 2998, Customer_ID = "3" }
+                new Order { Order_ID = "1", Date = DateTime.Now, Status="Ordered", Total = 2897, Customer_ID = "1" },
+                new Order { Order_ID = "2", Date = DateTime.Now, Status = "Ordered", Total = 2997, Customer_ID = "2" },
+                new Order { Order_ID = "3", Date = DateTime.Now, Status = "Ordered", Total = 2998, Customer_ID = "3" }
             );
 
             modelBuilder.Entity<Order_Line>().HasData(
-               new Order_Line { Order_line_ID = 1, Orderid = 1, Productid = 1, Quantity = 2, SubTotal = 1998 },
-               new Order_Line { Order_line_ID = 2, Orderid = 1, Productid = 2, Quantity = 1, SubTotal = 899 },
-               new Order_Line { Order_line_ID = 3, Orderid = 2, Productid = 1, Quantity = 3, SubTotal = 2997 },
-               new Order_Line { Order_line_ID = 4, Orderid = 3, Productid = 3, Quantity = 2, SubTotal = 2998 }
+               new Order_Line { Order_line_ID = "8", Orderid = "1", Productid = "1", Quantity = 2, SubTotal = 1998 },
+               new Order_Line { Order_line_ID = "8", Orderid = "1", Productid = "2", Quantity = 1, SubTotal = 899 },
+               new Order_Line { Order_line_ID = "8", Orderid = "2", Productid = "1", Quantity = 3, SubTotal = 2997 },
+               new Order_Line { Order_line_ID = "8", Orderid = "3", Productid = "3", Quantity = 2, SubTotal = 2998 }
             );
 
             modelBuilder.Entity<Customer>().HasData(
@@ -268,23 +268,23 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Invoice>().HasData(
-                new Invoice { Invoice_number = 1, Order_ID = 1, Total_Amount = 200.50, Date = DateTime.Now },
-                new Invoice { Invoice_number = 2, Order_ID = 2, Total_Amount = 75.20, Date = DateTime.Now },
-                new Invoice { Invoice_number = 3, Order_ID = 3, Total_Amount = 450.00, Date = DateTime.Now }
+                new Invoice { Invoice_number = "1", Order_ID = "1", Total_Amount = 200.50, Date = DateTime.Now },
+                new Invoice { Invoice_number = "2", Order_ID = "2", Total_Amount = 75.20, Date = DateTime.Now },
+                new Invoice { Invoice_number = "3", Order_ID = "3", Total_Amount = 450.00, Date = DateTime.Now }
             );
 
             modelBuilder.Entity<Payment>().HasData(
-                new Payment { Payment_ID = 1, Order_ID = 1, Payment_Type_ID = 1, amount_paid = 150.50, Date = DateTime.Now },
-                new Payment { Payment_ID = 2, Order_ID = 1, Payment_Type_ID = 2, amount_paid = 50.00, Date = DateTime.Now },
-                new Payment { Payment_ID = 3, Order_ID = 2, Payment_Type_ID = 3, amount_paid = 75.20, Date = DateTime.Now },
-                new Payment { Payment_ID = 4, Order_ID = 3, Payment_Type_ID = 1, amount_paid = 200.00, Date = DateTime.Now },
-                new Payment { Payment_ID = 5, Order_ID = 3, Payment_Type_ID = 2, amount_paid = 250.00, Date = DateTime.Now }
+                new Payment { Payment_ID = "1", Order_ID = "1", Payment_Type_ID = "1", amount_paid = 150.50, Date = DateTime.Now },
+                new Payment { Payment_ID = "2", Order_ID = "1", Payment_Type_ID = "2", amount_paid = 50.00, Date = DateTime.Now },
+                new Payment { Payment_ID = "3", Order_ID = "2", Payment_Type_ID = "3", amount_paid = 75.20, Date = DateTime.Now },
+                new Payment { Payment_ID = "4", Order_ID = "3", Payment_Type_ID = "1", amount_paid = 200.00, Date = DateTime.Now },
+                new Payment { Payment_ID = "5", Order_ID = "3", Payment_Type_ID = "2", amount_paid = 250.00, Date = DateTime.Now }
             );
 
             modelBuilder.Entity<PaymentType>().HasData(
-                new PaymentType { Payment_Type_ID = 1, Name = "Credit Card", Descrtipion = "Customer paid with credit card" },
-                new PaymentType { Payment_Type_ID = 2, Name = "EFT", Descrtipion = "Customer paid with EFT" },
-                new PaymentType { Payment_Type_ID = 3, Name = "Cash", Descrtipion = "Customer paid with cash" }
+                new PaymentType { Payment_Type_ID = "1", Name = "Credit Card", Descrtipion = "Customer paid with credit card" },
+                new PaymentType { Payment_Type_ID = "2", Name = "EFT", Descrtipion = "Customer paid with EFT" },
+                new PaymentType { Payment_Type_ID = "3", Name = "Cash", Descrtipion = "Customer paid with cash" }
             );
 
             modelBuilder.Entity<Admin>().HasData(
@@ -293,36 +293,36 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Supplier>().HasData(
-                new Supplier { Supplier_ID = 1, Name = "ABC Suppliers", Email = "abc@gmail.com", Contact_Number = "0125554789" },
-                new Supplier { Supplier_ID = 2, Name = "XYZ Suppliers", Email = "xyz@gmail.com", Contact_Number = "0125554789" }
+                new Supplier { Supplier_ID = "1", Name = "ABC Suppliers", Email = "abc@gmail.com", Contact_Number = "0125554789" },
+                new Supplier { Supplier_ID = "2", Name = "XYZ Suppliers", Email = "xyz@gmail.com", Contact_Number = "0125554789" }
             );
 
             modelBuilder.Entity<Product_Supplier>().HasData(
-                new Product_Supplier { Product_Supplier_ID = 1, Productid = 1, Supplierid = 1 },
-                new Product_Supplier { Product_Supplier_ID = 2, Productid = 2, Supplierid = 1 },
-                new Product_Supplier { Product_Supplier_ID = 3, Productid = 2, Supplierid = 2 },
-                new Product_Supplier { Product_Supplier_ID = 4, Productid = 3, Supplierid = 2 }
+                new Product_Supplier { Product_Supplier_ID = "1", Productid = "1", Supplierid = "1" },
+                new Product_Supplier { Product_Supplier_ID = "2", Productid = "2", Supplierid = "1" },
+                new Product_Supplier { Product_Supplier_ID = "3", Productid = "2", Supplierid = "2" },
+                new Product_Supplier { Product_Supplier_ID = "4", Productid = "3", Supplierid = "2" }
             );
 
             modelBuilder.Entity<TruckStatus>().HasData(
-                new TruckStatus { Truck_Status_ID = 1, Status = "Available", Description = "Truck is available for job" },
-                new TruckStatus { Truck_Status_ID = 2, Status = "Unavailable", Description = "Truck is busy with a job" },
-                new TruckStatus { Truck_Status_ID = 3, Status = "Under Maintenance", Description = "Truck is undergoing maintenace" }
+                new TruckStatus { Truck_Status_ID = "1", Status = "Available", Description = "Truck is available for job" },
+                new TruckStatus { Truck_Status_ID = "2", Status = "Unavailable", Description = "Truck is busy with a job" },
+                new TruckStatus { Truck_Status_ID = "3", Status = "Under Maintenance", Description = "Truck is undergoing maintenace" }
             );
             modelBuilder.Entity<TrailerStatus>().HasData(
-                new TrailerStatus { Trailer_Status_ID = 1, Status = "Available", Description = "Trailer is available for job" },
-                new TrailerStatus { Trailer_Status_ID = 2, Status = "Unavailable", Description = "Trailer is busy with a job" },
-                new TrailerStatus { Trailer_Status_ID = 3, Status = "Under Maintenance", Description = "Trailer is undergoing maintenace" }
+                new TrailerStatus { Trailer_Status_ID = "1", Status = "Available", Description = "Trailer is available for job" },
+                new TrailerStatus { Trailer_Status_ID = "2", Status = "Unavailable", Description = "Trailer is busy with a job" },
+                new TrailerStatus { Trailer_Status_ID = "3", Status = "Under Maintenance", Description = "Trailer is undergoing maintenace" }
             );
             modelBuilder.Entity<TrailerType>().HasData(
-                new TrailerType { Trailer_Type_ID = 1, Name = "Coal", Description = "Coal transportation trailer" },
-                new TrailerType { Trailer_Type_ID = 2, Name = "Feul", Description = "Fuel transportation trailer" }
+                new TrailerType { Trailer_Type_ID = "1", Name = "Coal", Description = "Coal transportation trailer" },
+                new TrailerType { Trailer_Type_ID = "2", Name = "Feul", Description = "Fuel transportation trailer" }
             );
 
             modelBuilder.Entity<DriverStatus>().HasData(
-                new DriverStatus { Driver_Status_ID = 1, Status = "Available", Description = "Driver is available" },
-                new DriverStatus { Driver_Status_ID = 2, Status = "Unavailable", Description = "Driver is busy with a job" },
-                new DriverStatus { Driver_Status_ID = 3, Status = "Busy", Description = "Driver is unable to do a job" }
+                new DriverStatus { Driver_Status_ID = "1", Status = "Available", Description = "Driver is available" },
+                new DriverStatus { Driver_Status_ID = "2", Status = "Unavailable", Description = "Driver is busy with a job" },
+                new DriverStatus { Driver_Status_ID = "3", Status = "Busy", Description = "Driver is unable to do a job" }
             );
 
         }

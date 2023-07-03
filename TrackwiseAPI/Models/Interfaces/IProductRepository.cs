@@ -10,6 +10,6 @@ namespace TrackwiseAPI.Models.Interfaces
 
         //Supplier
         Task<Product[]> GetAllProductsAsync();
-        Task<Product> GetProductAsync(int productId);
+        Task<Product> GetProductAsync(string productId);
     }
 }
