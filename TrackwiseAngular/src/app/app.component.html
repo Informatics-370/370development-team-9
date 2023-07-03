@@ -1,14 +1,14 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" *ngIf="dataService.isAdmin">
     <mat-toolbar-row>
-      <button mat-icon-button  *ngIf="isLoggedIn">
+      <button mat-icon-button  *ngIf="dataService.isLoggedIn">
         <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
       </button>
       <h1>TrackWise</h1>
     </mat-toolbar-row>
   </mat-toolbar>
   
-  <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="side" opened="true" class="side-container" *ngIf="isAdmin">
+  <mat-sidenav-container *ngIf="dataService.isAdmin">
+    <mat-sidenav #sidenav mode="side" opened="true" class="side-container" >
       <mat-nav-list>
         <a mat-list-item [routerLink]="'Admin-Screen/admins'">Admins</a>
         <a mat-list-item [routerLink]="'Admin-Screen/clients'">Clients</a>
@@ -21,7 +21,7 @@
         <a mat-list-item [routerLink]="'Admin-Screen/suppliers'">Suppliers</a>
         <a mat-list-item [routerLink]="'Admin-Screen/trailers'">Trailers</a>
         <a mat-list-item [routerLink]="'Admin-Screen/trucks'">Trucks</a>
-        <a mat-list-item (click)="logout()"> Logout </a>
+        <a mat-list-item (click)="dataService.logout()"> Logout </a>
       </mat-nav-list>
     </mat-sidenav>
 
@@ -32,7 +32,7 @@
       </mat-sidenav-content>
     </mat-sidenav-container>
   
-    <div  *ngIf="isCustomer">
+    <div  *ngIf="dataService.isCustomer">
     <mat-toolbar class="navbar" >
   
         <span class="navbar-title">
@@ -74,6 +74,10 @@
         </div>
       </mat-toolbar>
 
+      <router-outlet></router-outlet>
+    </div>
+
+    <div *ngIf="dataService.isLoggedIn == false">
       <router-outlet></router-outlet>
     </div>
   

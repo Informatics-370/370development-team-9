@@ -243,7 +243,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Admin_ID");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
 
                     b.HasData(
                         new
@@ -287,7 +287,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Client_ID");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Clients", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Customer", b =>
@@ -313,7 +313,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Customer_ID");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
 
                     b.HasData(
                         new
@@ -365,7 +365,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("TruckID");
 
-                    b.ToTable("deliveries");
+                    b.ToTable("deliveries", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery_Assignment", b =>
@@ -386,7 +386,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Deliveryid");
 
-                    b.ToTable("Delivery_Assignments");
+                    b.ToTable("Delivery_Assignments", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
@@ -416,7 +416,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Driver_Status_ID");
 
-                    b.ToTable("Drivers");
+                    b.ToTable("Drivers", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.DriverStatus", b =>
@@ -437,7 +437,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Driver_Status_ID");
 
-                    b.ToTable("DriverStatuses");
+                    b.ToTable("DriverStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -479,7 +479,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Help_Category_ID");
 
-                    b.ToTable("Helps");
+                    b.ToTable("Helps", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.HelpCategory", b =>
@@ -496,7 +496,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Help_Category_ID");
 
-                    b.ToTable("HelpCategories");
+                    b.ToTable("HelpCategories", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Inventory", b =>
@@ -521,7 +521,7 @@ namespace TrackwiseAPI.Migrations
                     b.HasIndex("Product_ID")
                         .IsUnique();
 
-                    b.ToTable("Inventory");
+                    b.ToTable("Inventory", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Invoice", b =>
@@ -545,7 +545,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Order_ID");
 
-                    b.ToTable("Invoice");
+                    b.ToTable("Invoice", (string)null);
 
                     b.HasData(
                         new
@@ -617,7 +617,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Job_Type_ID");
 
-                    b.ToTable("jobs");
+                    b.ToTable("jobs", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobStatus", b =>
@@ -638,7 +638,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Job_Status_ID");
 
-                    b.ToTable("jobsStatus");
+                    b.ToTable("jobsStatus", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobType", b =>
@@ -657,7 +657,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Job_Type_ID");
 
-                    b.ToTable("jobTypes");
+                    b.ToTable("jobTypes", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
@@ -686,7 +686,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Customer_ID");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
 
                     b.HasData(
                         new
@@ -736,7 +736,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Productid");
 
-                    b.ToTable("Order_Lines");
+                    b.ToTable("Order_Lines", (string)null);
 
                     b.HasData(
                         new
@@ -799,7 +799,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Payment_Type_ID");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payment", (string)null);
 
                     b.HasData(
                         new
@@ -862,7 +862,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Payment_Type_ID");
 
-                    b.ToTable("PaymentType");
+                    b.ToTable("PaymentType", (string)null);
 
                     b.HasData(
                         new
@@ -916,7 +916,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Product_Type_ID");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
 
                     b.HasData(
                         new
@@ -1011,7 +1011,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Product_Category_ID");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
 
                     b.HasData(
                         new
@@ -1082,7 +1082,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Product_Type_ID");
 
-                    b.ToTable("ProductTypes");
+                    b.ToTable("ProductTypes", (string)null);
 
                     b.HasData(
                         new
@@ -1114,7 +1114,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Productid");
 
-                    b.ToTable("Product_Suppliers");
+                    b.ToTable("Product_Suppliers", (string)null);
 
                     b.HasData(
                         new
@@ -1165,7 +1165,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Supplier_ID");
 
-                    b.ToTable("Suppliers");
+                    b.ToTable("Suppliers", (string)null);
 
                     b.HasData(
                         new
@@ -1215,7 +1215,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Trailer_Type_ID");
 
-                    b.ToTable("Trailers");
+                    b.ToTable("Trailers", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TrailerStatus", b =>
@@ -1236,7 +1236,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Trailer_Status_ID");
 
-                    b.ToTable("TrailerStatuses");
+                    b.ToTable("TrailerStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -1277,7 +1277,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Trailer_Type_ID");
 
-                    b.ToTable("TrailerTypes");
+                    b.ToTable("TrailerTypes", (string)null);
 
                     b.HasData(
                         new
@@ -1317,7 +1317,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasIndex("Truck_Status_ID");
 
-                    b.ToTable("Trucks");
+                    b.ToTable("Trucks", (string)null);
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TruckStatus", b =>
@@ -1338,7 +1338,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Truck_Status_ID");
 
-                    b.ToTable("TruckStatuses");
+                    b.ToTable("TruckStatuses", (string)null);
 
                     b.HasData(
                         new
@@ -1371,7 +1371,7 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("User_ID");
 
-                    b.ToTable("users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

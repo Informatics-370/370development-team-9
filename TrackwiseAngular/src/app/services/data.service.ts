@@ -10,6 +10,7 @@ import { Supplier } from '../shared/supplier';
 import { Product } from '../shared/product';
 import { LoginUser } from '../shared/login-user';
 import { User } from '../shared/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +25,12 @@ export class DataService {
     })
   }
 
+  isLoggedIn = false;
+  isAdmin = false;
+  isCustomer = false;
 
   // TEMPORARY LOCALSTORAGE
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
 
     if(!localStorage.getItem('product')){
       let product = [
@@ -58,6 +62,34 @@ export class DataService {
   LoginUser(loginUser: LoginUser){
     return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
+
+  /* Logout */
+    logout(){
+    if(sessionStorage.getItem('User'))
+    {
+      this.isLoggedIn = false;
+      this.isCustomer = false;
+      this.isAdmin = false;
+      sessionStorage.removeItem('User');
+      sessionStorage.removeItem('Role');
+      this.router.navigateByUrl('Authentication/login');
+    }
+  } 
+
+  /*getRole */
+  getRole(): void {
+    var role = JSON.parse(sessionStorage.getItem("Role")!)
+    console.log('Role:', role); // Add this line
+    if (role == "Admin") {
+      this.isLoggedIn = true;
+      this.isAdmin = true;
+      console.log('Admin',this.isAdmin);
+    } else if(role == "Customer"){
+      this.isLoggedIn = true;
+      this.isCustomer = true;
+      console.log('Customer',this.isCustomer);
+    }
+  } 
 
   /*DRIVER SECTION*/
   GetDrivers(): Observable<any>{
@@ -145,7 +177,8 @@ export class DataService {
 
   /*Admin SECTION*/
   GetAdmins(): Observable<any>{
-    let token = localStorage.getItem('Token'); // Retrieve the token from localStorage
+    let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
+    console.log(token)
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get(`${this.apiUrl}Admin/GetAllAdmin`, {headers})
     .pipe(map(result => result))

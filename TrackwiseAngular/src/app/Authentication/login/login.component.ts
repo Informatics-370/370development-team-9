@@ -28,9 +28,10 @@ export class LoginComponent {
       this.isLoading = true
 
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(result => {
-        localStorage.setItem('User', JSON.stringify(result));
+        sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
+        sessionStorage.setItem('Token', JSON.stringify(result.token.value));
         const role = result.role;
-        localStorage.setItem('Role', JSON.stringify(role));
+        sessionStorage.setItem('Role', JSON.stringify(role));
         this.loginFormGroup.reset();
         this.router.navigateByUrl('Admin-Screen/admins');
       })
