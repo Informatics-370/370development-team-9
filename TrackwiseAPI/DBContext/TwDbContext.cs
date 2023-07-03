@@ -249,9 +249,9 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Order_ID = 1, Date = DateTime.Now, Status="Ordered", Total = 2897, Customer_ID = 1 },
-                new Order { Order_ID = 2, Date = DateTime.Now, Status = "Ordered", Total = 2997, Customer_ID = 2 },
-                new Order { Order_ID = 3, Date = DateTime.Now, Status = "Ordered", Total = 2998, Customer_ID = 3 }
+                new Order { Order_ID = 1, Date = DateTime.Now, Status="Ordered", Total = 2897, Customer_ID = "1" },
+                new Order { Order_ID = 2, Date = DateTime.Now, Status = "Ordered", Total = 2997, Customer_ID = "2" },
+                new Order { Order_ID = 3, Date = DateTime.Now, Status = "Ordered", Total = 2998, Customer_ID = "3" }
             );
 
             modelBuilder.Entity<Order_Line>().HasData(
@@ -262,9 +262,9 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { Customer_ID = 1, Name = "John", LastName = "Doe", Email = "johndoe@gmail.com", Password = "john123" },
-                new Customer { Customer_ID = 2, Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com", Password = "jane123" },
-                new Customer { Customer_ID = 3, Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com", Password = "joe123" }
+                new Customer { Customer_ID = "1", Name = "John", LastName = "Doe", Email = "johndoe@gmail.com", Password = "john123" },
+                new Customer { Customer_ID = "2", Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com", Password = "jane123" },
+                new Customer { Customer_ID = "3", Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com", Password = "joe123" }
             );
 
             modelBuilder.Entity<Invoice>().HasData(
