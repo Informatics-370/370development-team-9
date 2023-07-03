@@ -29,7 +29,7 @@ export class LoginComponent {
 
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(result => {
         sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
-        sessionStorage.setItem('Token', JSON.stringify(result.token.value));
+        sessionStorage.setItem('Token', result.token.value.token);
         const role = result.role;
         sessionStorage.setItem('Role', JSON.stringify(role));
         this.loginFormGroup.reset();

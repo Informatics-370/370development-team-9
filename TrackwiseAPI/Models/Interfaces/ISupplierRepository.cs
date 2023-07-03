@@ -12,6 +12,6 @@ namespace TrackwiseAPI.Models.Interfaces
 
         //Supplier
         Task<Supplier[]> GetAllSuppliersAsync();
-        Task<Supplier> GetSupplierAsync(int supplierId);
+        Task<Supplier> GetSupplierAsync(string supplierId);
     }
 }

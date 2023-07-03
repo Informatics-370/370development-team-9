@@ -72,6 +72,7 @@ export class DataService {
       this.isAdmin = false;
       sessionStorage.removeItem('User');
       sessionStorage.removeItem('Role');
+      sessionStorage.removeItem('Token');
       this.router.navigateByUrl('Authentication/login');
     }
   } 

@@ -6,7 +6,7 @@ namespace TrackwiseAPI.Models.Entities
     public class Order
     {
         [Key]
-        public int Order_ID { get; set; }
+        public string Order_ID { get; set; }
         public DateTime Date { get; set; }
         public double Total { get; set; }
         public string Status { get; set; }

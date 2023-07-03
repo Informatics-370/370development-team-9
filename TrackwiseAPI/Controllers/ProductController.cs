@@ -4,11 +4,15 @@ using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.ViewModels;
 using TrackwiseAPI.Models.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
@@ -20,6 +24,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetAllProducts")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
         public async Task<IActionResult> GetAllProducts()
         {
             try
@@ -35,7 +40,8 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetProduct/{productId}")]
-        public async Task<IActionResult> GetProductAsync(int productId)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
+        public async Task<IActionResult> GetProductAsync(string productId)
         {
             try
             {
@@ -73,7 +79,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPut]
         [Route("EditProduct/{productId}")]
-        public async Task<ActionResult<ProductVM>> EditProduct(int productId, ProductVM productModel)
+        public async Task<ActionResult<ProductVM>> EditProduct(string productId, ProductVM productModel)
         {
             try
             {
@@ -110,7 +116,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteProduct/{productId}")]
-        public async Task<IActionResult> DeleteProduct(int productId)
+        public async Task<IActionResult> DeleteProduct(string productId)
         {
             try
             {

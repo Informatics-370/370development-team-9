@@ -31,7 +31,7 @@ namespace TrackwiseAPI.Models.Repositories
                 return await query.ToArrayAsync();
             }
 
-            public async Task<Supplier> GetSupplierAsync(int supplierid)
+            public async Task<Supplier> GetSupplierAsync(string supplierid)
             {
                 IQueryable<Supplier> query = _context.Suppliers.Where(c => c.Supplier_ID == supplierid).Include(c => c.Product_Suppliers);
                 return await query.FirstOrDefaultAsync();

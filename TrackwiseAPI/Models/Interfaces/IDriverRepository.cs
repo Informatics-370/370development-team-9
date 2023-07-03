@@ -8,6 +8,6 @@ namespace TrackwiseAPI.Models.Interfaces
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         Task<Driver[]> GetAllDriversAsync();
-        Task<Driver> GetDriverAsync(int Driver_ID);
+        Task<Driver> GetDriverAsync(string Driver_ID);
     }
 }

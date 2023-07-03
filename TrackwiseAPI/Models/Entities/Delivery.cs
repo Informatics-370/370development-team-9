@@ -7,11 +7,11 @@ namespace TrackwiseAPI.Models.Entities
     public class Delivery
     {
         [Key]
-        public int Delivery_ID { get; set; }
+        public string Delivery_ID { get; set; }
         public double weight { get; set; }
 
         //Foreign Key for Job
-        public int Job_ID { get; set; }
+        public string Job_ID { get; set; }
         [ForeignKey("Job_ID")]
         public Job Job { get; set; }
 

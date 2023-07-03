@@ -4,7 +4,7 @@
     {
         public string Truck_License { get; set; }
         public string Model { get; set; }
-        public int Truck_Status_ID { get; set; }
+        public string Truck_Status_ID { get; set; }
         
 
     }

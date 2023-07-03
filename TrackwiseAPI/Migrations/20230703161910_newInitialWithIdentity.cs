@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrackwiseAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class newInitialWithIdentity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -71,10 +71,11 @@ namespace TrackwiseAPI.Migrations
                 name: "Clients",
                 columns: table => new
                 {
-                    Client_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Client_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,8 +86,7 @@ namespace TrackwiseAPI.Migrations
                 name: "Customers",
                 columns: table => new
                 {
-                    Customer_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Customer_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -101,8 +101,7 @@ namespace TrackwiseAPI.Migrations
                 name: "DriverStatuses",
                 columns: table => new
                 {
-                    Driver_Status_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Driver_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -115,8 +114,7 @@ namespace TrackwiseAPI.Migrations
                 name: "HelpCategories",
                 columns: table => new
                 {
-                    Help_Category_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Help_Category_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -128,8 +126,7 @@ namespace TrackwiseAPI.Migrations
                 name: "jobsStatus",
                 columns: table => new
                 {
-                    Job_Status_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Job_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -142,10 +139,9 @@ namespace TrackwiseAPI.Migrations
                 name: "jobTypes",
                 columns: table => new
                 {
-                    Job_Type_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<int>(type: "int", nullable: false)
+                    Job_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,8 +152,7 @@ namespace TrackwiseAPI.Migrations
                 name: "PaymentType",
                 columns: table => new
                 {
-                    Payment_Type_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Payment_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Descrtipion = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -170,8 +165,7 @@ namespace TrackwiseAPI.Migrations
                 name: "ProductCategories",
                 columns: table => new
                 {
-                    Product_Category_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Product_Category_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -184,8 +178,7 @@ namespace TrackwiseAPI.Migrations
                 name: "ProductTypes",
                 columns: table => new
                 {
-                    Product_Type_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Product_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -198,8 +191,7 @@ namespace TrackwiseAPI.Migrations
                 name: "Suppliers",
                 columns: table => new
                 {
-                    Supplier_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Supplier_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Contact_Number = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -213,8 +205,7 @@ namespace TrackwiseAPI.Migrations
                 name: "TrailerStatuses",
                 columns: table => new
                 {
-                    Trailer_Status_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Trailer_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -227,8 +218,7 @@ namespace TrackwiseAPI.Migrations
                 name: "TrailerTypes",
                 columns: table => new
                 {
-                    Trailer_Type_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Trailer_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -241,8 +231,7 @@ namespace TrackwiseAPI.Migrations
                 name: "TruckStatuses",
                 columns: table => new
                 {
-                    Truck_Status_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Truck_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -255,8 +244,7 @@ namespace TrackwiseAPI.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    User_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                    User_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,12 +361,11 @@ namespace TrackwiseAPI.Migrations
                 name: "Orders",
                 columns: table => new
                 {
-                    Order_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Order_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Total = table.Column<double>(type: "float", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Customer_ID = table.Column<int>(type: "int", nullable: false)
+                    Customer_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -395,12 +382,13 @@ namespace TrackwiseAPI.Migrations
                 name: "Drivers",
                 columns: table => new
                 {
-                    Driver_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Driver_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Driver_Status_ID = table.Column<int>(type: "int", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Driver_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -417,10 +405,9 @@ namespace TrackwiseAPI.Migrations
                 name: "Helps",
                 columns: table => new
                 {
-                    Help_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Help_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Help_Category_ID = table.Column<int>(type: "int", nullable: false)
+                    Help_Category_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -437,16 +424,15 @@ namespace TrackwiseAPI.Migrations
                 name: "jobs",
                 columns: table => new
                 {
-                    Job_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Job_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Pickup_Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Dropoff_Location = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
-                    Client_ID = table.Column<int>(type: "int", nullable: false),
+                    Client_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Admin_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Job_Type_ID = table.Column<int>(type: "int", nullable: false),
-                    Job_Status_ID = table.Column<int>(type: "int", nullable: false)
+                    Job_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Job_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -481,13 +467,12 @@ namespace TrackwiseAPI.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Product_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Product_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Product_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Product_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Product_Price = table.Column<double>(type: "float", nullable: false),
-                    Product_Category_ID = table.Column<int>(type: "int", nullable: false),
-                    Product_Type_ID = table.Column<int>(type: "int", nullable: false)
+                    Product_Category_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Product_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -510,13 +495,12 @@ namespace TrackwiseAPI.Migrations
                 name: "Trailers",
                 columns: table => new
                 {
-                    TrailerID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TrailerID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Trailer_License = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Weight = table.Column<double>(type: "float", nullable: false),
-                    Trailer_Type_ID = table.Column<int>(type: "int", nullable: false),
-                    Trailer_Status_ID = table.Column<int>(type: "int", nullable: false)
+                    Trailer_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Trailer_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -539,11 +523,10 @@ namespace TrackwiseAPI.Migrations
                 name: "Trucks",
                 columns: table => new
                 {
-                    TruckID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    TruckID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Truck_License = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Model = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Truck_Status_ID = table.Column<int>(type: "int", nullable: false)
+                    Truck_Status_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -560,11 +543,10 @@ namespace TrackwiseAPI.Migrations
                 name: "Invoice",
                 columns: table => new
                 {
-                    Invoice_number = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Invoice_number = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Total_Amount = table.Column<double>(type: "float", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Order_ID = table.Column<int>(type: "int", nullable: false)
+                    Order_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -581,12 +563,11 @@ namespace TrackwiseAPI.Migrations
                 name: "Payment",
                 columns: table => new
                 {
-                    Payment_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Payment_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     amount_paid = table.Column<double>(type: "float", nullable: false),
-                    Order_ID = table.Column<int>(type: "int", nullable: false),
-                    Payment_Type_ID = table.Column<int>(type: "int", nullable: false)
+                    Order_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Payment_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -609,9 +590,8 @@ namespace TrackwiseAPI.Migrations
                 name: "Inventory",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Product_ID = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Product_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
                     reorder_total = table.Column<int>(type: "int", nullable: false)
                 },
@@ -630,9 +610,9 @@ namespace TrackwiseAPI.Migrations
                 name: "Order_Lines",
                 columns: table => new
                 {
-                    Orderid = table.Column<int>(type: "int", nullable: false),
-                    Productid = table.Column<int>(type: "int", nullable: false),
-                    Order_line_ID = table.Column<int>(type: "int", nullable: false),
+                    Orderid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Productid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Order_line_ID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     SubTotal = table.Column<double>(type: "float", nullable: false)
                 },
@@ -657,9 +637,9 @@ namespace TrackwiseAPI.Migrations
                 name: "Product_Suppliers",
                 columns: table => new
                 {
-                    Supplierid = table.Column<int>(type: "int", nullable: false),
-                    Productid = table.Column<int>(type: "int", nullable: false),
-                    Product_Supplier_ID = table.Column<int>(type: "int", nullable: false)
+                    Supplierid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Productid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Product_Supplier_ID = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -682,11 +662,10 @@ namespace TrackwiseAPI.Migrations
                 name: "deliveries",
                 columns: table => new
                 {
-                    Delivery_ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Delivery_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     weight = table.Column<double>(type: "float", nullable: false),
-                    Job_ID = table.Column<int>(type: "int", nullable: false),
-                    TruckID = table.Column<int>(type: "int", nullable: true)
+                    Job_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TruckID = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -708,9 +687,9 @@ namespace TrackwiseAPI.Migrations
                 name: "Delivery_Assignments",
                 columns: table => new
                 {
-                    Deliveryid = table.Column<int>(type: "int", nullable: false),
-                    Driverid = table.Column<int>(type: "int", nullable: false),
-                    Delivery_Assignment_ID = table.Column<int>(type: "int", nullable: false),
+                    Deliveryid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Driverid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Delivery_Assignment_ID = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -744,9 +723,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Customer_ID", "Email", "LastName", "Name", "Password" },
                 values: new object[,]
                 {
-                    { 1, "johndoe@gmail.com", "Doe", "John", "john123" },
-                    { 2, "janesmith@gmail.com", "Smith", "Jane", "jane123" },
-                    { 3, "joemama@gmail.com", "Mama", "Joe", "joe123" }
+                    { "1", "johndoe@gmail.com", "Doe", "John", "john123" },
+                    { "2", "janesmith@gmail.com", "Smith", "Jane", "jane123" },
+                    { "3", "joemama@gmail.com", "Mama", "Joe", "joe123" }
                 });
 
             migrationBuilder.InsertData(
@@ -754,9 +733,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Driver_Status_ID", "Description", "Status" },
                 values: new object[,]
                 {
-                    { 1, "Driver is available", "Available" },
-                    { 2, "Driver is busy with a job", "Unavailable" },
-                    { 3, "Driver is unable to do a job", "Busy" }
+                    { "1", "Driver is available", "Available" },
+                    { "2", "Driver is busy with a job", "Unavailable" },
+                    { "3", "Driver is unable to do a job", "Busy" }
                 });
 
             migrationBuilder.InsertData(
@@ -764,9 +743,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Payment_Type_ID", "Descrtipion", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Customer paid with credit card", "Credit Card" },
-                    { 2, "Customer paid with EFT", "EFT" },
-                    { 3, "Customer paid with cash", "Cash" }
+                    { "1", "Customer paid with credit card", "Credit Card" },
+                    { "2", "Customer paid with EFT", "EFT" },
+                    { "3", "Customer paid with cash", "Cash" }
                 });
 
             migrationBuilder.InsertData(
@@ -774,14 +753,14 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Product_Category_ID", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, "products for engines", "Engine" },
-                    { 2, "products for transmissions", "Transmission" },
-                    { 3, "products for suspensions", "Suspension" },
-                    { 4, "products for electrical", "Electrical" },
-                    { 5, "products for body", "Body" },
-                    { 6, "products for brakes", "Brake" },
-                    { 7, "products for wheels", "Wheel" },
-                    { 8, "bolts,nuts ect..", "Consumables" }
+                    { "1", "products for engines", "Engine" },
+                    { "2", "products for transmissions", "Transmission" },
+                    { "3", "products for suspensions", "Suspension" },
+                    { "4", "products for electrical", "Electrical" },
+                    { "5", "products for body", "Body" },
+                    { "6", "products for brakes", "Brake" },
+                    { "7", "products for wheels", "Wheel" },
+                    { "8", "bolts,nuts ect..", "Consumables" }
                 });
 
             migrationBuilder.InsertData(
@@ -789,8 +768,8 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Product_Type_ID", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Product has trailer components", "Truck" },
-                    { 2, "Product has truck components", "Trailer" }
+                    { "1", "Product has trailer components", "Truck" },
+                    { "2", "Product has truck components", "Trailer" }
                 });
 
             migrationBuilder.InsertData(
@@ -798,8 +777,8 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Supplier_ID", "Contact_Number", "Email", "Name" },
                 values: new object[,]
                 {
-                    { 1, "0125554789", "abc@gmail.com", "ABC Suppliers" },
-                    { 2, "0125554789", "xyz@gmail.com", "XYZ Suppliers" }
+                    { "1", "0125554789", "abc@gmail.com", "ABC Suppliers" },
+                    { "2", "0125554789", "xyz@gmail.com", "XYZ Suppliers" }
                 });
 
             migrationBuilder.InsertData(
@@ -807,9 +786,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Trailer_Status_ID", "Description", "Status" },
                 values: new object[,]
                 {
-                    { 1, "Trailer is available for job", "Available" },
-                    { 2, "Trailer is busy with a job", "Unavailable" },
-                    { 3, "Trailer is undergoing maintenace", "Under Maintenance" }
+                    { "1", "Trailer is available for job", "Available" },
+                    { "2", "Trailer is busy with a job", "Unavailable" },
+                    { "3", "Trailer is undergoing maintenace", "Under Maintenance" }
                 });
 
             migrationBuilder.InsertData(
@@ -817,8 +796,8 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Trailer_Type_ID", "Description", "Name" },
                 values: new object[,]
                 {
-                    { 1, "Coal transportation trailer", "Coal" },
-                    { 2, "Fuel transportation trailer", "Feul" }
+                    { "1", "Coal transportation trailer", "Coal" },
+                    { "2", "Fuel transportation trailer", "Feul" }
                 });
 
             migrationBuilder.InsertData(
@@ -826,9 +805,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Truck_Status_ID", "Description", "Status" },
                 values: new object[,]
                 {
-                    { 1, "Truck is available for job", "Available" },
-                    { 2, "Truck is busy with a job", "Unavailable" },
-                    { 3, "Truck is undergoing maintenace", "Under Maintenance" }
+                    { "1", "Truck is available for job", "Available" },
+                    { "2", "Truck is busy with a job", "Unavailable" },
+                    { "3", "Truck is undergoing maintenace", "Under Maintenance" }
                 });
 
             migrationBuilder.InsertData(
@@ -836,9 +815,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Order_ID", "Customer_ID", "Date", "Status", "Total" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(148), "Ordered", 2897.0 },
-                    { 2, 2, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(159), "Ordered", 2997.0 },
-                    { 3, 3, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(160), "Ordered", 2998.0 }
+                    { "1", "1", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8629), "Ordered", 2897.0 },
+                    { "2", "2", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8637), "Ordered", 2997.0 },
+                    { "3", "3", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8639), "Ordered", 2998.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -846,14 +825,14 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Product_ID", "Product_Category_ID", "Product_Description", "Product_Name", "Product_Price", "Product_Type_ID" },
                 values: new object[,]
                 {
-                    { 1, 4, "FUEL PRIMER PUMP/K5", "Feul Pump", 999.0, 2 },
-                    { 2, 5, "SEAL RING MB-S48", "SEAL RING", 899.0, 1 },
-                    { 3, 7, "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", "CLUTCH", 1499.0, 2 },
-                    { 4, 7, "SAF AXLE NUT LEFT M75x1.5 (85mm)", "AXLE NUT", 1199.0, 1 },
-                    { 5, 8, "BEARING INN ROCKWELL TM 218248/210/HM", "BEARING", 9.9900000000000002, 1 },
-                    { 6, 6, "SEAL OIL STEERING M/B AXOR-S46", "SEAL OIL", 119.98999999999999, 1 },
-                    { 7, 7, "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", "BRAKEPAD", 799.0, 1 },
-                    { 8, 1, "FAN BELT 9PK2300-U7", "FAN BELT", 455.0, 1 }
+                    { "1", "4", "FUEL PRIMER PUMP/K5", "Fuel Pump", 999.0, "2" },
+                    { "2", "5", "SEAL RING MB-S48", "SEAL RING", 899.0, "1" },
+                    { "3", "7", "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", "CLUTCH", 1499.0, "2" },
+                    { "4", "7", "SAF AXLE NUT LEFT M75x1.5 (85mm)", "AXLE NUT", 1199.0, "1" },
+                    { "5", "8", "BEARING INN ROCKWELL TM 218248/210/HM", "BEARING", 9.9900000000000002, "1" },
+                    { "6", "6", "SEAL OIL STEERING M/B AXOR-S46", "SEAL OIL", 119.98999999999999, "1" },
+                    { "7", "7", "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", "BRAKEPAD", 799.0, "1" },
+                    { "8", "1", "FAN BELT 9PK2300-U7", "FAN BELT", 455.0, "1" }
                 });
 
             migrationBuilder.InsertData(
@@ -861,9 +840,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Invoice_number", "Date", "Order_ID", "Total_Amount" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(237), 1, 200.5 },
-                    { 2, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(239), 2, 75.200000000000003 },
-                    { 3, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(240), 3, 450.0 }
+                    { "1", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8715), "1", 200.5 },
+                    { "2", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8716), "2", 75.200000000000003 },
+                    { "3", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8717), "3", 450.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -871,10 +850,10 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Orderid", "Productid", "Order_line_ID", "Quantity", "SubTotal" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, 2, 1998.0 },
-                    { 1, 2, 2, 1, 899.0 },
-                    { 2, 1, 3, 3, 2997.0 },
-                    { 3, 3, 4, 2, 2998.0 }
+                    { "1", "1", "8", 2, 1998.0 },
+                    { "1", "2", "8", 1, 899.0 },
+                    { "2", "1", "8", 3, 2997.0 },
+                    { "3", "3", "8", 2, 2998.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -882,11 +861,11 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(255), 1, 1, 150.5 },
-                    { 2, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(256), 1, 2, 50.0 },
-                    { 3, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(257), 2, 3, 75.200000000000003 },
-                    { 4, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(258), 3, 1, 200.0 },
-                    { 5, new DateTime(2023, 6, 26, 12, 24, 13, 342, DateTimeKind.Local).AddTicks(259), 3, 2, 250.0 }
+                    { "1", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8736), "1", "1", 150.5 },
+                    { "2", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8738), "1", "2", 50.0 },
+                    { "3", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8740), "2", "3", 75.200000000000003 },
+                    { "4", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8741), "3", "1", 200.0 },
+                    { "5", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8742), "3", "2", 250.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -894,10 +873,10 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Productid", "Supplierid", "Product_Supplier_ID" },
                 values: new object[,]
                 {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 },
-                    { 2, 2, 3 },
-                    { 3, 2, 4 }
+                    { "1", "1", "1" },
+                    { "2", "1", "2" },
+                    { "2", "2", "3" },
+                    { "3", "2", "4" }
                 });
 
             migrationBuilder.CreateIndex(
