@@ -28,6 +28,8 @@ export class DataService {
   isLoggedIn = false;
   isAdmin = false;
   isCustomer = false;
+  isClient = false;
+  isDriver = false;
 
   // TEMPORARY LOCALSTORAGE
   constructor(private httpClient: HttpClient, private router: Router) {
@@ -70,6 +72,8 @@ export class DataService {
       this.isLoggedIn = false;
       this.isCustomer = false;
       this.isAdmin = false;
+      this.isClient = false;
+      this.isDriver = false;
       sessionStorage.removeItem('User');
       sessionStorage.removeItem('Role');
       sessionStorage.removeItem('Token');
@@ -89,6 +93,14 @@ export class DataService {
       this.isLoggedIn = true;
       this.isCustomer = true;
       console.log('Customer',this.isCustomer);
+    } else if(role == "Client"){
+      this.isLoggedIn = true;
+      this.isClient = true;
+      console.log('Client',this.isCustomer);
+    } else if(role == "Driver"){
+      this.isLoggedIn = true;
+      this.isDriver = true;
+      console.log('Driver',this.isCustomer);
     }
   } 
 
@@ -178,8 +190,7 @@ export class DataService {
 
   /*Admin SECTION*/
   GetAdmins(): Observable<any>{
-    let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
-    console.log(token)
+    let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get(`${this.apiUrl}Admin/GetAllAdmin`, {headers})
     .pipe(map(result => result))
@@ -187,81 +198,109 @@ export class DataService {
 
   AddAdmin(AddAdminReq: Admin): Observable<Admin>
   {
-    return this.httpClient.post<Admin>(`${this.apiUrl}Admin/AddAdmin/`, AddAdminReq)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Admin>(`${this.apiUrl}Admin/AddAdmin/`, AddAdminReq, {headers})
     .pipe(map(result => result))
 
   }
 
   GetAdmin(admin_ID: Number): Observable<Admin>
   {
-    return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}`, {headers});
   }
 
   EditAdmin(admin_ID: number , EditAdminReq: Admin):Observable<Admin>
   {
-      return this.httpClient.put<Admin>(`${this.apiUrl}Admin/EditAdmin/${admin_ID}`, EditAdminReq);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Admin>(`${this.apiUrl}Admin/EditAdmin/${admin_ID}`, EditAdminReq, {headers});
   }
 
   DeleteAdmin(admin_ID: number):Observable<Admin>
   {
-      return this.httpClient.delete<Admin>(`${this.apiUrl}Admin/DeleteAdmin/${admin_ID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Admin>(`${this.apiUrl}Admin/DeleteAdmin/${admin_ID}`, {headers});
   }
 
   /*Client SECTION*/
   GetClients(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Client/GetAllClients`)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Client/GetAllClients`, {headers})
     .pipe(map(result => result))
   }
 
   AddClient(AddClientReq: Client): Observable<Client>
   {
-    return this.httpClient.post<Client>(`${this.apiUrl}Client/AddClient/`, AddClientReq)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Client>(`${this.apiUrl}Client/AddClient/`, AddClientReq, {headers})
     .pipe(map(result => result))
 
   }
 
   GetClient(client_ID: Number): Observable<Client>
   {
-    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetClient/${client_ID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Client>(`${this.apiUrl}Client/GetClient/${client_ID}` , {headers});
   }
 
   EditClient(client_ID: number , EditClientReq: Client):Observable<Client>
   {
-      return this.httpClient.put<Client>(`${this.apiUrl}Client/EditClient/${client_ID}`, EditClientReq);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Client>(`${this.apiUrl}Client/EditClient/${client_ID}`, EditClientReq, {headers});
   }
 
   DeleteClient(client_ID: number):Observable<Client>
   {
-      return this.httpClient.delete<Client>(`${this.apiUrl}Client/DeleteClient/${client_ID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Client>(`${this.apiUrl}Client/DeleteClient/${client_ID}`, {headers});
   }
 
 
   /*Supplier Section */
 
   GetSuppliers(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Supplier/GetAllSuppliers`)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Supplier/GetAllSuppliers`, {headers})
     .pipe(map(result => result))
   }
 
   AddSupplier(AddSupplierReq: Supplier): Observable<Supplier>
   {
-    return this.httpClient.post<Supplier>(`${this.apiUrl}Supplier/AddSupplier/`, AddSupplierReq)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Supplier>(`${this.apiUrl}Supplier/AddSupplier/`, AddSupplierReq, {headers})
     .pipe(map(result => result))
   }
 
   GetSupplier(supplier_ID: Number): Observable<Supplier>
   {
-    return this.httpClient.get<Supplier>(`${this.apiUrl}Supplier/GetSupplier/${supplier_ID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Supplier>(`${this.apiUrl}Supplier/GetSupplier/${supplier_ID}` , {headers});
   }
 
   EditSupplier(supplier_ID: number , EditSupplierReq: Supplier):Observable<Supplier>
   {
-      return this.httpClient.put<Supplier>(`${this.apiUrl}Supplier/EditSupplier/${supplier_ID}`, EditSupplierReq);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Supplier>(`${this.apiUrl}Supplier/EditSupplier/${supplier_ID}`, EditSupplierReq, {headers});
   }
 
   DeleteSupplier(supplier_ID: number):Observable<Supplier>
   {
-      return this.httpClient.delete<Supplier>(`${this.apiUrl}Supplier/DeleteSupplier/${supplier_ID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Supplier>(`${this.apiUrl}Supplier/DeleteSupplier/${supplier_ID}`, {headers});
   }
 
 
@@ -272,28 +311,38 @@ export class DataService {
 
 
   GetProducts(): Observable<any>{
-    return this.httpClient.get(`${this.apiUrl}Product/GetAllProducts`)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Product/GetAllProducts`, {headers})
     .pipe(map(result => result))
   }
 
   AddProduct(AddProductReq: Product): Observable<Product>
   {
-    return this.httpClient.post<Product>(`${this.apiUrl}Product/AddProduct/`, AddProductReq)
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Product>(`${this.apiUrl}Product/AddProduct/`, AddProductReq, {headers})
     .pipe(map(result => result))
   }
 
   GetProduct(product_ID: Number): Observable<Product>
   {
-    return this.httpClient.get<Product>(`${this.apiUrl}Product/GetProduct/${product_ID}` );
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Product>(`${this.apiUrl}Product/GetProduct/${product_ID}`, {headers});
   }
 
   EditProduct(product_ID: number , EditProductReq: Product):Observable<Product>
   {
-      return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq, {headers});
   }
 
   DeleteProduct(product_ID: number):Observable<Product>
   {
-      return this.httpClient.delete<Product>(`${this.apiUrl}Product/DeleteProduct/${product_ID}`);
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.delete<Product>(`${this.apiUrl}Product/DeleteProduct/${product_ID}`, {headers});
   }
 }
