@@ -1,4 +1,4 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="primary" *ngIf="isAdmin">
     <mat-toolbar-row>
       <button mat-icon-button  *ngIf="isLoggedIn">
         <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
@@ -46,13 +46,6 @@
         </div>
     
         <span class="spacer"></span>
-    
-        <!-- <mat-form-field appearance="outline">
-          <mat-label>Outline form field</mat-label>
-          <input matInput placeholder="Placeholder">
-          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          <mat-hint>Hint</mat-hint>
-        </mat-form-field> -->
         
         <div class="navbar-buttons">  
     
@@ -61,10 +54,15 @@
           </button>
           
             <mat-menu #menu="matMenu">
-              <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
-              <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
-              <button mat-menu-item><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
-              <button mat-menu-item><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              <div *ngIf="isLoggedIn == true">
+                <button mat-menu-item><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
+                <button mat-menu-item><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              </div>
+
+              <div *ngIf="isLoggedIn == false">
+                <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
+                <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
+              </div>
             </mat-menu>      
     
           <button mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>
