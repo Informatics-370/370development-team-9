@@ -13,6 +13,7 @@ export class CustomerOrdersComponent {
   currentOrders: Order[] = [];
   orderHistory: Order[] = [];
 
+  
   addOrder(order: Order) {
     this.currentOrders.push(order);
   }

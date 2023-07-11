@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface CartItem {
@@ -14,14 +14,18 @@ interface CartItem {
   styleUrls: ['./cart.component.scss']
 })
 
-export class CartComponent {
-  cartItems: CartItem[] = [
-    { image: 'product1.jpg', name: 'Product 1', quantity: 2, price: 10 },
-    { image: 'product2.jpg', name: 'Product 2', quantity: 1, price: 20 },
-    { image: 'product3.jpg', name: 'Product 3', quantity: 3, price: 15 }
-  ];
+export class CartComponent implements OnInit{
+
+  products: any=[];
+  cartItems: any=[];
 
   constructor(private router: Router) {}
+
+  ngOnInit(): void {
+    
+  }
+
+  
 
   decreaseQuantity(index: number): void {
     if (this.cartItems[index].quantity > 1) {
