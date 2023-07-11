@@ -12,7 +12,6 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
@@ -59,6 +58,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPost]
         [Route("AddProduct")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> AddProduct(ProductVM prodvm)
         {
             var product = new Product { Product_Name = prodvm.Product_Name, Product_Description = prodvm.Product_Description, Product_Price = prodvm.Product_Price, Product_Category_ID = prodvm.Product_Category_ID, Product_Type_ID = prodvm.Product_Type_ID };
@@ -79,6 +79,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPut]
         [Route("EditProduct/{productId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<ProductVM>> EditProduct(string productId, ProductVM productModel)
         {
             try
@@ -116,6 +117,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteProduct/{productId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> DeleteProduct(string productId)
         {
             try
