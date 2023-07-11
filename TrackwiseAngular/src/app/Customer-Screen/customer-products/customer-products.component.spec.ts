@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CustomerLandingPageComponent } from './customer-landing-page.component';
+import { CustomerProductComponent } from './customer-products.component';
 
 describe('CustomerLandingPageComponent', () => {
-  let component: CustomerLandingPageComponent;
-  let fixture: ComponentFixture<CustomerLandingPageComponent>;
+  let component: CustomerProductComponent;
+  let fixture: ComponentFixture<CustomerProductComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CustomerLandingPageComponent]
+      declarations: [CustomerProductComponent]
     });
-    fixture = TestBed.createComponent(CustomerLandingPageComponent);
+    fixture = TestBed.createComponent(CustomerProductComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

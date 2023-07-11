@@ -40,7 +40,7 @@
         </span>
     
         <div class="navbar-buttons">
-          <button mat-button [routerLink]="'/Customer-Screen/customer-landing-page'">Products</button>
+          <button mat-button [routerLink]="'/Customer-Screen/customer-products'">Products</button>
           <button mat-button [routerLink]="'/Customer-Screen/about-us'">About Us</button>
           <button mat-button [routerLink]="'/Customer-Screen/customer-orders'">Orders</button>
         </div>
@@ -64,7 +64,7 @@
               <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
               <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
               <button mat-menu-item><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
-              <button mat-menu-item><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
             </mat-menu>      
     
           <button mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>

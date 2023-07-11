@@ -12,7 +12,7 @@
 
 
 <div class="card-container">
-     <mat-card *ngFor="let prod of products" class="product-card">
+     <mat-card *ngFor="let product of products" class="product-card">
         <mat-card-content >
             
             <div class="header-content">
@@ -22,11 +22,11 @@
                 
             </div><br>
 
-            <h6>Product Name</h6><br><br>
-             
+            <h6>{{product.product_Name}}</h6><br>
+            <p>{{product.product_Description}}</p>   
 
             <div class="price-button-container">
-                <mat-card-subtitle>{{prod.product_Price}}</mat-card-subtitle>
+                <mat-card-subtitle>{{product.product_Price}}</mat-card-subtitle>
                 <button mat-raised-button color="primary"  class="green-button">Add to Cart</button>
               </div>
         </mat-card-content>

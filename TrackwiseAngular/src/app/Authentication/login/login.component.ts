@@ -33,7 +33,15 @@ export class LoginComponent {
         const role = result.role;
         sessionStorage.setItem('Role', JSON.stringify(role));
         this.loginFormGroup.reset();
-        this.router.navigateByUrl('Admin-Screen/admins');
+
+        if(role == "Admin")
+        {
+          this.router.navigateByUrl('Admin-Screen/admins')
+        } else if(role == "Customer")
+        {
+          this.router.navigateByUrl('Customer-Screen/customer-landing-page')
+        }
+
       })
     }
   }
