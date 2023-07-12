@@ -25,8 +25,6 @@ export class CartComponent implements OnInit{
     
   }
 
-  
-
   decreaseQuantity(index: number): void {
     if (this.cartItems[index].quantity > 1) {
       this.cartItems[index].quantity--;
@@ -52,4 +50,18 @@ export class CartComponent implements OnInit{
   continueShopping(): void {
     this.router.navigate(['/Customer-Screen/customer-products']);
   }
+
+    // increaseQuantity(product: Product) {
+  //   if (!product.Quantity) {
+  //     product.Quantity = 1; // Set initial quantity to 1
+  //   } else {
+  //     product.Quantity++; // Increment quantity by 1
+  //   }
+  // }
+
+  // decreaseQuantity(product: Product) {
+  //   if (product.Quantity && product.Quantity > 1) {
+  //     product.Quantity--; // Decrement quantity by 1 if it's greater than 1
+  //   }
+  // }
 }

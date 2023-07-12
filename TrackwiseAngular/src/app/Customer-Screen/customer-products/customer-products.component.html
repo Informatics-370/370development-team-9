@@ -27,6 +27,12 @@
 
                     <p><b>R {{product.product_Price | number:"1.2-2"}}</b></p>
                 </div>
+<!-- 
+                <div class="quantity">
+                    <button mat-button (click)="increaseQuantity(product)">+</button>
+                    <span>{{ product.Quantity || 1 }}</span>
+                    <button mat-button (click)="decreaseQuantity(product)">-</button>
+                  </div> -->
 
                 <mat-card-actions>
                   <button mat-button class="AddToCartBtn" (click)="AddItemToCart(product)">Add to Cart</button>
