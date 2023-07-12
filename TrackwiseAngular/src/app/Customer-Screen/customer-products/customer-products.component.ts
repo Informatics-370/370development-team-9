@@ -38,5 +38,11 @@ GetAllProducts() {
     })
   }
 
+  AddItemToCart(e:any){
+    console.log(e)
+    let AddCartItem:any = JSON.parse(sessionStorage.getItem("cartItem")|| '[]');
+    AddCartItem.push(e)
+    sessionStorage.setItem('cartItem',JSON.stringify(AddCartItem));
+  }
 
  }

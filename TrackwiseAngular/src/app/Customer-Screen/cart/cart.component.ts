@@ -50,6 +50,6 @@ export class CartComponent implements OnInit{
   }
 
   continueShopping(): void {
-    this.router.navigate(['/Customer-Screen/customer-landing-page']);
+    this.router.navigate(['/Customer-Screen/customer-products']);
   }
 }
