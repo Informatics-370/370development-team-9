@@ -89,7 +89,7 @@ const routes: Routes = [
   {path: '', redirectTo: 'Authentication/login', pathMatch:'full'},
 
   //Customer components--------------------------------------------------
-  {path: 'Customer-Screen/customer-landing-page', component: CustomerProductComponent},
+  {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},
   {path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent},
   {path: 'Customer-Screen/about-us', component: AboutUsComponent},
   {path: 'Customer-Screen/cart', component: CartComponent},
