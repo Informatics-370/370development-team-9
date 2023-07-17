@@ -9,7 +9,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using System;
 using TrackwiseAPI.Models.Factory;
-
+using TrackwiseAPI.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,6 +104,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 
 builder.Services.AddScoped<ISupplierRepository, SupplierRepository>();
 
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -138,21 +140,72 @@ using (var scope = app.Services.CreateScope())
 using (var scope = app.Services.CreateScope())
 {
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<TwDbContext>();
+    var admins = scope.ServiceProvider.GetRequiredService<Admin>;
 
-    string email = "admin@admin.com";
+    string email = "admin@gmail.com";
     string password = "Test1234";
+    var adminId = Guid.NewGuid().ToString();
 
-    if (await userManager.FindByEmailAsync(email) == null) ;
+    if (await userManager.FindByEmailAsync(email) == null)
     {
         var user = new AppUser();
+        user.Id = adminId;
         user.UserName = email;
         user.Email = email;
 
         await userManager.CreateAsync(user, password);
 
         await userManager.AddToRoleAsync(user, "Admin");
-    }
 
+        var admin = new Admin
+        {
+            Admin_ID = adminId,
+            Name = "Default Admin",
+            Lastname = "Default",
+            Email = email,
+            Password = password
+        };
+
+        dbContext.Admins.Add(admin);
+        await dbContext.SaveChangesAsync();
+    }
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<TwDbContext>();
+    var customers = scope.ServiceProvider.GetRequiredService<Customer>;
+
+    string email = "customer@gmail.com";
+    string password = "Test1234";
+    var customerId = Guid.NewGuid().ToString();
+
+    if (await userManager.FindByEmailAsync(email) == null)
+    {
+        var user = new AppUser();
+        user.Id = customerId;
+        user.UserName = email;
+        user.Email = email;
+
+        await userManager.CreateAsync(user, password);
+
+        await userManager.AddToRoleAsync(user, "Customer");
+
+        var customer = new Customer
+        {
+            Customer_ID = customerId,
+            Name = "Default Customer",
+            LastName = "Default",
+            Email = email,
+            Password = password
+        };
+
+        dbContext.Customers.Add(customer);
+        await dbContext.SaveChangesAsync();
+    }
+}
+
 
 app.Run();
