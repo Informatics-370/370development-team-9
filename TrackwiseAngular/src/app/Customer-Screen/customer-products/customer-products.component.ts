@@ -12,7 +12,7 @@ import { Product } from 'src/app/shared/product';
   
 })
 export class CustomerProductComponent {
-  products : Product[] = [];
+
   // cardFlipped=false;
 
   constructor(private dataService: DataService) {}
@@ -21,8 +21,10 @@ export class CustomerProductComponent {
     this.GetProducts(); 
   }
 
+ products : Product[] = [];
+
 GetAllProducts() {
-  this.products=JSON.parse(localStorage.getItem('product')!);  
+  this.products=JSON.parse(localStorage.getItem('product')!);
   }
 
   GetProducts()
@@ -37,11 +39,31 @@ GetAllProducts() {
     })
   }
 
-  AddItemToCart(e:any){
-    console.log(e)
-    let AddCartItem:any = JSON.parse(sessionStorage.getItem("cartItem")|| '[]');
-    AddCartItem.push(e)
-    sessionStorage.setItem('cartItem',JSON.stringify(AddCartItem));
+  AddItemToCart(e: any) {
+    console.log(e);
+    let AddCartItem: any[] = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
+
+    if (AddCartItem.length === 0) {
+      if (!e.Quantity)
+      {
+        e.Quantity = 1;
+      }
+      AddCartItem.push(e);
+    } else {
+      let res = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == e.product_ID);
+
+      if (res === undefined) {
+        if (!e.Quantity)
+        {
+          e.Quantity = 1;
+        }
+        AddCartItem.push(e);
+      } else {
+        res.Quantity++;
+      }
+    }
+
+    sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
   }
 
   // flipCard(product: Product): void {
