@@ -57,9 +57,15 @@
 
 .navbar {
   display: flex;
+  position: fixed;
   align-items: center;
   background-color: #004F9E;
   color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+  
 }
 
 .navbar-title {

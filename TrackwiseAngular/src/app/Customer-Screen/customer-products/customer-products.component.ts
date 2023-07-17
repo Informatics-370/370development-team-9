@@ -12,15 +12,14 @@ import { Product } from 'src/app/shared/product';
   
 })
 export class CustomerProductComponent {
-
+  products : Product[] = [];
+  // cardFlipped=false;
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.GetProducts(); 
   }
-
- products : Product[] = [];
 
 GetAllProducts() {
   this.products=JSON.parse(localStorage.getItem('product')!);  
@@ -45,4 +44,10 @@ GetAllProducts() {
     sessionStorage.setItem('cartItem',JSON.stringify(AddCartItem));
   }
 
+  // flipCard(product: Product): void {
+  //   product.this.cardFlipped = !product.cardFlipped;
+  // }
+
  }
+
+ 
