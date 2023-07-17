@@ -17,7 +17,30 @@ interface CartItem {
 export class CartComponent implements OnInit{
 
   products: any=[];
-  cartItems: any=[];
+  cartItems: any[] = [
+    {
+      image: 'assets/Mail.jpg',
+      name: 'Product 1',
+      description: 'product description text',
+      quantity: 2,
+      price: 10.99
+    },
+    {
+      image:  'assets/Mail.jpg',
+      name: 'Product 2',
+      description: 'product description text',
+      quantity: 1,
+      price: 5.99
+    },
+    {
+      image:  'assets/Mail.jpg',
+      name: 'Product 3',
+      description: 'product description text',
+      quantity: 3,
+      price: 7.99
+    }
+    // Add more items as needed
+  ];
 
   constructor(private router: Router) {}
 
