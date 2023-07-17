@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TrackwiseAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class newInitialWithIdentity : Migration
+    public partial class newInitialDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -471,6 +471,7 @@ namespace TrackwiseAPI.Migrations
                     Product_Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Product_Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Product_Price = table.Column<double>(type: "float", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Product_Category_ID = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Product_Type_ID = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -815,24 +816,24 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Order_ID", "Customer_ID", "Date", "Status", "Total" },
                 values: new object[,]
                 {
-                    { "1", "1", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8629), "Ordered", 2897.0 },
-                    { "2", "2", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8637), "Ordered", 2997.0 },
-                    { "3", "3", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8639), "Ordered", 2998.0 }
+                    { "1", "1", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2832), "Ordered", 2897.0 },
+                    { "2", "2", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2844), "Ordered", 2997.0 },
+                    { "3", "3", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2846), "Ordered", 2998.0 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Product_ID", "Product_Category_ID", "Product_Description", "Product_Name", "Product_Price", "Product_Type_ID" },
+                columns: new[] { "Product_ID", "Product_Category_ID", "Product_Description", "Product_Name", "Product_Price", "Product_Type_ID", "Quantity" },
                 values: new object[,]
                 {
-                    { "1", "4", "FUEL PRIMER PUMP/K5", "Fuel Pump", 999.0, "2" },
-                    { "2", "5", "SEAL RING MB-S48", "SEAL RING", 899.0, "1" },
-                    { "3", "7", "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", "CLUTCH", 1499.0, "2" },
-                    { "4", "7", "SAF AXLE NUT LEFT M75x1.5 (85mm)", "AXLE NUT", 1199.0, "1" },
-                    { "5", "8", "BEARING INN ROCKWELL TM 218248/210/HM", "BEARING", 9.9900000000000002, "1" },
-                    { "6", "6", "SEAL OIL STEERING M/B AXOR-S46", "SEAL OIL", 119.98999999999999, "1" },
-                    { "7", "7", "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", "BRAKEPAD", 799.0, "1" },
-                    { "8", "1", "FAN BELT 9PK2300-U7", "FAN BELT", 455.0, "1" }
+                    { "1", "4", "FUEL PRIMER PUMP/K5", "Fuel Pump", 999.0, "2", 10 },
+                    { "2", "5", "SEAL RING MB-S48", "SEAL RING", 899.0, "1", 9 },
+                    { "3", "7", "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", "CLUTCH", 1499.0, "2", 7 },
+                    { "4", "7", "SAF AXLE NUT LEFT M75x1.5 (85mm)", "AXLE NUT", 1199.0, "1", 66 },
+                    { "5", "8", "BEARING INN ROCKWELL TM 218248/210/HM", "BEARING", 9.9900000000000002, "1", 23 },
+                    { "6", "6", "SEAL OIL STEERING M/B AXOR-S46", "SEAL OIL", 119.98999999999999, "1", 40 },
+                    { "7", "7", "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", "BRAKEPAD", 799.0, "1", 5 },
+                    { "8", "1", "FAN BELT 9PK2300-U7", "FAN BELT", 455.0, "1", 7 }
                 });
 
             migrationBuilder.InsertData(
@@ -840,9 +841,9 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Invoice_number", "Date", "Order_ID", "Total_Amount" },
                 values: new object[,]
                 {
-                    { "1", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8715), "1", 200.5 },
-                    { "2", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8716), "2", 75.200000000000003 },
-                    { "3", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8717), "3", 450.0 }
+                    { "1", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2982), "1", 200.5 },
+                    { "2", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2984), "2", 75.200000000000003 },
+                    { "3", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2986), "3", 450.0 }
                 });
 
             migrationBuilder.InsertData(
@@ -861,11 +862,11 @@ namespace TrackwiseAPI.Migrations
                 columns: new[] { "Payment_ID", "Date", "Order_ID", "Payment_Type_ID", "amount_paid" },
                 values: new object[,]
                 {
-                    { "1", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8736), "1", "1", 150.5 },
-                    { "2", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8738), "1", "2", 50.0 },
-                    { "3", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8740), "2", "3", 75.200000000000003 },
-                    { "4", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8741), "3", "1", 200.0 },
-                    { "5", new DateTime(2023, 7, 3, 18, 19, 10, 446, DateTimeKind.Local).AddTicks(8742), "3", "2", 250.0 }
+                    { "1", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3021), "1", "1", 150.5 },
+                    { "2", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3024), "1", "2", 50.0 },
+                    { "3", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3026), "2", "3", 75.200000000000003 },
+                    { "4", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3028), "3", "1", 200.0 },
+                    { "5", new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3029), "3", "2", 250.0 }
                 });
 
             migrationBuilder.InsertData(

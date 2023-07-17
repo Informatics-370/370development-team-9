@@ -12,8 +12,8 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    [Migration("20230712105459_addOrderFunc")]
-    partial class addOrderFunc
+    [Migration("20230717142936_newInitialDatabase")]
+    partial class newInitialDatabase
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -546,21 +546,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = "1",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4236),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2982),
                             Order_ID = "1",
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = "2",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4237),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2984),
                             Order_ID = "2",
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = "3",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4238),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2986),
                             Order_ID = "3",
                             Total_Amount = 450.0
                         });
@@ -680,7 +680,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = "1",
                             Customer_ID = "1",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4139),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2832),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -688,7 +688,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = "2",
                             Customer_ID = "2",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4150),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2844),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -696,7 +696,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = "3",
                             Customer_ID = "3",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4152),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(2846),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -791,7 +791,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "1",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4262),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3021),
                             Order_ID = "1",
                             Payment_Type_ID = "1",
                             amount_paid = 150.5
@@ -799,7 +799,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "2",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4264),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3024),
                             Order_ID = "1",
                             Payment_Type_ID = "2",
                             amount_paid = 50.0
@@ -807,7 +807,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "3",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4265),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3026),
                             Order_ID = "2",
                             Payment_Type_ID = "3",
                             amount_paid = 75.200000000000003
@@ -815,7 +815,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "4",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4324),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3028),
                             Order_ID = "3",
                             Payment_Type_ID = "1",
                             amount_paid = 200.0
@@ -823,7 +823,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "5",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4326),
+                            Date = new DateTime(2023, 7, 17, 16, 29, 36, 18, DateTimeKind.Local).AddTicks(3029),
                             Order_ID = "3",
                             Payment_Type_ID = "2",
                             amount_paid = 250.0
@@ -892,6 +892,9 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("Product_ID");
 
                     b.HasIndex("Product_Category_ID");
@@ -908,7 +911,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "FUEL PRIMER PUMP/K5",
                             Product_Name = "Fuel Pump",
                             Product_Price = 999.0,
-                            Product_Type_ID = "2"
+                            Product_Type_ID = "2",
+                            Quantity = 10
                         },
                         new
                         {
@@ -917,7 +921,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "SEAL RING MB-S48",
                             Product_Name = "SEAL RING",
                             Product_Price = 899.0,
-                            Product_Type_ID = "1"
+                            Product_Type_ID = "1",
+                            Quantity = 9
                         },
                         new
                         {
@@ -926,7 +931,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10",
                             Product_Name = "CLUTCH",
                             Product_Price = 1499.0,
-                            Product_Type_ID = "2"
+                            Product_Type_ID = "2",
+                            Quantity = 7
                         },
                         new
                         {
@@ -935,7 +941,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)",
                             Product_Name = "AXLE NUT",
                             Product_Price = 1199.0,
-                            Product_Type_ID = "1"
+                            Product_Type_ID = "1",
+                            Quantity = 66
                         },
                         new
                         {
@@ -944,7 +951,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM",
                             Product_Name = "BEARING",
                             Product_Price = 9.9900000000000002,
-                            Product_Type_ID = "1"
+                            Product_Type_ID = "1",
+                            Quantity = 23
                         },
                         new
                         {
@@ -953,7 +961,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "SEAL OIL STEERING M/B AXOR-S46",
                             Product_Name = "SEAL OIL",
                             Product_Price = 119.98999999999999,
-                            Product_Type_ID = "1"
+                            Product_Type_ID = "1",
+                            Quantity = 40
                         },
                         new
                         {
@@ -962,7 +971,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279",
                             Product_Name = "BRAKEPAD",
                             Product_Price = 799.0,
-                            Product_Type_ID = "1"
+                            Product_Type_ID = "1",
+                            Quantity = 5
                         },
                         new
                         {
@@ -971,7 +981,8 @@ namespace TrackwiseAPI.Migrations
                             Product_Description = "FAN BELT 9PK2300-U7",
                             Product_Name = "FAN BELT",
                             Product_Price = 455.0,
-                            Product_Type_ID = "1"
+                            Product_Type_ID = "1",
+                            Quantity = 7
                         });
                 });
 

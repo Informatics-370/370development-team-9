@@ -1,69 +1,114 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
+using TrackwiseAPI.Models.Interfaces;
+using TrackwiseAPI.Models.Repositories;
+using static TrackwiseAPI.Controllers.OrderController;
 
 namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
     public class OrderController : ControllerBase
     {
-        private readonly TwDbContext dbContext;
+        private readonly IProductRepository _productRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly TwDbContext _dbContext;
 
-        public OrderController(TwDbContext dbContext)
+        public OrderController(TwDbContext dbContext, IProductRepository productRepository, IOrderRepository orderRepository, UserManager<AppUser> userManager)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
+            _productRepository = productRepository;
+            _orderRepository = orderRepository;
+            _userManager = userManager;
         }
 
         [HttpPost]
         [Route("CreateOrder")]
-        public IActionResult Checkout(OrderDto orderDto)
+        public async Task<IActionResult> Checkout(OrderDto orderDto)
         {
-            // Map the data from the DTO to your entity models
+            // Retrieve the authenticated user's email address
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            // Query the customer repository to get the customer ID
+            var customer = await _userManager.FindByEmailAsync(userEmail);
+
+            if (customer == null)
+            {
+                return BadRequest("Customer not found");
+            }
+
+            var customerId = customer.Id;
+
+            if (string.IsNullOrEmpty(customerId))
+            {
+                return BadRequest("Customer ID not found");
+            }
+
             decimal total = 0;
 
             foreach (var orderLine in orderDto.OrderLines)
             {
-                decimal subtotal = (decimal)(orderLine.Quantity * orderLine.Price);
+                var product = await _productRepository.GetProductAsync(orderLine.ProductId);
+                decimal subtotal = (decimal)(orderLine.Quantity * product.Product_Price);
                 total += subtotal;
             }
 
-            orderDto.Total = (double)total;
-
             var order = new Order
             {
-                Order_ID = GenerateOrderId(), // Generate a unique order ID
+                Order_ID = GenerateOrderId(),
                 Date = DateTime.Now,
-                Total = orderDto.Total,
+                Total = (double)total,
                 Status = "Ordered",
-                Customer_ID = orderDto.CustomerId,
+                Customer_ID = customerId,
                 OrderLines = new List<Order_Line>()
             };
 
             foreach (var orderLineDto in orderDto.OrderLines)
             {
+                var product = await _productRepository.GetProductAsync(orderLineDto.ProductId);
+                if (product == null)
+                {
+                    return NotFound(); // Handle product not found scenario
+                }
+
+                if (product.Quantity < orderLineDto.Quantity)
+                {
+                    return BadRequest("Insufficient stock for the product"); // Handle insufficient stock scenario
+                }
+
                 var orderLine = new Order_Line
                 {
-                    Order_line_ID = GenerateOrderLineId(), // Generate a unique order line ID
+                    Order_line_ID = GenerateOrderLineId(),
                     Productid = orderLineDto.ProductId,
                     Quantity = orderLineDto.Quantity,
-                    SubTotal = orderLineDto.Price * orderLineDto.Quantity
+                    SubTotal = product.Product_Price * orderLineDto.Quantity
                 };
 
                 order.OrderLines.Add(orderLine);
+
+                // Update the product quantity
+                product.Quantity -= orderLineDto.Quantity;
             }
 
-            // Save the order to the database
-            dbContext.Orders.Add(order);
-            dbContext.SaveChanges();
+            // Save the order and update the product quantities
+            _dbContext.Orders.Add(order);
+            await _productRepository.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
             return Ok();
         }
+
 
         private string GenerateOrderId()
         {
@@ -79,8 +124,6 @@ namespace TrackwiseAPI.Controllers
 
         public class OrderDto
         {
-            public string CustomerId { get; set; }
-            public double Total { get; set; }
             public List<OrderLineDto> OrderLines { get; set; }
         }
 
@@ -88,7 +131,6 @@ namespace TrackwiseAPI.Controllers
         {
             public string ProductId { get; set; }
             public int Quantity { get; set; }
-            public double Price { get; set; }
         }
     }
 }
