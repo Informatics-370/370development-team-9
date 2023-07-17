@@ -85,4 +85,6 @@ export class CartComponent implements OnInit{
       sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
     }
   }
+
 }
+

@@ -15,4 +15,5 @@ export interface Product {
         name:string;
         description:string;
     };
+    Quantity?: number;
 }
