@@ -13,6 +13,7 @@ import { Product } from 'src/app/shared/product';
 })
 export class CustomerProductComponent {
 
+  // cardFlipped=false;
 
   constructor(private dataService: DataService) {}
 
@@ -23,7 +24,7 @@ export class CustomerProductComponent {
  products : Product[] = [];
 
 GetAllProducts() {
-  this.products=JSON.parse(localStorage.getItem('product')!);  
+  this.products=JSON.parse(localStorage.getItem('product')!);
   }
 
   GetProducts()
@@ -41,7 +42,8 @@ GetAllProducts() {
   AddItemToCart(e: any) {
     console.log(e);
     let AddCartItem: any[] = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
-  
+
+
     if (AddCartItem.length === 0) {
       if (!e.Quantity)
       {
@@ -50,7 +52,8 @@ GetAllProducts() {
       AddCartItem.push(e);
     } else {
       let res = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == e.product_ID);
-  
+
+
       if (res === undefined) {
         if (!e.Quantity)
         {
@@ -61,10 +64,18 @@ GetAllProducts() {
         res.Quantity++;
       }
     }
-  
+
+
+
     sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
   }
   
 
 
+  // flipCard(product: Product): void {
+  //   product.this.cardFlipped = !product.cardFlipped;
+  // }
+
  }
+
+ 
