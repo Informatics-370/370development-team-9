@@ -4,9 +4,10 @@
   gap: 20px;
   perspective: 800px;
 
-  margin-top: 30px;
+  margin-top: 70px;
   margin-left: 70px;
   margin-right: 70px;
+
 }
 
 .price-button-container {
@@ -129,7 +130,7 @@
   top: 0;
   left: 0;
   bottom: 0;
-  margin-top: 65px; /* Adjust this value based on the navbar height */
+  margin-top: 64px; /* Adjust this value based on the navbar height */
 }
 
 .main-content {
@@ -172,4 +173,60 @@
   background-color: #117fca;
   color: white;
   font-weight: bold;
+}
+
+
+// Search bar
+
+.search-navbar{
+  margin-top: 64px;
+  margin-left: 210px;
+  background-color: #117fca;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  // justify-content: center;
+}
+
+/* Style the search bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 5px 10px;
+  height: 35px;
+  margin-right: 250px;
+  width: 400px;
+}
+
+.search-bar input[type="text"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.search-bar button {
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* Add hover effect to the search button */
+.search-bar button:hover {
+  opacity: 0.8;
 }
