@@ -43,6 +43,7 @@ GetAllProducts() {
     console.log(e);
     let AddCartItem: any[] = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
 
+
     if (AddCartItem.length === 0) {
       if (!e.Quantity)
       {
@@ -51,6 +52,7 @@ GetAllProducts() {
       AddCartItem.push(e);
     } else {
       let res = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == e.product_ID);
+
 
       if (res === undefined) {
         if (!e.Quantity)
@@ -63,8 +65,12 @@ GetAllProducts() {
       }
     }
 
+
+
     sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
   }
+  
+
 
   // flipCard(product: Product): void {
   //   product.this.cardFlipped = !product.cardFlipped;

@@ -39,7 +39,7 @@ export class LoginComponent {
           this.router.navigateByUrl('Admin-Screen/admins')
         } else if(role == "Customer")
         {
-          this.router.navigateByUrl('Customer-Screen/customer-landing-page')
+          this.router.navigateByUrl('Customer-Screen/customer-products')
         }
 
       })

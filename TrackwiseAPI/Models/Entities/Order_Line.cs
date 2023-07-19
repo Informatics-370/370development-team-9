@@ -8,6 +8,7 @@ namespace TrackwiseAPI.Models.Entities
         [Key]
         public string Order_line_ID { get; set; }
         public string Orderid { get; set; }
+        [ForeignKey("Orderid")]
         public Order Order { get; set; }
 
         public string Productid { get; set; }
