@@ -58,7 +58,8 @@ namespace TrackwiseAPI.Controllers
         [Route("AddSupplier")]
         public async Task<IActionResult> AddSupplier(SupplierVM supvm)
         {
-            var supplier = new Supplier { Name = supvm.Name, Email = supvm.Email, Contact_Number = supvm.Contact_Number};
+            var supplierId = Guid.NewGuid().ToString();
+            var supplier = new Supplier {Supplier_ID = supplierId, Name = supvm.Name, Email = supvm.Email, Contact_Number = supvm.Contact_Number};
 
             try
             {

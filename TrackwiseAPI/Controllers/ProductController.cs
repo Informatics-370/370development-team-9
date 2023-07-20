@@ -61,7 +61,9 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> AddProduct(ProductVM prodvm)
         {
-            var product = new Product { Product_Name = prodvm.Product_Name, Product_Description = prodvm.Product_Description, Product_Price = prodvm.Product_Price,Quantity = prodvm.Product_Quantity ,Product_Category_ID = prodvm.Product_Category_ID, Product_Type_ID = prodvm.Product_Type_ID };
+            var productId = Guid.NewGuid().ToString();
+
+            var product = new Product {Product_ID = productId, Product_Name = prodvm.Product_Name, Product_Description = prodvm.Product_Description, Product_Price = prodvm.Product_Price, Quantity = prodvm.Product_Quantity ,Product_Category_ID = prodvm.Product_Category_ID, Product_Type_ID = prodvm.Product_Type_ID };
 
             try
             {
@@ -89,7 +91,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingProduct.Product_Name == productModel.Product_Name &&
                     existingProduct.Product_Description == productModel.Product_Description &&
-                    existingProduct.Product_Price == productModel.Product_Price)
+                    existingProduct.Product_Price == productModel.Product_Price &&
+                    existingProduct.Quantity == productModel.Product_Quantity)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingProduct);
@@ -98,7 +101,7 @@ namespace TrackwiseAPI.Controllers
                 existingProduct.Product_Name = productModel.Product_Name;
                 existingProduct.Product_Description = productModel.Product_Description;
                 existingProduct.Product_Price = productModel.Product_Price;
-                
+                existingProduct.Quantity = productModel.Product_Quantity;
 
 
 

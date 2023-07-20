@@ -62,7 +62,8 @@ namespace TrackwiseAPI.Controllers
         [Route("AddTrailer")]
         public async Task<IActionResult> AddTrailer(TrailerVM tvm)
         {
-            var trailer = new Trailer { Trailer_License = tvm.Trailer_License, Model = tvm.Model, Weight = tvm.Weight, Trailer_Status_ID = tvm.Trailer_Status_ID, Trailer_Type_ID = tvm.Trailer_Type_ID };
+            var trailerId = Guid.NewGuid().ToString();
+            var trailer = new Trailer { TrailerID = trailerId, Trailer_License = tvm.Trailer_License, Model = tvm.Model, Weight = tvm.Weight, Trailer_Status_ID = tvm.Trailer_Status_ID, Trailer_Type_ID = tvm.Trailer_Type_ID };
 
             try
             {
