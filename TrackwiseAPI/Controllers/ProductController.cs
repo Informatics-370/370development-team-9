@@ -61,7 +61,7 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> AddProduct(ProductVM prodvm)
         {
-            var product = new Product { Product_Name = prodvm.Product_Name, Product_Description = prodvm.Product_Description, Product_Price = prodvm.Product_Price, Product_Category_ID = prodvm.Product_Category_ID, Product_Type_ID = prodvm.Product_Type_ID };
+            var product = new Product { Product_Name = prodvm.Product_Name, Product_Description = prodvm.Product_Description, Product_Price = prodvm.Product_Price,Quantity = prodvm.Product_Quantity ,Product_Category_ID = prodvm.Product_Category_ID, Product_Type_ID = prodvm.Product_Type_ID };
 
             try
             {
