@@ -28,6 +28,7 @@ export class AddProductComponent {
       name:"",
       description:""
     },
+    Quantity: 0
 
   };
 

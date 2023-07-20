@@ -7,6 +7,7 @@ using TrackwiseAPI.Models.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using TrackwiseAPI.Models.DataTransferObjects;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -28,8 +29,20 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
-                var results = await _productRepository.GetAllProductsAsync();
-                return Ok(results);
+                var products = await _productRepository.GetAllProductsAsync();
+                var productDtos = products.Select(p => new ProductDTO
+                {
+                    Product_ID = p.Product_ID,
+                    Product_Name = p.Product_Name,
+                    Product_Description = p.Product_Description,
+                    Product_Price = p.Product_Price,
+                    Quantity = p.Quantity,
+                    Product_Category_ID = p.Product_Category_ID,
+                    Product_Type_ID = p.Product_Type_ID,
+                    // Map other properties as needed
+                }).ToList();
+
+                return Ok(productDtos);
             }
             catch (Exception)
             {

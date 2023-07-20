@@ -9,6 +9,7 @@ import { Client } from '../shared/client';
 import { Supplier } from '../shared/supplier';
 import { Product } from '../shared/product';
 import { LoginUser } from '../shared/login-user';
+import { Customer } from '../shared/customer';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
 
@@ -374,5 +375,34 @@ export class DataService {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.delete<Product>(`${this.apiUrl}Product/DeleteProduct/${product_ID}`, {headers});
+  }
+
+  /*Customer Section*/
+  GetCustomers(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Customer/GetAllCustomers`, {headers})
+    .pipe(map(result => result))
+  }
+
+  GetCustomer(customer_ID: string): Observable<Customer>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Customer>(`${this.apiUrl}Customer/GetCustomer/${customer_ID}`, {headers});
+  }
+
+  EditCustomer(customer_ID: string , EditCustomerReq: Customer):Observable<Customer>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<Customer>(`${this.apiUrl}Customer/EditCustomer/${customer_ID}`, EditCustomerReq, {headers});
+  }
+
+  DeleteCustomer(customer_ID: string):Observable<Customer>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.delete<Customer>(`${this.apiUrl}Customer/DeleteCustomer/${customer_ID}`, {headers});
   }
 }

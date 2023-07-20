@@ -12,12 +12,13 @@ using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 using static TrackwiseAPI.Controllers.OrderController;
+using TrackwiseAPI.Models.DataTransferObjects;
+using TrackwiseAPI.Models.ViewModels;
 
 namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
     public class OrderController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
@@ -33,9 +34,52 @@ namespace TrackwiseAPI.Controllers
             _userManager = userManager;
         }
 
+        [HttpGet]
+        [Route("GetAllOrders")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> GetAllAdmins()
+        {
+            try
+            {
+                var orders = await _orderRepository.GetAllOrdersAsync();
+                var orderDTOs = orders.Select(order => new OrderDTO
+                {
+                    Order_ID = order.Order_ID,
+                    Date = order.Date,
+                    Total = order.Total,
+                    Status = order.Status,
+                    Customer_ID = order.Customer_ID,
+                    OrderLines = order.OrderLines.Select(ol => new OrderLineDTO
+                    {
+                        Order_line_ID = ol.Order_line_ID,
+                        Quantity = ol.Quantity,
+                        SubTotal = ol.SubTotal,
+                        Product = new ProductDTO
+                        {
+                            Product_ID = ol.Product.Product_ID,
+                            Product_Name = ol.Product.Product_Name,
+                            Product_Description = ol.Product.Product_Description,
+                            Product_Price = ol.Product.Product_Price,
+                            Quantity = (int)ol.Quantity,
+                            Product_Type_ID = ol.Product.Product_Type_ID,
+                            Product_Category_ID = ol.Product.Product_Category_ID
+                            // Add other product properties as needed
+                        }
+                    }).ToList()
+                }).ToList();
+
+                return Ok(orderDTOs);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
         [HttpPost]
         [Route("CreateOrder")]
-        public async Task<IActionResult> Checkout(OrderDto orderDto)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        public async Task<IActionResult> Checkout(OrderDTO orderDto)
         {
             // Retrieve the authenticated user's email address
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
@@ -59,7 +103,7 @@ namespace TrackwiseAPI.Controllers
 
             foreach (var orderLine in orderDto.OrderLines)
             {
-                var product = await _productRepository.GetProductAsync(orderLine.ProductId);
+                var product = await _productRepository.GetProductAsync(orderLine.Product.Product_ID);
                 decimal subtotal = (decimal)(orderLine.Quantity * product.Product_Price);
                 total += subtotal;
             }
@@ -76,7 +120,7 @@ namespace TrackwiseAPI.Controllers
 
             foreach (var orderLineDto in orderDto.OrderLines)
             {
-                var product = await _productRepository.GetProductAsync(orderLineDto.ProductId);
+                var product = await _productRepository.GetProductAsync(orderLineDto.Product.Product_ID);
                 if (product == null)
                 {
                     return NotFound(); // Handle product not found scenario
@@ -90,7 +134,7 @@ namespace TrackwiseAPI.Controllers
                 var orderLine = new Order_Line
                 {
                     Order_line_ID = GenerateOrderLineId(),
-                    Productid = orderLineDto.ProductId,
+                    Productid = orderLineDto.Product.Product_ID,
                     Quantity = orderLineDto.Quantity,
                     SubTotal = product.Product_Price * orderLineDto.Quantity
                 };
@@ -122,15 +166,5 @@ namespace TrackwiseAPI.Controllers
             // Generate a unique order line ID logic goes here
         }
 
-        public class OrderDto
-        {
-            public List<OrderLineDto> OrderLines { get; set; }
-        }
-
-        public class OrderLineDto
-        {
-            public string ProductId { get; set; }
-            public int Quantity { get; set; }
-        }
     }
 }

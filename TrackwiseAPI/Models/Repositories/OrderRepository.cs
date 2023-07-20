@@ -1,4 +1,5 @@
-﻿using TrackwiseAPI.DBContext;
+﻿using Microsoft.EntityFrameworkCore;
+using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 
@@ -22,9 +23,21 @@ namespace TrackwiseAPI.Models.Repositories
         {
             return await _context.SaveChangesAsync() > 0;
         }
+
+            public async Task<Order[]> GetAllOrdersAsync()
+            {
+                IQueryable<Order> query = _context.Orders.Include(c => c.Customer).Include(c => c.OrderLines).ThenInclude(o => o.Product);
+                return await query.ToArrayAsync();
+            }
+
+        public async Task<Order> GetOrderAsync(string OrderID)
+        {
+            IQueryable<Order> query = _context.Orders.Where(c => c.Order_ID == OrderID);
+            return await query.FirstOrDefaultAsync();
+        }
     }
 
 
-    // Implement other methods as needed (e.g., GetOrder, UpdateOrder, DeleteOrder, etc.)
+   
 }
 

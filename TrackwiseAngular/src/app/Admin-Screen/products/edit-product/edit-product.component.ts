@@ -28,7 +28,8 @@ export class EditProductComponent {
       product_Type_ID:"",
       name:"",
       description:""
-    }
+    },
+    Quantity:0
   
   };
 
