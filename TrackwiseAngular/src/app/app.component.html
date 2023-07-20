@@ -49,15 +49,24 @@
         
         <div class="navbar-buttons">  
     
-          <button mat-button [matMenuTriggerFor]="menu">My Account
+          <button mat-button class="MyAccountDD" [matMenuTriggerFor]="menu">My Account
             <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
           </button>
           
             <mat-menu #menu="matMenu">
-              <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
-              <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
-              <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
-              <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              <div *ngIf="dataService.isLoggedIn==true">
+                                <!-- <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
+                <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button> -->
+                <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
+                <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              </div>
+
+              <div *ngIf="dataService.isLoggedIn == false">
+                <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
+                <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
+                <!-- <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> -->
+                <!-- <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button> -->
+              </div>
             </mat-menu>      
     
           <button mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>

@@ -81,6 +81,8 @@
 
 .navbar-buttons {
   margin-left: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar-buttons button {
@@ -97,6 +99,10 @@
 
 .spacer {
   flex: 1;
+}
+
+.MyAccountDD{
+  margin-bottom: 8px;
 }
 
 .badge {
