@@ -46,6 +46,13 @@
           <option value="2">Trailer</option>
         </select>
       </div>
+
+      
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Quantity (Stock)</label>
+        <input type="text" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.Quantity"  
+               name="quantity" [(ngModel)]="AddProductRequest.Quantity">
+      </div>
           
         
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Add Product</button>&nbsp;
