@@ -1,12 +1,9 @@
-<h1>Orders</h1>
+<h3>Current Orders</h3>
 
 <!-- Current Orders -->
 <table>
     <thead>
-        <tr>
-            <h3><u>Current Orders</u></h3>
-        </tr>
-        <tr>
+        <tr class="table-headers">
             <th>Order Number</th>
             <th>Placed on</th>
             <th>Status</th>
@@ -19,15 +16,62 @@
     <tbody>
         <tr>
             <td>#2144586</td>
-            <td>2023-01-01</td>
-            <td>Ordered</td>
+            <td>2023-01-03</td>
+            <td style="color: #004F9E; font-weight: bold;">Ordered</td>
             <td>R 500</td>
             <td>
-                <button class="continueBtn">View</button>
+                <button class="continueBtn" (click)="OpenModal()">View</button>
             </td>
             <td>
-                <button class="removeBtn">Remove</button>
+                <button class="cancelBtn">Cancel</button>
             </td>
         </tr>
     </tbody>
 </table>
+
+<!-- Previous Orders -->
+<h3>Order History</h3>
+
+<table>
+    <thead>
+        <tr class="table-headers">
+            <th>Order Number</th>
+            <th>Placed on</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td>#2146966</td>
+            <td>2023-01-01</td>
+            <td style="color: rgb(5, 218, 5); font-weight: bold;">Collected</td>
+            <td>R 3 500</td>
+            <td>
+                <button class="continueBtn">View</button>
+            </td>
+        </tr>
+    </tbody>
+
+    <tbody>
+        <tr>
+            <td>#6589754</td>
+            <td>2023-01-02</td>
+            <td style="color: red; font-weight: bold;">Cancelled</td>
+            <td>R 1 500</td>
+            <td>
+                <button class="continueBtn">View</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div *ngIf="showModal" class="ViewOrderModal">
+    <div class="modal-content">
+      <span class="close" (click)="CloseModal()">&times;</span>
+      <p>add items of the order</p>
+    </div>
+</div>

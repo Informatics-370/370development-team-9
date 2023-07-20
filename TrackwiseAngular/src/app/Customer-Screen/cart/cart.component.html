@@ -1,8 +1,22 @@
 <div class="container">
   <div class="cart-items">
-    <table class="item-table" *ngFor="let item of cartItems; let i = index">
+
+
+
+    <table class="item-table" *ngIf="cartItems == ''">
       <tbody>
-        <tr>
+        <tr class="NoItems">
+          There are currently no items in your cart.
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+    <table class="item-table" >
+      <tbody>
+        <tr class="itemRow" *ngFor="let item of cartItems; let i = index">
           <td><img [src]="item.image" [alt]="item.product_Name"></td>
           <td style="text-align: left;"><b>{{ item.product_Name }}</b><br><p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p></td>
           <td>
@@ -25,8 +39,11 @@
         <tr><th>Cart Summary</th></tr>
       </thead>
 
-      <tbody class="CSBody">
-        <td class="total">Total: R {{ calculateTotal() | number:"1.2-2"}}</td>
+      <tbody class="CSBody">        
+        <td>
+          <div class="summary">Items (5)</div>
+          <div class="total">Total: R {{ calculateTotal() | number:"1.2-2"}}</div>
+        </td>
       </tbody>
       <tfoot>
         <tr>
