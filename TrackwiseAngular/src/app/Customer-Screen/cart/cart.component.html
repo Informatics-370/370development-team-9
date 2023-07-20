@@ -14,11 +14,13 @@
 
 
 
-    <table class="item-table" >
+    <table class="item-table">
       <tbody>
         <tr class="itemRow" *ngFor="let item of cartItems; let i = index">
           <td><img [src]="item.image" [alt]="item.product_Name"></td>
-          <td style="text-align: left;"><b>{{ item.product_Name }}</b><br><p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p></td>
+          <td style="text-align: left;"><b>{{ item.product_Name }}</b><br>
+            <p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p>
+          </td>
           <td>
             <button class="qtyBtn" (click)="decreaseQuantity(item)">-</button>&nbsp;
             <span>{{ item.Quantity }}</span>&nbsp;
@@ -36,10 +38,12 @@
   <div class="cart-summary">
     <table class="summary-table">
       <thead class="CSHead">
-        <tr><th>Cart Summary</th></tr>
+        <tr>
+          <th>Cart Summary</th>
+        </tr>
       </thead>
 
-      <tbody class="CSBody">        
+      <tbody class="CSBody">
         <td>
           <div class="summary">Items (5)</div>
           <div class="total">Total: R {{ calculateTotal() | number:"1.2-2"}}</div>
@@ -60,4 +64,3 @@
     </table>
   </div>
 </div>
-

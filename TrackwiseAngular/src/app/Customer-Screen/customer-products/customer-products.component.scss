@@ -8,6 +8,10 @@
   margin-right: 70px;
 }
 
+.product-card{
+  cursor: pointer;
+}
+
 .price-button-container {
   display: flex;
   justify-content: space-between;
@@ -300,11 +304,7 @@ img {
 
 /* Styling for the "View Details" link */
 .viewDetails {
-  color: #007bff;
   cursor: pointer;
 }
 
-.viewDetails:hover {
-  color: #0056b3;
-  text-decoration: underline;
-}
+

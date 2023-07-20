@@ -66,7 +66,7 @@ export class TrucksComponent implements OnInit {
     }
   }
 
-  DeleteTruck(TruckID:number)
+  DeleteTruck(TruckID:string)
   {
     this.dataService.DeleteTruck(TruckID).subscribe({
       next: (response) => location.reload()

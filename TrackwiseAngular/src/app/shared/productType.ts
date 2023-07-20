@@ -1,5 +1,5 @@
 export interface ProductType{
-    product_Type_ID:number;
+    product_Type_ID:string;
     name:string;
     description:string;
 }

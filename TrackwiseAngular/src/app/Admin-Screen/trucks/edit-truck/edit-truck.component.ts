@@ -15,12 +15,12 @@ export class EditTruckComponent implements OnInit{
 
   truckDetails: Truck =
   {
-    truckID:0,
+    truckID:"",
     truck_License:"",
     model:"",
-    truck_Status_ID:1,
+    truck_Status_ID:"",
     truckStatus:{
-      truck_Status_ID:0,
+      truck_Status_ID:"",
       status:"",
       description:""
     },
