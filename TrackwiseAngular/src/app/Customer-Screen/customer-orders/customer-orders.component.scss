@@ -1,3 +1,7 @@
+.MainContent{
+  margin-top: 150px;
+}
+
 h3 {
   margin-top: 85px;
   margin-left: 16%;
@@ -127,4 +131,57 @@ img {
 
 .fade-in-out {
   animation: fadeIn 0.3s, fadeOut 0.3s 2s;
+}
+
+/* Search bar */
+.search-navbar {
+  margin-top: -86px;
+  margin-left: 0px;
+  background-color: #117fca;
+  height: 45px;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 0;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Style the search bar */
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 25px;
+  padding: 5px 10px;
+  height: 35px;
+  // margin-right: 250px;
+  width: 400px;
+}
+
+.search-bar input[type="text"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  margin-right: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.search-bar button {
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* Add hover effect to the search button */
+.search-bar button:hover {
+  opacity: 0.8;
 }
