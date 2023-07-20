@@ -37,8 +37,18 @@ namespace TrackwiseAPI.Controllers
                     Product_Description = p.Product_Description,
                     Product_Price = p.Product_Price,
                     Quantity = p.Quantity,
-                    Product_Category_ID = p.Product_Category_ID,
-                    Product_Type_ID = p.Product_Type_ID,
+                    Product_Category = new ProductCategoryDTO
+                    {
+                        Product_Category_ID = p.ProductCategory.Product_Category_ID,
+                        Name = p.ProductCategory.Name,
+                        Description = p.ProductCategory.Description,
+                    },
+                    Product_Type = new ProductTypeDTO
+                    {
+                        Product_Type_ID = p.ProductType.Product_Type_ID,
+                        Name = p.ProductType.Name,
+                        Description = p.ProductType.Description,
+                    }
                     // Map other properties as needed
                 }).ToList();
 
