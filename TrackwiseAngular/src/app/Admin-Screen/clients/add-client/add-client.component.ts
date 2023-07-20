@@ -12,7 +12,7 @@ export class AddClientComponent {
 
   clientDetails: Client =
   {
-    client_ID:0,
+    client_ID:"0",
     name:"",
     phoneNumber:"",
     

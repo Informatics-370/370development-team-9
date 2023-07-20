@@ -12,13 +12,13 @@ export class EditDriverComponent implements OnInit{
 
   driverDetails: Driver =
   {
-    driver_ID:0,
+    driver_ID:"",
     name:"",
     lastname:"",
     phoneNumber:"",
-    driver_Status_ID:0,
+    driver_Status_ID:"",
     driverStatus:{
-      driver_Status_ID:0,
+      driver_Status_ID:"",
       status:"",
       description:""
     },

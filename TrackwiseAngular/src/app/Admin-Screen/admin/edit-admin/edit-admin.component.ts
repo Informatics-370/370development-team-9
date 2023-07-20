@@ -12,7 +12,7 @@ export class EditAdminComponent implements OnInit {
 
   adminDetails: Admin =
   {
-    admin_ID:0,
+    admin_ID:"",
     name:"",
     lastname:"",
     email:"",

@@ -12,20 +12,20 @@ export class EditProductComponent {
 
   productDetails: Product =
   {
-    product_ID:0,
+    product_ID:"",
     product_Name:"",
     product_Description:"",
     product_Price:0,
     
-    product_Category_ID:0,
+    product_Category_ID:"",
     productCategory:{
-      product_Category_ID:0,
+      product_Category_ID:"",
       name:"",
       description:""
     },
-    product_Type_ID:0,
+    product_Type_ID:"",
     productType:{
-      product_Type_ID:0,
+      product_Type_ID:"",
       name:"",
       description:""
     }

@@ -11,19 +11,19 @@ import { Trailer } from 'src/app/shared/trailer';
 export class AddTrailersComponent {
   AddTrailerRequest: Trailer =
   {
-    trailerID:0,
+    trailerID:"",
     trailer_License:"",
     model:"",
     weight:0,
-    trailer_Status_ID:1,
+    trailer_Status_ID:"",
     trailerStatus:{
-      trailer_Status_ID:0,
+      trailer_Status_ID:"",
       status:"",
       description:""
     },
-    trailer_Type_ID:1,
+    trailer_Type_ID:"",
     trailerType:{
-      trailer_Type_ID:0,
+      trailer_Type_ID:"",
       name:"",
       description:""
     },
