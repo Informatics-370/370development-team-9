@@ -36,6 +36,11 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.FirstOrDefaultAsync();
         }
 
+        public void Update(Product product)
+        {
+            _context.Products.Update(product);
+        }
+
         public async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() > 0;

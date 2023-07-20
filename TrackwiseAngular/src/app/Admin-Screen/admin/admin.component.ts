@@ -61,7 +61,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  DeleteAdmin(admin_ID:number)
+  DeleteAdmin(admin_ID:string)
   {
     this.dataService.DeleteAdmin(admin_ID).subscribe({
       next: (response) => location.reload()

@@ -11,6 +11,7 @@ using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
 using TrackwiseAPI.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
+using System.Runtime.Intrinsics.X86;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -34,72 +35,39 @@ namespace TrackwiseAPI.Controllers
             _configuration = configuration;
             _customerRepository = customerRepository;
         }
-/*
-        [HttpPost]
-        [Route("AddNewAdmin")]
-        public async Task<IActionResult> AddNewAdmin(AdminVM avm)
-        {
-            var adminId = Guid.NewGuid().ToString();
 
-            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password };
+
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register(CustomerVM cvm)
+        {
+            var customerId = Guid.NewGuid().ToString();
+            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email, Password = cvm.Password };
 
             try
             {
-                _adminRepository.Add(admin);
-                await _adminRepository.SaveChangesAsync();
+                _customerRepository.Add(customer);
+                await _customerRepository.SaveChangesAsync();
 
                 var user = new AppUser
                 {
-                    Id = adminId,
-                    UserName = avm.Email,
-                    Email = avm.Email
+                    Id = customerId,
+                    UserName = cvm.Email,
+                    Email = cvm.Email
                 };
+                var result = await _userManager.CreateAsync(user, cvm.Password);
 
-                var result = await _userManager.CreateAsync(user, avm.Password);
+                await _userManager.AddToRoleAsync(user, "Customer");
 
-                await _userManager.AddToRoleAsync(user, "Admin");
-
-                if (result.Errors.Count() > 0)
+                if (result.Errors.Count() > 0) 
                     return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-
             }
             catch (Exception)
             {
                 return BadRequest("Invalid transaction");
             }
 
-            return Ok(admin);
-        }
-*/
-
-
-        [HttpPost]
-        [Route("Register")]
-        public async Task<IActionResult> Register(UserVM uvm)
-        {
-            var user = await _userManager.FindByIdAsync(uvm.emailaddress);
-
-            if (user == null)
-            {
-                user = new AppUser
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = uvm.emailaddress,
-                    Email = uvm.emailaddress
-                };
-
-                var result = await _userManager.CreateAsync(user, uvm.password);
-
-                await _userManager.AddToRoleAsync(user, "Customer");
-
-                if (result.Errors.Count() > 0) return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-            }
-            else
-            {
-                return Forbid("Account already exists.");
-            }
-
-            return Ok();
+            return Ok(customer);
         }
 
 
@@ -144,7 +112,8 @@ namespace TrackwiseAPI.Controllers
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+        new Claim(ClaimTypes.Email, user.Email)
     };
 
             var roles = await _userManager.GetRolesAsync(user);

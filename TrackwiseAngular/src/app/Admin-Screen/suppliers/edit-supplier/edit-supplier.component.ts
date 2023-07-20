@@ -14,7 +14,7 @@ export class EditSupplierComponent implements OnInit{
 
   EditSupplierReq: Supplier =
   {
-    supplier_ID: 0,
+    supplier_ID: "",
     name: '',
     email:'',
     contact_Number:'',

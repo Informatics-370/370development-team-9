@@ -41,7 +41,7 @@ GetAllProducts() {
     })
   }
 
-  AddItemToCart(e: any) {
+  AddItemToCart(event: Event, e: any) {
     console.log(e);
     let AddCartItem: any[] = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
 
@@ -70,6 +70,8 @@ GetAllProducts() {
 
 
     sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
+
+    event.stopPropagation();
   }
 
 

@@ -121,21 +121,21 @@ export class DataService {
 
   }
 
-  GetDriver(driver_ID: Number): Observable<Driver>
+  GetDriver(driver_ID: string): Observable<Driver>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Driver>(`${this.apiUrl}Driver/GetDriver/${driver_ID}`, {headers} );
   }
 
-  EditDriver(driver_ID: number , EditDriverReq: Driver):Observable<Driver>
+  EditDriver(driver_ID: string , EditDriverReq: Driver):Observable<Driver>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Driver>(`${this.apiUrl}Driver/EditDriver/${driver_ID}`, EditDriverReq, {headers});
   }
 
-  DeleteDriver(driver_ID: number):Observable<Driver>
+  DeleteDriver(driver_ID: string):Observable<Driver>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -159,21 +159,21 @@ export class DataService {
 
   }
 
-  GetTruck(truckID: Number): Observable<Truck>
+  GetTruck(truckID: string): Observable<Truck>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Truck>(`${this.apiUrl}Truck/GetTruck/${truckID}`, {headers} );
   }
 
-  EditTruck(truckID: number , EditTruckRequest: Truck):Observable<Truck>
+  EditTruck(truckID: string , EditTruckRequest: Truck):Observable<Truck>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Truck>(`${this.apiUrl}Truck/EditTruck/${truckID}`, EditTruckRequest, {headers});
   }
 
-  DeleteTruck(truckID: number):Observable<Truck>
+  DeleteTruck(truckID: string):Observable<Truck>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -197,21 +197,21 @@ export class DataService {
 
   }
 
-  GetTrailer(trailerID: Number): Observable<Trailer>
+  GetTrailer(trailerID: string): Observable<Trailer>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Trailer>(`${this.apiUrl}Trailer/GetTrailer/${trailerID}`, {headers} );
   }
 
-  EditTrailer(trailerID: number , EditTrailerRequest: Trailer):Observable<Trailer>
+  EditTrailer(trailerID: string , EditTrailerRequest: Trailer):Observable<Trailer>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Trailer>(`${this.apiUrl}Trailer/EditTrailer/${trailerID}`, EditTrailerRequest, {headers});
   }
 
-  DeleteTrailer(trailerID: number):Observable<Trailer>
+  DeleteTrailer(trailerID: string):Observable<Trailer>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -235,21 +235,21 @@ export class DataService {
 
   }
 
-  GetAdmin(admin_ID: Number): Observable<Admin>
+  GetAdmin(admin_ID: string): Observable<Admin>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}`, {headers});
   }
 
-  EditAdmin(admin_ID: number , EditAdminReq: Admin):Observable<Admin>
+  EditAdmin(admin_ID: string , EditAdminReq: Admin):Observable<Admin>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Admin>(`${this.apiUrl}Admin/EditAdmin/${admin_ID}`, EditAdminReq, {headers});
   }
 
-  DeleteAdmin(admin_ID: number):Observable<Admin>
+  DeleteAdmin(admin_ID: string):Observable<Admin>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -273,21 +273,21 @@ export class DataService {
 
   }
 
-  GetClient(client_ID: Number): Observable<Client>
+  GetClient(client_ID: string): Observable<Client>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Client>(`${this.apiUrl}Client/GetClient/${client_ID}` , {headers});
   }
 
-  EditClient(client_ID: number , EditClientReq: Client):Observable<Client>
+  EditClient(client_ID: string , EditClientReq: Client):Observable<Client>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Client>(`${this.apiUrl}Client/EditClient/${client_ID}`, EditClientReq, {headers});
   }
 
-  DeleteClient(client_ID: number):Observable<Client>
+  DeleteClient(client_ID: string):Observable<Client>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -312,21 +312,21 @@ export class DataService {
     .pipe(map(result => result))
   }
 
-  GetSupplier(supplier_ID: Number): Observable<Supplier>
+  GetSupplier(supplier_ID: string): Observable<Supplier>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Supplier>(`${this.apiUrl}Supplier/GetSupplier/${supplier_ID}` , {headers});
   }
 
-  EditSupplier(supplier_ID: number , EditSupplierReq: Supplier):Observable<Supplier>
+  EditSupplier(supplier_ID: string , EditSupplierReq: Supplier):Observable<Supplier>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Supplier>(`${this.apiUrl}Supplier/EditSupplier/${supplier_ID}`, EditSupplierReq, {headers});
   }
 
-  DeleteSupplier(supplier_ID: number):Observable<Supplier>
+  DeleteSupplier(supplier_ID: string):Observable<Supplier>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -355,21 +355,21 @@ export class DataService {
     .pipe(map(result => result))
   }
 
-  GetProduct(product_ID: Number): Observable<Product>
+  GetProduct(product_ID: string): Observable<Product>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Product>(`${this.apiUrl}Product/GetProduct/${product_ID}`, {headers});
   }
 
-  EditProduct(product_ID: number , EditProductReq: Product):Observable<Product>
+  EditProduct(product_ID: string , EditProductReq: Product):Observable<Product>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
       return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq, {headers});
   }
 
-  DeleteProduct(product_ID: number):Observable<Product>
+  DeleteProduct(product_ID: string):Observable<Product>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

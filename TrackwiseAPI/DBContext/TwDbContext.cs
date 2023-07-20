@@ -238,14 +238,14 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Product>().HasData(
-                new Product { Product_ID = "1", Product_Name = "Fuel Pump", Product_Description = "FUEL PRIMER PUMP/K5", Product_Price = 999, Product_Category_ID = "4", Product_Type_ID = "2" },
-                new Product { Product_ID = "2", Product_Name = "SEAL RING", Product_Description = "SEAL RING MB-S48", Product_Price = 899, Product_Category_ID = "5", Product_Type_ID = "1" },
-                new Product { Product_ID = "3", Product_Name = "CLUTCH", Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", Product_Price = 1499, Product_Category_ID = "7", Product_Type_ID = "2" },
-                new Product { Product_ID = "4", Product_Name = "AXLE NUT", Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)", Product_Price = 1199, Product_Category_ID = "7", Product_Type_ID = "1" },
-                new Product { Product_ID = "5", Product_Name = "BEARING", Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM", Product_Price = 9.99, Product_Category_ID = "8", Product_Type_ID = "1" },
-                new Product { Product_ID = "6", Product_Name = "SEAL OIL", Product_Description = "SEAL OIL STEERING M/B AXOR-S46", Product_Price = 119.99, Product_Category_ID = "6", Product_Type_ID = "1" },
-                new Product { Product_ID = "7", Product_Name = "BRAKEPAD", Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", Product_Price = 799, Product_Category_ID = "7", Product_Type_ID = "1" },
-                new Product { Product_ID = "8", Product_Name = "FAN BELT", Product_Description = "FAN BELT 9PK2300-U7", Product_Price = 455, Product_Category_ID = "1", Product_Type_ID = "1"}
+                new Product { Product_ID = "1", Product_Name = "Fuel Pump", Product_Description = "FUEL PRIMER PUMP/K5", Product_Price = 999, Quantity = 10, Product_Category_ID = "4", Product_Type_ID = "2" },
+                new Product { Product_ID = "2", Product_Name = "SEAL RING", Product_Description = "SEAL RING MB-S48", Product_Price = 899, Quantity = 9, Product_Category_ID = "5", Product_Type_ID = "1" },
+                new Product { Product_ID = "3", Product_Name = "CLUTCH", Product_Description = "CLUTCH MASTER CYL 24mm SIDE MOUNT-S10", Product_Price = 1499, Quantity = 7, Product_Category_ID = "7", Product_Type_ID = "2" },
+                new Product { Product_ID = "4", Product_Name = "AXLE NUT", Product_Description = "SAF AXLE NUT LEFT M75x1.5 (85mm)", Product_Price = 1199, Quantity = 66, Product_Category_ID = "7", Product_Type_ID = "1" },
+                new Product { Product_ID = "5", Product_Name = "BEARING", Product_Description = "BEARING INN ROCKWELL TM 218248/210/HM", Product_Price = 9.99, Quantity = 23, Product_Category_ID = "8", Product_Type_ID = "1" },
+                new Product { Product_ID = "6", Product_Name = "SEAL OIL", Product_Description = "SEAL OIL STEERING M/B AXOR-S46", Product_Price = 119.99, Quantity = 40, Product_Category_ID = "6", Product_Type_ID = "1" },
+                new Product { Product_ID = "7", Product_Name = "BRAKEPAD", Product_Description = "BRAKEPAD TO FIT MAN TGS/TGX WVA29279", Product_Price = 799, Quantity = 5, Product_Category_ID = "7", Product_Type_ID = "1" },
+                new Product { Product_ID = "8", Product_Name = "FAN BELT", Product_Description = "FAN BELT 9PK2300-U7", Product_Price = 455, Quantity = 7, Product_Category_ID = "1", Product_Type_ID = "1"}
             );
 
             modelBuilder.Entity<Order>().HasData(

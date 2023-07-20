@@ -12,7 +12,7 @@ export class AddAdminComponent {
 
   adminDetails: Admin =
   {
-    admin_ID:0,
+    admin_ID:"",
     name:"",
     lastname:"",
     email:"",

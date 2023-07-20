@@ -47,7 +47,7 @@
 
 <div class="main-content">
   <div class="card-container">
-    <div *ngFor="let product of products">
+    <div class="viewDetails" *ngFor="let product of products" (click)="OpenModal(product)">
       <mat-card class="card">
         <div class="front">
           <div class="header-content">
@@ -58,7 +58,6 @@
 
           <div class="card-content">
             <h6>{{product.product_Name}}</h6>
-            <p class="viewDetails" (click)="OpenModal(product)">View Details</p>
             <div class="price">R {{product.product_Price | number:"1.2-2"}}
               <p style="font-weight: lighter;">Available: ()</p>
             </div>
@@ -66,7 +65,7 @@
 
           <mat-card-footer>
             <mat-card-actions>
-              <button mat-button class="AddToCartBtn" (click)="AddItemToCart(product)">Add to Cart</button>
+              <button mat-button class="AddToCartBtn" (click)="AddItemToCart($event, product)">Add to Cart</button>
             </mat-card-actions>
           </mat-card-footer>
         </div>

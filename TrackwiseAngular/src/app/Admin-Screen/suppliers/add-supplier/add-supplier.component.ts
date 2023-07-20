@@ -12,7 +12,7 @@ export class AddSupplierComponent {
 
   AddSupplierReq: Supplier =
   {
-    supplier_ID: 0,
+    supplier_ID: "",
     name: '',
     email:'',
     contact_Number:'',

@@ -59,7 +59,7 @@ export class SuppliersComponent {
     }
   }
 
-  DeleteSupplier(supplier_ID:number)
+  DeleteSupplier(supplier_ID:string)
   {
     this.dataService.DeleteSupplier(supplier_ID).subscribe({
       next: (response) => location.reload()
