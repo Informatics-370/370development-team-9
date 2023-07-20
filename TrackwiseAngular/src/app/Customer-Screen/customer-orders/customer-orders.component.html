@@ -17,10 +17,10 @@
         <tr>
             <td>#2144586</td>
             <td>2023-01-03</td>
-            <td style="color: orange; font-weight: bold;">Ordered</td>
+            <td style="color: #004F9E; font-weight: bold;">Ordered</td>
             <td>R 500</td>
             <td>
-                <button class="continueBtn">View</button>
+                <button class="continueBtn" (click)="OpenModal()">View</button>
             </td>
             <td>
                 <button class="cancelBtn">Cancel</button>
@@ -68,3 +68,10 @@
         </tr>
     </tbody>
 </table>
+
+<div *ngIf="showModal" class="ViewOrderModal">
+    <div class="modal-content">
+      <span class="close" (click)="CloseModal()">&times;</span>
+      <p>add items of the order</p>
+    </div>
+</div>

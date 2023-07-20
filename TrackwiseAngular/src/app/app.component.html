@@ -56,7 +56,7 @@
             <mat-menu #menu="matMenu">
               <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
               <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
-              <button mat-menu-item><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
+              <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
               <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
             </mat-menu>      
     

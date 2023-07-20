@@ -14,6 +14,8 @@ import { Product } from 'src/app/shared/product';
 export class CustomerProductComponent {
 
   // cardFlipped=false;
+  showModal: boolean = false;
+  selectedProduct: Product | null = null;
 
   constructor(private dataService: DataService) {}
 
@@ -69,7 +71,17 @@ GetAllProducts() {
 
     sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
   }
-  
+
+
+  OpenModal(product: Product) {
+    this.selectedProduct = product; // Store the selected product
+    this.showModal = true;
+  }
+
+  CloseModal() {
+    this.selectedProduct = null; // Clear the selected product when closing the modal
+    this.showModal = false;
+  }
 
 
   // flipCard(product: Product): void {

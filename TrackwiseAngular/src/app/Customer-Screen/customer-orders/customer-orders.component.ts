@@ -12,6 +12,7 @@ class Order {
 export class CustomerOrdersComponent {
   currentOrders: Order[] = [];
   orderHistory: Order[] = [];
+  showModal: boolean = false;
 
   
   addOrder(order: Order) {
@@ -25,4 +26,13 @@ export class CustomerOrdersComponent {
       this.orderHistory.push(order);
     }
   }
+
+  OpenModal() {
+    this.showModal = true;
+  }
+
+  CloseModal() {
+    this.showModal = false;
+  }
+
 }

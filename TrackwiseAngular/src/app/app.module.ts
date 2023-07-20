@@ -58,6 +58,7 @@ import { CustomerProductComponent } from './Customer-Screen/customer-products/cu
 import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
 import { CartComponent } from './Customer-Screen/cart/cart.component';
 import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
+import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 
 
 
@@ -96,7 +97,8 @@ import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/custo
     CustomerProductComponent,
     CustomerOrdersComponent,
     CartComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    ProfileComponent
 
  
   ],

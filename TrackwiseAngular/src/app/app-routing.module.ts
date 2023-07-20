@@ -44,6 +44,7 @@ import { CustomerProductComponent } from './Customer-Screen/customer-products/cu
 import { CartComponent } from './Customer-Screen/cart/cart.component';
 import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
 import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
+import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 
 
 
@@ -93,6 +94,7 @@ const routes: Routes = [
   {path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent},
   {path: 'Customer-Screen/about-us', component: AboutUsComponent},
   {path: 'Customer-Screen/cart', component: CartComponent},
+  {path: 'Customer-Screen/profile', component: ProfileComponent},
 
 
 
