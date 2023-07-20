@@ -25,8 +25,21 @@
         public string Product_Description { get; set; }
         public double Product_Price { get; set; }
         public int Quantity { get; set; }
-        public string Product_Type_ID { get; set; }
-        public string Product_Category_ID { get; set; }
+        public ProductTypeDTO Product_Type { get; set; }
+        public ProductCategoryDTO Product_Category { get; set; }
     }
 
+    public class ProductTypeDTO
+    {
+        public string Product_Type_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class ProductCategoryDTO
+    {
+        public string Product_Category_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
 }

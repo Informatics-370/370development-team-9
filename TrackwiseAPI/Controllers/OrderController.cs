@@ -61,8 +61,18 @@ namespace TrackwiseAPI.Controllers
                             Product_Description = ol.Product.Product_Description,
                             Product_Price = ol.Product.Product_Price,
                             Quantity = (int)ol.Quantity,
-                            Product_Type_ID = ol.Product.Product_Type_ID,
-                            Product_Category_ID = ol.Product.Product_Category_ID
+                            Product_Type = new ProductTypeDTO 
+                            {
+                                Product_Type_ID  = ol.Product.ProductType.Product_Type_ID,
+                                Name = ol.Product.ProductType.Name,
+                                Description = ol.Product.ProductType.Description,
+                            },
+                            Product_Category = new ProductCategoryDTO
+                            {
+                                Product_Category_ID = ol.Product.ProductCategory.Product_Category_ID,
+                                Name = ol.Product.ProductCategory.Name,
+                                Description = ol.Product.ProductCategory.Description,
+                            }
                             // Add other product properties as needed
                         }
                     }).ToList()
