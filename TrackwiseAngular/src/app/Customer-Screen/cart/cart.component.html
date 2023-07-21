@@ -23,10 +23,10 @@
           </td>
           <td>
             <button class="qtyBtn" (click)="decreaseQuantity(item)">-</button>&nbsp;
-            <span>{{ item.Quantity }}</span>&nbsp;
+            <span>{{ item.cartQuantity }}</span>&nbsp;
             <button class="qtyBtn" (click)="increaseQuantity(item)">+</button>
           </td>
-          <td style="font-weight: bold;">R {{ item.product_Price * item.Quantity | number:"1.2-2"}}</td>
+          <td style="font-weight: bold;">R {{ item.product_Price * item.cartQuantity | number:"1.2-2"}}</td>
           <td>
             <button class="removeBtn" (click)="removeFromCart(i)">Remove</button>
           </td>

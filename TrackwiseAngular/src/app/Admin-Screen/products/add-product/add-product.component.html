@@ -27,7 +27,7 @@
 
         <div class="mb-3">
           <label for="category" class="form-label">Category</label>
-          <select class="form-select" id="category" [(ngModel)]="AddProductRequest.product_Category_ID" name="category" required>
+          <select class="form-select" id="category" [(ngModel)]="AddProductRequest.productCategory.product_Category_ID" name="category" required>
             <option value="1">Engine</option>
             <option value="2">Transmission</option>
             <option value="3">Suspension</option>
@@ -41,7 +41,7 @@
 
       <div class="mb-3">
         <label for="type" class="form-label">Type</label>
-        <select class="form-select" id="type" [(ngModel)]="AddProductRequest.product_Type_ID" name="type" required>
+        <select class="form-select" id="type" [(ngModel)]="AddProductRequest.productType.product_Type_ID" name="type" required>
           <option value="1">Truck</option>
           <option value="2">Trailer</option>
         </select>
@@ -50,8 +50,8 @@
       
       <div class="mb-3">
         <label for="quantity" class="form-label">Quantity (Stock)</label>
-        <input type="text" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.Quantity"  
-               name="quantity" [(ngModel)]="AddProductRequest.Quantity">
+        <input type="text" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.quantity"  
+               name="quantity" [(ngModel)]="AddProductRequest.quantity">
       </div>
           
         

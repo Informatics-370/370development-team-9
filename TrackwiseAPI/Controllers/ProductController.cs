@@ -196,6 +196,37 @@ namespace TrackwiseAPI.Controllers
             return BadRequest("Your request is invalid.");
         }
 
+        [HttpGet]
+        [Route("GetProductCategory")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetProductCategory()
+        {
+            try
+            {
+                var results = await _productRepository.GetProductCategoryAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetProductType")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetProductType()
+        {
+            try
+            {
+                var results = await _productRepository.GetProductTypeAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
 
     }
 }

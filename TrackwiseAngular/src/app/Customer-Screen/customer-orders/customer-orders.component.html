@@ -2,93 +2,93 @@
 
 <mat-toolbar class="search-navbar">
     <div class="navbar-container">
-      <div class="search-bar">
-        <input type="text" placeholder="Search for an order">
-        <button aria-label="Search">
-          <i class="material-icons">search</i>
-        </button>
-      </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for an order">
+            <button aria-label="Search">
+                <i class="material-icons">search</i>
+            </button>
+        </div>
     </div>
-  </mat-toolbar>
+</mat-toolbar>
 
-  <div class="MainContent">
+<div class="MainContent">
 
-<h3>Current Orders</h3>
+    <h3>Current Orders</h3>
 
-<!-- Current Orders -->
-<table>
-    <thead>
-        <tr class="table-headers">
-            <th>Order Number</th>
-            <th>Placed on</th>
-            <th>Status</th>
-            <th>Total</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
+    <!-- Current Orders -->
+    <table>
+        <thead>
+            <tr class="table-headers">
+                <th>Order Number</th>
+                <th>Placed on</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
 
-    <tbody>
-        <tr>
-            <td>#2144586</td>
-            <td>2023-01-03</td>
-            <td style="color: #004F9E; font-weight: bold;">Ordered</td>
-            <td>R 500</td>
-            <td>
-                <button class="continueBtn" (click)="OpenModal()">View</button>
-            </td>
-            <td>
-                <button class="cancelBtn">Cancel</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        <tbody>
+            <tr>
+                <td>#2144586</td>
+                <td>2023-01-03</td>
+                <td style="color: #004F9E; font-weight: bold;">Ordered</td>
+                <td>R 500</td>
+                <td>
+                    <button class="continueBtn" (click)="OpenModal()">View</button>
+                </td>
+                <td>
+                    <button class="cancelBtn">Cancel</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-<!-- Previous Orders -->
-<h3>Order History</h3>
+    <!-- Previous Orders -->
+    <h3>Order History</h3>
 
-<table>
-    <thead>
-        <tr class="table-headers">
-            <th>Order Number</th>
-            <th>Placed on</th>
-            <th>Status</th>
-            <th>Total</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
+    <table>
+        <thead>
+            <tr class="table-headers">
+                <th>Order Number</th>
+                <th>Placed on</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
 
-    <tbody>
-        <tr>
-            <td>#2146966</td>
-            <td>2023-01-01</td>
-            <td style="color: rgb(5, 218, 5); font-weight: bold;">Collected</td>
-            <td>R 3 500</td>
-            <td>
-                <button class="continueBtn">View</button>
-            </td>
-        </tr>
-    </tbody>
+        <tbody>
+            <tr>
+                <td>#2146966</td>
+                <td>2023-01-01</td>
+                <td style="color: rgb(5, 218, 5); font-weight: bold;">Collected</td>
+                <td>R 3 500</td>
+                <td>
+                    <button class="continueBtn">View</button>
+                </td>
+            </tr>
+        </tbody>
 
-    <tbody>
-        <tr>
-            <td>#6589754</td>
-            <td>2023-01-02</td>
-            <td style="color: red; font-weight: bold;">Cancelled</td>
-            <td>R 1 500</td>
-            <td>
-                <button class="continueBtn">View</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+        <tbody>
+            <tr>
+                <td>#6589754</td>
+                <td>2023-01-02</td>
+                <td style="color: red; font-weight: bold;">Cancelled</td>
+                <td>R 1 500</td>
+                <td>
+                    <button class="continueBtn">View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-<div *ngIf="showModal" class="ViewOrderModal">
-    <div class="modal-content">
-        <span class="close" (click)="CloseModal()">&times;</span>
-        <p>add items of the order</p>
+    <div *ngIf="showModal" class="ViewOrderModal">
+        <div class="modal-content">
+            <span class="close" (click)="CloseModal()">&times;</span>
+            <p>add items of the order</p>
+        </div>
     </div>
-</div>
 
 </div>
