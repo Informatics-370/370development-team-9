@@ -28,16 +28,16 @@
     <div class="category-filter">
       <label for="CategoryDropdown">Category:&nbsp;</label>
       <select name="CategoryDropdown" id="CategoryDropdown">
-        <option value="CatDefault">Default</option>
-        <option *ngFor="let prod of products">{{prod.productCategory.name}}</option>
+
+        <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
       </select>
     </div>
 
     <div class="type-filter">
       <label for="TypeDropdown">Type:&nbsp;</label>
       <select name="TypeDropdown" id="TypeDropdown">
-        <option value="TypeDefault">Default</option>
-        <option *ngFor="let prod of products">{{prod.productType.name}}</option>
+
+        <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
       </select>
     </div><br>
 
@@ -48,7 +48,7 @@
 <div class="main-content">
   <div class="card-container">
     <div class="viewDetails" *ngFor="let product of products" (click)="OpenModal(product)">
-      <mat-card class="card">
+      <mat-card class="card" *ngIf="product.quantity!=0">
         <div class="front">
           <div class="header-content">
             <div class="centered">
@@ -59,7 +59,7 @@
           <div class="card-content">
             <h6>{{product.product_Name}}</h6>
             <div class="price">R {{product.product_Price | number:"1.2-2"}}
-              <p style="font-weight: lighter;">Available: ()</p>
+              <p style="font-weight: lighter;">Available: ({{product.quantity}})</p>
             </div>
           </div>
 

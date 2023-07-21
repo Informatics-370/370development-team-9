@@ -89,8 +89,17 @@ namespace TrackwiseAPI.Controllers
         [HttpPost]
         [Route("CreateOrder")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
-        public async Task<IActionResult> Checkout(OrderDTO orderDto)
+        public async Task<IActionResult> Checkout(OrderVM orderVM)
         {
+            // Convert OrderVM to OrderDTO
+            var orderDto = new OrderDTO
+            {
+                OrderLines = orderVM.OrderLines.Select(ol => new OrderLineDTO
+                {
+                    Product = new ProductDTO { Product_ID = ol.ProductId },
+                    Quantity = ol.Quantity
+                }).ToList()
+            };
             // Retrieve the authenticated user's email address
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
@@ -120,7 +129,7 @@ namespace TrackwiseAPI.Controllers
 
             var order = new Order
             {
-                Order_ID = GenerateOrderId(),
+                Order_ID = Guid.NewGuid().ToString(),
                 Date = DateTime.Now,
                 Total = (double)total,
                 Status = "Ordered",
@@ -143,7 +152,7 @@ namespace TrackwiseAPI.Controllers
 
                 var orderLine = new Order_Line
                 {
-                    Order_line_ID = GenerateOrderLineId(),
+                    Order_line_ID = Guid.NewGuid().ToString(),
                     Productid = orderLineDto.Product.Product_ID,
                     Quantity = orderLineDto.Quantity,
                     SubTotal = product.Product_Price * orderLineDto.Quantity
@@ -161,19 +170,6 @@ namespace TrackwiseAPI.Controllers
             await _dbContext.SaveChangesAsync();
 
             return Ok();
-        }
-
-
-        private string GenerateOrderId()
-        {
-            return Guid.NewGuid().ToString();
-            // Generate a unique order ID logic goes here
-        }
-
-        private string GenerateOrderLineId()
-        {
-            return Guid.NewGuid().ToString();
-            // Generate a unique order line ID logic goes here
         }
 
     }

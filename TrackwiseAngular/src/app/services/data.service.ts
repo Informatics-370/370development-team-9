@@ -377,6 +377,20 @@ export class DataService {
       return this.httpClient.delete<Product>(`${this.apiUrl}Product/DeleteProduct/${product_ID}`, {headers});
   }
 
+  GetProductTypes(): Observable<any>{
+    let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Product/GetProductType`,{headers})
+    .pipe(map(result => result))
+  }
+
+  GetProductCategories(): Observable<any>{
+    let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Product/GetProductCategory`,{headers})
+    .pipe(map(result => result))
+  }
+
   /*Customer Section*/
   GetCustomers(): Observable<any>{
     let token = sessionStorage.getItem('Token');

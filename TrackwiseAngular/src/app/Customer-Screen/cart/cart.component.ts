@@ -61,17 +61,17 @@ export class CartComponent implements OnInit{
     increaseQuantity(item: any) {
     let AddCartItem = JSON.parse(sessionStorage.getItem('cartItem')!)
     let res = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == item.product_ID);
-    res.Quantity++; // Increment quantity by 1
-    item.Quantity++;
+    res.cartQuantity++; // Increment quantity by 1
+    item.cartQuantity++;
     sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem)); 
   }
 
   decreaseQuantity(item: any) {
-    if (item.Quantity && item.Quantity > 1) {
+    if (item.cartQuantity && item.cartQuantity > 1) {
       let AddCartItem = JSON.parse(sessionStorage.getItem('cartItem')!)
       let res = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == item.product_ID);
-      res.Quantity--;
-      item.Quantity--; 
+      res.cartQuantity--;
+      item.cartQuantity--; 
       sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
     }
   }
