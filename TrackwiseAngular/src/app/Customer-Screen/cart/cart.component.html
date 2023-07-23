@@ -45,8 +45,8 @@
 
       <tbody class="CSBody">
         <td>
-          <div class="summary">Items (5)</div>
-          <div class="total">Total: R {{ calculateTotal() | number:"1.2-2"}}</div>
+          <div class="summary">Items ({{this.itemsInCart}})</div>
+          <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
         </td>
       </tbody>
       <tfoot>
