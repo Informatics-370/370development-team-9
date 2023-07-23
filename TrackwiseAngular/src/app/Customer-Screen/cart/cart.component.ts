@@ -19,6 +19,8 @@ export class CartComponent implements OnInit{
 
   products: any=[];
   cartItems: any=[];
+  total:number = 0;
+  itemsInCart: number = 0;
 
   constructor(private router: Router, private dataService : DataService) {}
 
@@ -28,11 +30,16 @@ export class CartComponent implements OnInit{
   }
   
   calculateTotal(): number {
-    let total = 0;
-    for (const item of this.cartItems) {
-      total += item.quantity * item.price;
-    }
-    return total;
+    this.total = 0;
+    this.itemsInCart = 0;
+
+      this.cartItems = JSON.parse(sessionStorage.getItem('cartItem')!)
+      for (const item of this.cartItems) {
+        this.total += item.cartQuantity * item.product_Price;
+        this.itemsInCart += item.cartQuantity;
+      }
+
+    return this.total;
   }
 
   continueShopping(): void {
@@ -42,6 +49,7 @@ export class CartComponent implements OnInit{
   CartItems(){
     if(sessionStorage.getItem('cartItem')){
       this.cartItems = JSON.parse(sessionStorage.getItem('cartItem')!)
+      this.calculateTotal();
     }
   }
 
@@ -51,6 +59,7 @@ export class CartComponent implements OnInit{
     res.cartQuantity++; // Increment quantity by 1
     item.cartQuantity++;
     sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem)); 
+    this.calculateTotal();
   }
 
   decreaseQuantity(item: any) {
@@ -60,6 +69,7 @@ export class CartComponent implements OnInit{
       res.cartQuantity--;
       item.cartQuantity--; 
       sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
+      this.calculateTotal();
     }
   }
 
@@ -70,6 +80,7 @@ export class CartComponent implements OnInit{
       this.cartItems.splice(index, 1);
       AddCartItem.splice(index, 1); // Remove the item from the cart
       sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
+      this.calculateTotal();
     }
   }
 }
