@@ -66,10 +66,10 @@ GetAllProducts() {
       // Add your code to process cart items and update product quantities
       let AddCartItem = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
       productList.forEach((product) => {
-        // let CartItem = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == product.product_ID);
-        // if (CartItem) {
-        //   product.quantity = CartItem.quantity - CartItem.cartQuantity;
-        // }
+        let CartItem = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == product.product_ID);
+        if (CartItem) {
+          product.quantity = CartItem.quantity - CartItem.cartQuantity;
+        }
       });
       
       // Push the products into the products array after processing
