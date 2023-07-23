@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-profile',
@@ -6,6 +7,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent {
+
+  constructor(private dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.dataService.revertToLogin();
+  }
+  
   userName: string = 'John Doe';
   userEmail: string = 'john.doe@example.com';
   showEditForm: boolean = false;

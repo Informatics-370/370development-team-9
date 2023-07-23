@@ -39,6 +39,7 @@ export class CustomerProductComponent {
     this.GetProductCategories();
     this.GetProductTypes();
     this.GetProducts();
+    this.dataService.revertToLogin();
   }
 
  products : Product[] = [];

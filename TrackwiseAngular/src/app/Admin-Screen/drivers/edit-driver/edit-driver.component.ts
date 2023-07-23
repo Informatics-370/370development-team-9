@@ -38,6 +38,8 @@ export class EditDriverComponent implements OnInit{
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditDriver()

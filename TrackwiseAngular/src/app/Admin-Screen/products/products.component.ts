@@ -18,6 +18,7 @@ export class ProductsComponent {
   
     ngOnInit(): void {
       this.GetProducts();
+      this.dataService.revertToLogin();
     }
   
   

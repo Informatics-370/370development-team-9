@@ -34,6 +34,8 @@ export class EditSupplierComponent implements OnInit{
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditSupplier()

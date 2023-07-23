@@ -82,6 +82,13 @@ export class DataService {
     }
   } 
 
+  revertToLogin(){
+    if(this.isLoggedIn == false)
+    {
+      this.router.navigateByUrl('Authentication/login');
+    }
+  }
+
   /*getRole */
   getRole(): void {
     var role = JSON.parse(sessionStorage.getItem("Role")!)

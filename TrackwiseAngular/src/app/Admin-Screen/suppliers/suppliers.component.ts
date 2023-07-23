@@ -16,6 +16,7 @@ export class SuppliersComponent {
   
   ngOnInit(): void {
     this.GetSuppliers();
+    this.dataService.revertToLogin();
   }
 
   GetSuppliers() {

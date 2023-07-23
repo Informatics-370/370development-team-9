@@ -19,7 +19,7 @@ export class TrucksComponent implements OnInit {
 
   ngOnInit(): void {
     this.GetTrucks()
-
+    this.dataService.revertToLogin();
   }
 
   GetTrucks()
