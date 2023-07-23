@@ -12,6 +12,7 @@ import { LoginUser } from '../shared/login-user';
 import { Customer } from '../shared/customer';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
+import { customerOrders } from '../shared/customerOrder';
 
 @Injectable({
   providedIn: 'root'
@@ -426,4 +427,12 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.delete<Customer>(`${this.apiUrl}Customer/DeleteCustomer/${customer_ID}`, {headers});
   }
+
+  GetCustomerOrders(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<customerOrders>(`${this.apiUrl}Order/GetAllCustomerOrders`, {headers})
+    .pipe(map(result => result));
+  }
+
 }

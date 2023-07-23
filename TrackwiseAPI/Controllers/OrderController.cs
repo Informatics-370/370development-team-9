@@ -173,10 +173,10 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllCustomerOrdersAsync")]
+        [Route("GetAllCustomerOrders")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
 
-        public async Task<IActionResult> GetAllCustomerOrdersAsync()
+        public async Task<IActionResult> GetAllCustomerOrders()
         {
             try
             {
