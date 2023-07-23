@@ -8,5 +8,6 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<bool> SaveChangesAsync();
         Task<Order[]> GetAllOrdersAsync();
         Task<Order> GetOrderAsync(string OrderID);
+        Task<Order[]> GetAllCustomerOrdersAsync(string customerId);
     }
 }
