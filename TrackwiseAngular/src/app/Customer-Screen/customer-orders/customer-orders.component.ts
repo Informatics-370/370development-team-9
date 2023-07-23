@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 
 class Order {
   constructor(public order_id: number, public date: string, public status: string) {}
@@ -10,6 +11,13 @@ class Order {
   styleUrls: ['./customer-orders.component.scss']
 })
 export class CustomerOrdersComponent {
+
+  constructor(private dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.dataService.revertToLogin();
+  }
+
   currentOrders: Order[] = [];
   orderHistory: Order[] = [];
   showModal: boolean = false;

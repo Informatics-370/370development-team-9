@@ -15,7 +15,9 @@ export class CustomersComponent implements OnInit {
   
   ngOnInit(): void {
     this.GetCustomers();
+    this.dataService.revertToLogin();
   }
+  
   GetCustomers() {
     this.dataService.GetCustomers().subscribe(result => {
       let customerList: any[] = result;

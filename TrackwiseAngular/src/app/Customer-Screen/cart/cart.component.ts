@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data.service';
 
 interface CartItem {
   image: string;
@@ -19,27 +20,13 @@ export class CartComponent implements OnInit{
   products: any=[];
   cartItems: any=[];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private dataService : DataService) {}
 
   ngOnInit(): void {
     this.CartItems();
+    this.dataService.revertToLogin();
   }
   
-
-  // decreaseQuantity(index: number): void {
-  //   if (this.cartItems[index].quantity > 1) {
-  //     this.cartItems[index].quantity--;
-  //   }
-  // }
-
-  // increaseQuantity(index: number): void {
-  //   this.cartItems[index].quantity++;
-  // }
-
-  // removeItem(cartItem: any): void {
-  //   let res = cartItem.find((element: { product_ID: any; }) => element.product_ID == cartItem.product_ID);
-  // }
-
   calculateTotal(): number {
     let total = 0;
     for (const item of this.cartItems) {

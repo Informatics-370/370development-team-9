@@ -29,6 +29,8 @@ export class EditClientComponent implements OnInit {
         });
       }
     });
+
+    this.dataService.revertToLogin();
   }
 
   KeepZeros() {

@@ -27,6 +27,7 @@ export class AddDriverComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddDriver()

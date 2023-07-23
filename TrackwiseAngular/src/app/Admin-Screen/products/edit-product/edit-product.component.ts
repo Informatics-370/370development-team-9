@@ -47,6 +47,8 @@ export class EditProductComponent {
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditProduct()

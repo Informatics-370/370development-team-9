@@ -38,6 +38,7 @@ export class AddProductComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddProduct()
