@@ -172,5 +172,79 @@ namespace TrackwiseAPI.Controllers
             return Ok();
         }
 
+        [HttpGet]
+        [Route("GetAllCustomerOrdersAsync")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
+
+        public async Task<IActionResult> GetAllCustomerOrdersAsync()
+        {
+            try
+            {
+                // Retrieve the authenticated user's email address
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                // Query the customer repository to get the customer ID
+                var customer = await _userManager.FindByEmailAsync(userEmail);
+
+                if (customer == null)
+                {
+                    return BadRequest("Customer not found");
+                }
+
+                var customerId = customer.Id;
+
+                if (string.IsNullOrEmpty(customerId))
+                {
+                    return BadRequest("Customer ID not found");
+                }
+
+                var result = await _orderRepository.GetAllCustomerOrdersAsync(customerId);
+
+                var orderDTOs = result.Select(order => new OrderDTO
+                {
+                    Order_ID = order.Order_ID,
+                    Date = order.Date,
+                    Total = order.Total,
+                    Status = order.Status,
+                    Customer_ID = order.Customer_ID,
+                    OrderLines = order.OrderLines.Select(ol => new OrderLineDTO
+                    {
+                        Order_line_ID = ol.Order_line_ID,
+                        Quantity = ol.Quantity,
+                        SubTotal = ol.SubTotal,
+                        Product = new ProductDTO
+                        {
+                            Product_ID = ol.Product.Product_ID,
+                            Product_Name = ol.Product.Product_Name,
+                            Product_Description = ol.Product.Product_Description,
+                            Product_Price = ol.Product.Product_Price,
+                            Quantity = (int)ol.Quantity,
+                            Product_Type = new ProductTypeDTO
+                            {
+                                Product_Type_ID = ol.Product.ProductType.Product_Type_ID,
+                                Name = ol.Product.ProductType.Name,
+                                Description = ol.Product.ProductType.Description,
+                            },
+                            Product_Category = new ProductCategoryDTO
+                            {
+                                Product_Category_ID = ol.Product.ProductCategory.Product_Category_ID,
+                                Name = ol.Product.ProductCategory.Name,
+                                Description = ol.Product.ProductCategory.Description,
+                            }
+                            // Add other product properties as needed
+                        }
+                    }).ToList()
+                }).ToList();
+
+                if (result == null) return NotFound("Order does not exist");
+
+                return Ok(orderDTOs);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
     }
 }
