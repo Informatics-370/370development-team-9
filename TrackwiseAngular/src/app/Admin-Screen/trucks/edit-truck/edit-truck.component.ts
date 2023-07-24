@@ -29,17 +29,6 @@ export class EditTruckComponent implements OnInit{
   constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
-    // this.route.paramMap.subscribe({
-    //   next: (params) => { const truckID = params.get('truckID');
-    
-    //   if(truckID)
-    //   {
-    //       this.dataService.GetTruck(truckID).subscribe({
-    //         next: (response) => {this.truckDetails = response;}
-    //       })
-    //   }
-    // }
-    // })
 
     this.route.params.subscribe({
       next: (params) => {
@@ -52,6 +41,8 @@ export class EditTruckComponent implements OnInit{
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditTruck()

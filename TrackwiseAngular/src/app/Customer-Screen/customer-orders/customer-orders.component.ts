@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 
-class Order {
-  constructor(public order_id: number, public date: string, public status: string) {}
-}
 
 @Component({
   selector: 'app-customer-orders',
@@ -10,23 +8,33 @@ class Order {
   styleUrls: ['./customer-orders.component.scss']
 })
 export class CustomerOrdersComponent {
-  currentOrders: Order[] = [];
-  orderHistory: Order[] = [];
+
+  constructor(private dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.dataService.revertToLogin();
+    this.GetCustomerOrders();
+  }
+
+  noOrdersCancelledOrCollected: boolean = true;
+  noOrdersOrdered: boolean = true;
   showModal: boolean = false;
+  customerOrders: any[] = [];
 
+  GetCustomerOrders() {
+    this.dataService.GetCustomerOrders().subscribe(result => {
+      let custOrderslist: any[] = result;
+      custOrderslist.forEach((element) => {
+        this.customerOrders.push(element);
+        console.log(element);
+      });
   
-  addOrder(order: Order) {
-    this.currentOrders.push(order);
+      // Set the noOrdersCancelledOrCollected variable based on the orders' status
+      this.noOrdersCancelledOrCollected = !this.customerOrders.some((order) => order.status === 'Collected' || order.status === 'Cancelled');
+      this.noOrdersOrdered = !this.customerOrders.some((order) => order.status === 'Ordered');
+    });
   }
-
-  moveOrderToHistory(orderId: number) {
-    const orderIndex = this.currentOrders.findIndex(order => order.order_id === orderId);
-    if (orderIndex !== -1) {
-      const order = this.currentOrders.splice(orderIndex, 1)[0];
-      this.orderHistory.push(order);
-    }
-  }
-
+  
   OpenModal() {
     this.showModal = true;
   }

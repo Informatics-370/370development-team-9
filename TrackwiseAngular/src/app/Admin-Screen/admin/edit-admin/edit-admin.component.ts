@@ -34,6 +34,8 @@ export class EditAdminComponent implements OnInit {
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditAdmin()

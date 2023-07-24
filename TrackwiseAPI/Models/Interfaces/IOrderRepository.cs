@@ -6,6 +6,8 @@ namespace TrackwiseAPI.Models.Interfaces
     {
         void Add(Order order);
         Task<bool> SaveChangesAsync();
-        // Add other methods as needed (e.g., GetOrder, UpdateOrder, DeleteOrder, etc.)
+        Task<Order[]> GetAllOrdersAsync();
+        Task<Order> GetOrderAsync(string OrderID);
+        Task<Order[]> GetAllCustomerOrdersAsync(string customerId);
     }
 }

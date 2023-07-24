@@ -16,6 +16,7 @@ export class TrailersComponent {
 
   ngOnInit(): void {
     this.GetTrailers();
+    this.dataService.revertToLogin();
   }
 
 

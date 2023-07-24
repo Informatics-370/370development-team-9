@@ -23,6 +23,7 @@ export class AddAdminComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddAdmin()

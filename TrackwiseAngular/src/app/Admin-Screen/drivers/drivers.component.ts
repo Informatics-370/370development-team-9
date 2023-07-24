@@ -17,6 +17,7 @@ export class DriversComponent implements OnInit {
   
   ngOnInit(): void {
     this.GetDrivers();
+    this.dataService.revertToLogin();
   }
 
   GetDrivers() {

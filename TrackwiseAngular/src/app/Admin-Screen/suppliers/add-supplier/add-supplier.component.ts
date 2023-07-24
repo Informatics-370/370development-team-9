@@ -21,6 +21,7 @@ export class AddSupplierComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddSupplier()

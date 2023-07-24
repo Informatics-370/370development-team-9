@@ -18,6 +18,7 @@ export class ClientsComponent implements OnInit {
   
   ngOnInit(): void {
     this.GetClients();
+    this.dataService.revertToLogin();
   }
 
   GetClients() {

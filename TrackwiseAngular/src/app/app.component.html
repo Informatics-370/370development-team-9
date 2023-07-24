@@ -85,7 +85,7 @@
             </mat-menu>      
     
           <button mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>
-            <span class="badge">5</span>
+            <span class="badge">{{this.dataService.itemsInCart}}</span>
           </button>
     
         </div>

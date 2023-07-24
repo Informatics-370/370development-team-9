@@ -16,19 +16,19 @@ export class EditProductComponent {
     product_Name:"",
     product_Description:"",
     product_Price:0,
-    
-    product_Category_ID:"",
+    quantity: 0,
+
+    productType:{
+      product_Type_ID:"",
+      name:"",
+      description:""
+    },
+
     productCategory:{
       product_Category_ID:"",
       name:"",
       description:""
     },
-    product_Type_ID:"",
-    productType:{
-      product_Type_ID:"",
-      name:"",
-      description:""
-    }
   
   };
 
@@ -47,6 +47,8 @@ export class EditProductComponent {
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditProduct()

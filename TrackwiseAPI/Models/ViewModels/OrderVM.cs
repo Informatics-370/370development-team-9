@@ -4,7 +4,6 @@ namespace TrackwiseAPI.Models.ViewModels
 {
     public class OrderVM
     {
-        public string CustomerId { get; set; }
         public List<OrderLineVM> OrderLines { get; set; }
     }
 
@@ -13,4 +12,5 @@ namespace TrackwiseAPI.Models.ViewModels
         public string ProductId { get; set; }
         public int Quantity { get; set; }
     }
+
 }
