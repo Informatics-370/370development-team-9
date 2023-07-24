@@ -43,15 +43,53 @@
 }
 
  */
+
+ .admin-navbar{
+  // position: fixed;
+  background-color: #117fca;
+  color: white;
+  margin-top: 0px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
+ }
+
+ .Admin-MyAccount{
+    margin-left: auto;
+    margin-right: 10px;
+    border: #f2f2f2 solid 2px;
+ }
+
+ .Admin-MyAccount:hover{
+  background-color: #f2f2f2;
+  color: #117fca;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: 10px;
+  border: #f2f2f2 solid 2px;
+}
   
  .side-container {
   min-width: 200px;
+  background-color: #004F9E;
+  color: #f2f2f2;
  
+}
+
+.sidenav-options{
+  color: #f2f2f2;
+  font-weight: bold;
 }
 
 .content-container {
   padding: 10px;
- 
+
+}
+
+.mat-nav-list a.mat-list-item {
+  color: #f2f2f2 !important;
+  font-weight: bold;
 }
 
 
@@ -81,6 +119,8 @@
 
 .navbar-buttons {
   margin-left: 8px;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar-buttons button {
@@ -97,6 +137,10 @@
 
 .spacer {
   flex: 1;
+}
+
+.MyAccountDD{
+  margin-bottom: 8px;
 }
 
 .badge {

@@ -95,13 +95,29 @@
                 </tr>
             </tbody>
 
-    </table>
 
-    <div *ngIf="showModal" class="ViewOrderModal">
-        <div class="modal-content">
-            <span class="close" (click)="CloseModal()">&times;</span>
-            <p>add items of the order</p>
-        </div>
+<!-- <div *ngIf="showModal" class="ViewOrderModal">
+    <div class="modal-content">
+      <span class="close" (click)="CloseModal()">&times;</span>
+      <table class="item-table" >
+        <tbody>
+          <tr class="itemRow" *ngFor="let item of cartItems; let i = index">
+            <td><img [src]="item.image" [alt]="item.product_Name"></td>
+            <td style="text-align: left;"><b>{{ item.product_Name }}</b><br><p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p></td>
+            <td>
+              <button class="qtyBtn" (click)="decreaseQuantity(item)">-</button>&nbsp;
+              <span>{{ item.Quantity }}</span>&nbsp;
+              <button class="qtyBtn" (click)="increaseQuantity(item)">+</button>
+            </td>
+            <td style="font-weight: bold;">R {{ item.product_Price * item.Quantity | number:"1.2-2"}}</td>
+            <td>
+              <button class="removeBtn" (click)="removeFromCart(i)">Remove</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+</div> -->
+
 
 </div>
