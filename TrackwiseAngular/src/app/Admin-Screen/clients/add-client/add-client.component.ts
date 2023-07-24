@@ -15,6 +15,8 @@ export class AddClientComponent {
     client_ID:"0",
     name:"",
     phoneNumber:"",
+    email:"",
+    password:"",
     
   };
 

@@ -17,6 +17,7 @@ export class EditSupplierComponent implements OnInit{
     supplier_ID: "",
     name: '',
     email:'',
+    password:'',
     contact_Number:'',
   };
 

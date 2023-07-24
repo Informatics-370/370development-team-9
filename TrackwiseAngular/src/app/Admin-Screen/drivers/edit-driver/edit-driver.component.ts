@@ -16,6 +16,8 @@ export class EditDriverComponent implements OnInit{
     name:"",
     lastname:"",
     phoneNumber:"",
+    email:"",
+    password:"",
     driver_Status_ID:"",
     driverStatus:{
       driver_Status_ID:"",

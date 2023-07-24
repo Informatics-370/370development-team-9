@@ -16,6 +16,7 @@ export class AddSupplierComponent {
     name: '',
     email:'',
     contact_Number:'',
+    password:"",
   };
 
   constructor(private dataService: DataService, private router:Router) { }

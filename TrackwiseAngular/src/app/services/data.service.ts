@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { customerOrders } from '../shared/customerOrder';
 import { Order } from '../shared/order';
 import { OrderLines } from '../shared/orderLines';
+import { RegisterUser } from '../shared/register';
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +70,10 @@ export class DataService {
     return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
 
+  Register( registerUser: RegisterUser ) {
+    return this.httpClient.post(`${this.apiUrl}User/Register`, registerUser);
+  }
+
   /* Logout */
     logout(){
     if(sessionStorage.getItem('User'))
@@ -81,6 +86,7 @@ export class DataService {
       sessionStorage.removeItem('User');
       sessionStorage.removeItem('Role');
       sessionStorage.removeItem('Token');
+      sessionStorage.removeItem('cartItem')
       this.router.navigateByUrl('Authentication/login');
     }
   } 

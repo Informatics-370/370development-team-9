@@ -14,7 +14,6 @@ import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product
 export class CustomerProductComponent {
   productTypes: any[] = []; 
   productCategories: any[] = []; 
-  isButtonDisabled: boolean = false;
 
   GetProductType: ProductTypes =
   {
@@ -40,6 +39,7 @@ export class CustomerProductComponent {
     this.GetProductCategories();
     this.GetProductTypes();
     this.GetProducts();
+    this.dataService.calculateQuantity();
     this.dataService.revertToLogin();
   }
 
@@ -99,6 +99,12 @@ GetAllProducts() {
 
       let UpdatedCartItem: any[] = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
       let CartItem = UpdatedCartItem.find((element: { product_ID: any; }) => element.product_ID == product.product_ID);
+
+      if (this.isOutOfStock(product)) {
+        console.log("This product is out of stock.");
+        return; // Exit the method without adding to the cart
+      }
+
       product.quantity = CartItem.quantity - CartItem.cartQuantity;
     } else {
     
@@ -120,13 +126,11 @@ GetAllProducts() {
       }
     }
     this.dataService.calculateQuantity();
-
-    if(product.quantity == 0){
-      this.isButtonDisabled = true;
-    } else{
-      this.isButtonDisabled = false;
-    }
     event.stopPropagation();
+  }
+
+  isOutOfStock(product: any): boolean {
+    return product.quantity === 0;
   }
 
   GetProductTypes() {

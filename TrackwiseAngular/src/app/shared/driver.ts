@@ -3,6 +3,8 @@ export interface Driver {
     name: string;
     lastname:String;
     phoneNumber:String;
+    email:string;
+    password:string;
     driver_Status_ID:string;
     driverStatus:{
         driver_Status_ID:string;
