@@ -59,7 +59,9 @@ import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component'
 import { CartComponent } from './Customer-Screen/cart/cart.component';
 import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
 
-
+import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
+import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './password/resetpassword/resetpassword.component';
 
 
 @NgModule({
@@ -96,7 +98,10 @@ import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/custo
     CustomerProductComponent,
     CustomerOrdersComponent,
     CartComponent,
-    AboutUsComponent
+    AboutUsComponent,
+    CreateJobComponent,
+    ForgotpasswordComponent,
+    ResetpasswordComponent
 
  
   ],

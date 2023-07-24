@@ -12,8 +12,8 @@ using TrackwiseAPI.DBContext;
 namespace TrackwiseAPI.Migrations
 {
     [DbContext(typeof(TwDbContext))]
-    [Migration("20230712105459_addOrderFunc")]
-    partial class addOrderFunc
+    [Migration("20230723221109_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,11 +194,17 @@ namespace TrackwiseAPI.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -350,44 +356,74 @@ namespace TrackwiseAPI.Migrations
                     b.Property<string>("Delivery_ID")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<double>("Delivery_Weight")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Driver_ID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Job_ID")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("TruckID")
+                    b.Property<string>("TrailerID")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<double>("weight")
-                        .HasColumnType("float");
+                    b.Property<string>("TruckID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Delivery_ID");
 
+                    b.HasIndex("Driver_ID");
+
                     b.HasIndex("Job_ID");
+
+                    b.HasIndex("TrailerID");
 
                     b.HasIndex("TruckID");
 
-                    b.ToTable("deliveries");
-                });
+                    b.ToTable("Deliveries");
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery_Assignment", b =>
-                {
-                    b.Property<string>("Driverid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Deliveryid")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Delivery_Assignment_ID")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Driverid", "Deliveryid");
-
-                    b.HasIndex("Deliveryid");
-
-                    b.ToTable("Delivery_Assignments");
+                    b.HasData(
+                        new
+                        {
+                            Delivery_ID = "1",
+                            Delivery_Weight = 35.0,
+                            Driver_ID = "1",
+                            Job_ID = "1",
+                            TrailerID = "1",
+                            TruckID = "1"
+                        },
+                        new
+                        {
+                            Delivery_ID = "2",
+                            Delivery_Weight = 35.0,
+                            Driver_ID = "1",
+                            Job_ID = "2",
+                            TrailerID = "1",
+                            TruckID = "1"
+                        },
+                        new
+                        {
+                            Delivery_ID = "3",
+                            Delivery_Weight = 35.0,
+                            Driver_ID = "1",
+                            Job_ID = "2",
+                            TrailerID = "1",
+                            TruckID = "1"
+                        },
+                        new
+                        {
+                            Delivery_ID = "4",
+                            Delivery_Weight = 35.0,
+                            Driver_ID = "1",
+                            Job_ID = "2",
+                            TrailerID = "1",
+                            TruckID = "1"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
@@ -411,10 +447,6 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -424,6 +456,80 @@ namespace TrackwiseAPI.Migrations
                     b.HasIndex("Driver_Status_ID");
 
                     b.ToTable("Drivers");
+
+                    b.HasData(
+                        new
+                        {
+                            Driver_ID = "1",
+                            Driver_Status_ID = "1",
+                            Email = "Driver1@gmail.com",
+                            Lastname = "Koen",
+                            Name = "Driver1",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "2",
+                            Driver_Status_ID = "1",
+                            Email = "Driver2@gmail.com",
+                            Lastname = "Poen",
+                            Name = "Driver2",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "3",
+                            Driver_Status_ID = "1",
+                            Email = "Driver3@gmail.com",
+                            Lastname = "Soen",
+                            Name = "Driver3",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "4",
+                            Driver_Status_ID = "1",
+                            Email = "Driver4@gmail.com",
+                            Lastname = "Loen",
+                            Name = "Driver4",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "5",
+                            Driver_Status_ID = "1",
+                            Email = "Driver5@gmail.com",
+                            Lastname = "Hoen",
+                            Name = "Driver5",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "6",
+                            Driver_Status_ID = "1",
+                            Email = "Driver6@gmail.com",
+                            Lastname = "Joen",
+                            Name = "Driver6",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "7",
+                            Driver_Status_ID = "1",
+                            Email = "Driver7@gmail.com",
+                            Lastname = "Doen",
+                            Name = "Driver7",
+                            PhoneNumber = "0761532265"
+                        },
+                        new
+                        {
+                            Driver_ID = "8",
+                            Driver_Status_ID = "1",
+                            Email = "Driver8@gmail.com",
+                            Lastname = "Roen",
+                            Name = "Driver8",
+                            PhoneNumber = "0761532265"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.DriverStatus", b =>
@@ -546,21 +652,21 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Invoice_number = "1",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4236),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5155),
                             Order_ID = "1",
                             Total_Amount = 200.5
                         },
                         new
                         {
                             Invoice_number = "2",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4237),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5156),
                             Order_ID = "2",
                             Total_Amount = 75.200000000000003
                         },
                         new
                         {
                             Invoice_number = "3",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4238),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5157),
                             Order_ID = "3",
                             Total_Amount = 450.0
                         });
@@ -575,16 +681,12 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Client_ID")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Dropoff_Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Job_Status_ID")
                         .IsRequired()
@@ -598,20 +700,47 @@ namespace TrackwiseAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Weight")
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Total_Weight")
                         .HasColumnType("float");
 
                     b.HasKey("Job_ID");
 
                     b.HasIndex("Admin_ID");
 
-                    b.HasIndex("Client_ID");
-
                     b.HasIndex("Job_Status_ID");
 
                     b.HasIndex("Job_Type_ID");
 
-                    b.ToTable("jobs");
+                    b.ToTable("Jobs");
+
+                    b.HasData(
+                        new
+                        {
+                            Job_ID = "1",
+                            Admin_ID = "1",
+                            Dropoff_Location = "Bela-Bela, Limpopo, South Africa",
+                            DueDate = new DateTime(2023, 7, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Job_Status_ID = "2",
+                            Job_Type_ID = "1",
+                            Pickup_Location = "lephalale, Limpopo, South Africa",
+                            StartDate = new DateTime(2023, 7, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Total_Weight = 35.0
+                        },
+                        new
+                        {
+                            Job_ID = "2",
+                            Admin_ID = "1",
+                            Dropoff_Location = "Bela-Bela, Limpopo, South Africa",
+                            DueDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Job_Status_ID = "2",
+                            Job_Type_ID = "1",
+                            Pickup_Location = "lephalale, Limpopo, South Africa",
+                            StartDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Total_Weight = 105.0
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobStatus", b =>
@@ -629,7 +758,21 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Job_Status_ID");
 
-                    b.ToTable("jobsStatus");
+                    b.ToTable("JobsStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Job_Status_ID = "1",
+                            Description = "Transporting in progress",
+                            Name = "In-opperation"
+                        },
+                        new
+                        {
+                            Job_Status_ID = "2",
+                            Description = "Transporting complete",
+                            Name = "Complete"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobType", b =>
@@ -647,7 +790,21 @@ namespace TrackwiseAPI.Migrations
 
                     b.HasKey("Job_Type_ID");
 
-                    b.ToTable("jobTypes");
+                    b.ToTable("JobTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Job_Type_ID = "1",
+                            Description = "Transporting coal",
+                            Name = "Coal"
+                        },
+                        new
+                        {
+                            Job_Type_ID = "2",
+                            Description = "Transporting fuel",
+                            Name = "Fuel"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
@@ -680,7 +837,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = "1",
                             Customer_ID = "1",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4139),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5104),
                             Status = "Ordered",
                             Total = 2897.0
                         },
@@ -688,7 +845,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = "2",
                             Customer_ID = "2",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4150),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5116),
                             Status = "Ordered",
                             Total = 2997.0
                         },
@@ -696,7 +853,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Order_ID = "3",
                             Customer_ID = "3",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4152),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5117),
                             Status = "Ordered",
                             Total = 2998.0
                         });
@@ -791,7 +948,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "1",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4262),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5167),
                             Order_ID = "1",
                             Payment_Type_ID = "1",
                             amount_paid = 150.5
@@ -799,7 +956,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "2",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4264),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5168),
                             Order_ID = "1",
                             Payment_Type_ID = "2",
                             amount_paid = 50.0
@@ -807,7 +964,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "3",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4265),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5168),
                             Order_ID = "2",
                             Payment_Type_ID = "3",
                             amount_paid = 75.200000000000003
@@ -815,7 +972,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "4",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4324),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5169),
                             Order_ID = "3",
                             Payment_Type_ID = "1",
                             amount_paid = 200.0
@@ -823,7 +980,7 @@ namespace TrackwiseAPI.Migrations
                         new
                         {
                             Payment_ID = "5",
-                            Date = new DateTime(2023, 7, 12, 12, 54, 58, 911, DateTimeKind.Local).AddTicks(4326),
+                            Date = new DateTime(2023, 7, 24, 0, 11, 9, 114, DateTimeKind.Local).AddTicks(5170),
                             Order_ID = "3",
                             Payment_Type_ID = "2",
                             amount_paid = 250.0
@@ -1188,6 +1345,53 @@ namespace TrackwiseAPI.Migrations
                     b.HasIndex("Trailer_Type_ID");
 
                     b.ToTable("Trailers");
+
+                    b.HasData(
+                        new
+                        {
+                            TrailerID = "1",
+                            Model = "Palumbo",
+                            Trailer_License = "PO69EN L",
+                            Trailer_Status_ID = "1",
+                            Trailer_Type_ID = "1",
+                            Weight = 35.0
+                        },
+                        new
+                        {
+                            TrailerID = "2",
+                            Model = "Palumbo",
+                            Trailer_License = "EH42ML L",
+                            Trailer_Status_ID = "1",
+                            Trailer_Type_ID = "2",
+                            Weight = 35.0
+                        },
+                        new
+                        {
+                            TrailerID = "3",
+                            Model = "Palumbo",
+                            Trailer_License = "PQ11LE L",
+                            Trailer_Status_ID = "1",
+                            Trailer_Type_ID = "2",
+                            Weight = 35.0
+                        },
+                        new
+                        {
+                            TrailerID = "4",
+                            Model = "Palumbo",
+                            Trailer_License = "HJ91LO L",
+                            Trailer_Status_ID = "1",
+                            Trailer_Type_ID = "1",
+                            Weight = 35.0
+                        },
+                        new
+                        {
+                            TrailerID = "5",
+                            Model = "Palumbo",
+                            Trailer_License = "AS99BN L",
+                            Trailer_Status_ID = "1",
+                            Trailer_Type_ID = "1",
+                            Weight = 35.0
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TrailerStatus", b =>
@@ -1256,7 +1460,7 @@ namespace TrackwiseAPI.Migrations
                         {
                             Trailer_Type_ID = "2",
                             Description = "Fuel transportation trailer",
-                            Name = "Feul"
+                            Name = "Fuel"
                         });
                 });
 
@@ -1282,6 +1486,43 @@ namespace TrackwiseAPI.Migrations
                     b.HasIndex("Truck_Status_ID");
 
                     b.ToTable("Trucks");
+
+                    b.HasData(
+                        new
+                        {
+                            TruckID = "1",
+                            Model = "Mercedes",
+                            Truck_License = "GH39QP L",
+                            Truck_Status_ID = "1"
+                        },
+                        new
+                        {
+                            TruckID = "2",
+                            Model = "Mercedes",
+                            Truck_License = "AJ11LL L",
+                            Truck_Status_ID = "1"
+                        },
+                        new
+                        {
+                            TruckID = "3",
+                            Model = "Mercedes",
+                            Truck_License = "LL19AQ L",
+                            Truck_Status_ID = "1"
+                        },
+                        new
+                        {
+                            TruckID = "4",
+                            Model = "Mercedes",
+                            Truck_License = "TT11PP L",
+                            Truck_Status_ID = "1"
+                        },
+                        new
+                        {
+                            TruckID = "5",
+                            Model = "Mercedes",
+                            Truck_License = "QW12ER L",
+                            Truck_Status_ID = "1"
+                        });
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TruckStatus", b =>
@@ -1320,16 +1561,6 @@ namespace TrackwiseAPI.Migrations
                             Description = "Truck is undergoing maintenace",
                             Status = "Under Maintenance"
                         });
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.User", b =>
-                {
-                    b.Property<string>("User_ID")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("User_ID");
-
-                    b.ToTable("users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1385,36 +1616,37 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
                 {
+                    b.HasOne("TrackwiseAPI.Models.Entities.Driver", "Driver")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("Driver_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TrackwiseAPI.Models.Entities.Job", "Job")
                         .WithMany("Deliveries")
                         .HasForeignKey("Job_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrackwiseAPI.Models.Entities.Truck", null)
+                    b.HasOne("TrackwiseAPI.Models.Entities.Trailer", "Trailer")
                         .WithMany("Deliveries")
-                        .HasForeignKey("TruckID");
-
-                    b.Navigation("Job");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery_Assignment", b =>
-                {
-                    b.HasOne("TrackwiseAPI.Models.Entities.Delivery", "Delivery")
-                        .WithMany("Delivery_Assignments")
-                        .HasForeignKey("Deliveryid")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("TrailerID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrackwiseAPI.Models.Entities.Driver", "Driver")
-                        .WithMany("Delivery_Assignments")
-                        .HasForeignKey("Driverid")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("TrackwiseAPI.Models.Entities.Truck", "Truck")
+                        .WithMany("Deliveries")
+                        .HasForeignKey("TruckID")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Delivery");
 
                     b.Navigation("Driver");
+
+                    b.Navigation("Job");
+
+                    b.Navigation("Trailer");
+
+                    b.Navigation("Truck");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
@@ -1464,32 +1696,24 @@ namespace TrackwiseAPI.Migrations
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Job", b =>
                 {
                     b.HasOne("TrackwiseAPI.Models.Entities.Admin", "Admin")
-                        .WithMany("jobs")
+                        .WithMany("Jobs")
                         .HasForeignKey("Admin_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TrackwiseAPI.Models.Entities.Client", "Client")
-                        .WithMany("jobs")
-                        .HasForeignKey("Client_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TrackwiseAPI.Models.Entities.JobStatus", "JobStatus")
-                        .WithMany("jobs")
+                        .WithMany("Jobs")
                         .HasForeignKey("Job_Status_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TrackwiseAPI.Models.Entities.JobType", "JobType")
-                        .WithMany("jobs")
+                        .WithMany("Jobs")
                         .HasForeignKey("Job_Type_ID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Admin");
-
-                    b.Navigation("Client");
 
                     b.Navigation("JobStatus");
 
@@ -1615,12 +1839,7 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Admin", b =>
                 {
-                    b.Navigation("jobs");
-                });
-
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Client", b =>
-                {
-                    b.Navigation("jobs");
+                    b.Navigation("Jobs");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Customer", b =>
@@ -1628,14 +1847,9 @@ namespace TrackwiseAPI.Migrations
                     b.Navigation("orders");
                 });
 
-            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Delivery", b =>
-                {
-                    b.Navigation("Delivery_Assignments");
-                });
-
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Driver", b =>
                 {
-                    b.Navigation("Delivery_Assignments");
+                    b.Navigation("Deliveries");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.DriverStatus", b =>
@@ -1655,12 +1869,12 @@ namespace TrackwiseAPI.Migrations
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobStatus", b =>
                 {
-                    b.Navigation("jobs");
+                    b.Navigation("Jobs");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.JobType", b =>
                 {
-                    b.Navigation("jobs");
+                    b.Navigation("Jobs");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Order", b =>
@@ -1700,6 +1914,11 @@ namespace TrackwiseAPI.Migrations
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.Supplier", b =>
                 {
                     b.Navigation("Product_Suppliers");
+                });
+
+            modelBuilder.Entity("TrackwiseAPI.Models.Entities.Trailer", b =>
+                {
+                    b.Navigation("Deliveries");
                 });
 
             modelBuilder.Entity("TrackwiseAPI.Models.Entities.TrailerStatus", b =>

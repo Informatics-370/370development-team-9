@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.DBContext
@@ -28,12 +29,10 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Order> Orders { get; set; }
         public DbSet<Order_Line> Order_Lines { get; set; }
         public DbSet<Product_Supplier> Product_Suppliers { get; set; }
-        public DbSet<User> users { get; set; }
-        public DbSet<Delivery> deliveries { get; set; }
-        public DbSet<Delivery_Assignment> Delivery_Assignments { get; set; }
-        public DbSet<Job> jobs { get; set; }
-        public DbSet<JobStatus> jobsStatus { get; set; }
-        public DbSet<JobType> jobTypes { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<Job> Jobs { get; set; }
+        public DbSet<JobStatus> JobsStatus { get; set; }
+        public DbSet<JobType> JobTypes { get; set; }
         
 
         /// 
@@ -135,21 +134,7 @@ namespace TrackwiseAPI.DBContext
                 .WithMany(tt => tt.Trailers)
                 .HasForeignKey(t => t.Trailer_Type_ID);
 
-            //Driver and Delivery has a many-many
-            modelBuilder.Entity<Delivery_Assignment>()
-                .HasKey(da => new { da.Driverid, da.Deliveryid });
-
-            modelBuilder.Entity<Delivery_Assignment>()
-                .HasOne(da => da.Driver)
-                .WithMany(d => d.Delivery_Assignments)
-                .HasForeignKey(da => da.Driverid)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            modelBuilder.Entity<Delivery_Assignment>()
-                .HasOne(da => da.Delivery)
-                .WithMany(d => d.Delivery_Assignments)
-                .HasForeignKey(da => da.Deliveryid)
-                .OnDelete(DeleteBehavior.Restrict);
+            ////////////////////////////////////////////////////////////////////////////////
 
             //Job and Delivery has a one-many
             modelBuilder.Entity<Delivery>()
@@ -157,29 +142,51 @@ namespace TrackwiseAPI.DBContext
                 .WithMany(j => j.Deliveries)
                 .HasForeignKey(d => d.Job_ID);
 
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Driver)
+                .WithMany(j => j.Deliveries)
+                .HasForeignKey(d => d.Driver_ID);
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Trailer)
+                .WithMany(j => j.Deliveries)
+                .HasForeignKey(d => d.TrailerID);
+
+            modelBuilder.Entity<Delivery>()
+                .HasOne(d => d.Truck)
+                .WithMany(j => j.Deliveries)
+                .HasForeignKey(d => d.TruckID);
+
+
             //Job and JobType has a many-one
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.JobType)
-                .WithMany(jt => jt.jobs)
+                .WithMany(jt => jt.Jobs)
                 .HasForeignKey(j => j.Job_Type_ID);
 
             //Job and JobStatus has a many-one
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.JobStatus)
-                .WithMany(js => js.jobs)
+                .WithMany(js => js.Jobs)
                 .HasForeignKey(j => j.Job_Status_ID);
                 
             //Client and Job has a one-many
+            /*
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.Client)
-                .WithMany(c => c.jobs)
+                .WithMany(c => c.Jobs)
                 .HasForeignKey(j => j.Client_ID);
+            */
 
             //Admin and Job has a one-many
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.Admin)
-                .WithMany(c => c.jobs)
+                .WithMany(c => c.Jobs)
                 .HasForeignKey(j => j.Admin_ID);
+
+
+            ////////////////////////////////////////////////////////////////////////////////
 
             //Driver and DriverStatus has a many-one
             modelBuilder.Entity<Driver>()
@@ -187,23 +194,11 @@ namespace TrackwiseAPI.DBContext
                 .WithMany(js => js.Drivers)
                 .HasForeignKey(j => j.Driver_Status_ID);
 
-            //Driver and Truck has a one-many
-/*            modelBuilder.Entity<Truck>()
-                .HasOne(t => t.Driver)
-                .WithMany(d => d.Trucks)
-                .HasForeignKey(t => t.Driver_ID);*/
-
             //Truck and TruckStatus has a many-one
             modelBuilder.Entity<Truck>()
                 .HasOne(t => t.TruckStatus)
                 .WithMany(ts => ts.Trucks)
                 .HasForeignKey(t => t.Truck_Status_ID);
-
-            //Truck and Trailer has a many-one
-/*            modelBuilder.Entity<Truck>()
-                .HasOne(t => t.Trailer)
-                .WithMany(tl => tl.Trucks)
-                .HasForeignKey(t => t.Trailer_License);*/
 
             //Trailer and TrailerStatus has a many-one
             modelBuilder.Entity<Trailer>()
@@ -221,6 +216,97 @@ namespace TrackwiseAPI.DBContext
             // adding some data
             // adding some data
             //
+
+            modelBuilder.Entity<JobType>().HasData(
+                new JobType { Job_Type_ID= "1", Name = "Coal", Description = "Transporting coal" },
+                new JobType { Job_Type_ID = "2", Name = "Fuel", Description = "Transporting fuel" }
+                );
+
+            modelBuilder.Entity<JobStatus>().HasData(
+                new JobStatus { Job_Status_ID = "1", Name = "In-opperation", Description = "Transporting in progress" },
+                new JobStatus { Job_Status_ID = "2", Name = "Complete", Description = "Transporting complete" }
+                );
+
+            //job data
+            modelBuilder.Entity<Job>().HasData(
+                new Job
+                {
+                    Job_ID = "1",
+                    StartDate = DateTime.ParseExact("2023-07-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                    DueDate = DateTime.ParseExact("2023-07-31 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                    Pickup_Location = "lephalale, Limpopo, South Africa",
+                    Dropoff_Location = "Bela-Bela, Limpopo, South Africa",
+                    Total_Weight = 35.00,
+                    //Client_ID = "1",
+                    Admin_ID = "1",
+                    Job_Type_ID = "1",
+                    Job_Status_ID = "2"
+                },
+                new Job
+                {
+                    Job_ID = "2",
+                    //StartDate = new DateTime(2023, 8, 1),
+                    //DueDate = new DateTime(2023, 8, 11),
+                    Pickup_Location = "lephalale, Limpopo, South Africa",
+                    Dropoff_Location = "Bela-Bela, Limpopo, South Africa",
+                    Total_Weight = 105.00,
+                    //Client_ID = "1",
+                    Admin_ID = "1",
+                    Job_Type_ID = "1",
+                    Job_Status_ID = "2"                    
+                }
+            );
+
+            // Add mock data for Delivery
+            modelBuilder.Entity<Delivery>().HasData(
+                //JOB1
+                new Delivery
+                {
+                    Delivery_ID = "1", Delivery_Weight = 35.00, Job_ID = "1", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                },
+                //JOB2 1driver 3 trips
+                new Delivery
+                {
+                    Delivery_ID = "2", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                },
+                new Delivery
+                {
+                    Delivery_ID = "3", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                },
+                new Delivery
+                {
+                    Delivery_ID = "4", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                }
+            );
+
+
+            modelBuilder.Entity<Driver>().HasData(
+                new Driver { Driver_ID = "1", Email = "Driver1@gmail.com" ,Name = "Driver1", Lastname = "Koen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "2", Email = "Driver2@gmail.com" , Name = "Driver2", Lastname = "Poen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "3", Email = "Driver3@gmail.com" , Name = "Driver3", Lastname = "Soen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "4", Email = "Driver4@gmail.com", Name = "Driver4", Lastname = "Loen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "5", Email = "Driver5@gmail.com", Name = "Driver5", Lastname = "Hoen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "6", Email = "Driver6@gmail.com", Name = "Driver6", Lastname = "Joen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "7", Email = "Driver7@gmail.com", Name = "Driver7", Lastname = "Doen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
+                new Driver { Driver_ID = "8", Email = "Driver8@gmail.com", Name = "Driver8", Lastname = "Roen", PhoneNumber = "0761532265", Driver_Status_ID = "1" }
+            );
+
+            modelBuilder.Entity<Truck>().HasData(
+                new Truck { TruckID = "1", Truck_License = "GH39QP L", Model = "Mercedes",  Truck_Status_ID = "1" },
+                new Truck { TruckID = "2", Truck_License = "AJ11LL L", Model = "Mercedes",  Truck_Status_ID = "1" },
+                new Truck { TruckID = "3", Truck_License = "LL19AQ L", Model = "Mercedes",  Truck_Status_ID = "1" },
+                new Truck { TruckID = "4", Truck_License = "TT11PP L", Model = "Mercedes", Truck_Status_ID = "1" },
+                new Truck { TruckID = "5", Truck_License = "QW12ER L", Model = "Mercedes", Truck_Status_ID = "1" }
+            );
+
+            modelBuilder.Entity<Trailer>().HasData(
+                new Trailer { TrailerID = "1", Trailer_License = "PO69EN L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1" ,Trailer_Status_ID = "1" },
+                new Trailer { TrailerID = "2", Trailer_License = "EH42ML L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "2", Trailer_Status_ID = "1" },
+                new Trailer { TrailerID = "3", Trailer_License = "PQ11LE L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "2", Trailer_Status_ID = "1" },
+                new Trailer { TrailerID = "4", Trailer_License = "HJ91LO L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1", Trailer_Status_ID = "1" },
+                new Trailer { TrailerID = "5", Trailer_License = "AS99BN L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1", Trailer_Status_ID = "1" }
+            );
+
             modelBuilder.Entity<ProductType>().HasData(
                 new ProductType { Product_Type_ID = "1", Name = "Truck", Description = "Product has trailer components" },
                 new ProductType { Product_Type_ID = "2", Name = "Trailer", Description = "Product has truck components" }
@@ -316,7 +402,7 @@ namespace TrackwiseAPI.DBContext
             );
             modelBuilder.Entity<TrailerType>().HasData(
                 new TrailerType { Trailer_Type_ID = "1", Name = "Coal", Description = "Coal transportation trailer" },
-                new TrailerType { Trailer_Type_ID = "2", Name = "Feul", Description = "Fuel transportation trailer" }
+                new TrailerType { Trailer_Type_ID = "2", Name = "Fuel", Description = "Fuel transportation trailer" }
             );
 
             modelBuilder.Entity<DriverStatus>().HasData(

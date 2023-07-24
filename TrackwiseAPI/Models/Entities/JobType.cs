@@ -8,6 +8,6 @@ namespace TrackwiseAPI.Models.Entities
         public string Job_Type_ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ICollection<Job> jobs { get; set; }
+        public ICollection<Job> Jobs { get; set; }
     }
 }

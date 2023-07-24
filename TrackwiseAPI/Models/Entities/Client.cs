@@ -18,6 +18,6 @@ namespace TrackwiseAPI.Models.Entities
                 public int User_ID { get; set; }
                 [ForeignKey("User_ID")]
                 public User User { get; set; }*/
-        public ICollection<Job> jobs { get; set; }
+        //public ICollection<Job> Jobs { get; set; }
     }
 }

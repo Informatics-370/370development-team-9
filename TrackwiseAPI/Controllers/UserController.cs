@@ -11,6 +11,9 @@ using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
 using TrackwiseAPI.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Web;
+using TrackwiseAPI.Models.Password;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -22,56 +25,23 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly ICustomerRepository _customerRepository;
-
+        private readonly IEmailService _emailService;
+        private readonly TwDbContext _context;
 
         public UserController(UserManager<AppUser> userManager,
-     IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
+            IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository, 
+            TwDbContext context, 
+            IEmailService emailService)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _customerRepository = customerRepository;
+            _context = context;
+            _emailService = emailService;
         }
-/*
-        [HttpPost]
-        [Route("AddNewAdmin")]
-        public async Task<IActionResult> AddNewAdmin(AdminVM avm)
-        {
-            var adminId = Guid.NewGuid().ToString();
-
-            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password };
-
-            try
-            {
-                _adminRepository.Add(admin);
-                await _adminRepository.SaveChangesAsync();
-
-                var user = new AppUser
-                {
-                    Id = adminId,
-                    UserName = avm.Email,
-                    Email = avm.Email
-                };
-
-                var result = await _userManager.CreateAsync(user, avm.Password);
-
-                await _userManager.AddToRoleAsync(user, "Admin");
-
-                if (result.Errors.Count() > 0)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-
-            }
-            catch (Exception)
-            {
-                return BadRequest("Invalid transaction");
-            }
-
-            return Ok(admin);
-        }
-*/
-
 
         [HttpPost]
         [Route("Register")]
@@ -133,6 +103,62 @@ namespace TrackwiseAPI.Controllers
             {
                 return NotFound("User does not exist or invalid credentials");
             }
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
+                return Ok();
+            }
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = HttpUtility.UrlEncode(token);
+
+            // Send the email using your email service
+            await _emailService.SendPasswordResetEmailAsync(user.Email, encodedToken);
+
+            return Ok();
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPassword model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
+                return Ok();
+            }
+
+            var decodedToken = HttpUtility.UrlDecode(model.Token);
+            var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                // Handle password reset failure
+                return BadRequest("Failed to reset password.");
+            }
+
+            // You can clear the reset token and its expiration once the password is successfully reset.
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+            await _userManager.UpdateAsync(user);
+
+            return Ok("Password successfully reset.");
         }
 
 
