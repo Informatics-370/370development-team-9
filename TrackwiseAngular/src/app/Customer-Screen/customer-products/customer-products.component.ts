@@ -14,6 +14,7 @@ import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product
 export class CustomerProductComponent {
   productTypes: any[] = []; 
   productCategories: any[] = []; 
+  isButtonDisabled: boolean = false;
 
   GetProductType: ProductTypes =
   {
@@ -118,11 +119,13 @@ GetAllProducts() {
         sessionStorage.setItem('cartItem', JSON.stringify(AddCartItem));
       }
     }
+    this.dataService.calculateQuantity();
 
-
-
-
-
+    if(product.quantity == 0){
+      this.isButtonDisabled = true;
+    } else{
+      this.isButtonDisabled = false;
+    }
     event.stopPropagation();
   }
 

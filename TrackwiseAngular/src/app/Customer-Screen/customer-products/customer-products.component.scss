@@ -107,6 +107,23 @@ img {
   font-weight: bold;
 }
 
+.OutOfStockBtn {
+  width: 110px;
+  border: 2px solid red;
+  border-radius: 5px;
+  background-color: white;
+  color: red;
+  font-weight: bold;
+}
+
+.OutOfStockBtn:hover {
+  border: 2px solid red;
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+  font-weight: bold;
+}
+
 .price {
   font-weight: bold;
 }

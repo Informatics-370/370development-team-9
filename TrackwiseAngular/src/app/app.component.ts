@@ -16,6 +16,9 @@ export class AppComponent implements AfterContentChecked{
   
   @ViewChild('sidenav', {static:true}) sidenav!: MatSidenav;
 
+  ngOnInit(): void{
+    this.dataService.calculateQuantity();
+  }
 
   toggleSidenav(){
     this.sidenav.toggle();
@@ -25,7 +28,6 @@ export class AppComponent implements AfterContentChecked{
     this.dataService.getRole();
   }
   
-
 
   isAdminScreen(): boolean {
     return this.router.url.includes('/Admin-Screen');

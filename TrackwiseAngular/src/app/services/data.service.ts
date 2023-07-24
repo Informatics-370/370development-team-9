@@ -13,6 +13,8 @@ import { Customer } from '../shared/customer';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
 import { customerOrders } from '../shared/customerOrder';
+import { Order } from '../shared/order';
+import { OrderLines } from '../shared/orderLines';
 
 @Injectable({
   providedIn: 'root'
@@ -428,11 +430,38 @@ export class DataService {
     return this.httpClient.delete<Customer>(`${this.apiUrl}Customer/DeleteCustomer/${customer_ID}`, {headers});
   }
 
+  CreateOrder(AddOrder: OrderLines): Observable<OrderLines>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<OrderLines>(`${this.apiUrl}Order/CreateOrder/`, AddOrder, {headers})
+    .pipe(map(result => result))
+  }
+
+
   GetCustomerOrders(): Observable<any>{
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<customerOrders>(`${this.apiUrl}Order/GetAllCustomerOrders`, {headers})
     .pipe(map(result => result));
+  }
+
+  cartItems: any=[];
+  itemsInCart: number = 0;
+  calculateQuantity(): number {
+    this.itemsInCart = 0;
+    if (!sessionStorage.getItem('cartItem'))
+    {
+      this.itemsInCart = 0;
+    }else{
+      this.cartItems = JSON.parse(sessionStorage.getItem('cartItem')!)
+      for (const item of this.cartItems) {
+        this.itemsInCart += item.cartQuantity;
+    }
+
+      }
+
+    return this.itemsInCart;
   }
 
 }

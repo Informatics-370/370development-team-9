@@ -28,6 +28,16 @@
             </tr>
         </thead>
 
+        <ng-container *ngIf="noOrdersOrdered">
+            <table class="item-table">
+              <tbody>
+                <tr class="NoItems">
+                  There are currently no current orders.
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
+
         <tbody *ngFor="let custOrders of customerOrders">
             <tr *ngIf="custOrders.status == 'Ordered'">
                 <td>{{custOrders.order_ID}}</td>
@@ -58,12 +68,19 @@
                 <th></th>
             </tr>
         </thead>
-
-
-
-
+        
+        <ng-container *ngIf="noOrdersCancelledOrCollected">
+            <table class="item-table">
+              <tbody>
+                <tr class="NoItems">
+                  There are currently no previous orders.
+                </tr>
+              </tbody>
+            </table>
+          </ng-container>
 
             <tbody *ngFor="let custOrders of customerOrders">
+            
                 <tr *ngIf="custOrders.status != 'Ordered'">
                     <td>{{custOrders.order_ID}}</td>
                     <td> {{custOrders.date | date: 'dd/MM/yyyy'}}</td>
@@ -74,7 +91,6 @@
                         <button class="continueBtn" (click)="OpenModal()">View</button>
                     </td>
                     <td>
-                        <button class="cancelBtn">Cancel</button>
                     </td>
                 </tr>
             </tbody>

@@ -16,7 +16,8 @@ export class CustomerOrdersComponent {
     this.GetCustomerOrders();
   }
 
-
+  noOrdersCancelledOrCollected: boolean = true;
+  noOrdersOrdered: boolean = true;
   showModal: boolean = false;
   customerOrders: any[] = [];
 
@@ -27,9 +28,13 @@ export class CustomerOrdersComponent {
         this.customerOrders.push(element);
         console.log(element);
       });
+  
+      // Set the noOrdersCancelledOrCollected variable based on the orders' status
+      this.noOrdersCancelledOrCollected = !this.customerOrders.some((order) => order.status === 'Collected' || order.status === 'Cancelled');
+      this.noOrdersOrdered = !this.customerOrders.some((order) => order.status === 'Ordered');
     });
   }
-
+  
   OpenModal() {
     this.showModal = true;
   }
