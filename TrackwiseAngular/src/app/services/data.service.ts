@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 import { Order } from '../shared/order';
 import { OrderLines } from '../shared/orderLines';
 import { RegisterUser } from '../shared/register';
+import { Job } from '../shared/job';
 
 @Injectable({
   providedIn: 'root'
@@ -349,12 +350,37 @@ export class DataService {
       return this.httpClient.delete<Supplier>(`${this.apiUrl}Supplier/DeleteSupplier/${supplier_ID}`, {headers});
   }
 
+  /*JOBS*/
+  GetJobs(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Job/GetAllAdminJobs`, {headers})
+    .pipe(map(result => result))
+  }
+
+  CreateJob(AddProductReq: Job): Observable<Job>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.post<Job>(`${this.apiUrl}Job/CreateJob/`, AddProductReq, {headers})
+    .pipe(map(result => result))
+  }
+
+  /*PASSWORD */
+  resetPassword(email: string, token: string, newPassword: string): Observable<any> {
+    const resetPasswordUrl = `${this.apiUrl}User/reset-password`;
+    const body = { email: email, token: token, newPassword: newPassword };
+    return this.httpClient.post<any>(resetPasswordUrl, body);
+  }
+
+  forgotPassword(email: string): Observable<any> {
+    const forgotPasswordUrl = `${this.apiUrl}User/forgot-password`;
+    return this.httpClient.post<any>(forgotPasswordUrl, { email: email });
+  }
+
 
 
   /*Product Section */
-
-
-
 
   GetProducts(): Observable<any>{
     let token = sessionStorage.getItem('Token');

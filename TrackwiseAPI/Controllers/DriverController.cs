@@ -74,7 +74,7 @@ namespace TrackwiseAPI.Controllers
         {
             var driverId = Guid.NewGuid().ToString();
 
-            var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Password = dvm.Password, Driver_Status_ID = dvm.Driver_Status_ID };
+            var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Driver_Status_ID = dvm.Driver_Status_ID };
 
             try
             {
@@ -125,7 +125,6 @@ namespace TrackwiseAPI.Controllers
                     existingDriver.Lastname == dvm.Lastname &&
                     existingDriver.Email == dvm.Email &&
                     existingDriver.PhoneNumber == dvm.PhoneNumber &&
-                    existingDriver.Password == dvm.Password &&
                     existingDriver.Driver_Status_ID == dvm.Driver_Status_ID)
                 {
                     // No changes made, return the existing driver without updating
@@ -136,7 +135,6 @@ namespace TrackwiseAPI.Controllers
                 existingDriver.Lastname = dvm.Lastname;
                 existingDriver.Email = dvm.Email;
                 existingDriver.PhoneNumber = dvm.PhoneNumber;
-                existingDriver.Password = dvm.Password;
                 existingDriver.Driver_Status_ID = dvm.Driver_Status_ID;
 
                 existingUser.UserName = dvm.Email;

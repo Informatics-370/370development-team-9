@@ -61,7 +61,9 @@ import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/custo
 import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
 
-
+import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
+import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
+import { ResetpasswordComponent } from './password/resetpassword/resetpassword.component';
 
 
 @NgModule({
@@ -100,7 +102,10 @@ import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-
     CartComponent,
     AboutUsComponent,
     ProfileComponent,
-    CustomerHomeComponent
+    CustomerHomeComponent,
+    CreateJobComponent,
+    ForgotpasswordComponent,
+    ResetpasswordComponent
 
  
   ],
