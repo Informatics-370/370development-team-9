@@ -45,7 +45,7 @@
 
       <tbody class="CSBody">
         <td>
-          <div class="summary">Items ({{this.itemsInCart}})</div>
+          <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
           <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
         </td>
       </tbody>
@@ -57,7 +57,7 @@
         </tr>
         <tr>
           <td>
-            <button class="checkoutBtn" [routerLink]="'Customer-Screen/customer-products'">Checkout</button>
+            <button class="checkoutBtn" (click)="checkout()">Checkout</button>
           </td>
         </tr>
       </tfoot>
