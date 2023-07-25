@@ -39,7 +39,16 @@ namespace TrackwiseAPI.Models.Repositories
 
         public async Task<Order> GetOrderAsync(string OrderID)
         {
-            IQueryable<Order> query = _context.Orders.Where(c => c.Order_ID == OrderID);
+            IQueryable<Order> query = _context.Orders
+                .Where(c => c.Order_ID == OrderID)
+                .Include(o => o.Customer)
+                    .Include(o => o.OrderLines)
+                        .ThenInclude(ol => ol.Product)
+                            .ThenInclude(p => p.ProductType)
+                        .Include(o => o.OrderLines)
+                            .ThenInclude(ol => ol.Product)
+                                .ThenInclude(p => p.ProductCategory);
+
             return await query.FirstOrDefaultAsync();
         }
 

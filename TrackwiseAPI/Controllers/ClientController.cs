@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
