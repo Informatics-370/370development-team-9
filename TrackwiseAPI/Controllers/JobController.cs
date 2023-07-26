@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using System.Globalization;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.BingMapsAPI;
 using TrackwiseAPI.Models.Entities;
@@ -62,12 +63,12 @@ namespace TrackwiseAPI.Controllers
 
         //GetAvailableTrailersWithTheirTypes
         [HttpGet]
-        [Route("GetAvailableTrailer/{Type}")]
-        public async Task<IActionResult> getTrailerWithTypeForJob(string type)
+        [Route("GetAvailableTrailer")]
+        public async Task<IActionResult> getTrailerWithTypeForJob(string Type)
         {
             try
             {
-                var results = await _jobRepository.GetAvailableTrailerWithTypeAsync(type);
+                var results = await _jobRepository.GetAvailableTrailerWithTypeAsync(Type);
                 return Ok(results);
             }
             catch (Exception)
@@ -114,7 +115,7 @@ namespace TrackwiseAPI.Controllers
 
                 };
 
-                return Ok(truckRouteData);
+                return Ok(truckRouteInfo);
             }
             catch (HttpRequestException ex)
             {
@@ -122,18 +123,17 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
-        //If trailer weight > job weight then 1 delivery
-        //else if trailer weight < job weight, get kleinste trailer nodig vir 2 deliveries
+
         [HttpPost]
         [Route("CreateJob")]
         public async Task<IActionResult> CreateJob(JobVM jvm)
         {
-            
-            //ek kan if insit vir die user wat ingelog is om sy ID te vat en dan die ander null te maak
+            var Job_ID = Guid.NewGuid().ToString();
             var job = new Job
             {
-                StartDate = jvm.StartDate,
-                DueDate = jvm.DueDate,
+                Job_ID = Job_ID,  
+                StartDate = DateTime.ParseExact("2023-07-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                DueDate = DateTime.ParseExact("2023-07-31 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
                 Pickup_Location = jvm.Pickup_Location,
                 Dropoff_Location = jvm.Dropoff_Location,
                 Total_Weight = jvm.Total_Weight,
@@ -141,9 +141,9 @@ namespace TrackwiseAPI.Controllers
                 Job_Type_ID = jvm.Job_Type_ID
             };
 
+            var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
             var drivers = await _jobRepository.GetAvailableDriverAsync();
             var trucks = await _jobRepository.GetAvailableTruckAsync();
-            var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.JobType.Name.ToString());
 
             var truckRouteResult = await CalculateTruckRoute(job.Pickup_Location, job.Dropoff_Location);
             double distanceInKm = 0; // Declare the distance variable with a default value
@@ -157,34 +157,19 @@ namespace TrackwiseAPI.Controllers
                 durationInHrs = truckRouteInfo.Duration;
             }
 
-            //Date logic
-            double totaltimefortrip = 0;
-            double maxHrsPerDay = 14.0; // Maximum driving hours per day
-            double driveDuration = 4.0; // Duration of continuous driving (hours)
-            double breakDuration = 0.5; // Duration of the break after continuous driving (hours)
-                                        
-            int numberOfDrivingPeriods = (int)(durationInHrs / (driveDuration + breakDuration));
-            double totalDrivingTime = numberOfDrivingPeriods * (driveDuration + breakDuration);
-            double remainingHrs = durationInHrs - (numberOfDrivingPeriods * (driveDuration + breakDuration));
+            // durationInHrs = 19;
+            double breakInterval = 4.0;
+            double restDuration = 0.5;
+            double maxHrsPerDay = 14.0;
 
-            totalDrivingTime += Math.Min(remainingHrs, driveDuration);
+            double numBreaks = Math.Floor(durationInHrs / breakInterval); //4
+            double totalRestTime = numBreaks * restDuration; //2
+            double totalTravelTime = durationInHrs + totalRestTime; //21
 
-            // If the total driving time exceeds the maximum driving hours per day, limit it to the maximum
-            totalDrivingTime = Math.Min(totalDrivingTime, maxHrsPerDay);
-            totaltimefortrip = totalDrivingTime + (numberOfDrivingPeriods * breakDuration);
-            /*
-            double JobHrs = 0;
-            TimeSpan timeSpan = job.DueDate - job.StartDate;
-            JobHrs = (double)timeSpan.TotalHours;
-            */
-
-            /*
-            function OneDriver
-            As hy genoeg tyd het om die weight te cover dan kan een ou dit doen.
-            Kry die jobweight. Kyk na trailer weights en bepaal wat die optimal manier is. 
-            As trailer weight > jobweight dans dit goed. 
-            Anders kry die beste trailer wat gaan pas vir meer as een trip
-            */
+            if (totalTravelTime > maxHrsPerDay) //21>14
+            {
+                totalTravelTime += 8.0; //21+8 = 29hrs na die location toe.
+            }
 
 
             double JobHrs = 0;
@@ -192,22 +177,137 @@ namespace TrackwiseAPI.Controllers
             
             if (drivers.Length>0 && trucks.Length>0 && trailers.Length>0) 
             {
-                if (totaltimefortrip < JobHrs)
+                if (totalTravelTime < JobHrs)
                 {
                     return NotFound("Not enough time for delivery");
                 }
-                if (job.Total_Weight<30)
+                if (job.Total_Weight < 30)
                 {
                     return NotFound("Delivery weight less than 30");
                 }
-                if (5>1)
-                {
-                    //35ton per trailer - > 1200/35 = 34.2857143 trips nodig van 35ton
-                    // -> 1280/35 = 36.5714286 trips nodig van 35ton
-                    x = job.Total_Weight / 35; 
-                    deliveries = (int)x;
+                //35ton per trailer - > 35/35 = 1 trips nodig van 35ton
+                // -> 70/35 = 2 trips nodig van 35ton
+                x = job.Total_Weight / 35;
+                deliveries = (int)x;
 
+                if (deliveries == 1)
+                {
+                    // DRIVER
+                    var driver = drivers.FirstOrDefault();
+                    if (driver == null)
+                    {
+                        // Handle the case when no driver is available
+                        return NotFound("No available driver found");
+                    }
+                    var driverid = driver.Driver_ID;
+
+                    // TRUCK
+                    var truck = trucks.FirstOrDefault();
+                    if (truck == null)
+                    {
+                        // Handle the case when no truck is available
+                        return NotFound("No available truck found");
+                    }
+                    var truckid = truck.TruckID;
+
+                    // TRAILER
+                    var trailer = trailers.FirstOrDefault();
+                    if (trailer == null)
+                    {
+                        // Handle the case when no trailer is available
+                        return NotFound("No available trailer found");
+                    }
+                    var trailerid = trailer.TrailerID;
+
+                    var Delivery_ID = Guid.NewGuid().ToString();
+                    var delivery = new Delivery
+                    {
+                        Delivery_ID = Delivery_ID,
+                        Delivery_Weight = job.Total_Weight,
+                        Driver_ID = driverid,
+                        TruckID = truckid,
+                        TrailerID = trailerid,
+                        Job_ID = job.Job_ID
+                    };
+                    try
+                    {
+                        _jobRepository.Add(job);
+                        await _jobRepository.SaveChangesAsync();
+                        _jobRepository.Add(delivery);
+                        await _jobRepository.SaveChangesAsync();
+                    }
+                    catch (Exception)
+                    {
+                        return BadRequest("Invalid transaction");
+                    }
+
+                    return Ok(job);
                 }
+                if (deliveries>1)
+                {
+                    double totalsolotime = totalTravelTime * ((deliveries * 2) - 1); //hrs needed for all deliveries by 1 driver
+                    if (totalsolotime < JobHrs)
+                    {
+                        // DRIVER
+                        var driver = drivers.FirstOrDefault();
+                        if (driver == null)
+                        {
+                            // Handle the case when no driver is available
+                            return NotFound("No available driver found");
+                        }
+                        var driverId = driver.Driver_ID;
+
+                        // TRUCK
+                        var truck = trucks.FirstOrDefault();
+                        if (truck == null)
+                        {
+                            // Handle the case when no truck is available
+                            return NotFound("No available truck found");
+                        }
+                        var truckId = truck.TruckID;
+
+                        // TRAILER
+                        var trailer = trailers.FirstOrDefault();
+                        if (trailer == null)
+                        {
+                            // Handle the case when no trailer is available
+                            return NotFound("No available trailer found");
+                        }
+                        var trailerId = trailer.TrailerID;
+
+                        var deliveries1 = new List<Delivery>();
+                        for (int i = 0; i < deliveries; i++)
+                        {
+
+                            var Delivery_ID = Guid.NewGuid().ToString();
+                            var deliveryObj = new Delivery
+                            {
+                                Delivery_ID = Delivery_ID,
+                                Delivery_Weight = job.Total_Weight/deliveries,
+                                Driver_ID = driverId,
+                                TruckID = truckId,
+                                TrailerID = trailerId,
+                                Job_ID = job.Job_ID
+                            };
+
+                            deliveries1.Add(deliveryObj);
+                        }
+                        foreach (var deliveryObj in deliveries1)
+                        {
+                            _jobRepository.Add(deliveryObj);
+                        }
+
+                        _jobRepository.Add(job);
+                        await _jobRepository.SaveChangesAsync();
+                        return Ok(job);
+                    }
+                    else if (totalsolotime>JobHrs)
+                    {
+
+                    }
+                }
+
+
             }
             else 
             {
@@ -216,67 +316,6 @@ namespace TrackwiseAPI.Controllers
             return Ok("lol");
 
 
-            //Bigtrailer is n trailer wat die job in een delivery kan doen
-            //Kan die trailer uit die list kry wat die naaste aan die Job weight is.
-            var Bigtrailer = trailers.Where(trailer => trailer.Weight > job.Total_Weight).ToArray();
-
-
-            //Smalltrailer is n trailer wat die job nie in een delivery kan doen nie
-            //Kan die trailers kry wat saam > as die job weight is vir die minste deliveries
-            //Ek moet dan besluit wanneer dit een driver is wat dit doen of meer as een driver. (kyk na die tyd wat dit vat)
-            var Smalltrailer = trailers.Where(trailer => trailer.Weight < job.Total_Weight).ToArray();
-            
-            /*
-            if (Bigtrailer.Length > 0)
-            {
-                // DRIVER
-                var driver = drivers.FirstOrDefault();
-                if (driver == null)
-                {
-                    // Handle the case when no driver is available
-                    return NotFound("No available driver found");
-                }
-                var driverid = driver.Driver_ID;
-
-                // TRUCK
-                var truck = trucks.FirstOrDefault();
-                if (truck == null)
-                {
-                    // Handle the case when no truck is available
-                    return NotFound("No available truck found");
-                }
-                var truckid = truck.TruckID;
-
-                // TRAILER
-                var trailer = trailers.FirstOrDefault();
-                if (trailer == null)
-                {
-                    // Handle the case when no trailer is available
-                    return NotFound("No available trailer found");
-                }
-                var trailerid = trailer.TrailerID;
-
-                var delivery = new Delivery
-                {
-                    Delivery_Weight = job.Total_Weight,
-                    Driver_ID = driverid,
-                    TruckID = truckid,
-                    TrailerID = trailerid,
-                    Job_ID = job.Job_ID
-                };
-                _jobRepository.Add(job);
-                _jobRepository.Add(delivery);
-                await _jobRepository.SaveChangesAsync();
-                return Ok(job);
-
-            }
-            else
-            {
-                // Handle the case when no big trailer is available
-                return NotFound("No available big trailer found");
-            }
-            */
-            
         }
 
     }

@@ -104,7 +104,6 @@ namespace TrackwiseAPI.Controllers
                 return NotFound("User does not exist or invalid credentials");
             }
         }
-
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
         {
@@ -113,20 +112,28 @@ namespace TrackwiseAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
+            try
             {
-                // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
+                    return Ok();
+                }
+
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var encodedToken = HttpUtility.UrlEncode(token);
+
+                // Send the email using your email service
+                await _emailService.SendPasswordResetEmailAsync(user.Email, encodedToken);
+
                 return Ok();
             }
-
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var encodedToken = HttpUtility.UrlEncode(token);
-
-            // Send the email using your email service
-            await _emailService.SendPasswordResetEmailAsync(user.Email, encodedToken);
-
-            return Ok();
+            catch (Exception ex)
+            {
+                // Log the exception or return an error response
+                return StatusCode(500, "An error occurred while sending the password reset email.");
+            }
         }
 
         [HttpPost("reset-password")]

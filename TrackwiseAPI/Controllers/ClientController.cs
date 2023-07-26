@@ -7,6 +7,7 @@ using System.Data;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
+using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -25,24 +26,23 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly IClientRepository _clientRepository;
+        private readonly MailController _mailController;
 
-
-        public ClientController(UserManager<AppUser> userManager,
+        public ClientController(
+            UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IClientRepository clientRepository)
+            IClientRepository clientRepository,
+            MailController mailController
+            )
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _clientRepository = clientRepository;
-            }
-
-/*            public ClientController(IClientRepository clientRepository)
-        {
-            _clientRepository = clientRepository;
-        }*/
-
+            _mailController = mailController;
+        }
+    
         //Get all clients
         [HttpGet]
         [Route("GetAllClients")]
@@ -86,6 +86,7 @@ namespace TrackwiseAPI.Controllers
             var clientId = Guid.NewGuid().ToString();
 
             var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email, Password = cvm.Password };
+            //var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, Password = client.Password, PhoneNumber = client.PhoneNumber };
 
             try
             {
@@ -100,8 +101,8 @@ namespace TrackwiseAPI.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, cvm.Password);
+               // var mail = await _mailController.SendEmailUsingTemplate(newclientmail);
 
-                await _userManager.AddToRoleAsync(user, "Client");
                 await _userManager.AddToRoleAsync(user, "Client");
 
                 if (result.Errors.Count() > 0)

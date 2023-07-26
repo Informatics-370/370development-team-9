@@ -218,8 +218,7 @@ namespace TrackwiseAPI.DBContext
             //
 
             modelBuilder.Entity<JobType>().HasData(
-                new JobType { Job_Type_ID= "1", Name = "Coal", Description = "Transporting coal" },
-                new JobType { Job_Type_ID = "2", Name = "Fuel", Description = "Transporting fuel" }
+                new JobType { Job_Type_ID= "1", Name = "Coal", Description = "Transporting coal" }
                 );
 
             modelBuilder.Entity<JobStatus>().HasData(
@@ -301,8 +300,8 @@ namespace TrackwiseAPI.DBContext
 
             modelBuilder.Entity<Trailer>().HasData(
                 new Trailer { TrailerID = "1", Trailer_License = "PO69EN L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1" ,Trailer_Status_ID = "1" },
-                new Trailer { TrailerID = "2", Trailer_License = "EH42ML L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "2", Trailer_Status_ID = "1" },
-                new Trailer { TrailerID = "3", Trailer_License = "PQ11LE L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "2", Trailer_Status_ID = "1" },
+                new Trailer { TrailerID = "2", Trailer_License = "EH42ML L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1", Trailer_Status_ID = "1" },
+                new Trailer { TrailerID = "3", Trailer_License = "PQ11LE L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1", Trailer_Status_ID = "1" },
                 new Trailer { TrailerID = "4", Trailer_License = "HJ91LO L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1", Trailer_Status_ID = "1" },
                 new Trailer { TrailerID = "5", Trailer_License = "AS99BN L", Model = "Palumbo", Weight = 35, Trailer_Type_ID = "1", Trailer_Status_ID = "1" }
             );
@@ -401,8 +400,7 @@ namespace TrackwiseAPI.DBContext
                 new TrailerStatus { Trailer_Status_ID = "3", Status = "Under Maintenance", Description = "Trailer is undergoing maintenace" }
             );
             modelBuilder.Entity<TrailerType>().HasData(
-                new TrailerType { Trailer_Type_ID = "1", Name = "Coal", Description = "Coal transportation trailer" },
-                new TrailerType { Trailer_Type_ID = "2", Name = "Fuel", Description = "Fuel transportation trailer" }
+                new TrailerType { Trailer_Type_ID = "1", Name = "Coal", Description = "Coal transportation trailer" }
             );
 
             modelBuilder.Entity<DriverStatus>().HasData(
