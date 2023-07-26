@@ -35,10 +35,10 @@ namespace TrackwiseAPI.Models.Repositories
         }
 
         //Get Available Trailer and the matching type
-        public async Task<Trailer[]> GetAvailableTrailerWithTypeAsync(string Type)
+        public async Task<Trailer[]> GetAvailableTrailerWithTypeAsync(string id)
         {
             IQueryable<Trailer> query = _context.Trailers.Include(t => t.TrailerStatus).Include(t => t.TrailerType)
-                .Where(t => t.TrailerStatus.Status == "Available").Where(t => t.TrailerType.Name == Type);
+                .Where(t => t.TrailerStatus.Status == "Available").Where(t => t.TrailerType.Trailer_Type_ID == id);
             return await query.ToArrayAsync();
         }
 

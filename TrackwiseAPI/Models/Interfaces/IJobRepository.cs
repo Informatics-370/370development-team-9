@@ -9,7 +9,8 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<bool> SaveChangesAsync();
         Task<Job[]> GetAllAdminJobsAsync();
         Task<Driver[]> GetAvailableDriverAsync();
-        Task<Trailer[]> GetAvailableTrailerWithTypeAsync(string Type);
+        Task<Trailer[]> GetAvailableTrailerWithTypeAsync(string id);
         Task<Truck[]> GetAvailableTruckAsync();
     }
+    
 }
