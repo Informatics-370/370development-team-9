@@ -1,22 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using TrackwiseAPI.Models.Factory;
 using TrackwiseAPI.Models.BingMapsAPI;
-using Microsoft.Extensions.Configuration;
 using TrackwiseAPI.Models.Password;
 using TrackwiseAPI.Models.Email;
+using TrackwiseAPI.Models.Entities;
 
 public class Startup
 { 
@@ -175,6 +169,42 @@ public class Startup
                     await userManager.AddToRoleAsync(user, "Admin");
                 }
             }
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<TwDbContext>();
+                var customers = scope.ServiceProvider.GetRequiredService<Customer>;
+
+                string email = "customer@gmail.com";
+                string password = "Test1234";
+                var customerId = Guid.NewGuid().ToString();
+
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new AppUser();
+                    user.Id = customerId;
+                    user.UserName = email;
+                    user.Email = email;
+
+                    await userManager.CreateAsync(user, password);
+
+                    await userManager.AddToRoleAsync(user, "Customer");
+
+                    var customer = new Customer
+                    {
+                        Customer_ID = customerId,
+                        Name = "Default Customer",
+                        LastName = "Default",
+                        Email = email,
+                        Password = password
+                    };
+
+                    dbContext.Customers.Add(customer);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+
         }).Wait();
     }
 
