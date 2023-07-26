@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
+import { Order } from 'src/app/shared/order';
 
 
 @Component({
@@ -19,7 +20,10 @@ export class CustomerOrdersComponent {
   noOrdersCancelledOrCollected: boolean = true;
   noOrdersOrdered: boolean = true;
   showModal: boolean = false;
+
   customerOrders: any[] = [];
+
+  orders : Order[] = [];
 
   GetCustomerOrders() {
     this.dataService.GetCustomerOrders().subscribe(result => {
@@ -34,8 +38,36 @@ export class CustomerOrdersComponent {
       this.noOrdersOrdered = !this.customerOrders.some((order) => order.status === 'Ordered');
     });
   }
+
+  GetOrder(order_ID:string){
+    this.dataService.GetOrder(order_ID).subscribe((result) => {
+      this.orders.push(result);
+      console.log(result);
+    })
+  }
+
+  async CancelOrder(order: any) {
+    try {
+      await this.dataService.CancelOrder(order.order_ID).toPromise();
+      const updatedOrder = await this.dataService.GetOrder(order.order_ID).toPromise();
+
+      // Check if updatedOrder is not undefined before accessing its properties
+      if (updatedOrder?.status) {
+        const index = this.customerOrders.findIndex((o) => o.order_ID === order.order_ID);
+        if (index !== -1) {
+          this.customerOrders[index].status = updatedOrder.status;
+        }
+      }
+    } catch (error) {
+      console.log('Error cancelling order:', error);
+    }
+  }
+
   
-  OpenModal() {
+  
+  
+  OpenModal(order:any) {
+    this.GetOrder(order.order_ID)
     this.showModal = true;
   }
 

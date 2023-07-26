@@ -45,10 +45,10 @@
                 <td style="color: #004F9E; font-weight: bold;">{{custOrders.status}}</td>
                 <td>R {{custOrders.total | number: '1.2-2'}}</td>
                 <td>
-                    <button class="continueBtn" (click)="OpenModal()">View</button>
+                    <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
                 </td>
                 <td>
-                    <button class="cancelBtn">Cancel</button>
+                    <button class="cancelBtn" (click)="CancelOrder(custOrders)">Cancel</button>
                 </td>
             </tr>
         </tbody>
@@ -88,13 +88,35 @@
                     <td style="color: red; font-weight: bold;" *ngIf="custOrders.status == 'Cancelled'"> {{custOrders.status}} </td>
                     <td>R {{custOrders.total}}</td>
                     <td>
-                        <button class="continueBtn" (click)="OpenModal()">View</button>
+                        <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
                     </td>
                     <td>
                     </td>
                 </tr>
             </tbody>
 
+            <div *ngIf="showModal" class="ViewOrderModal">
+              <div class="modal-content">
+                <span class="close" (click)="CloseModal()">&times;</span>
+                <table class="item-table">
+                  <thead>
+                    <tr class="table-headers">
+                      <th>Product Name</th>
+                      <th>Quantity</th>
+                      <th>Subtotal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let order of orders">
+                      <!-- <td>{{ order.orderLines.product.product_Name }}</td>
+                      <td>{{ order.orderLines.product.quantity }}</td> -->
+                      <td>R {{ order.orderLines.subTotal | number: '1.2-2' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <!-- <p>Total: R {{ orders[0].total | number: '1.2-2' }}</p> -->
+              </div>
+            </div>
 
 <!-- <div *ngIf="showModal" class="ViewOrderModal">
     <div class="modal-content">
@@ -120,4 +142,3 @@
 </div> -->
 
 
-</div>

@@ -3,4 +3,5 @@ export interface Supplier {
     name: string;
     email:String;
     contact_Number:String;
+    password:string;
 }

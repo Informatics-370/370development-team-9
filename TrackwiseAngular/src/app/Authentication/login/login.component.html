@@ -7,14 +7,16 @@
       <form class="login-form" [formGroup]="loginFormGroup">
         <div class="form-field">
           <!-- <label class="form-label">Username</label> -->
-          <input class="form-input" type="text" placeholder="Email address" formControlName="emailaddress">
+          <input class="form-input" type="text" placeholder="Email address" formControlName="emailaddress" required
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}">
         </div>
         <div class="form-field">
           <!-- <label class="form-label">Password</label> -->
-          <input class="form-input" type="password" placeholder="Password" formControlName="password">
+          <input class="form-input" type="password" placeholder="Password" formControlName="password" required>
         </div>
         <button class="login-btn" (click)="LoginUser()">Log in</button><br>
-        <div class="register-section">Don't have an account? Register <a [routerLink]="['../register']">here.</a></div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+        <div class="register-section">Don't have an account? Register <a [routerLink]="['/Authentication/register']">here.</a></div>
       </form>
     </mat-card>
     <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>

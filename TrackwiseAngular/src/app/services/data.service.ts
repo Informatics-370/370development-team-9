@@ -12,9 +12,9 @@ import { LoginUser } from '../shared/login-user';
 import { Customer } from '../shared/customer';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
-import { customerOrders } from '../shared/customerOrder';
 import { Order } from '../shared/order';
 import { OrderLines } from '../shared/orderLines';
+import { RegisterUser } from '../shared/register';
 
 @Injectable({
   providedIn: 'root'
@@ -69,6 +69,10 @@ export class DataService {
     return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
 
+  Register( registerUser: RegisterUser ) {
+    return this.httpClient.post(`${this.apiUrl}User/Register`, registerUser);
+  }
+
   /* Logout */
     logout(){
     if(sessionStorage.getItem('User'))
@@ -81,6 +85,7 @@ export class DataService {
       sessionStorage.removeItem('User');
       sessionStorage.removeItem('Role');
       sessionStorage.removeItem('Token');
+      sessionStorage.removeItem('cartItem')
       this.router.navigateByUrl('Authentication/login');
     }
   } 
@@ -430,6 +435,8 @@ export class DataService {
     return this.httpClient.delete<Customer>(`${this.apiUrl}Customer/DeleteCustomer/${customer_ID}`, {headers});
   }
 
+  /*Order Section */
+
   CreateOrder(AddOrder: OrderLines): Observable<OrderLines>
   {
     let token = sessionStorage.getItem('Token');
@@ -438,11 +445,25 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetOrder(order_ID: string): Observable<Order>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Order>(`${this.apiUrl}Order/GetOrder/${order_ID}`, {headers});
+  }
+
+  CancelOrder(order_ID: string):Observable<Order>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<Order>(`${this.apiUrl}Order/CancelOrder/${order_ID}`, {} ,{headers});
+  }
+  
 
   GetCustomerOrders(): Observable<any>{
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.get<customerOrders>(`${this.apiUrl}Order/GetAllCustomerOrders`, {headers})
+    return this.httpClient.get<Order>(`${this.apiUrl}Order/GetAllCustomerOrders`, {headers})
     .pipe(map(result => result));
   }
 

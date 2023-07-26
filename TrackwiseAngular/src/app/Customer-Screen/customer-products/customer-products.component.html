@@ -65,8 +65,9 @@
 
           <mat-card-footer>
             <mat-card-actions>
-              <button mat-button class="AddToCartBtn" [disabled]="isButtonDisabled" (click)="AddItemToCart($event, product)">Add to Cart</button>
-              <!-- <button  ng mat-button class="OutOfStockBtn" [disabled]="isButtonDisabled">Out of Stock</button> -->
+              <button mat-button class="AddToCartBtn" [disabled]="isOutOfStock(product)" (click)="AddItemToCart($event, product)" [ngClass]="{ 'OutOfStockBtn': isOutOfStock(product) }">
+                {{ isOutOfStock(product) ? 'Out of Stock' : 'Add to Cart' }}
+              </button>              
             </mat-card-actions>
           </mat-card-footer>
         </div>

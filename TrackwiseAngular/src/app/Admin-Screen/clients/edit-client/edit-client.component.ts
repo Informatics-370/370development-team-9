@@ -13,7 +13,9 @@ export class EditClientComponent implements OnInit {
   clientDetails: Client = {
     client_ID: "0",
     name: "",
-    phoneNumber: ""
+    phoneNumber: "",
+    email:"",
+    password:"",
   };
   originalPhoneNumber = '';
 

@@ -14,6 +14,7 @@ using TrackwiseAPI.Models.Repositories;
 using static TrackwiseAPI.Controllers.OrderController;
 using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.ViewModels;
+using TrackwiseAPI.Controllers;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -173,6 +174,64 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpGet]
+        [Route("GetOrder/{orderId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
+        public async Task<IActionResult> GetOrderAsync(string orderId)
+        {
+            try
+            {
+                var order = await _orderRepository.GetOrderAsync(orderId);
+
+                if (order == null)
+                    return NotFound("Order does not exist.");
+
+                var orderDto = new OrderDTO
+                {
+                    Order_ID = order.Order_ID,
+                    Date = order.Date,
+                    Total = order.Total,
+                    Status = order.Status,
+                    Customer_ID = order.Customer_ID,
+                    OrderLines = order.OrderLines.Select(ol => new OrderLineDTO
+                    {
+                        Order_line_ID = ol.Order_line_ID,
+                        Quantity = ol.Quantity,
+                        SubTotal = ol.SubTotal,
+                        Product = new ProductDTO
+                        {
+                            Product_ID = ol.Product.Product_ID,
+                            Product_Name = ol.Product.Product_Name,
+                            Product_Description = ol.Product.Product_Description,
+                            Product_Price = ol.Product.Product_Price,
+                            Quantity = (int)ol.Quantity,
+                            Product_Type = new ProductTypeDTO
+                            {
+                                Product_Type_ID = ol.Product.ProductType.Product_Type_ID,
+                                Name = ol.Product.ProductType.Name,
+                                Description = ol.Product.ProductType.Description,
+                            },
+                            Product_Category = new ProductCategoryDTO
+                            {
+                                Product_Category_ID = ol.Product.ProductCategory.Product_Category_ID,
+                                Name = ol.Product.ProductCategory.Name,
+                                Description = ol.Product.ProductCategory.Description,
+                            }
+                            // Add other product properties as needed
+                        }
+                        // Map other properties as needed
+                    }).ToList()
+                };
+
+                return Ok(orderDto);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
+
+        [HttpGet]
         [Route("GetAllCustomerOrders")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
 
@@ -244,6 +303,84 @@ namespace TrackwiseAPI.Controllers
             {
                 return StatusCode(500, "Internal Server Error. Please contact support");
             }
+        }
+
+        [HttpPut]
+        [Route("CancelOrder/{orderId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        public async Task<IActionResult> CancelOrder(string orderId)
+        {
+            try
+            {
+                var existingOrder = await _orderRepository.GetOrderAsync(orderId);
+                if (existingOrder == null) 
+                    return NotFound($"The order does not exist");
+
+                if (existingOrder.Status == "Cancelled")
+                    return NotFound($"The order is already cancelled");
+
+                if (existingOrder.Status == "Collected")
+                    return NotFound($"The order is already collected, cannot cancel");
+
+                existingOrder.Status = "Cancelled";
+
+                foreach (var orderLineDto in existingOrder.OrderLines)
+                {
+                    var product = await _productRepository.GetProductAsync(orderLineDto.Product.Product_ID);
+                    if (product == null)
+                    {
+                        return NotFound(); // Handle product not found scenario
+                    }
+
+
+                    // Update the product quantity
+                    product.Quantity += orderLineDto.Quantity;
+
+                    _productRepository.Update(product);
+                }
+
+                if (await _orderRepository.SaveChangesAsync())
+                {
+                    return Ok(existingOrder);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
+        [HttpPut]
+        [Route("CollectOrder/{orderId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> CollectOrder(string orderId)
+        {
+            try
+            {
+                var existingOrder = await _orderRepository.GetOrderAsync(orderId);
+                if (existingOrder == null)
+                    return NotFound($"The order does not exist");
+
+                if (existingOrder.Status == "Cancelled")
+                    return NotFound($"The order is already cancelled, cannot collect");
+
+                if (existingOrder.Status == "Collected")
+                    return NotFound($"The order is already collected, cannot collect");
+
+                existingOrder.Status = "Collected";
+
+
+                if (await _orderRepository.SaveChangesAsync())
+                {
+                    return Ok(existingOrder);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
         }
 
     }

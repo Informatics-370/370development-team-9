@@ -26,7 +26,6 @@ export class LoginComponent {
   async LoginUser() {
     if (this.loginFormGroup.valid) {
       this.isLoading = true;
-      console.log("hello")
   
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
         (result) => {

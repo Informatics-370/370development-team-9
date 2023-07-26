@@ -37,6 +37,7 @@ import { ProductsComponent } from './Admin-Screen/products/products.component';
 import { AddProductComponent } from './Admin-Screen/products/add-product/add-product.component';
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
+import { RegisterComponent } from './Authentication/register/register.component';
 
 
 //Customer components-----------------------------------------------------------
@@ -50,6 +51,7 @@ import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 
 const routes: Routes = [
   {path: 'Authentication/login', component: LoginComponent},
+  {path: 'Authentication/register', component: RegisterComponent},
 
   {path: 'Admin-Screen/customers', component: CustomersComponent},
 
