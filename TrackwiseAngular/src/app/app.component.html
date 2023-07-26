@@ -50,6 +50,7 @@
         </span>
     
         <div class="navbar-buttons">
+          <button mat-button [routerLink]="'/Customer-Screen/customer-home'">Home</button>
           <button mat-button [routerLink]="'/Customer-Screen/customer-products'">Products</button>
           <button mat-button [routerLink]="'/Customer-Screen/about-us'">About Us</button>
           <button mat-button [routerLink]="'/Customer-Screen/customer-orders'">Orders</button>
@@ -92,6 +93,7 @@
       </mat-toolbar>
 
       <router-outlet></router-outlet>
+
     </div>
     <div *ngIf="dataService.isLoggedIn == false">
       <router-outlet></router-outlet>
