@@ -37,6 +37,13 @@ import { ProductsComponent } from './Admin-Screen/products/products.component';
 import { AddProductComponent } from './Admin-Screen/products/add-product/add-product.component';
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
+import { RegisterComponent } from './Authentication/register/register.component';
+
+//Job components
+import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
+import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+
 
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
@@ -50,11 +57,15 @@ import { CustomerProductComponent } from './Customer-Screen/customer-products/cu
 import { CartComponent } from './Customer-Screen/cart/cart.component';
 import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
 import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
+import { ProfileComponent } from './Customer-Screen/profile/profile.component';
+import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
 
 
 
 const routes: Routes = [
   {path: 'Authentication/login', component: LoginComponent},
+  {path: 'Authentication/register', component: RegisterComponent},
+
 
 
   {path: 'Admin-Screen/customers', component: CustomersComponent},
@@ -103,6 +114,9 @@ const routes: Routes = [
   {path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent},
   {path: 'Customer-Screen/about-us', component: AboutUsComponent},
   {path: 'Customer-Screen/cart', component: CartComponent},
+  {path: 'Customer-Screen/profile', component: ProfileComponent},
+  {path: 'Customer-Screen/customer-home', component: CustomerHomeComponent},
+
 
 
 

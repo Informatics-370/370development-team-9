@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+import { Order } from 'src/app/shared/order';
 
-class Order {
-  constructor(public order_id: number, public date: string, public status: string) {}
-}
 
 @Component({
   selector: 'app-customer-orders',
@@ -10,19 +9,70 @@ class Order {
   styleUrls: ['./customer-orders.component.scss']
 })
 export class CustomerOrdersComponent {
-  currentOrders: Order[] = [];
-  orderHistory: Order[] = [];
 
-  
-  addOrder(order: Order) {
-    this.currentOrders.push(order);
+  constructor(private dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.dataService.revertToLogin();
+    this.GetCustomerOrders();
   }
 
-  moveOrderToHistory(orderId: number) {
-    const orderIndex = this.currentOrders.findIndex(order => order.order_id === orderId);
-    if (orderIndex !== -1) {
-      const order = this.currentOrders.splice(orderIndex, 1)[0];
-      this.orderHistory.push(order);
+  noOrdersCancelledOrCollected: boolean = true;
+  noOrdersOrdered: boolean = true;
+  showModal: boolean = false;
+
+  customerOrders: any[] = [];
+
+  orders : Order[] = [];
+
+  GetCustomerOrders() {
+    this.dataService.GetCustomerOrders().subscribe(result => {
+      let custOrderslist: any[] = result;
+      custOrderslist.forEach((element) => {
+        this.customerOrders.push(element);
+        console.log(element);
+      });
+  
+      // Set the noOrdersCancelledOrCollected variable based on the orders' status
+      this.noOrdersCancelledOrCollected = !this.customerOrders.some((order) => order.status === 'Collected' || order.status === 'Cancelled');
+      this.noOrdersOrdered = !this.customerOrders.some((order) => order.status === 'Ordered');
+    });
+  }
+
+  GetOrder(order_ID:string){
+    this.dataService.GetOrder(order_ID).subscribe((result) => {
+      this.orders.push(result);
+      console.log(result);
+    })
+  }
+
+  async CancelOrder(order: any) {
+    try {
+      await this.dataService.CancelOrder(order.order_ID).toPromise();
+      const updatedOrder = await this.dataService.GetOrder(order.order_ID).toPromise();
+
+      // Check if updatedOrder is not undefined before accessing its properties
+      if (updatedOrder?.status) {
+        const index = this.customerOrders.findIndex((o) => o.order_ID === order.order_ID);
+        if (index !== -1) {
+          this.customerOrders[index].status = updatedOrder.status;
+        }
+      }
+    } catch (error) {
+      console.log('Error cancelling order:', error);
     }
   }
+
+  
+  
+  
+  OpenModal(order:any) {
+    this.GetOrder(order.order_ID)
+    this.showModal = true;
+  }
+
+  CloseModal() {
+    this.showModal = false;
+  }
+
 }

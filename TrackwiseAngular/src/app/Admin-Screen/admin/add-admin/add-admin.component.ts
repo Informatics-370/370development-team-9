@@ -12,7 +12,7 @@ export class AddAdminComponent {
 
   adminDetails: Admin =
   {
-    admin_ID:0,
+    admin_ID:"",
     name:"",
     lastname:"",
     email:"",
@@ -23,6 +23,7 @@ export class AddAdminComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddAdmin()

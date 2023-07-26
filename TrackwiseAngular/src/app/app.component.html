@@ -1,16 +1,26 @@
-<mat-toolbar color="primary" *ngIf="dataService.isAdmin">
-    <mat-toolbar-row>
+<mat-toolbar class="admin-navbar" *ngIf="dataService.isAdmin">
       <button mat-icon-button  *ngIf="dataService.isLoggedIn">
         <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
       </button>
       <h1>TrackWise</h1>
-    </mat-toolbar-row>
+      <button mat-button class="Admin-MyAccount" [matMenuTriggerFor]="menu">My Account
+        <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
+      </button>
+      
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
+            <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
+            <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> 
+            <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+        </mat-menu>
   </mat-toolbar>
+
+  
   
   <mat-sidenav-container *ngIf="dataService.isAdmin">
     <mat-sidenav #sidenav mode="side" opened="true" class="side-container" >
-      <mat-nav-list>
-        <a mat-list-item [routerLink]="'Admin-Screen/admins'">Admins</a>
+      <mat-nav-list class="sidenav-options">
+        <a mat-list-item [routerLink]="'Admin-Screen/admins'" style="color: aliceblue;">Admins</a>
         <a mat-list-item [routerLink]="'Admin-Screen/clients'">Clients</a>
         <a mat-list-item [routerLink]="'Admin-Screen/customers'">Customers</a>
         <a mat-list-item [routerLink]="'Admin-Screen/drivers'">Drivers</a>  
@@ -40,6 +50,7 @@
         </span>
     
         <div class="navbar-buttons">
+          <button mat-button [routerLink]="'/Customer-Screen/customer-home'">Home</button>
           <button mat-button [routerLink]="'/Customer-Screen/customer-products'">Products</button>
           <button mat-button [routerLink]="'/Customer-Screen/about-us'">About Us</button>
           <button mat-button [routerLink]="'/Customer-Screen/customer-orders'">Orders</button>
@@ -49,25 +60,40 @@
         
         <div class="navbar-buttons">  
     
-          <button mat-button [matMenuTriggerFor]="menu">My Account
+          <button mat-button class="MyAccountDD" [matMenuTriggerFor]="menu">My Account
             <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
           </button>
           
             <mat-menu #menu="matMenu">
-              <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
+              <!-- <div *ngIf="dataService.isLoggedIn==true">
+                                <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
+                <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
+                <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
+                <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              </div>
+
+              <div *ngIf="dataService.isLoggedIn == false">
+                <button mat-menu-item [routerLink]="'/Authentication/login'"><mat-icon class="menu-icon">login</mat-icon>Login</button>
+                <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
+                <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> 
+                <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+              </div> -->
+
               <button mat-menu-item [routerLink]="'/Authentication/register'"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
-              <button mat-menu-item><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
-              <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
+                <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button>
+                <button mat-menu-item [routerLink]="'/Customer-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> 
+                <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
             </mat-menu>      
     
           <button mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>
-            <span class="badge">5</span>
+            <span class="badge">{{this.dataService.itemsInCart}}</span>
           </button>
     
         </div>
       </mat-toolbar>
 
       <router-outlet></router-outlet>
+
     </div>
     <div *ngIf="dataService.isLoggedIn == false">
       <router-outlet></router-outlet>

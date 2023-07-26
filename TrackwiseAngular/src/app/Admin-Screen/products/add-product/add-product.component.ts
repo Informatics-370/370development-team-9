@@ -12,19 +12,20 @@ export class AddProductComponent {
 
   AddProductRequest: Product =
   {
-    product_ID:0,
+    product_ID:"",
     product_Name:"",
     product_Description:"",
     product_Price:0,
-    product_Category_ID:1,
-    productCategory:{
-      product_Category_ID:0,
+    quantity: 0,
+
+    productType:{
+      product_Type_ID:"",
       name:"",
       description:""
     },
-    product_Type_ID:1,
-    productType:{
-      product_Type_ID:0,
+
+    productCategory:{
+      product_Category_ID:"",
       name:"",
       description:""
     },
@@ -37,6 +38,7 @@ export class AddProductComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddProduct()

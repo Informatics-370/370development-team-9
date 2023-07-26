@@ -15,12 +15,12 @@ export class EditTruckComponent implements OnInit{
 
   truckDetails: Truck =
   {
-    truckID:0,
+    truckID:"",
     truck_License:"",
     model:"",
-    truck_Status_ID:1,
+    truck_Status_ID:"",
     truckStatus:{
-      truck_Status_ID:0,
+      truck_Status_ID:"",
       status:"",
       description:""
     },
@@ -29,17 +29,6 @@ export class EditTruckComponent implements OnInit{
   constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
-    // this.route.paramMap.subscribe({
-    //   next: (params) => { const truckID = params.get('truckID');
-    
-    //   if(truckID)
-    //   {
-    //       this.dataService.GetTruck(truckID).subscribe({
-    //         next: (response) => {this.truckDetails = response;}
-    //       })
-    //   }
-    // }
-    // })
 
     this.route.params.subscribe({
       next: (params) => {
@@ -52,6 +41,8 @@ export class EditTruckComponent implements OnInit{
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditTruck()

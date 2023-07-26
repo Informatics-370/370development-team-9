@@ -12,15 +12,18 @@ export class AddClientComponent {
 
   clientDetails: Client =
   {
-    client_ID:0,
+    client_ID:"0",
     name:"",
     phoneNumber:"",
+    email:"",
+    password:"",
     
   };
 
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddClient()

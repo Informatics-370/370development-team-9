@@ -11,9 +11,11 @@ import { Client } from 'src/app/shared/client';
 export class EditClientComponent implements OnInit {
 
   clientDetails: Client = {
-    client_ID: 0,
+    client_ID: "0",
     name: "",
-    phoneNumber: ""
+    phoneNumber: "",
+    email:"",
+    password:"",
   };
   originalPhoneNumber = '';
 
@@ -29,6 +31,8 @@ export class EditClientComponent implements OnInit {
         });
       }
     });
+
+    this.dataService.revertToLogin();
   }
 
   KeepZeros() {

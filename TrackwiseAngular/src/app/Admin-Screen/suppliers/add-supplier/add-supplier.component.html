@@ -14,7 +14,7 @@
           </div>
 
           <div class="mb-3">
-            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <label for="phoneNumber" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" [(ngModel)]="AddSupplierReq.email"  
             name="email" [(ngModel)]="AddSupplierReq.email" required
             pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
@@ -27,6 +27,12 @@
               name="phoneNumber" [(ngModel)]="AddSupplierReq.contact_Number" required
               pattern="0[0-9]{9}" maxlength="10">
             <small class="text-muted">Please enter a 10-digit phone number starting with 0.</small>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="text" class="form-control" id="model" [(ngModel)] = "AddSupplierReq.password"  
+                   name="password" [(ngModel)]="AddSupplierReq.password" required>
           </div>
 
 

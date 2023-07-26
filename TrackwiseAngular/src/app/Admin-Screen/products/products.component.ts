@@ -18,6 +18,7 @@ export class ProductsComponent {
   
     ngOnInit(): void {
       this.GetProducts();
+      this.dataService.revertToLogin();
     }
   
   
@@ -68,7 +69,7 @@ export class ProductsComponent {
       }
     }
   
-    DeleteProduct(ProductID:number)
+    DeleteProduct(ProductID:string)
     {
       this.dataService.DeleteProduct(ProductID).subscribe({
         next: (response) => location.reload()

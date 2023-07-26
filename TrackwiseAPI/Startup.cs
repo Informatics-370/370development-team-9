@@ -113,6 +113,7 @@ public class Startup
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IJobRepository, JobRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -204,7 +205,6 @@ public class Startup
                     await dbContext.SaveChangesAsync();
                 }
             }
-
         }).Wait();
     }
 

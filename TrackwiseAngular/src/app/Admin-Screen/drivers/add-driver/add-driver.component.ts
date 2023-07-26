@@ -12,13 +12,15 @@ export class AddDriverComponent {
 
   driverDetails: Driver =
   {
-    driver_ID:0,
+    driver_ID:"0",
     name:"",
     lastname:"",
     phoneNumber:"",
-    driver_Status_ID:1,
+    email:"",
+    password:"",
+    driver_Status_ID:"",
     driverStatus:{
-      driver_Status_ID:0,
+      driver_Status_ID:"",
       status:"",
       description:""
     },
@@ -27,6 +29,7 @@ export class AddDriverComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddDriver()

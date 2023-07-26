@@ -17,6 +17,7 @@ export class AdminComponent implements OnInit {
   
   ngOnInit(): void {
     this.GetAdmins();
+    this.dataService.revertToLogin();
   }
 
   GetAdmins() {
@@ -61,7 +62,7 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  DeleteAdmin(admin_ID:number)
+  DeleteAdmin(admin_ID:string)
   {
     this.dataService.DeleteAdmin(admin_ID).subscribe({
       next: (response) => location.reload()

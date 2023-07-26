@@ -1,0 +1,83 @@
+.container{
+    margin-top: 80px;
+}
+
+// ---------------------top
+.top-row{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.top-row img {
+    width: 25%;
+    animation: slideFromLeft 2s ease;
+}
+
+@keyframes slideFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.top-row h3{
+    margin-top: 1%;
+    font-size: 180%;
+    color: #117fca;
+}
+
+// --------------------mid
+.mid-row{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.mid-row img{
+    width: 100%;
+}
+
+//------------------carousel
+/* Your other CSS styles here */
+
+.slideshow-container {
+    position: relative;
+    margin-top: 20px;
+    max-width: 600px;
+  }
+  
+  .slide {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0; /* Initially set slide to transparent (fade-out) */
+  }
+  
+  .slide img {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Your other CSS styles here */
+  
+  .fade {
+    animation: fade 2s;
+  }
+  
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  

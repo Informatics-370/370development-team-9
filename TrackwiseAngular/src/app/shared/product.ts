@@ -1,19 +1,32 @@
 export interface Product {
-    product_ID: number;
+    product_ID: string;
     product_Name: string;
     product_Description: string;
     product_Price:number;
-    product_Category_ID:number;
+    quantity:number;
+    cartQuantity?:number;
+
+    productType:{
+        product_Type_ID:string;
+        name:string;
+        description:string;
+    };
+
     productCategory:{
-        product_Category_ID:number;
+        product_Category_ID:string;
         name:string;
         description:string;
     };
-    product_Type_ID:number;
-        productType:{
-        product_Type_ID:number;
-        name:string;
-        description:string;
-    };
-    Quantity?: number;
+}
+
+export interface ProductTypes{
+    product_Type_ID: string;
+    name: string;
+    description: string;
+}
+
+export interface ProductCategories{
+    product_Category_ID: string;
+    name: string;
+    description: string;
 }

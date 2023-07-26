@@ -11,12 +11,12 @@ import { Router } from '@angular/router';
 export class AddTrucksComponent {
   AddTruckRequest: Truck =
   {
-    truckID:0,
+    truckID:"",
     truck_License:"",
     model:"",
-    truck_Status_ID:1,
+    truck_Status_ID:"",
     truckStatus:{
-      truck_Status_ID:0,
+      truck_Status_ID:"",
       status:"",
       description:""
     },
@@ -25,6 +25,7 @@ export class AddTrucksComponent {
   constructor(private dataService: DataService, private router:Router) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddTruck()

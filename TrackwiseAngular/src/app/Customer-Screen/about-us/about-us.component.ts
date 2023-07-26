@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-about-us',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./about-us.component.scss']
 })
 export class AboutUsComponent {
+  constructor(private dataService: DataService) {}
+
+  ngOnInit(): void {
+    this.dataService.revertToLogin();
+  }
 
 }
