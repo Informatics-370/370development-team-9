@@ -5,5 +5,7 @@ namespace TrackwiseAPI.DBContext
 {
     public class AppUser : IdentityUser
     {
+        public string? PasswordResetToken { get; set; }
+        public DateTime? ResetTokenExpires { get; set; }
     }
 }
