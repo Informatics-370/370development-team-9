@@ -17,6 +17,7 @@ using TrackwiseAPI.Models.BingMapsAPI;
 using Microsoft.Extensions.Configuration;
 using TrackwiseAPI.Models.Password;
 using TrackwiseAPI.Models.Email;
+using TrackwiseAPI.Models.Entities;
 
 public class Startup
 { 
@@ -119,6 +120,7 @@ public class Startup
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IJobRepository, JobRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -173,6 +175,41 @@ public class Startup
                     await userManager.CreateAsync(user, password);
 
                     await userManager.AddToRoleAsync(user, "Admin");
+                }
+            }
+
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<TwDbContext>();
+                var customers = scope.ServiceProvider.GetRequiredService<Customer>;
+
+                string email = "customer@gmail.com";
+                string password = "Test1234";
+                var customerId = Guid.NewGuid().ToString();
+
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new AppUser();
+                    user.Id = customerId;
+                    user.UserName = email;
+                    user.Email = email;
+
+                    await userManager.CreateAsync(user, password);
+
+                    await userManager.AddToRoleAsync(user, "Customer");
+
+                    var customer = new Customer
+                    {
+                        Customer_ID = customerId,
+                        Name = "Default Customer",
+                        LastName = "Default",
+                        Email = email,
+                        Password = password
+                    };
+
+                    dbContext.Customers.Add(customer);
+                    await dbContext.SaveChangesAsync();
                 }
             }
         }).Wait();

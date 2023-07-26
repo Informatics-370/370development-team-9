@@ -40,6 +40,8 @@ namespace TrackwiseAPI.Controllers
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _customerRepository = customerRepository;
+            _context = context;
+            _emailService = emailService;
         }
 
 
@@ -74,38 +76,9 @@ namespace TrackwiseAPI.Controllers
             }
 
             return Ok(customer);
-            _context = context;
-            _emailService = emailService;
+
         }
 
-        [HttpPost]
-        [Route("Register")]
-        public async Task<IActionResult> Register(UserVM uvm)
-        {
-            var user = await _userManager.FindByIdAsync(uvm.emailaddress);
-
-            if (user == null)
-            {
-                user = new AppUser
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = uvm.emailaddress,
-                    Email = uvm.emailaddress
-                };
-
-                var result = await _userManager.CreateAsync(user, uvm.password);
-
-                await _userManager.AddToRoleAsync(user, "Customer");
-
-                if (result.Errors.Count() > 0) return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-            }
-            else
-            {
-                return Forbid("Account already exists.");
-            }
-
-            return Ok();
-        }
 
 
         [HttpPost]

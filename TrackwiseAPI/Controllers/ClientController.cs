@@ -17,7 +17,6 @@ namespace TrackwiseAPI.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ClientController : ControllerBase
     {
 
@@ -25,21 +24,21 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly IClientRepository _clientRepository;
-        private readonly MailController _mailController;
+        //private readonly MailController _mailController;
 
         public ClientController(
             UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IClientRepository clientRepository,
-            MailController mailController
+            IClientRepository clientRepository
+            //MailController mailController
             )
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _clientRepository = clientRepository;
-            _mailController = mailController;
+            //_mailController = mailController;
         }
     
         //Get all clients
