@@ -101,11 +101,12 @@ import { ResetpasswordComponent } from './password/resetpassword/resetpassword.c
     CustomerOrdersComponent,
     CartComponent,
     AboutUsComponent,
-    ProfileComponent,
-    CustomerHomeComponent,
     CreateJobComponent,
     ForgotpasswordComponent,
-    ResetpasswordComponent
+    ResetpasswordComponent,
+    ProfileComponent,
+    CustomerHomeComponent,
+  
 
  
   ],

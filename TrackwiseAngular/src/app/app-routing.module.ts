@@ -45,6 +45,12 @@ import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.co
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 
+//Job components
+import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
+import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+
+
 
 //Customer components-----------------------------------------------------------
 import { CustomerProductComponent } from './Customer-Screen/customer-products/customer-products.component';
@@ -59,6 +65,7 @@ import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-
 const routes: Routes = [
   {path: 'Authentication/login', component: LoginComponent},
   {path: 'Authentication/register', component: RegisterComponent},
+
 
 
   {path: 'Admin-Screen/customers', component: CustomersComponent},
