@@ -101,7 +101,6 @@ namespace TrackwiseAPI.Controllers
                 var result = await _userManager.CreateAsync(user, cvm.Password);
 
                 await _userManager.AddToRoleAsync(user, "Client");
-                await _userManager.AddToRoleAsync(user, "Client");
 
                 if (result.Errors.Count() > 0)
                     return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
