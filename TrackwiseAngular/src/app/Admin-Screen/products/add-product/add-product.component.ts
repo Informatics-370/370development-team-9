@@ -9,6 +9,8 @@ import { Product } from 'src/app/shared/product';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent {
+  productTypes: any[] = []; 
+  productCategories: any[] = []; 
 
   AddProductRequest: Product =
   {
@@ -18,13 +20,13 @@ export class AddProductComponent {
     product_Price:0,
     quantity: 0,
 
-    productType:{
+    product_Type:{
       product_Type_ID:"",
       name:"",
       description:""
     },
 
-    productCategory:{
+    product_Category:{
       product_Category_ID:"",
       name:"",
       description:""
@@ -39,6 +41,8 @@ export class AddProductComponent {
 
   ngOnInit(): void {
     this.dataService.revertToLogin();
+    this.GetProductCategories();
+    this.GetProductTypes();
   }
 
   AddProduct()
@@ -48,6 +52,18 @@ export class AddProductComponent {
     })
   }
 
-
+  GetProductTypes() {
+    this.dataService.GetProductTypes().subscribe(result => {
+      this.productTypes = result; // Assign the retrieved product types directly to the "productTypes" array
+      console.log(this.productTypes);
+    });
+  }
+    
+    GetProductCategories() {
+      this.dataService.GetProductCategories().subscribe(result => {
+        this.productCategories = result; // Assign the retrieved product types directly to the "productTypes" array
+        console.log(this.productCategories);
+      });
+    }
 
 }

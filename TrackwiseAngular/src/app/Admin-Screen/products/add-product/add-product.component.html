@@ -27,23 +27,17 @@
 
         <div class="mb-3">
           <label for="category" class="form-label">Category</label>
-          <select class="form-select" id="category" [(ngModel)]="AddProductRequest.productCategory.product_Category_ID" name="category" required>
-            <option value="1">Engine</option>
-            <option value="2">Transmission</option>
-            <option value="3">Suspension</option>
-            <option value="4">Electrical</option>
-            <option value="5">Body</option>
-            <option value="6">Brake</option>
-            <option value="7">Wheel</option>
-            <option value="8">Consumables</option>
+          <select class="form-select" name="CategoryDropdown" id="CategoryDropdown">
+
+            <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
           </select>
       </div>
 
       <div class="mb-3">
         <label for="type" class="form-label">Type</label>
-        <select class="form-select" id="type" [(ngModel)]="AddProductRequest.productType.product_Type_ID" name="type" required>
-          <option value="1">Truck</option>
-          <option value="2">Trailer</option>
+        <select class="form-select" name="CategoryDropdown" id="CategoryDropdown">
+
+          <option *ngFor="let prodType of productTypes" [value]="prodType.product_Category_ID">{{prodType.name}}</option>
         </select>
       </div>
 

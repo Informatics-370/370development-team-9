@@ -57,7 +57,7 @@
         </tr>
         <tr>
           <td>
-            <button class="checkoutBtn" (click)="checkout()">Checkout</button>
+            <button class="checkoutBtn" (click)="checkout()" [disabled]="cartItems.length === 0">Checkout</button>
           </td>
         </tr>
       </tfoot>

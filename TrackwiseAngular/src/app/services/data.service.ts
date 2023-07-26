@@ -471,6 +471,13 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetAllOrders(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Order/GetAllOrders`, {headers})
+    .pipe(map(result => result))
+  }
+
   GetOrder(order_ID: string): Observable<Order>
   {
     let token = sessionStorage.getItem('Token');

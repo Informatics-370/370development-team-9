@@ -27,9 +27,9 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Quantity</th>
             <th>Category</th>
             <th>Type</th>
-            <th></th>
             <th></th>
             <th></th>
           </tr>
@@ -41,9 +41,10 @@
           <tr *ngFor="let product of products">
             <td>{{product.product_Name}}</td>
             <td>{{product.product_Description}}</td>
-            <td>R {{product.product_Price}}</td>
-            <td>{{product.productCategory.name}}</td>
-            <td>{{product.productType.name}}</td>
+            <td>R {{product.product_Price |number:"1.2-2"}}</td>
+            <td>{{product.quantity}}</td>
+            <td>{{product.product_Category.name}}</td>
+            <td>{{product.product_Type.name}}</td>
        
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-product', product.product_ID]">Edit</button></td>
             <td><button type="button" class="btn remove-btn" (click)="DeleteProduct(product.product_ID)">Remove</button></td>
