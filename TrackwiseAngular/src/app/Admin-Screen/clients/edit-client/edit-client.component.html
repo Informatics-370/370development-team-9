@@ -28,12 +28,6 @@
         <small class="text-muted">Please enter a valid email address.</small>
         </div>
 
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.password"  
-                 name="password" [(ngModel)]="clientDetails.password" required>
-        </div>
-
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="!form.valid">Save</button>&nbsp;
         <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/clients">Cancel</button>
       </form>

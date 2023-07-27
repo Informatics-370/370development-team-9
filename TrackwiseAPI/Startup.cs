@@ -178,8 +178,7 @@ public class Startup
                         Admin_ID = adminId,
                         Name = "Default Admin",
                         Lastname = "Default",
-                        Email = email,
-                        Password = password
+                        Email = email
                     };
 
                     dbContext.Admins.Add(admin);

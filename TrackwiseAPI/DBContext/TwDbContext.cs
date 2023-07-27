@@ -373,8 +373,8 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Admin>().HasData(
-                new Admin { Admin_ID = "1", Name = "Hanru", Lastname = "du Plessis", Email = "hanruduplessis@gmail.com", Password = "hanru123" },
-                new Admin { Admin_ID = "2", Name = "admin", Lastname="admin", Email="admin@gmail.com",Password="admin123" }
+                new Admin { Admin_ID = "1", Name = "Hanru", Lastname = "du Plessis", Email = "hanruduplessis@gmail.com"},
+                new Admin { Admin_ID = "2", Name = "admin", Lastname="admin", Email="admin@gmail.com"}
             );
 
             modelBuilder.Entity<Supplier>().HasData(

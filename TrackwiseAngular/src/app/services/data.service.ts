@@ -447,11 +447,25 @@ export class DataService {
     return this.httpClient.get<Customer>(`${this.apiUrl}Customer/GetCustomer/${customer_ID}`, {headers});
   }
 
+  GetCustomerProfile(): Observable<Customer>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Customer>(`${this.apiUrl}Customer/GetCustomerProfile`, {headers});
+  }
+
   EditCustomer(customer_ID: string , EditCustomerReq: Customer):Observable<Customer>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.put<Customer>(`${this.apiUrl}Customer/EditCustomer/${customer_ID}`, EditCustomerReq, {headers});
+  }
+
+  EditCustomerProfile(editCustomerProfile:any):Observable<Customer>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<Customer>(`${this.apiUrl}Customer/EditCustomerProfile`, editCustomerProfile, {headers});
   }
 
   DeleteCustomer(customer_ID: string):Observable<Customer>
