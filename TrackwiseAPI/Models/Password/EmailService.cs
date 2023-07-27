@@ -14,13 +14,14 @@ namespace TrackwiseAPI.Models.Password
             _emailSettings = emailSettings.Value;
         }
 
-        public async Task SendPasswordResetEmailAsync(string email, string token)
+        public async Task SendPasswordResetEmailAsync(string email, string encodedToken)
         {
             var subject = "Password Reset Request";
             var resetPasswordUrl = "https://your-app-url.com/reset-password"; // Replace with your actual reset password URL
 
             var message = $@"<p>Please click the following link to reset your password:</p>
-                         <p><a href=""{resetPasswordUrl}?email={HttpUtility.UrlEncode(email)}&token={HttpUtility.UrlEncode(token)}"">Reset Password</a></p>";
+                 <p><a href=""{resetPasswordUrl}?email={email}&token={encodedToken}"">Reset Password</a></p>";
+
 
             using (var smtp = new SmtpClient())
             {

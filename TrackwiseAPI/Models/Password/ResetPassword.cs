@@ -7,16 +7,9 @@ namespace TrackwiseAPI.Models.Password
         public string Token { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Password { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("NewPassword")]
         public string ConfirmPassword { get; set; }
     }
 }

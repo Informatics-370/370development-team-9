@@ -15,6 +15,7 @@ using System.Runtime.Intrinsics.X86;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
 using TrackwiseAPI.Models.Password;
+using System.Security.Cryptography;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -112,68 +113,56 @@ namespace TrackwiseAPI.Controllers
                 return NotFound("User does not exist or invalid credentials");
             }
         }
+
         [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
+        public async Task<IActionResult> ForgotPassword(string email)
         {
-            if (!ModelState.IsValid)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user==null)
             {
-                return BadRequest(ModelState);
+                return BadRequest("User not found");
             }
 
-            try
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
-                    return Ok();
-                }
+            user.PasswordResetToken = CreateRandomToken();
+            user.ResetTokenExpires = DateTime.Now.AddDays(1);
+            return Ok("You can now reset your password");
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var encodedToken = HttpUtility.UrlEncode(token);
-
-                // Send the email using your email service
-                await _emailService.SendPasswordResetEmailAsync(user.Email, encodedToken);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or return an error response
-                return StatusCode(500, "An error occurred while sending the password reset email.");
-            }
         }
 
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPassword model)
+        public async Task<IActionResult> ResetPassword(ResetPassword request)
         {
-            if (!ModelState.IsValid)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+
+            if (user == null || user.ResetTokenExpires < DateTime.Now)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Invalid token");
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
-            {
-                // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
-                return Ok();
-            }
+            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
 
-            var decodedToken = HttpUtility.UrlDecode(model.Token);
-            var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                // Handle password reset failure
-                return BadRequest("Failed to reset password.");
-            }
-
-            // You can clear the reset token and its expiration once the password is successfully reset.
             user.PasswordResetToken = null;
             user.ResetTokenExpires = null;
-            await _userManager.UpdateAsync(user);
+            await _context.SaveChangesAsync();
 
             return Ok("Password successfully reset.");
+        }
+
+        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt) 
+        { 
+            using (var hmac = new HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac
+                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password)); 
+            }
+        }
+
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
 
 
