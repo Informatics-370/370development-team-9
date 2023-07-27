@@ -10,7 +10,7 @@ export class AboutUsComponent {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.dataService.revertToLogin();
+    
   }
 
 }
