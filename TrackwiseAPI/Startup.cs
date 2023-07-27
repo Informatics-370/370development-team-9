@@ -212,8 +212,7 @@ public class Startup
                         Customer_ID = customerId,
                         Name = "Default Customer",
                         LastName = "Default",
-                        Email = email,
-                        Password = password
+                        Email = email
                     };
 
                     dbContext.Customers.Add(customer);

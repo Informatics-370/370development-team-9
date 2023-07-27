@@ -120,7 +120,7 @@ namespace TrackwiseAPI.Controllers
         {
             var customerId = Guid.NewGuid().ToString();
 
-            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email, Password = cvm.Password };
+            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email};
 
             try
             {
@@ -182,8 +182,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingCustomer.Name == cvm.Name &&
                     existingCustomer.LastName == cvm.LastName &&
-                    existingCustomer.Email == cvm.Email &&
-                    existingCustomer.Password == cvm.Password)
+                    existingCustomer.Email == cvm.Email)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingCustomer);
@@ -192,7 +191,6 @@ namespace TrackwiseAPI.Controllers
                 existingCustomer.Name = cvm.Name;
                 existingCustomer.LastName = cvm.LastName;
                 existingCustomer.Email = cvm.Email;
-                existingCustomer.Password = cvm.Password;
 
 
                 var customerUpdateResult = await _customerRepository.SaveChangesAsync();
@@ -226,8 +224,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingCustomer.Name == cvm.Name &&
                     existingCustomer.LastName == cvm.LastName &&
-                    existingCustomer.Email == cvm.Email &&
-                    existingCustomer.Password == cvm.Password)
+                    existingCustomer.Email == cvm.Email)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingCustomer);
@@ -236,7 +233,6 @@ namespace TrackwiseAPI.Controllers
                 existingCustomer.Name = cvm.Name;
                 existingCustomer.LastName = cvm.LastName;
                 existingCustomer.Email = cvm.Email;
-                existingCustomer.Password = cvm.Password;
 
                 existingUser.UserName = cvm.Email;
                 existingUser.Email = cvm.Email;

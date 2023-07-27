@@ -347,9 +347,9 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { Customer_ID = "1", Name = "John", LastName = "Doe", Email = "johndoe@gmail.com", Password = "john123" },
-                new Customer { Customer_ID = "2", Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com", Password = "jane123" },
-                new Customer { Customer_ID = "3", Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com", Password = "joe123" }
+                new Customer { Customer_ID = "1", Name = "John", LastName = "Doe", Email = "johndoe@gmail.com" },
+                new Customer { Customer_ID = "2", Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com" },
+                new Customer { Customer_ID = "3", Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com" }
             );
 
             modelBuilder.Entity<Invoice>().HasData(

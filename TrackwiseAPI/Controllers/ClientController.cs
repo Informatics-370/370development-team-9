@@ -83,7 +83,7 @@ namespace TrackwiseAPI.Controllers
         {
             var clientId = Guid.NewGuid().ToString();
 
-            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email, Password = cvm.Password };
+            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email };
             //var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, Password = client.Password, PhoneNumber = client.PhoneNumber };
 
             try
@@ -132,8 +132,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingClient.Name == cvm.Name &&
                     existingClient.PhoneNumber == cvm.PhoneNumber &&
-                    existingClient.Email == cvm.Email &&
-                    existingClient.Password == cvm.Password)
+                    existingClient.Email == cvm.Email)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingClient);
@@ -142,7 +141,6 @@ namespace TrackwiseAPI.Controllers
                 existingClient.Name = cvm.Name;
                 existingClient.PhoneNumber = cvm.PhoneNumber;
                 existingClient.Email = cvm.Email;
-                existingClient.Password = cvm.Password;
 
                 existingUser.UserName = cvm.Email;
                 existingUser.Email = cvm.Email;
