@@ -106,9 +106,6 @@ import { ResetpasswordComponent } from './password/resetpassword/resetpassword.c
     ResetpasswordComponent,
     ProfileComponent,
     CustomerHomeComponent,
-  
-
- 
   ],
   imports: [
     BrowserModule,

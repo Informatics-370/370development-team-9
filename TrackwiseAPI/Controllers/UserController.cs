@@ -125,6 +125,7 @@ namespace TrackwiseAPI.Controllers
 
             user.PasswordResetToken = CreateRandomToken();
             user.ResetTokenExpires = DateTime.Now.AddDays(1);
+            await _context.SaveChangesAsync();
             return Ok("You can now reset your password");
 
         }
@@ -132,32 +133,26 @@ namespace TrackwiseAPI.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPassword request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+            //var user1 = await _userManager.FindByEmailAsync(request.Email);
+            //var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+            var user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user == null || user.ResetTokenExpires < DateTime.Now)
             {
                 return BadRequest("Invalid token");
             }
 
-            CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
-
+            var resetPasswordResult = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
+            if (!resetPasswordResult.Succeeded)
+            {
+                // Password reset failed. You may handle specific error cases here if needed.
+                return BadRequest("Password reset failed.");
+            }
             user.PasswordResetToken = null;
             user.ResetTokenExpires = null;
             await _context.SaveChangesAsync();
 
             return Ok("Password successfully reset.");
-        }
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt) 
-        { 
-            using (var hmac = new HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac
-                    .ComputeHash(System.Text.Encoding.UTF8.GetBytes(password)); 
-            }
         }
 
         private string CreateRandomToken()
