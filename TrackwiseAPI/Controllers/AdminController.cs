@@ -83,7 +83,7 @@ namespace TrackwiseAPI.Controllers
         {
             var adminId = Guid.NewGuid().ToString();
 
-            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password };
+            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email };
 
             try
             {
@@ -130,8 +130,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingAdmin.Name == avm.Name &&
                     existingAdmin.Lastname == avm.Lastname &&
-                    existingAdmin.Email == avm.Email &&
-                    existingAdmin.Password == avm.Password)
+                    existingAdmin.Email == avm.Email)
                 {
                     // No changes made, return the existing admin without updating
                     return Ok(existingAdmin);
@@ -140,13 +139,13 @@ namespace TrackwiseAPI.Controllers
                 existingAdmin.Name = avm.Name;
                 existingAdmin.Lastname = avm.Lastname;
                 existingAdmin.Email = avm.Email;
-                existingAdmin.Password = avm.Password;
 
                 existingUser.UserName = avm.Email;
                 existingUser.Email = avm.Email;
-                await _userManager.RemovePasswordAsync(existingUser);
+
+/*                await _userManager.RemovePasswordAsync(existingUser);
                 await _userManager.AddPasswordAsync(existingUser, avm.Password);
-                existingUser.SecurityStamp = Guid.NewGuid().ToString();
+                existingUser.SecurityStamp = Guid.NewGuid().ToString();*/
 
                 var adminUpdateResult = await _adminRepository.SaveChangesAsync();
                 var userUpdateResult = await _userManager.UpdateAsync(existingUser);

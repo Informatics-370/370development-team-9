@@ -50,7 +50,7 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> Register(CustomerVM cvm)
         {
             var customerId = Guid.NewGuid().ToString();
-            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email, Password = cvm.Password };
+            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
 
             try
             {

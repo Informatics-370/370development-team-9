@@ -98,6 +98,8 @@
             <div *ngIf="showModal" class="ViewOrderModal">
               <div class="modal-content">
                 <span class="close" (click)="CloseModal()">&times;</span>
+                <h4>Order Details</h4>
+                <div *ngFor="let order of orders">Order Number: {{order.order_ID}}</div>
                 <table class="item-table">
                   <thead>
                     <tr class="table-headers">
@@ -107,14 +109,21 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let order of orders">
-                      <!-- <td>{{ order.orderLines.product.product_Name }}</td>
-                      <td>{{ order.orderLines.product.quantity }}</td> -->
-                      <td>R {{ order.orderLines.subTotal | number: '1.2-2' }}</td>
+                    <ng-container *ngFor="let order of orders">
+                    <tr *ngFor="let orderLine of order.orderLines">
+                      <td>{{ orderLine.product.product_Name }}</td>
+                      <td>{{ orderLine.product.quantity }}</td>
+                      <td>R {{ orderLine.subTotal | number: '1.2-2' }}</td>
                     </tr>
+                    <tr>
+                      <td></td>
+                      <td></td>
+                      <td><b>Total:</b> R {{ order.total | number: '1.2-2' }}</td>
+                    </tr>
+                  </ng-container>
                   </tbody>
                 </table>
-                <!-- <p>Total: R {{ orders[0].total | number: '1.2-2' }}</p> -->
+   
               </div>
             </div>
 

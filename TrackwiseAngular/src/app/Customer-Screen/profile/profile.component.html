@@ -3,9 +3,9 @@
       <div class="profile-photo">
         <img src="assets/User Icon.jpg" alt="Profile Photo">
       </div>
-      <div class="user-info">
-        <h3>{{ userName }}</h3>
-        <p>{{ userEmail }}</p>
+      <div class="user-info" >
+        <h3>{{ editCustomer.name }} {{ editCustomer.lastName }}</h3>
+        <p>{{ editCustomer.email }}</p>
       </div>
     </div>
     <mat-card-actions>
@@ -25,17 +25,18 @@
     </mat-card-actions>
   
     <!-- Custom dropdown form -->
-    <div class="edit-form" *ngIf="showEditForm">
+    <div class="edit-form" *ngIf="showEditForm" >
       <mat-form-field>
         <mat-label>Edit Name</mat-label>
-        <input matInput [(ngModel)]="userName" name="userName">
+        <input matInput [(ngModel)]="customer.name" name="customers.name">
       </mat-form-field>
-      <mat-form-field>
-        <mat-label>Edit Email</mat-label>
-        <input matInput [(ngModel)]="userEmail" name="userEmail">
+      <mat-form-field >
+        <mat-label>Edit Surname</mat-label>
+        <input matInput [(ngModel)]="customer.lastName" name="customers.lastName">
       </mat-form-field>
-      <button mat-button class="SaveBtn" (click)="saveChanges()">Save Changes</button>
+      <button mat-button class="SaveBtn" (click)="EditCustomerProfile()">Save Changes</button>
     </div>
+
 
     <!-- Payment details -->
     <div class="edit-form" *ngIf="showPaymentInfoForm">
