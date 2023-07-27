@@ -1,27 +1,44 @@
-import { Component, OnInit } from '@angular/core';
+// customer-home.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-customer-home',
   templateUrl: './customer-home.component.html',
   styleUrls: ['./customer-home.component.scss']
 })
-export class CustomerHomeComponent  {
+export class CustomerHomeComponent implements OnInit, OnDestroy {
+  images: { url: string }[] = [
+    { url: '/assets/CustHome/c1.jpg' },
+    { url: '/assets/CustHome/c2.jpg' },
+    { url: '/assets/CustHome/c3.jpg' },
+    { url: '/assets/CustHome/c4.jpg' },
+    { url: '/assets/CustHome/c5.jpg' },
+    { url: '/assets/CustHome/c6.jpg' },
+    // Add more images as needed
+  ];
 
+  currentSlideIndex: number = 0;
+  interval: any;
 
+  ngOnInit(): void {
+    this.startSlideshow();
+  }
 
-  // ngOnInit(): void {
-  //   let slideIndex = 0;
-  //   showSlides();
+  ngOnDestroy(): void {
+    this.stopSlideshow();
+  }
 
-  //   function showSlides() {
-  //     const slides = document.getElementsByClassName("slide") as HTMLCollectionOf<HTMLElement>;
-  //     slides[slideIndex].style.opacity = "0"; // Set current slide to transparent (fade-out)
-  //     slideIndex++;
-  //     if (slideIndex >= slides.length) {
-  //       slideIndex = 0;
-  //     }
-  //     slides[slideIndex].style.opacity = "1"; // Set next slide to visible (fade-in)
-  //     setTimeout(showSlides, 2000); // Change slide every 2 seconds
-  //   }
-  // }
+  startSlideshow(): void {
+    this.interval = setInterval(() => {
+      this.slideToNext();
+    }, 4000); // Change this value to adjust slide duration (now set to 4 seconds per image)
+  }
+
+  stopSlideshow(): void {
+    clearInterval(this.interval);
+  }
+
+  slideToNext(): void {
+    this.currentSlideIndex = (this.currentSlideIndex + 1) % this.images.length;
+  }
 }
