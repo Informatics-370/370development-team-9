@@ -24,7 +24,6 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetAllProducts")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
         public async Task<IActionResult> GetAllProducts()
         {
             try
@@ -198,7 +197,6 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetProductCategory")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetProductCategory()
         {
             try
@@ -214,7 +212,6 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetProductType")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetProductType()
         {
             try

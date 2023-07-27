@@ -1,0 +1,61 @@
+<br>
+<div class="row">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
+
+    <h2>Create Job</h2>
+      
+    <form #form="ngForm" (ngSubmit)="CreateJob()">
+
+        <div class="mb-3">
+            <label for="Name" class="form-label">Client Name</label>
+            <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+            name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="Name" class="form-label"> Start Date </label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+          name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="Name" class="form-label"> Completion Date </label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+          name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="Name" class="form-label"> Pickup Location </label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+          name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="Name" class="form-label"> Dropoff Location </label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+          name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="Name" class="form-label"> Total Weight </label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+          name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="Name" class="form-label"> Type of Material </label>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
+          name="Name" [(ngModel)]="adminDetails.name" required>
+        </div>
+
+        
+          <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Create Job</button>&nbsp;
+        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/jobs">Cancel</button>
+      </form>
+      <br>
+
+    </div>
+  </div>
+</div>  

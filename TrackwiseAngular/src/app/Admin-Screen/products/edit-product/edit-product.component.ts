@@ -18,13 +18,13 @@ export class EditProductComponent {
     product_Price:0,
     quantity: 0,
 
-    productType:{
+    product_Type:{
       product_Type_ID:"",
       name:"",
       description:""
     },
 
-    productCategory:{
+    product_Category:{
       product_Category_ID:"",
       name:"",
       description:""

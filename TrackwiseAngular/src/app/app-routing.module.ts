@@ -8,7 +8,7 @@ import { DriversComponent } from './Admin-Screen/drivers/drivers.component';
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
-import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
+
 
 import { OrdersComponent } from './Admin-Screen/orders/orders.component';
 
@@ -39,6 +39,10 @@ import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-
 import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
 
+//Job components
+import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
+import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
+import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
 
 //Customer components-----------------------------------------------------------
 import { CustomerProductComponent } from './Customer-Screen/customer-products/customer-products.component';
@@ -54,13 +58,13 @@ const routes: Routes = [
   {path: 'Authentication/login', component: LoginComponent},
   {path: 'Authentication/register', component: RegisterComponent},
 
+
+
   {path: 'Admin-Screen/customers', component: CustomersComponent},
 
   {path: 'Admin-Screen/drivers', component: DriversComponent},
   {path: 'Admin-Screen/drivers/add-driver', component: AddDriverComponent},
   {path: 'Admin-Screen/drivers/edit-driver/:driver_ID', component:EditDriverComponent},
-
-  {path: 'Admin-Screen/jobs', component: JobsComponent},
 
   {path: 'Admin-Screen/orders', component: OrdersComponent},
 
@@ -91,6 +95,11 @@ const routes: Routes = [
   {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
   {path: '', redirectTo: 'Authentication/login', pathMatch:'full'},
+
+  //Job components
+  {path: 'Admin-Screen/jobs', component: JobsComponent},
+  {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
+  { path: 'reset-password', component: ForgotpasswordComponent },
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},

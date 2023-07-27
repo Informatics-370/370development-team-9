@@ -97,6 +97,7 @@ export class CartComponent implements OnInit {
       this.dataService.calculateQuantity();
     }
   }
+  
 
   checkout(): void {
     // Perform any validation or additional logic before calling the service method
