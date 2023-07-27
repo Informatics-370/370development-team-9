@@ -86,7 +86,7 @@
                     <td> {{custOrders.date | date: 'dd/MM/yyyy'}}</td>
                     <td style="color: rgb(5, 218, 5); font-weight: bold;" *ngIf="custOrders.status == 'Collected'"> {{custOrders.status}} </td>
                     <td style="color: red; font-weight: bold;" *ngIf="custOrders.status == 'Cancelled'"> {{custOrders.status}} </td>
-                    <td>R {{custOrders.total}}</td>
+                    <td>R {{custOrders.total | number: '1.2-2'}}</td>
                     <td>
                         <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
                     </td>
