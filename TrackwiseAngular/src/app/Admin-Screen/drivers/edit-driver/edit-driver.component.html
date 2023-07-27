@@ -6,7 +6,7 @@
 
       <h2>Edit Driver</h2>
       
-      <form #form="ngForm" (ngSubmit)="form.form.valid && EditDriver()">
+      <form #form="ngForm" (ngSubmit)="form.form.valid && EditDriver()" autocomplete="off">
         <div class="mb-3">
           <label for="Name" class="form-label">Driver Name</label>
           <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)]="driverDetails.name" name="Name" required>

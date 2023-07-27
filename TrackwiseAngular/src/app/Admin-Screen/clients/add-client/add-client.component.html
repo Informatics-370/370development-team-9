@@ -6,7 +6,7 @@
 
       <h2>Add Client</h2>
       
-      <form #addClientForm="ngForm" (ngSubmit)="addClientForm.form.valid && AddClient()"> 
+      <form #addClientForm="ngForm" (ngSubmit)="addClientForm.form.valid && AddClient()" autocomplete="off"> 
         <div class="mb-3">
           <label for="Name" class="form-label">Client Name</label>
           <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)]="clientDetails.name" name="Name" required>

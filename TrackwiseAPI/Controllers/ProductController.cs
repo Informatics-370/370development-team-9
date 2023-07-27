@@ -105,23 +105,43 @@ namespace TrackwiseAPI.Controllers
         [HttpPost]
         [Route("AddProduct")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> AddProduct(ProductVM prodvm)
+        public async Task<IActionResult> AddProduct(ProductDTO product)
         {
             var productId = Guid.NewGuid().ToString();
 
-            var product = new Product 
+            var productDto = new ProductDTO
             {
-                Product_ID = productId, 
-                Product_Name = prodvm.Product_Name, 
-                Product_Description = prodvm.Product_Description, 
-                Product_Price = prodvm.Product_Price, 
-                Quantity = prodvm.Product_Quantity ,
-                Product_Category_ID = prodvm.Product_Category_ID, 
-                Product_Type_ID = prodvm.Product_Type_ID };
+                Product_ID = productId,
+                Product_Name = product.Product_Name,
+                Product_Description = product.Product_Description,
+                Product_Price = product.Product_Price,
+                Quantity = product.Quantity,
+                Product_Category = new ProductCategoryDTO
+                {
+                    Product_Category_ID = product.Product_Category.Product_Category_ID,
+                },
+                Product_Type = new ProductTypeDTO
+                {
+                    Product_Type_ID = product.Product_Type.Product_Type_ID,
+                }
+                // Map other properties as needed
+            };
+
+            var newProduct = new Product
+            {
+                Product_ID = productDto.Product_ID,
+                Product_Name = productDto.Product_Name,
+                Product_Description = productDto.Product_Description,
+                Product_Price = productDto.Product_Price,
+                Quantity = productDto.Quantity,
+                Product_Category_ID = productDto.Product_Category.Product_Category_ID,
+                Product_Type_ID = productDto.Product_Type.Product_Type_ID
+                // Map other properties as needed
+            };
 
             try
             {
-                _productRepository.Add(product);
+                _productRepository.Add(newProduct);
                 await _productRepository.SaveChangesAsync();
             }
             catch (Exception)
@@ -136,7 +156,7 @@ namespace TrackwiseAPI.Controllers
         [HttpPut]
         [Route("EditProduct/{productId}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<ActionResult<ProductVM>> EditProduct(string productId, ProductVM productModel)
+        public async Task<ActionResult<ProductVM>> EditProduct(string productId, ProductDTO productModel)
         {
             try
             {
@@ -146,7 +166,9 @@ namespace TrackwiseAPI.Controllers
                 if (existingProduct.Product_Name == productModel.Product_Name &&
                     existingProduct.Product_Description == productModel.Product_Description &&
                     existingProduct.Product_Price == productModel.Product_Price &&
-                    existingProduct.Quantity == productModel.Product_Quantity)
+                    existingProduct.Quantity == productModel.Quantity &&
+                    existingProduct.Product_Category_ID == productModel.Product_Category.Product_Category_ID &&
+                    existingProduct.Product_Type_ID == productModel.Product_Type.Product_Type_ID)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingProduct);
@@ -155,7 +177,9 @@ namespace TrackwiseAPI.Controllers
                 existingProduct.Product_Name = productModel.Product_Name;
                 existingProduct.Product_Description = productModel.Product_Description;
                 existingProduct.Product_Price = productModel.Product_Price;
-                existingProduct.Quantity = productModel.Product_Quantity;
+                existingProduct.Quantity = productModel.Quantity;
+                existingProduct.Product_Category_ID = productModel.Product_Category.Product_Category_ID;
+                existingProduct.Product_Type_ID = productModel.Product_Type.Product_Type_ID;
 
 
 
