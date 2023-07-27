@@ -42,15 +42,7 @@ import { RegisterComponent } from './Authentication/register/register.component'
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
 import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-
-
-//Job components
-import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
-import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-
-
+import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
 
 //Customer components-----------------------------------------------------------
 import { CustomerProductComponent } from './Customer-Screen/customer-products/customer-products.component';
@@ -107,7 +99,7 @@ const routes: Routes = [
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
   {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
-  { path: 'reset-password', component: ForgotPasswordComponent },
+  { path: 'reset-password', component: ForgotpasswordComponent },
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},

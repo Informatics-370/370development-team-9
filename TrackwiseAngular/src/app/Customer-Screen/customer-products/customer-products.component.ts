@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product';
 
@@ -33,14 +34,13 @@ export class CustomerProductComponent {
   showModal: boolean = false;
   selectedProduct: Product | null = null;
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private router : Router) {}
 
   ngOnInit(): void {
     this.GetProductCategories();
     this.GetProductTypes();
     this.GetProducts();
     this.dataService.calculateQuantity();
-    this.dataService.revertToLogin();
   }
 
  products : Product[] = [];
@@ -84,6 +84,12 @@ GetAllProducts() {
   
 
   AddItemToCart(event: Event, product: any) {
+    
+    if(this.dataService.isLoggedIn == false){
+      this.router.navigateByUrl('Authentication/login');
+      return;
+    }
+
     console.log(product);
     let AddCartItem: any[] = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
     let CartItem = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == product.product_ID);
