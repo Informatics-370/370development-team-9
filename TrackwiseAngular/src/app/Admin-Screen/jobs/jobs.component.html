@@ -1,32 +1,86 @@
-<table class="job-table">
-  <thead>
+<div class="view-container" *ngIf="showView==true">
+
+  <button class="view-jobs-btn-selected" (click)="ShowView()">View Jobs</button>
+  <button class="add-job-btn" (click)="ShowAdd()">Add Job</button>
+
+
+  <table class="job-table">
+    <thead>
+      <tr>
+        <th colspan="5">
+
+          <div class="search-navbar">
+            <div class="navbar-container">
+              <div class="search-bar">
+                <input type="text" placeholder="Search for a product">
+                <button aria-label="Search">
+                  <i class="material-icons">search</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </th>
+      </tr>
+
+
+      <tr>
+        <th>Job ID</th>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Client</th>
+        <th>Status</th>
+      </tr>
+    </thead>
     <tr>
-      <th>Job ID</th>
-      <th>Date</th>
-      <th>Type</th>
-      <th>Client</th>
-      <th>Status</th>
+      <td>1</td>
+      <td>2023-01-01</td>
+      <td>Coal</td>
+      <td>Exxaro</td>
+      <td>Busy</td>
     </tr>
-  </thead>
-  <tr>
-    <td>1</td>
-    <td>2023-01-01</td>
-    <td>Coal</td>
-    <td>Exxaro</td>
-    <td>Busy</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>2023-01-02</td>
-    <td>Sand</td>
-    <td>Imperial</td>
-    <td>Completed</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>2023-01-03</td>
-    <td>Weti</td>
-    <td>Starbucks</td>
-    <td>Not Started</td>
-  </tr>
-</table>
+    <tr>
+      <td>2</td>
+      <td>2023-01-02</td>
+      <td>Sand</td>
+      <td>Imperial</td>
+      <td>Completed</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>2023-01-03</td>
+      <td>Weti</td>
+      <td>Starbucks</td>
+      <td>Not Started</td>
+    </tr>
+  </table>
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------------- -->
+<div class="add-container" *ngIf="showAdd == true">
+  <button class="view-jobs-btn" (click)="ShowView()">View Jobs</button>
+  <button class="add-job-btn-selected" (click)="ShowAdd()">Add Job</button>
+
+  <form>
+    <label>Pickup Location:</label>
+    <input type="text" >
+  
+    <label>Drop-off Location:</label>
+    <input type="text" >
+  
+    <label>Weight (kg):</label>
+    <input type="number">
+  
+    <label>Type:</label>
+    <select >
+      <option >Type of Job</option>
+    </select>
+  
+    <label>Date and Time:</label>
+    <input type="datetime-local">
+  
+    <button type="submit">Submit</button>
+  </form>
+  
+
+</div>

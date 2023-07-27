@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-jobs',
@@ -10,11 +11,16 @@ export class JobsComponent implements OnInit{
   searchText: string = ''; // Property to store the search text
   admins: any[] = []; // Property to store the admin data
   originalAdmins: any[] = []; // Property to store the original admin data
+
+  showView: boolean = true;
+  showAdd: boolean = false;
   
   constructor(private dataService: DataService) { }
   
   ngOnInit(): void {
     this.GetAdmins();
+    this.showView=true;
+    this.showAdd=false;
   }
 
   GetAdmins() {
@@ -64,5 +70,15 @@ export class JobsComponent implements OnInit{
     this.dataService.DeleteAdmin(admin_ID).subscribe({
       next: (response) => location.reload()
     })
+  }
+
+  ShowView() {
+    this.showView = true;
+    this.showAdd = false;
+  }
+
+  ShowAdd() {
+    this.showView = false;
+    this.showAdd = true;
   }
 }
