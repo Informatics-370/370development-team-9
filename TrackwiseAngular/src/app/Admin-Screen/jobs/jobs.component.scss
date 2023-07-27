@@ -1,39 +1,228 @@
-.job-table{
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 65px;
-    border-radius: 15px;
-    border: 3px solid #004F9E;    
+.view-container {
+    position: relative;
+    margin: 65px auto 0;
+    padding: 20px;
+    border: 3px solid #004F9E;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
     width: 80%;
-}
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
 
+  .add-container {
+    position: relative;
+    margin: 65px auto 0;
+    padding: 20px;
+    border: 3px solid forestgreen;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    width: 50%;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .view-jobs-btn {
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    left: -2.5px;
+    color: #004F9E;
+    background-color: transparent;
+    border: 3px solid;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-color: #004F9E;
+    border-bottom-color: transparent;
+    padding: 10px 20px;
+    height: 40px;
+    width: 130px;
+    font-weight: bold;
+  }
 
-.edit-btn{
+  .view-jobs-btn-selected {
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    left: -2.5px;
+    color: #f2f2f2;
+    background-color: #004F9E;
+    border: 3px solid #004F9E;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+    padding: 10px 20px;
+    height: 40px;
+    width: 130px;
+    font-weight: bold;
+  }
+
+  .add-job-btn{
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    left: 127.5px;
+    color: forestgreen;
+    background-color: transparent;
+    border: 3px solid;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-color: forestgreen;
+    border-bottom-color: transparent;
+    padding: 10px 20px;
+    height: 40px;
+    width: 130px;
+    font-weight: bold;
+  }
+
+  .add-job-btn-selected{
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    left: 127.5px;
+    color: #f2f2f2;
+    background-color: forestgreen;
+    border: 3px solid forestgreen;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+    padding: 10px 20px;
+    height: 40px;
+    width: 130px;
+    font-weight: bold;
+  }
+
+  .add-job-btn:hover {
+    color: #f2f2f2;
+    background-color: forestgreen;
+    border: 3px solid forestgreen;
+  }
+  
+  .view-jobs-btn:hover {
+    color: #f2f2f2;
+    background-color: #004F9E;
+    border: 3px solid #004F9E;
+  }
+  
+  .job-table {
+    width: 100%;
+    border-collapse: collapse; /* Combine borders between table cells */
+  }
+
+  .job-table thead{
+    margin-top: 200px;
+  }
+  
+  .edit-btn {
     background-color: #117fca;
     color: white;
-}
-
-.remove-btn{
+  }
+  
+  .remove-btn {
     background-color: #CA0017;
     color: white;
-}
-
-// .container {
-//     border: 2px solid #004F9E;
-//     border-radius: 10px;
-//     width: 100%;
-//   }
-
-#header{
+  }
+  
+  /* .container {
+    border: 2px solid #004F9E;
+    border-radius: 10px;
+    width: 100%;
+  } */
+  
+  #header {
     background-color: #004F9E;
     color: white;
-}
-
-.create-btn{
+  }
+  
+  .create-btn {
     background-color: forestgreen;
     color: white;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #117fca;
+  }
+  
+  /* Search bar */
+  .search-navbar {
+    margin-top: -15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    background-color: lightgray;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border-radius: 10px;
+  }
+  
+  .navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: auto;
+    padding-right: 5px;
+  }
+  
+  .search-bar {
+    display: flex;
+    // align-items: center;
+    background-color: #fff;
+    border-radius: 25px;
+    height: 35px;
+    width: 200%;
+    margin-left: auto;
+    padding: 5px 10px;
+  }
+  
+  .search-bar input[type="text"] {
+    border: none;
+    outline: none;
+    background: transparent;
+    margin-right: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .search-bar button {
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+  }
+  
+  .search-bar button:hover {
+    opacity: 0.8;
+  }
+  
+/* Add your custom styles here */
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
 }
 
-.btn-outline-primary:hover{
-    background-color: #117fca;
+label {
+  margin-top: 10px;
+  font-weight: bold;
 }
+
+// input, select {
+//   margin-bottom: 10px;
+// }
+
+// button {
+//   margin-top: 20px;
+//   background-color: #117fca;
+//   color: #fff;
+//   border: none;
+//   padding: 10px 15px;
+//   cursor: pointer;
+//   border-radius: 5px;
+// }
+

@@ -19,7 +19,7 @@
   }
 
   .box {
-    margin-top: auto;
+    margin-top: 15%;
     position: relative; /* This is required for positioning the pseudo-element */
     background-color: white; /* Set a background color for the .box element */
     height: 500px; /* Set the desired height of the .box element */
@@ -36,7 +36,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    height: 100%;
+    height: 102%;
     background-image: url('/assets/Login/Register/bg.jpg');
     background-size: cover;
     background-position: center bottom;
@@ -87,7 +87,7 @@
 
 /* Styles for the form fields */
 .register-form{
-  margin-top: 45%;
+  margin-top: -5%;
 }
 
 .form-field {
