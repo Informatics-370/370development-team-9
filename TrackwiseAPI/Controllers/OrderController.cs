@@ -26,13 +26,20 @@ namespace TrackwiseAPI.Controllers
         private readonly IOrderRepository _orderRepository;
         private readonly UserManager<AppUser> _userManager;
         private readonly TwDbContext _dbContext;
+        private readonly IPaymentRepository _paymentRepository;
 
-        public OrderController(TwDbContext dbContext, IProductRepository productRepository, IOrderRepository orderRepository, UserManager<AppUser> userManager)
+        public OrderController(
+            TwDbContext dbContext,
+            IProductRepository productRepository,
+            IOrderRepository orderRepository,
+            IPaymentRepository paymentRepository,
+            UserManager<AppUser> userManager)
         {
             _dbContext = dbContext;
             _productRepository = productRepository;
             _orderRepository = orderRepository;
             _userManager = userManager;
+            _paymentRepository = paymentRepository;
         }
 
         [HttpGet]
@@ -90,12 +97,12 @@ namespace TrackwiseAPI.Controllers
         [HttpPost]
         [Route("CreateOrder")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
-        public async Task<IActionResult> Checkout(OrderVM orderVM)
+        public async Task<IActionResult> Checkout(CheckoutRequest checkoutRequest)
         {
             // Convert OrderVM to OrderDTO
             var orderDto = new OrderDTO
             {
-                OrderLines = orderVM.OrderLines.Select(ol => new OrderLineDTO
+                OrderLines = checkoutRequest.OrderVM.OrderLines.Select(ol => new OrderLineDTO
                 {
                     Product = new ProductDTO { Product_ID = ol.ProductId },
                     Quantity = ol.Quantity
@@ -138,6 +145,18 @@ namespace TrackwiseAPI.Controllers
                 OrderLines = new List<Order_Line>()
             };
 
+                if (checkoutRequest == null || checkoutRequest.NewCard == null)
+    {
+                return BadRequest("Invalid request data. The 'checkoutRequest' or 'checkoutRequest.NewCard' is null.");
+    }
+
+            // Set the Order_ID in the NewCard model to the newly created order's ID
+            checkoutRequest.NewCard.Order_ID = order.Order_ID;
+            checkoutRequest.NewCard.Amount = (decimal)order.Total;
+
+            // Call the AddNewCard method to process the payment and pass the newCard model
+            var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.NewCard);
+
             foreach (var orderLineDto in orderDto.OrderLines)
             {
                 var product = await _productRepository.GetProductAsync(orderLineDto.Product.Product_ID);
@@ -166,6 +185,7 @@ namespace TrackwiseAPI.Controllers
             }
 
             // Save the order and update the product quantities
+            _dbContext.Orders.Add(order);
             _dbContext.Orders.Add(order);
             await _productRepository.SaveChangesAsync();
             await _dbContext.SaveChangesAsync();
