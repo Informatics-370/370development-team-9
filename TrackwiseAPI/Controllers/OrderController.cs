@@ -145,17 +145,7 @@ namespace TrackwiseAPI.Controllers
                 OrderLines = new List<Order_Line>()
             };
 
-                if (checkoutRequest == null || checkoutRequest.NewCard == null)
-    {
-                return BadRequest("Invalid request data. The 'checkoutRequest' or 'checkoutRequest.NewCard' is null.");
-    }
 
-            // Set the Order_ID in the NewCard model to the newly created order's ID
-            checkoutRequest.NewCard.Order_ID = order.Order_ID;
-            checkoutRequest.NewCard.Amount = (decimal)order.Total;
-
-            // Call the AddNewCard method to process the payment and pass the newCard model
-            var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.NewCard);
 
             foreach (var orderLineDto in orderDto.OrderLines)
             {
@@ -184,9 +174,21 @@ namespace TrackwiseAPI.Controllers
                 product.Quantity -= orderLineDto.Quantity;
             }
 
+            if (checkoutRequest == null || checkoutRequest.NewCard == null)
+            {
+                return BadRequest("Invalid request data. The 'checkoutRequest' or 'checkoutRequest.NewCard' is null.");
+            }
+
+            // Set the Order_ID in the NewCard model to the newly created order's ID
+            checkoutRequest.NewCard.Order_ID = order.Order_ID;
+            checkoutRequest.NewCard.Amount = (decimal)order.Total;
+
+            // Call the AddNewCard method to process the payment and pass the newCard model
+            var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.NewCard);
+
             // Save the order and update the product quantities
             _dbContext.Orders.Add(order);
-            _dbContext.Orders.Add(order);
+/*            _dbContext.Orders.Add(order);*/
             await _productRepository.SaveChangesAsync();
             await _dbContext.SaveChangesAsync();
 
