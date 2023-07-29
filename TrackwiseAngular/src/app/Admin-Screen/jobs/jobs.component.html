@@ -7,7 +7,7 @@
   <table class="job-table">
     <thead>
       <tr>
-        <th colspan="5">
+        <th colspan="6">
 
           <div class="search-navbar">
             <div class="navbar-container">
@@ -23,12 +23,13 @@
       </tr>
 
 
-      <tr>
+      <tr class="header">
         <th>Job ID</th>
         <th>Date</th>
         <th>Type</th>
         <th>Client</th>
         <th>Status</th>
+        <th></th>
       </tr>
     </thead>
     <tr>
@@ -37,6 +38,9 @@
       <td>Coal</td>
       <td>Exxaro</td>
       <td>Busy</td>
+      <td>
+        <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/job-details'">View</button>
+      </td>
     </tr>
     <tr>
       <td>2</td>
@@ -62,24 +66,34 @@
   <button class="add-job-btn-selected" (click)="ShowAdd()">Add Job</button>
 
   <form>
-    <label>Pickup Location:</label>
-    <input type="text" >
+    <input class="txtbox" type="text" placeholder=" Pickup Location" >
   
-    <label>Drop-off Location:</label>
-    <input type="text" >
+    <input class="txtbox" type="text" placeholder=" Drop-off Location">
   
-    <label>Weight (kg):</label>
-    <input type="number">
+
+
+    <div class="form-item-container">
+      <label>Type:</label>
+      <select class="dropdown">
+        <option >Type of Job</option>
+      </select>
+
+      <input class="weight" type="number" placeholder=" Weight (kg)">
+    </div>
+
+    <div class="form-item-container">
+      <label class="lbl-start">Start Date</label>
+      <label class="lbl-end">End Date</label>
+    </div>
   
-    <label>Type:</label>
-    <select >
-      <option >Type of Job</option>
-    </select>
+    <div class="form-item-container">
+      <input class="date-start" type="datetime-local">  
+      <input class="date-end" type="datetime-local">
+    </div>
   
-    <label>Date and Time:</label>
-    <input type="datetime-local">
+
   
-    <button type="submit">Submit</button>
+    <button class="create-button" type="submit">Create Job</button>
   </form>
   
 
