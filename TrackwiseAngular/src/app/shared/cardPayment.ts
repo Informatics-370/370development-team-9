@@ -4,9 +4,9 @@ export interface NewCard {
     lastName: string;
     firstName: string;
     email: string;
-    cardNumber: bigint;
-    cardExpiry: number;
-    cvv: number;
+    cardNumber: string;
+    cardExpiry: string;
+    cvv: string;
     vault: boolean;
     amount: number;
   }

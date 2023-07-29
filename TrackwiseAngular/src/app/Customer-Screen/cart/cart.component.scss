@@ -164,3 +164,34 @@ img {
   align-items: center;
 
 }
+
+.paygate{
+  width: auto;
+  height: auto;
+  border-collapse: collapse;
+  background-color: rgb(241, 241, 241);
+  border-radius: 15px;
+  margin-bottom: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.btn{
+  margin-left: 10px;
+  margin-bottom: 10px;
+  float: right;
+}
+
+.payment{
+  text-align: left;
+  margin-left: 10%;
+  font-size: 100%;
+  color: #004F9E;
+  font-weight: bold;
+  padding-top: 20px;
+}
+
+.cardTitle{
+  color: #004F9E;
+  font-weight: bold;
+}

@@ -34,9 +34,9 @@ export class CartComponent implements OnInit {
     lastName: '',
     firstName: '',
     email: '',
-    cardNumber: 0n,
-    cardExpiry: 0,
-    cvv: 0,
+    cardNumber: '',
+    cardExpiry: '',
+    cvv: '',
     vault: true,
     amount: 0
   }
@@ -121,7 +121,11 @@ export class CartComponent implements OnInit {
     this.isPayment = true;
     console.log(this.isPayment)
   }
-  
+
+  cancelPayment()
+  {
+    this.isPayment = false;
+  }  
 
   checkout(form: NgForm) {
     // Perform any validation or additional logic before calling the service method
@@ -137,11 +141,13 @@ export class CartComponent implements OnInit {
     };
     console.log(checkoutRequest)
     // Call the CreateOrder method in your service and pass the orderLines
+    this.isLoading = true;
     this.dataService.CreateOrder(checkoutRequest).subscribe(
       () => {
         // Handle success or display success message
         sessionStorage.removeItem('cartItem');
         this.dataService.calculateQuantity();
+        this.isLoading = false;
         this.isPayment = false;
         this.router.navigate(['/Customer-Screen/customer-products']);
       },

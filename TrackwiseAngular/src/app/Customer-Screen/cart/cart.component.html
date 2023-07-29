@@ -65,10 +65,11 @@
   </div>
 </div>
 
-<div class="col-md-6 offset-md-3" *ngIf="isPayment ==true ">
+<div class="container " *ngIf="isPayment ==true ">
+<div class=" paygate offset-md-3 " >
   <form (ngSubmit)="checkout(f)" #f="ngForm">
     <div class="row mb-4 mt-4">
-      <h3>Payment</h3>
+      <h4 class="cardTitle">Add new card</h4>
     </div>
     <div class="form-group">
       <label for="firstName">First name</label>
@@ -84,28 +85,48 @@
     </div>
     <div class="form-group">
       <label for="cardNumber">Card number</label>
-      <input required type="number" class="form-control" id="cardNumber" name="cardNumber" [(ngModel)]="newCard.cardNumber">
+      <input required type="text" class="form-control" id="cardNumber" name="cardNumber" [(ngModel)]="newCard.cardNumber">
       <small class="form-text text-muted">16-digital card number</small>
     </div>
     <div class="form-group">
       <label for="cardExp">Card expiry</label>
-      <input required type="number" class="form-control" id="cardExp" name="cardExpiry" [(ngModel)]="newCard.cardExpiry">
-      <small class="form-text text-muted">e.g 112023 (11-2023)</small>
+      <input required type="text" class="form-control" id="cardExp" name="cardExpiry" [(ngModel)]="newCard.cardExpiry">
+      <small class="form-text text-muted">e.g 112024</small>
     </div>
     <div class="form-group">
       <label for="cvv">Cvv</label>
-      <input required type="number" class="form-control" id="cvv" name="cvv" [(ngModel)]="newCard.cvv">
+      <input required type="text" class="form-control" id="cvv" name="cvv" [(ngModel)]="newCard.cvv">
       <small class="form-text text-muted">3-digits found on back of the card</small>
     </div>
-    <div class="form-group">
-      <label for="amount">Amount</label>
-      <input required type="number" class="form-control" id="amount" name="amount" [(ngModel)]="newCard.amount">
-    </div>
-    <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay now</button>
+
+      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total| number:"1.2-2"}}</button>
+      <button *ngIf="!isLoading" class="btn btn-danger" (click)="cancelPayment()">Cancel</button>
+    
     <div *ngIf="isLoading" class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>
     </div>
   </form>
+</div>
+<div class="cart-summary">
+  <table class="summary-table">
+    <thead class="CSHead">
+      <tr>
+        <th>Cart Summary</th>
+      </tr>
+    </thead>
+    <div class="payment">
+       Secured with PayGate
+       <img src="https://www.paygate.co.za/wp-content/uploads/logo_285x110.png">
+    </div>
+   
+    <tbody class="CSBody">
+      <td>
+        <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
+        <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
+      </td>
+    </tbody>
+  </table>
+</div>
 </div>
 
 <!-- <div class="ion-padding" *ngIf="Secure3DHTML">
