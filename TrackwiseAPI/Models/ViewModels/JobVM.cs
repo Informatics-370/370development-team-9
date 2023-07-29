@@ -10,6 +10,7 @@
         public double Total_Weight { get; set; }
         public string Admin_ID { get; set; }
         public string Job_Type_ID { get; set; }
+        public string Job_Status_ID { get; set; }
 
     }
 }

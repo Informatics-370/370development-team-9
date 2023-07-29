@@ -17,6 +17,7 @@
         <button class="login-btn" (click)="LoginUser()">Log in</button><br>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
         <div class="register-section">Don't have an account? Register <a [routerLink]="['/Authentication/register']">here.</a></div>
+        <div class="register-section">Forgot password <a [routerLink]="['/password/forgotpassword']">here.</a></div>
       </form>
     </mat-card>
     <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>

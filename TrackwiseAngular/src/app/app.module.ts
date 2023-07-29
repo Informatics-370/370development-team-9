@@ -63,7 +63,7 @@ import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-
 
 import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
-import { ResetpasswordComponent } from './password/resetpassword/resetpassword.component';
+
 
 
 @NgModule({
@@ -103,7 +103,6 @@ import { ResetpasswordComponent } from './password/resetpassword/resetpassword.c
     AboutUsComponent,
     CreateJobComponent,
     ForgotpasswordComponent,
-    ResetpasswordComponent,
     ProfileComponent,
     CustomerHomeComponent,
   ],

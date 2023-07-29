@@ -22,7 +22,7 @@ namespace TrackwiseAPI.Models.Entities
         public Client? Client { get; set; }
         */
         //Foreign key for Admin
-        public string? Admin_ID { get; set; }
+        public string Admin_ID { get; set; }
         [ForeignKey("Admin_ID")]
         public Admin Admin { get; set; }
 
@@ -35,6 +35,7 @@ namespace TrackwiseAPI.Models.Entities
         public string Job_Status_ID { get; set; }
         [ForeignKey("Job_Status_ID")]
         public JobStatus JobStatus { get; set; }
+
         public ICollection<Delivery> Deliveries { get; set; }
 
     }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrackwiseAPI.Models.Password
+namespace TrackwiseAPI.Models.Email
 {
     public class ForgotPasswordVM
     {

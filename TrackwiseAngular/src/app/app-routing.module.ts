@@ -99,7 +99,7 @@ const routes: Routes = [
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
   {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
-  { path: 'reset-password', component: ForgotpasswordComponent },
+  { path: 'password/forgotpassword', component: ForgotpasswordComponent },
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},

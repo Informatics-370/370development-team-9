@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Web;
 using TrackwiseAPI.Models.Password;
 using System.Security.Cryptography;
+using TrackwiseAPI.Models.Email;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -29,13 +30,15 @@ namespace TrackwiseAPI.Controllers
         private readonly ICustomerRepository _customerRepository;
         private readonly IEmailService _emailService;
         private readonly TwDbContext _context;
+        private readonly MailController _mailController;
 
         public UserController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             ICustomerRepository customerRepository, 
             TwDbContext context, 
-            IEmailService emailService)
+            IEmailService emailService,
+            MailController mailController)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
@@ -43,6 +46,7 @@ namespace TrackwiseAPI.Controllers
             _customerRepository = customerRepository;
             _context = context;
             _emailService = emailService;
+            _mailController = mailController;
         }
 
 
@@ -113,23 +117,24 @@ namespace TrackwiseAPI.Controllers
                 return NotFound("User does not exist or invalid credentials");
             }
         }
-
-        [HttpPost("forgot-password")]
+        /*
+        [HttpPost("forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var newclientmail = new NewClientMail { Email = user.Email, Name =user.UserName, Password="Test12345",PhoneNumber=user.PhoneNumber };
+
             if (user==null)
             {
                 return BadRequest("User not found");
             }
 
-            user.PasswordResetToken = CreateRandomToken();
-            user.ResetTokenExpires = DateTime.Now.AddDays(1);
+            //var mail = await _mailController.ForgotPasswordEmail(newclientmail);
             await _context.SaveChangesAsync();
-            return Ok("You can now reset your password");
+            return Ok("Email has been sent");
+        }*/
 
-        }
-
+        /*
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword(ResetPassword request)
         {
@@ -159,8 +164,7 @@ namespace TrackwiseAPI.Controllers
         {
             return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
-
-
+        */
 
         [HttpGet]
         private async Task<ActionResult> GenerateJWTToken(AppUser user)

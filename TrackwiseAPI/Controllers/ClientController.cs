@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
+using TrackwiseAPI.Models.Password;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
 
