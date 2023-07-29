@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.BingMapsAPI;
+using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -18,14 +24,15 @@ namespace TrackwiseAPI.Controllers
     [ApiController]
     public class JobController : ControllerBase
     {
-
+        private readonly UserManager<AppUser> _userManager;
         private readonly IJobRepository _jobRepository;
 
-        public JobController(IJobRepository jobRepository, TruckRouteService truckRouteService)
+        public JobController(IJobRepository jobRepository, TruckRouteService truckRouteService, UserManager<AppUser> userManager)
         {
             _jobRepository = jobRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
+            _userManager = userManager;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -124,24 +131,63 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetDriverDeliveries")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Driver")]
+        public async Task<IActionResult> getDriverDeliveries()
+        {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var driver = await _userManager.FindByEmailAsync(userEmail);
+
+            if (driver == null)
+            {
+                return BadRequest("Driver not found");
+            }
+            var driverId = driver.Id;
+            if (string.IsNullOrEmpty(driverId))
+            {
+                return BadRequest("Driver ID not found");
+            }
+
+            var result = await _jobRepository.GetDriverDeliveriesAsync(driverId);
+            var deliveryDTOs = result.Select(delivery => new DeliveryDTO
+            {
+                Delivery_ID = delivery.Delivery_ID,
+                Delivery_Weight = delivery.Delivery_Weight,
+                Driver_ID = driverId,
+                Jobs = new JobDTO
+                {
+                    Job_ID = delivery.Jobs.Job_ID,
+                    StartDate = delivery.Jobs.StartDate,
+                    DueDate = delivery.Jobs.DueDate,
+                    PickupLocation = delivery.Jobs.PickupLocation,
+                    DropoffLocation = delivery.Jobs.DropoffLocation,
+                    type = delivery.Jobs.type
+
+                }
+            }).ToArray();
+            return Ok(deliveryDTOs);
+        }
+
 
         [HttpPost]
         [Route("CreateJob")]
         public async Task<IActionResult> CreateJob(JobVM jvm)
         {
             var Job_ID = Guid.NewGuid().ToString();
-            var job = new Job
-            {
-                Job_ID = Job_ID,  
-                StartDate = jvm.StartDate,
-                DueDate = jvm.DueDate,
-                Pickup_Location = jvm.Pickup_Location,
-                Dropoff_Location = jvm.Dropoff_Location,
-                Total_Weight = jvm.Total_Weight,
-                Admin_ID = jvm.Admin_ID,
-                Job_Type_ID = jvm.Job_Type_ID,
-                Job_Status_ID = jvm.Job_Status_ID
-            };
+                var job = new Job
+                {
+                    Job_ID = Job_ID,
+                    StartDate = jvm.StartDate,
+                    DueDate = jvm.DueDate,
+                    Pickup_Location = jvm.Pickup_Location,
+                    Dropoff_Location = jvm.Dropoff_Location,
+                    Total_Weight = jvm.Total_Weight,
+                    Admin_ID = jvm.Admin_ID,
+                    Job_Type_ID = jvm.Job_Type_ID,
+                    Job_Status_ID = jvm.Job_Status_ID
+                };
+            
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
             var drivers = await _jobRepository.GetAvailableDriverAsync();

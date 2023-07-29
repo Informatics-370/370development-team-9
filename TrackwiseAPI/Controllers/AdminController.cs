@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TrackwiseAPI.DBContext;
+using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -22,22 +23,26 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly IAdminRepository _adminRepository;
+        private readonly MailController _mailController;
 
         public AdminController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IAdminRepository adminRepository)
+            IAdminRepository adminRepository,
+            MailController mailController)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _adminRepository = adminRepository;
+            _mailController = mailController;
+
         }
 
-/*        public AdminController(IAdminRepository adminRepository)
-        {
-            _adminRepository = adminRepository;
-        }*/
+        /*        public AdminController(IAdminRepository adminRepository)
+                {
+                    _adminRepository = adminRepository;
+                }*/
 
         //Get all admins
         [HttpGet]
@@ -82,9 +87,11 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> AddNewAdmin(AdminVM avm)
         {
             var adminId = Guid.NewGuid().ToString();
-
             var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email };
+            var existingadmin = await _userManager.FindByNameAsync(avm.Email);
+            if (existingadmin != null) return BadRequest("User already exists");
 
+            var newadminmail = new NewAdminMail { Email = admin.Email, Name = admin.Name, Password = avm.Password };
             try
             {
                 _adminRepository.Add(admin);
@@ -98,6 +105,7 @@ namespace TrackwiseAPI.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, avm.Password);
+                var mail = await _mailController.SendAdminEmail(newadminmail);
 
                 await _userManager.AddToRoleAsync(user, "Admin");
 
@@ -143,9 +151,9 @@ namespace TrackwiseAPI.Controllers
                 existingUser.UserName = avm.Email;
                 existingUser.Email = avm.Email;
 
-/*                await _userManager.RemovePasswordAsync(existingUser);
+                await _userManager.RemovePasswordAsync(existingUser);
                 await _userManager.AddPasswordAsync(existingUser, avm.Password);
-                existingUser.SecurityStamp = Guid.NewGuid().ToString();*/
+                existingUser.SecurityStamp = Guid.NewGuid().ToString();
 
                 var adminUpdateResult = await _adminRepository.SaveChangesAsync();
                 var userUpdateResult = await _userManager.UpdateAsync(existingUser);

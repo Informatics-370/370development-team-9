@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
+using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -21,16 +23,19 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly IDriverRepository _driverRepository;
+        private readonly MailController _mailController;
 
         public DriverController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IDriverRepository driverRepository)
+            IDriverRepository driverRepository,
+            MailController mailController)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _driverRepository = driverRepository;
+            _mailController = mailController;
         }
 
         [HttpGet]
@@ -75,6 +80,9 @@ namespace TrackwiseAPI.Controllers
             var driverId = Guid.NewGuid().ToString();
 
             var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Driver_Status_ID = dvm.Driver_Status_ID };
+            var newdrivermail = new NewDriverMail { Email = driver.Email, Name = driver.Name, PhoneNumber = driver.PhoneNumber, Driver_Status_ID = "1", Password = dvm.Password };
+            var existingadmin = await _userManager.FindByNameAsync(dvm.Email);
+            if (existingadmin != null) return BadRequest("User already exists");
 
             try
             {
@@ -89,6 +97,7 @@ namespace TrackwiseAPI.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, dvm.Password);
+                var mail = await _mailController.SendDriverEmail(newdrivermail);
 
                 await _userManager.AddToRoleAsync(user, "Driver");
 

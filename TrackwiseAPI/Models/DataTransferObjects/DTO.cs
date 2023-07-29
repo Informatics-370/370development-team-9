@@ -1,4 +1,6 @@
-﻿namespace TrackwiseAPI.Models.DataTransferObjects
+﻿using TrackwiseAPI.Models.Entities;
+
+namespace TrackwiseAPI.Models.DataTransferObjects
 {
     public class OrderDTO
     {
@@ -41,5 +43,22 @@
         public string Product_Category_ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+    }
+    public class DeliveryDTO
+    {
+        public string Delivery_ID { get; set; }
+        public double Delivery_Weight { get; set; }
+        public string Driver_ID { get; set; }
+        public JobDTO Jobs { get; set; }
+    }
+    public class JobDTO
+    {
+        public string Job_ID { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string PickupLocation { get; set; }
+        public string DropoffLocation { get; set; }
+        public string type { get; set; }
+        // Add other properties from Job that you want to include in the DTO
     }
 }

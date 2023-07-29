@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.Models.Interfaces
@@ -14,6 +15,8 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<Truck[]> GetAvailableTruckAsync();
         IDbContextTransaction BeginTransaction();
         Task<Delivery[]> GetAllDeliveries();
+        Task<DeliveryDTO[]> GetDriverDeliveriesAsync(string driverID);
+
     }
 
 }

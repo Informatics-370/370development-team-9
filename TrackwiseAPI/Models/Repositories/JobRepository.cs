@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using TrackwiseAPI.DBContext;
+using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
+using TrackwiseAPI.Models.ViewModels;
 
 namespace TrackwiseAPI.Models.Repositories
 {
@@ -30,7 +32,7 @@ namespace TrackwiseAPI.Models.Repositories
 
         public async Task<Delivery[]> GetAllDeliveries()
         {
-            IQueryable<Delivery> query = _context.Deliveries.Include(t=>t.Job).Include(t=>t.Driver).Include(t => t.Trailer).Include(t => t.Truck);
+            IQueryable<Delivery> query = _context.Deliveries.Include(t => t.Job).Include(t => t.Driver).Include(t => t.Trailer).Include(t => t.Truck);
             return await query.ToArrayAsync();
         }
 
@@ -39,6 +41,39 @@ namespace TrackwiseAPI.Models.Repositories
         {
             IQueryable<Driver> query = _context.Drivers.Include(t => t.DriverStatus).Where(t => t.DriverStatus.Status == "Available");
             return await query.ToArrayAsync();
+        }
+
+        public async Task<DeliveryDTO[]> GetDriverDeliveriesAsync(string driverID)
+        {
+            var deliveries = await _context.Deliveries
+                .Include(t => t.Driver)
+                .Include(t => t.Trailer)
+                .Include(t => t.Truck)
+                .Include(t => t.Job)
+                    .ThenInclude(j => j.JobStatus)
+                .Include(j=>j.Job)
+                    .ThenInclude(j=>j.JobType)
+                .Where(t => t.Driver_ID == driverID && t.Job.Job_Status_ID == "1")
+                .ToListAsync();
+
+            // Map the entities to DTOs
+            var deliveryDTOs = deliveries.Select(delivery => new DeliveryDTO
+            {
+                Delivery_ID = delivery.Delivery_ID,
+                Delivery_Weight = delivery.Delivery_Weight,
+                Driver_ID = delivery.Driver_ID,
+                Jobs = new JobDTO
+                {
+                    Job_ID = delivery.Job.Job_ID,
+                    StartDate = delivery.Job.StartDate,
+                    DueDate = delivery.Job.DueDate,
+                    PickupLocation = delivery.Job.Pickup_Location,
+                    DropoffLocation = delivery.Job.Dropoff_Location,
+                    type = delivery.Job.JobType.Name,
+                }
+            }).ToArray();
+
+            return deliveryDTOs;
         }
 
         //Get Available Trailer and the matching type
