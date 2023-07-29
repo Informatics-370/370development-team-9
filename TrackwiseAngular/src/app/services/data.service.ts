@@ -16,6 +16,7 @@ import { Order } from '../shared/order';
 import { OrderLines } from '../shared/orderLines';
 import { RegisterUser } from '../shared/register';
 import { Job } from '../shared/job';
+import { CardPayment, CheckoutRequest, NewCard } from '../shared/cardPayment';
 
 @Injectable({
   providedIn: 'root'
@@ -477,11 +478,11 @@ export class DataService {
 
   /*Order Section */
 
-  CreateOrder(AddOrder: OrderLines): Observable<OrderLines>
+  CreateOrder(CheckoutRequest: CheckoutRequest): Observable<OrderLines>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.post<OrderLines>(`${this.apiUrl}Order/CreateOrder/`, AddOrder, {headers})
+    return this.httpClient.post<OrderLines>(`${this.apiUrl}Order/CreateOrder/`, CheckoutRequest, {headers})
     .pipe(map(result => result))
   }
 
@@ -530,6 +531,11 @@ export class DataService {
       }
 
     return this.itemsInCart;
+  }
+
+  /*PayGate Section*/
+  tokenizeCard(model: NewCard) {
+    return this.httpClient.post<CardPayment>(`${this.apiUrl}Order/CreateOrder/`, model);
   }
 
 }
