@@ -16,6 +16,7 @@ import { Order } from '../shared/order';
 import { OrderLines } from '../shared/orderLines';
 import { RegisterUser } from '../shared/register';
 import { Job } from '../shared/job';
+import { CardPayment, CheckoutRequest, NewCard } from '../shared/cardPayment';
 import { Forgotpass } from '../shared/forgotpass';
 
 @Injectable({
@@ -359,6 +360,13 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetJob(job_ID: string): Observable<Job>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Job>(`${this.apiUrl}Job/GetJob/${job_ID}`, {headers} );
+  }
+
   CreateJob(AddProductReq: Job): Observable<Job>
   {
     let token = sessionStorage.getItem('Token');
@@ -470,11 +478,11 @@ export class DataService {
 
   /*Order Section */
 
-  CreateOrder(AddOrder: OrderLines): Observable<OrderLines>
+  CreateOrder(CheckoutRequest: CheckoutRequest): Observable<OrderLines>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.post<OrderLines>(`${this.apiUrl}Order/CreateOrder/`, AddOrder, {headers})
+    return this.httpClient.post<OrderLines>(`${this.apiUrl}Order/CreateOrder/`, CheckoutRequest, {headers})
     .pipe(map(result => result))
   }
 
