@@ -43,6 +43,7 @@ namespace TrackwiseAPI.Controllers
             _jobRepository = jobRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
+            _userManager = userManager;
         }
 
         private readonly TruckRouteService _truckRouteService;
