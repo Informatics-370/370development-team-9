@@ -40,6 +40,7 @@ export class CustomerOrdersComponent {
   }
 
   GetOrder(order_ID:string){
+    this.orders = [];
     this.dataService.GetOrder(order_ID).subscribe((result) => {
       this.orders.push(result);
       console.log(result);
@@ -68,6 +69,7 @@ export class CustomerOrdersComponent {
   
   OpenModal(order:any) {
     this.GetOrder(order.order_ID)
+    console.log(order.order_ID)
     this.showModal = true;
   }
 

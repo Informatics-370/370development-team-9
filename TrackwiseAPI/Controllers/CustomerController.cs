@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
+using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
@@ -15,7 +16,6 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class CustomerController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -38,6 +38,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetAllCustomers")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAllCustomers()
         {
             try
@@ -54,13 +55,55 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetCustomer/{customerId}")]
-        public async Task<IActionResult> GetCourseAsync(string customerId)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> GetCustomerAsync(string customerId)
         {
+
+
             try
             {
                 var result = await _customerRepository.GetCustomerAsync(customerId);
 
-                if (result == null) return NotFound("Customer does not exist. You need to create it first");
+                if (result == null)
+                        return NotFound("Customer does not exist. You need to create it first");
+                
+                  
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCustomerProfile")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
+        public async Task<IActionResult> GetCustomerProfileAsync()
+        {
+            try
+            {
+                    var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                    // Query the customer repository to get the customer ID
+                    var customer = await _userManager.FindByEmailAsync(userEmail);
+
+                    if (customer == null)
+                    {
+                        return BadRequest("Customer not found");
+                    }
+
+                    var customerId = customer.Id;
+
+                    if (string.IsNullOrEmpty(customerId))
+                    {
+                        return BadRequest("Customer ID not found");
+                    }
+
+                    var result = await _customerRepository.GetCustomerAsync(customerId);
+
+                    if (result == null)
+                        return NotFound("Customer does not exist. You need to create it first");
 
                 return Ok(result);
             }
@@ -72,11 +115,12 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPost]
         [Route("AddCustomer")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> AddCustomer(CustomerVM cvm)
         {
             var customerId = Guid.NewGuid().ToString();
 
-            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email, Password = cvm.Password };
+            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email};
 
             try
             {
@@ -107,7 +151,65 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpPut]
+        [Route("EditCustomerProfile")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
+        public async Task<IActionResult> EditCustomerProfile( CustomerVM cvm)
+        {
+            try
+            {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                // Query the customer repository to get the customer ID
+                var customer = await _userManager.FindByEmailAsync(userEmail);
+
+                if (customer == null)
+                {
+                    return BadRequest("Customer not found");
+                }
+
+                var customerId = customer.Id;
+
+                if (string.IsNullOrEmpty(customerId))
+                {
+                    return BadRequest("Customer ID not found");
+                }
+
+                var existingCustomer = await _customerRepository.GetCustomerAsync(customerId);
+                if (existingCustomer == null)
+                    return NotFound($"The customer does not exist");
+
+
+
+                if (existingCustomer.Name == cvm.Name &&
+                    existingCustomer.LastName == cvm.LastName &&
+                    existingCustomer.Email == cvm.Email)
+                {
+                    // No changes made, return the existing driver without updating
+                    return Ok(existingCustomer);
+                }
+
+                existingCustomer.Name = cvm.Name;
+                existingCustomer.LastName = cvm.LastName;
+                existingCustomer.Email = cvm.Email;
+
+
+                var customerUpdateResult = await _customerRepository.SaveChangesAsync();
+
+                if (customerUpdateResult)
+                {
+                    return Ok(existingCustomer);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
+        [HttpPut]
         [Route("EditCustomer/{customerId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
         public async Task<ActionResult<CustomerVM>> EditCustomer(string customerId, CustomerVM cvm)
         {
             try
@@ -122,8 +224,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingCustomer.Name == cvm.Name &&
                     existingCustomer.LastName == cvm.LastName &&
-                    existingCustomer.Email == cvm.Email &&
-                    existingCustomer.Password == cvm.Password)
+                    existingCustomer.Email == cvm.Email)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingCustomer);
@@ -132,7 +233,6 @@ namespace TrackwiseAPI.Controllers
                 existingCustomer.Name = cvm.Name;
                 existingCustomer.LastName = cvm.LastName;
                 existingCustomer.Email = cvm.Email;
-                existingCustomer.Password = cvm.Password;
 
                 existingUser.UserName = cvm.Email;
                 existingUser.Email = cvm.Email;
@@ -158,6 +258,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteCustomer/{customerId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> DeleteCourse(string customerId)
         {
             try

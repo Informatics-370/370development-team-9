@@ -135,8 +135,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingClient.Name == cvm.Name &&
                     existingClient.PhoneNumber == cvm.PhoneNumber &&
-                    existingClient.Email == cvm.Email &&
-                    existingClient.Password == cvm.Password)
+                    existingClient.Email == cvm.Email)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingClient);
@@ -145,7 +144,6 @@ namespace TrackwiseAPI.Controllers
                 existingClient.Name = cvm.Name;
                 existingClient.PhoneNumber = cvm.PhoneNumber;
                 existingClient.Email = cvm.Email;
-                existingClient.Password = cvm.Password;
 
                 existingUser.UserName = cvm.Email;
                 existingUser.Email = cvm.Email;

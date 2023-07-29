@@ -6,7 +6,7 @@
 
     <h2>Add Product</h2>
       
-    <form #form="ngForm" (ngSubmit)="AddProduct()">
+    <form #form="ngForm" (ngSubmit)="AddProduct()" autocomplete="off">
         <div class="mb-3">
           <label for="product_name" class="form-label">Product Name</label>
           <input type="text" class="form-control" id="product_name" aria-describedby="product_name" required [(ngModel)] = "AddProductRequest.product_Name"     
@@ -21,13 +21,13 @@
 
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
-            <input type="text" class="form-control" id="price" required [(ngModel)] = "AddProductRequest.product_Price"  
+            <input type="number" class="form-control" id="price" required [(ngModel)] = "AddProductRequest.product_Price"  
                    name="price" [(ngModel)]="AddProductRequest.product_Price">
           </div>
 
         <div class="mb-3">
           <label for="category" class="form-label">Category</label>
-          <select class="form-select" name="CategoryDropdown" id="CategoryDropdown">
+          <select class="form-select" name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="AddProductRequest.product_Category.product_Category_ID">
 
             <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
           </select>
@@ -35,16 +35,16 @@
 
       <div class="mb-3">
         <label for="type" class="form-label">Type</label>
-        <select class="form-select" name="CategoryDropdown" id="CategoryDropdown">
+        <select class="form-select" name="CategoryDropdown" id="TypeDropdown" [(ngModel)]="AddProductRequest.product_Type.product_Type_ID">
 
-          <option *ngFor="let prodType of productTypes" [value]="prodType.product_Category_ID">{{prodType.name}}</option>
+          <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
         </select>
       </div>
 
       
       <div class="mb-3">
         <label for="quantity" class="form-label">Quantity (Stock)</label>
-        <input type="text" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.quantity"  
+        <input type="number" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.quantity"  
                name="quantity" [(ngModel)]="AddProductRequest.quantity">
       </div>
           

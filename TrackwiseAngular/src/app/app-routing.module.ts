@@ -51,6 +51,8 @@ import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component'
 import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
 import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
+import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
+import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
 
 
 
@@ -94,12 +96,16 @@ const routes: Routes = [
   {path: 'Admin-Screen/products/add-product', component: AddProductComponent},
   {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
-  {path: '', redirectTo: 'Authentication/login', pathMatch:'full'},
+  {path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
 
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
   {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
+
   { path: 'password/forgotpassword', component: ForgotpasswordComponent },
+  {path: 'Admin-Screen/jobs/job-details', component: JobDetailsComponent},
+  {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent},
+
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},
@@ -108,6 +114,7 @@ const routes: Routes = [
   {path: 'Customer-Screen/cart', component: CartComponent},
   {path: 'Customer-Screen/profile', component: ProfileComponent},
   {path: 'Customer-Screen/customer-home', component: CustomerHomeComponent},
+
 
 
 

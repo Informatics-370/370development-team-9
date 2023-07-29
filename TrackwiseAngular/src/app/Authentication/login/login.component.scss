@@ -19,10 +19,10 @@
   }
 
   .box {
-    margin-top: auto;
+    margin-top: 15%;
     position: relative; /* This is required for positioning the pseudo-element */
     background-color: white; /* Set a background color for the .box element */
-    height: 500px; /* Set the desired height of the .box element */
+    height: 470px; /* Set the desired height of the .box element */
     width: auto;
     border: 2px solid #004F9E;
     border-radius: 10px;
@@ -36,7 +36,7 @@
     left: 0;
     right: 0;
     width: 100%;
-    height: 80%;
+    height: 95%;
     background-image: url('/assets/Login/Register/bg.jpg');
     background-size: cover;
     background-position: center bottom;
@@ -50,7 +50,6 @@
     color: #004F9E;
     font-weight: bold;
     font-size: 28px;
-    margin-bottom: auto;
     justify-content: center;
     align-self: flex-start; 
   }
@@ -70,6 +69,7 @@
 
 /* Add this CSS to your global stylesheet or component stylesheet */
 .register-section {
+  width: 110%;
   color: white;
 }
 
@@ -87,7 +87,8 @@
 
 /* Styles for the form fields */
 .login-form{
-  margin-top: 45%;
+  margin-top: 16% ;
+  width: 100%;
 }
 
 .form-field {
@@ -133,4 +134,8 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.error-message{
+  color: red;
 }

@@ -64,6 +64,9 @@ import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-
 import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
 
+import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
+import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
+
 
 
 @NgModule({
@@ -105,6 +108,9 @@ import { ForgotpasswordComponent } from './password/forgotpassword/forgotpasswor
     ForgotpasswordComponent,
     ProfileComponent,
     CustomerHomeComponent,
+    JobDetailsComponent,
+    EditJobComponent,
+
   ],
   imports: [
     BrowserModule,

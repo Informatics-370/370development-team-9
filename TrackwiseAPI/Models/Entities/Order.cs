@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using TrackwiseAPI.Models.ViewModels;
 
 namespace TrackwiseAPI.Models.Entities
 {
@@ -20,5 +21,11 @@ namespace TrackwiseAPI.Models.Entities
         public ICollection<Order_Line> OrderLines { get; set; }
         public ICollection<Invoice> invoices { get; set; }  
          
+    }
+
+    public class CheckoutRequest
+    {
+        public OrderVM OrderVM { get; set; }
+        public NewCard NewCard { get; set; }
     }
 }

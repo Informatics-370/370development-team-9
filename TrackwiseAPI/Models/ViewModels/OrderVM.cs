@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.Models.ViewModels
 {

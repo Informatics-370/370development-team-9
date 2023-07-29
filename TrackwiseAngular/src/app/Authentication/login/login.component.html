@@ -2,13 +2,13 @@
   <div class="login-wrapper">
     <mat-card class="box" *ngIf="!isLoading">
 
-        <img class="logo" src="/assets/LTTLogo.jpg">
+      <img class="logo" src="/assets/LTTLogo.jpg">
 
       <form class="login-form" [formGroup]="loginFormGroup">
         <div class="form-field">
           <!-- <label class="form-label">Username</label> -->
           <input class="form-input" type="text" placeholder="Email address" formControlName="emailaddress" required
-          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}">
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}">
         </div>
         <div class="form-field">
           <!-- <label class="form-label">Password</label> -->

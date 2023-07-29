@@ -6,7 +6,7 @@
 
     <h2>Edit Trailer</h2>
       
-    <form #form="ngForm" (ngSubmit)="EditTrailer()">
+    <form #form="ngForm" (ngSubmit)="EditTrailer()" autocomplete="off">
       <input type="text" class="form-control" id="trailer_License" aria-describedby="trailer_License" required 
       [(ngModel)]="trailerDetails.trailer_License" name="trailer_License" [(ngModel)]="trailerDetails.trailer_License"
       [ngModelOptions]="{standalone: true}" (input)="trailerDetails.trailer_License = trailerDetails.trailer_License.toUpperCase()"
