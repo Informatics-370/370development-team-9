@@ -18,13 +18,13 @@ namespace TrackwiseAPI.Models.Entities
 
         [Required]
         [DataType(DataType.CreditCard)]
-        public long CardNumber { get; set; }
+        public string CardNumber { get; set; }
 
         [Required]
-        public uint CardExpiry { get; set; }
+        public string CardExpiry { get; set; }
 
         [Required]
-        public uint Cvv { get; set; }
+        public string Cvv { get; set; }
         public bool Vault { get; set; }
 
         [Required]
