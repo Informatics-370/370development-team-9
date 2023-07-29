@@ -1,12 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.BingMapsAPI;
+using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -23,15 +29,17 @@ namespace TrackwiseAPI.Controllers
     [ApiController]
     public class JobController : ControllerBase
     {
-
+        private readonly UserManager<AppUser> _userManager;
         private readonly IJobRepository _jobRepository;
         private readonly UserManager<AppUser> _userManager;
+
 
         public JobController(
             IJobRepository jobRepository, 
             TruckRouteService truckRouteService,
             UserManager<AppUser> userManager
             )
+
         {
             _jobRepository = jobRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
@@ -155,6 +163,44 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetDriverDeliveries")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Driver")]
+        public async Task<IActionResult> getDriverDeliveries()
+        {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var driver = await _userManager.FindByEmailAsync(userEmail);
+
+            if (driver == null)
+            {
+                return BadRequest("Driver not found");
+            }
+            var driverId = driver.Id;
+            if (string.IsNullOrEmpty(driverId))
+            {
+                return BadRequest("Driver ID not found");
+            }
+
+            var result = await _jobRepository.GetDriverDeliveriesAsync(driverId);
+            var deliveryDTOs = result.Select(delivery => new DeliveryDTO
+            {
+                Delivery_ID = delivery.Delivery_ID,
+                Delivery_Weight = delivery.Delivery_Weight,
+                Driver_ID = driverId,
+                Jobs = new JobDTO
+                {
+                    Job_ID = delivery.Jobs.Job_ID,
+                    StartDate = delivery.Jobs.StartDate,
+                    DueDate = delivery.Jobs.DueDate,
+                    PickupLocation = delivery.Jobs.PickupLocation,
+                    DropoffLocation = delivery.Jobs.DropoffLocation,
+                    type = delivery.Jobs.type
+
+                }
+            }).ToArray();
+            return Ok(deliveryDTOs);
+        }
+
 
         [HttpPost]
         [Route("CreateJob")]
@@ -181,6 +227,7 @@ namespace TrackwiseAPI.Controllers
 
 
             var Job_ID = Guid.NewGuid().ToString();
+
             var job = new Job
             {
                 Job_ID = Job_ID,  
@@ -193,6 +240,7 @@ namespace TrackwiseAPI.Controllers
                 Job_Type_ID = jvm.Job_Type_ID,
                 Job_Status_ID = "1"
             };
+
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
             var drivers = await _jobRepository.GetAvailableDriverAsync();

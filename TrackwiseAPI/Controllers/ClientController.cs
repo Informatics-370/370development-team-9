@@ -85,9 +85,11 @@ namespace TrackwiseAPI.Controllers
         {
             var clientId = Guid.NewGuid().ToString();
 
-            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email};
-            var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, PhoneNumber = client.PhoneNumber, Password = client.Password };
 
+            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email };
+            var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, PhoneNumber = client.PhoneNumber, Password = cvm.Password };
+            var existingadmin = await _userManager.FindByNameAsync(cvm.Email);
+            if (existingadmin != null) return BadRequest("User already exists");
             try
             {
                 _clientRepository.Add(client);
@@ -101,7 +103,7 @@ namespace TrackwiseAPI.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, cvm.Password);
-                var mail = await _mailController.SendEmailUsingTemplate(newclientmail);
+                var mail = await _mailController.SendClientEmail(newclientmail);
 
 
                 await _userManager.AddToRoleAsync(user, "Client");

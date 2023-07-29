@@ -39,8 +39,9 @@ namespace TrackwiseAPI.Models.Email
             }
         }
 
+
         [HttpPost("ClientCredentials")]
-        public async Task<IActionResult> SendEmailUsingTemplate(NewClientMail welcomeMail)
+        public async Task<IActionResult> SendClientEmail(NewClientMail welcomeMail)
         {
             // Create MailData object
             MailData mailData = new MailData(
@@ -60,6 +61,51 @@ namespace TrackwiseAPI.Models.Email
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
             }
         }
+
+        [HttpPost("DriverCredentials")]
+        public async Task<IActionResult> SendDriverEmail(NewDriverMail welcomeMail)
+        {
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { welcomeMail.Email },
+                "Login Credentials",
+                _mail.GetEmailTemplate("newDriver", welcomeMail));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
+        [HttpPost("AdminCredentials")]
+        public async Task<IActionResult> SendAdminEmail(NewAdminMail welcomeMail)
+        {
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { welcomeMail.Email },
+                "Login Credentials",
+                _mail.GetEmailTemplate("newAdmin", welcomeMail));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
         [HttpPost("CreatePassword")]
         public string CreatePassword(int length)
         {
