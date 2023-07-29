@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Job } from 'src/app/shared/job';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-jobs',
@@ -9,53 +12,116 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class JobsComponent implements OnInit{
   searchText: string = ''; // Property to store the search text
-  admins: any[] = []; // Property to store the admin data
-  originalAdmins: any[] = []; // Property to store the original admin data
+  jobs: any[] = []; // Property to store the admin data
+  originalJobs: any[] = []; // Property to store the original admin data
+  users : string = "";
+  
+  createJob : Job = 
+  {
+    job_ID: '',
+    startDate: '',
+    dueDate: '',
+    pickup_Location: '',
+    dropoff_Location: '',
+    total_Weight: 0,
+    creator_ID: '',
+    job_Type_ID: '',
+    job_Status_ID:''
+  };
 
   showView: boolean = true;
   showAdd: boolean = false;
   
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router:Router) { }
   
   ngOnInit(): void {
-    this.GetAdmins();
+    this.GetJobs();
     this.showView=true;
     this.showAdd=false;
   }
 
-  GetAdmins() {
-    this.dataService.GetAdmins().subscribe(result => {
-      let adminList: any[] = result;
-      this.originalAdmins = [...adminList]; // Store a copy of the original admin data
-      adminList.forEach((element) => {
-        this.admins.push(element);
-        console.log(element);
-      });
+  GetJobs() {
+    this.dataService.GetJobs().subscribe((result) => {
+      let jobList: any[] = result;
+      this.originalJobs = [...jobList]; // Store a copy of the original admin data
+  
+      // Use Promise.all to handle multiple asynchronous calls efficiently
+      Promise.all(
+        jobList.map((element) => {
+          return this.GetUser(element.creator_ID).toPromise();
+        })
+      )
+        .then((userNames) => {
+          // Assign the user names to the corresponding elements
+          jobList.forEach((element, index) => {
+            element.userName = userNames[index];
+            this.jobs.push(element);
+            console.log(element);
+          });
+        })
+        .catch((error) => console.error('Error getting user names:', error));
     });
+  }
+
+  GetUser(userID: string): Observable<string> {
+    return new Observable((observer) => {
+      this.dataService.GetAdmin(userID).subscribe(
+        (result) => {
+          if (result == null) {
+            this.dataService.GetClient(userID).subscribe(
+              (name) => {
+                this.users = name.name;
+                observer.next(this.users); // Emit the user name
+                observer.complete();
+              },
+              (error) => observer.error(error)
+            );
+          } else {
+            this.users = result.name;
+            observer.next(this.users); // Emit the user name
+            observer.complete();
+          }
+        },
+        (error) => observer.error(error)
+      );
+    });
+  }
+
+  CreateJob()
+  {
+    this.dataService.CreateJob(this.createJob).subscribe(
+      () => {
+        this.jobs = [];
+        this.GetJobs();
+        this.showView = true;
+        this.showAdd = false;}
+      )   
+
+
   }
 
   search() {
     if (this.searchText.trim() === '') {
       // If search text is empty, revert back to original admin data
-      this.admins = [...this.originalAdmins];
+      this.jobs = [...this.originalJobs];
     } else {
       const searchTextLower = this.searchText.toLowerCase();
 
       // Filter the admins based on the search text
-      const filteredAdmins = this.originalAdmins.filter(admin => {
-        const fullName = admin.name.toLowerCase() + ' ' + admin.lastname.toLowerCase();
-        const email = admin.email.toLowerCase();
-        const password = admin.password.toLowerCase();
+      const filteredAdmins = this.originalJobs.filter(jobs => {
+        const fullName = jobs.name.toLowerCase() + ' ' + jobs.lastname.toLowerCase();
+        const email = jobs.email.toLowerCase();
+        const password = jobs.password.toLowerCase();
         return (
           fullName.includes(searchTextLower) ||
-          admin.lastname.toLowerCase().includes(searchTextLower) ||
+          jobs.lastname.toLowerCase().includes(searchTextLower) ||
           email.includes(searchTextLower) || password.includes(searchTextLower)
           
         );
       });
 
       // Update the admins array with the filtered results
-      this.admins = filteredAdmins;
+      this.jobs = filteredAdmins;
     }
   }
 

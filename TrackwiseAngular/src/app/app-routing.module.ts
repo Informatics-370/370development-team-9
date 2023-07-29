@@ -8,7 +8,7 @@ import { DriversComponent } from './Admin-Screen/drivers/drivers.component';
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
-
+import { AdminHomeComponent } from './Admin-Screen/admin-home/admin-home.component';
 
 import { OrdersComponent } from './Admin-Screen/orders/orders.component';
 
@@ -41,7 +41,6 @@ import { RegisterComponent } from './Authentication/register/register.component'
 
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
-import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
 
 //Customer components-----------------------------------------------------------
@@ -54,70 +53,77 @@ import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-
 import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
 import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
 
+//Client components--------------------------------------------------------------
+import { ClientJobsComponent } from './Client-Screen/client-jobs/client-jobs.component';
+import { ClientAddJobComponent } from './Client-Screen/client-add-job/client-add-job.component';
+import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-edit-job.component';
+import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
+
 
 
 const routes: Routes = [
-  {path: 'Authentication/login', component: LoginComponent},
-  {path: 'Authentication/register', component: RegisterComponent},
+  { path: 'Authentication/login', component: LoginComponent },
+  { path: 'Authentication/register', component: RegisterComponent },
 
+  { path: 'Admin-Screen/admin-home', component: AdminHomeComponent },
 
+  { path: 'Admin-Screen/customers', component: CustomersComponent },
 
-  {path: 'Admin-Screen/customers', component: CustomersComponent},
+  { path: 'Admin-Screen/drivers', component: DriversComponent },
+  { path: 'Admin-Screen/drivers/add-driver', component: AddDriverComponent },
+  { path: 'Admin-Screen/drivers/edit-driver/:driver_ID', component: EditDriverComponent },
 
-  {path: 'Admin-Screen/drivers', component: DriversComponent},
-  {path: 'Admin-Screen/drivers/add-driver', component: AddDriverComponent},
-  {path: 'Admin-Screen/drivers/edit-driver/:driver_ID', component:EditDriverComponent},
+  { path: 'Admin-Screen/orders', component: OrdersComponent },
 
-  {path: 'Admin-Screen/orders', component: OrdersComponent},
+  { path: 'Admin-Screen/reports', component: ReportsComponent },
 
-  {path: 'Admin-Screen/reports', component: ReportsComponent},
+  { path: 'Admin-Screen/suppliers', component: SuppliersComponent },
+  { path: 'Admin-Screen/suppliers/add-supplier', component: AddSupplierComponent },
+  { path: 'Admin-Screen/suppliers/edit-supplier/:supplier_ID', component: EditSupplierComponent },
 
-  {path: 'Admin-Screen/suppliers', component: SuppliersComponent},
-  {path: 'Admin-Screen/suppliers/add-supplier', component: AddSupplierComponent},
-  {path: 'Admin-Screen/suppliers/edit-supplier/:supplier_ID', component:EditSupplierComponent},
+  { path: 'Admin-Screen/clients', component: ClientsComponent },
+  { path: 'Admin-Screen/clients/add-client', component: AddClientComponent },
+  { path: 'Admin-Screen/clients/edit-client/:client_ID', component: EditClientComponent },
 
-  {path: 'Admin-Screen/clients', component: ClientsComponent},
-  {path: 'Admin-Screen/clients/add-client', component: AddClientComponent},
-  {path: 'Admin-Screen/clients/edit-client/:client_ID', component:EditClientComponent},
+  { path: 'Admin-Screen/admins', component: AdminComponent },
+  { path: 'Admin-Screen/admins/add-admin', component: AddAdminComponent },
+  { path: 'Admin-Screen/admins/edit-admin/:admin_ID', component: EditAdminComponent },
 
-  {path: 'Admin-Screen/admins', component: AdminComponent},
-  {path: 'Admin-Screen/admins/add-admin', component: AddAdminComponent},
-  {path: 'Admin-Screen/admins/edit-admin/:admin_ID', component:EditAdminComponent},
+  { path: 'Admin-Screen/trucks', component: TrucksComponent },
+  { path: 'Admin-Screen/trucks/add-trucks', component: AddTrucksComponent },
+  { path: 'Admin-Screen/trucks/edit-truck/:truckID', component: EditTruckComponent },
 
-  {path: 'Admin-Screen/trucks', component: TrucksComponent},
-  {path: 'Admin-Screen/trucks/add-trucks', component: AddTrucksComponent},
-  {path: 'Admin-Screen/trucks/edit-truck/:truckID', component:EditTruckComponent},
+  { path: 'Admin-Screen/trailers', component: TrailersComponent },
+  { path: 'Admin-Screen/trailers/add-trailers', component: AddTrailersComponent },
+  { path: 'Admin-Screen/trailers/edit-trailer/:trailerID', component: EditTrailerComponent },
 
-  {path: 'Admin-Screen/trailers', component: TrailersComponent},
-  {path: 'Admin-Screen/trailers/add-trailers', component: AddTrailersComponent},
-  {path: 'Admin-Screen/trailers/edit-trailer/:trailerID', component: EditTrailerComponent},
-
-  {path: 'Admin-Screen/products', component: ProductsComponent},
-  {path: 'Admin-Screen/products/add-product', component: AddProductComponent},
-  {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
+  { path: 'Admin-Screen/products', component: ProductsComponent },
+  { path: 'Admin-Screen/products/add-product', component: AddProductComponent },
+  { path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent },
 
   {path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
 
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
-  {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
 
   { path: 'password/forgotpassword', component: ForgotpasswordComponent },
-  {path: 'Admin-Screen/jobs/job-details', component: JobDetailsComponent},
+  {path: 'Admin-Screen/jobs/job-details/:job_ID', component: JobDetailsComponent},
   {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent},
 
 
   //Customer components--------------------------------------------------
-  {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},
-  {path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent},
-  {path: 'Customer-Screen/about-us', component: AboutUsComponent},
-  {path: 'Customer-Screen/cart', component: CartComponent},
-  {path: 'Customer-Screen/profile', component: ProfileComponent},
-  {path: 'Customer-Screen/customer-home', component: CustomerHomeComponent},
+  { path: 'Customer-Screen/customer-products', component: CustomerProductComponent },
+  { path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent },
+  { path: 'Customer-Screen/about-us', component: AboutUsComponent },
+  { path: 'Customer-Screen/cart', component: CartComponent },
+  { path: 'Customer-Screen/profile', component: ProfileComponent },
+  { path: 'Customer-Screen/customer-home', component: CustomerHomeComponent },
 
-
-
-
+  // Client components-------------------------------------------------
+  {path: 'Client-Screen/client-jobs', component: ClientJobsComponent},
+  {path: 'Client-Screen/client-add-jobs', component: ClientAddJobComponent},
+  {path: 'Client-Screen/client-edit-jobs', component: ClientEditJobComponent},
+  {path: 'Client-Screen/client-job-details', component: ClientJobDetailsComponent},
 
 ];
 

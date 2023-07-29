@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { CheckoutRequest, NewCard } from 'src/app/shared/cardPayment';
+import { OrderLines } from 'src/app/shared/orderLines';
 
 interface CartItem {
   image: string;
@@ -20,7 +23,23 @@ export class CartComponent implements OnInit {
   products: any = [];
   cartItems: any = [];
   total: number = 0;
-  orderLines: { productId: string; quantity: number; }[] = [];
+  isPayment = false;
+  isLoading:boolean = false
+
+  orderLines: OrderLines = {
+    orderLines: [] // Initialize the orderLines property as an empty array
+  };
+
+  newCard: NewCard = {
+    lastName: '',
+    firstName: '',
+    email: '',
+    cardNumber: 0n,
+    cardExpiry: 0,
+    cvv: 0,
+    vault: true,
+    amount: 0
+  }
 
   constructor(private router: Router, public dataService: DataService) { }
 
@@ -55,7 +74,7 @@ export class CartComponent implements OnInit {
       this.dataService.calculateQuantity();
 
       // Populate the orderLines array with product details
-      this.orderLines = this.cartItems.map((item: { product_ID: any; cartQuantity: any; }) => ({
+      this.orderLines.orderLines = this.cartItems.map((item: { product_ID: any; cartQuantity: any; }) => ({
         productId: item.product_ID,
         quantity: item.cartQuantity
       }));
@@ -97,17 +116,33 @@ export class CartComponent implements OnInit {
       this.dataService.calculateQuantity();
     }
   }
+
+  makePayment(){
+    this.isPayment = true;
+    console.log(this.isPayment)
+  }
   
 
-  checkout(): void {
+  checkout(form: NgForm) {
     // Perform any validation or additional logic before calling the service method
-
+    this.newCard = form.value
+    this.newCard.vault = true;
+    
+    const checkoutRequest: CheckoutRequest = {
+      orderVM: 
+      {
+        orderLines: this.orderLines.orderLines
+      },
+      newCard: this.newCard,
+    };
+    console.log(checkoutRequest)
     // Call the CreateOrder method in your service and pass the orderLines
-    this.dataService.CreateOrder({ orderLines: this.orderLines }).subscribe(
+    this.dataService.CreateOrder(checkoutRequest).subscribe(
       () => {
         // Handle success or display success message
         sessionStorage.removeItem('cartItem');
         this.dataService.calculateQuantity();
+        this.isPayment = false;
         this.router.navigate(['/Customer-Screen/customer-products']);
       },
       (error) => {

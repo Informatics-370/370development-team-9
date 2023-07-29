@@ -4,58 +4,60 @@
   <button class="add-job-btn" (click)="ShowAdd()">Add Job</button>
 
 
+  
+  <div class="search-navbar">
+    <div class="navbar-container">
+      <div class="search-bar">
+        <input type="text" placeholder="Search for a product">
+        <button aria-label="Search">
+          <i class="material-icons">search</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <table class="job-table">
     <thead>
-      <tr>
-        <th colspan="6">
-
-          <div class="search-navbar">
-            <div class="navbar-container">
-              <div class="search-bar">
-                <input type="text" placeholder="Search for a product">
-                <button aria-label="Search">
-                  <i class="material-icons">search</i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </th>
-      </tr>
-
 
       <tr class="header">
         <th>Job ID</th>
-        <th>Date</th>
+        <th>Start Date</th>
+        <th>End Date</th>
         <th>Type</th>
         <th>Client</th>
         <th>Status</th>
         <th></th>
       </tr>
     </thead>
-    <tr>
-      <td>1</td>
-      <td>2023-01-01</td>
-      <td>Coal</td>
-      <td>Exxaro</td>
-      <td>Busy</td>
-      <td>
-        <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/job-details'">View</button>
-      </td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>2023-01-02</td>
-      <td>Sand</td>
-      <td>Imperial</td>
-      <td>Completed</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>2023-01-03</td>
-      <td>Weti</td>
-      <td>Starbucks</td>
-      <td>Not Started</td>
-    </tr>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'In-opperation'">
+        <td>{{job.job_ID}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td>{{job.userName}}</td>
+        <td>{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID]">View</button>
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'Complete'">
+        <td>{{job.job_ID}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td>{{job.userName}}</td>
+        <td>{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID]">View</button>
+        </td>
+      </tr>
+    </tbody>
+
   </table>
 </div>
 
@@ -65,36 +67,33 @@
   <button class="view-jobs-btn" (click)="ShowView()">View Jobs</button>
   <button class="add-job-btn-selected" (click)="ShowAdd()">Add Job</button>
 
-  <form>
-    <input class="txtbox" type="text" placeholder=" Pickup Location" >
-  
-    <input class="txtbox" type="text" placeholder=" Drop-off Location">
-  
+  <form #form="ngForm" (ngSubmit)="CreateJob()">
+    <input class="txtbox" type="text" name="pickupLocation" placeholder=" Pickup Location" [(ngModel)]="createJob.pickup_Location" required>
 
+    <input class="txtbox" type="text" name="dropoffLocation" placeholder=" Drop-off Location" [(ngModel)]="createJob.dropoff_Location" required>
 
     <div class="form-item-container">
       <label>Type:</label>
-      <select class="dropdown">
-        <option >Type of Job</option>
+      <select class="dropdown" name="jobType" [(ngModel)]="createJob.job_Type_ID" required>
+        <option value="1">1</option>
       </select>
 
-      <input class="weight" type="number" placeholder=" Weight (kg)">
+      <input class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required>
     </div>
 
     <div class="form-item-container">
       <label class="lbl-start">Start Date</label>
       <label class="lbl-end">End Date</label>
     </div>
-  
+
     <div class="form-item-container">
-      <input class="date-start" type="datetime-local">  
-      <input class="date-end" type="datetime-local">
+      <input class="date-start" type="datetime-local" name="startDate" [(ngModel)]="createJob.startDate" required>
+      <input class="date-end" type="datetime-local" name="dueDate" [(ngModel)]="createJob.dueDate" required>
     </div>
-  
 
-  
-    <button class="create-button" type="submit">Create Job</button>
+    <div class="footer-row">
+      <button [routerLink]="'/Admin-Screen/jobs/job-details'" class="cancel-button" type="submit">Cancel</button>
+      <button class="create-button" type="submit">Create Job</button>
+
   </form>
-  
-
 </div>

@@ -85,6 +85,7 @@ namespace TrackwiseAPI.Controllers
         {
             var clientId = Guid.NewGuid().ToString();
 
+
             var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email };
             var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, PhoneNumber = client.PhoneNumber, Password = cvm.Password };
             var existingadmin = await _userManager.FindByNameAsync(cvm.Email);

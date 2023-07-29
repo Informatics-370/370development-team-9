@@ -171,42 +171,7 @@ namespace TrackwiseAPI.Controllers
             return BadRequest("Your request is invalid.");
         }
 
-        //update admin
-        /* [HttpPut]
-         [Route("EditAdmin/{AdminID}")]
 
-         public async Task<ActionResult<AdminVM>> EditAdmin(string AdminID, AdminVM avm)
-         {
-             try
-             {
-                 var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
-                 if (existingAdmin == null) return NotFound($"The admin does not exist");
-
-                 if (existingAdmin.Name == avm.Name &&
-                     existingAdmin.Lastname == avm.Lastname &&
-                     existingAdmin.Email == avm.Email &&
-                     existingAdmin.Password == avm.Password)
-                 {
-                     // No changes made, return the existing driver without updating
-                     return Ok(existingAdmin);
-                 }
-
-                 existingAdmin.Name = avm.Name;
-                 existingAdmin.Lastname = avm.Lastname;
-                 existingAdmin.Email = avm.Email;
-                 existingAdmin.Password = avm.Password;
-
-                 if (await _adminRepository.SaveChangesAsync())
-                 {
-                     return Ok(existingAdmin);
-                 }
-             }
-             catch (Exception)
-             {
-                 return StatusCode(500, "Internal Server Error. Please contact support.");
-             }
-             return BadRequest("Your request is invalid.");
-         }*/
 
         //Remove admin
         [HttpDelete]

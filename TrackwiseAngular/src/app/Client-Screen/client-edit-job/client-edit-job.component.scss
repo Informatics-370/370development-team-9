@@ -1,0 +1,242 @@
+ 
+  .edit-container {
+
+  }
+  
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #117fca;
+    color: #f2f2f2;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+  }
+
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center; /* Optional: To vertically center the buttons */
+  }
+  
+  
+  
+  h3 {
+    margin: 0; /* Remove any default margins to avoid unwanted spacing */
+  }
+   
+  /* Add your custom styles here */
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 0 auto;
+  
+  }
+  
+  
+  label {
+    margin-top: 10px;
+    font-weight: bold;
+    margin-left: 10%;
+  }
+  
+  .txtbox {
+    width: 80%;
+    height: 40px;
+    border-radius: 20px;
+    border: 2px solid #333;
+    margin-bottom: 10px;
+  }
+
+  .txtbox2 {
+    width: 80%;
+    height: 40px;
+    border-radius: 20px;
+    border: 2px solid #333;
+    margin-bottom: 10px;
+    margin-right: auto;
+    margin-left: 10%;
+    margin-top: 10px;
+  }
+  
+  .weight {
+    width: 30%;
+    height: 40px;
+    border-radius: 20px;
+    border: 2px solid #333;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: 10%;
+  }
+  
+  /* Custom dropdown styling */
+  .dropdown {
+    height: 40px;
+    width: 30%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+    cursor: pointer;
+    margin-left: 1%;
+  }
+  
+  /* Style the arrow icon (you can use an icon library or an image for the arrow) */
+  .dropdown::after {
+    content: "\25BC";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #777;
+    pointer-events: none;
+  }
+  
+  /* Hover effect */
+  .dropdown:hover {
+    background-color: #e0e0e0;
+  }
+   
+  /* Dropdown options */
+  .dropdown-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+  
+  .dropdown.open .dropdown-options {
+    display: block;
+  }
+  
+  .dropdown-option {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .dropdown-option:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* Custom datetime-local input styling */
+  .lbl-start{
+    margin-right: auto;
+    margin-left: 10%;
+  }
+  
+  .lbl-end{
+    margin-left: auto;
+    margin-right: 10%;
+  }
+  .date-start{
+    margin-right: auto;
+    margin-left: 10%;
+    width: 35%;
+    height: 40px;
+  }
+  
+  .date-end{
+    margin-left: auto;
+    margin-right: 10%;
+    width: 35%;
+    height: 40px;
+  }
+  
+  
+  input.date {
+    height: 40px;
+    width: 30%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+  }
+  
+  .save-button {
+    width: 150px;
+    height: 40px;
+    border: 2px solid #117fca;
+    border-radius: 10px;
+    color: #117fca;
+    background-color: white;
+    font-weight: bold;
+  }
+  
+  .save-button:hover {
+    color: white;
+    background-color: #117fca;
+    font-weight: bold;
+  }
+  
+  .cancel-button {
+    width: 150px;
+    height: 40px;
+    border: 2px solid red;
+    border-radius: 10px;
+    color: red;
+    background-color: white;
+    font-weight: bold;
+    margin-right: 25px;
+  }
+  
+  .cancel-button:hover {
+    color: white;
+    background-color: red;
+    font-weight: bold;
+  }
+  
+  
+  .form-item-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 20%;
+  }
+  
+  form{
+    width: 90%;
+    align-items: center;
+    max-width: 600px;
+    margin-top: 90px;
+    position: relative;
+    padding: 20px;
+    border: 3px solid #117fca;
+    border-radius: 10px;
+    width: 500px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: #f2f2f2;
+  }
+  
+  
+  .view-job-btn{
+    border: 2px solid #117fca;
+    border-radius: 10px;
+    background-color: white;
+    color: #117fca;
+    font-weight: bold;
+    width: 60%;
+    height: 35px;
+  }
+  
+  .view-job-btn:hover{
+    color: white;
+    background-color: #117fca;
+    font-weight: bold;
+  }
