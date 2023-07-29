@@ -21,9 +21,14 @@
     border-radius: 7px;
   }
 
-  .footer-row{
+  .footer-row {
     display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    align-items: center; /* Optional: To vertically center the buttons */
   }
+  
+  
   
   h3 {
     margin: 0; /* Remove any default margins to avoid unwanted spacing */
@@ -175,43 +180,35 @@
     width: 150px;
     height: 40px;
     border: 2px solid #117fca;
-    border-radius: 15px;
+    border-radius: 10px;
     color: #117fca;
     background-color: white;
-    margin-top: 10px;
-    margin-left: auto;
-    
-    // margin-right: 10%;
     font-weight: bold;
-    // margin-left: 30px;
   }
   
   .save-button:hover {
-    font-weight: bold;
-    color: #f2f2f2;
+    color: white;
     background-color: #117fca;
-    border-color: #004F9E;
+    font-weight: bold;
   }
-
+  
   .cancel-button {
     width: 150px;
     height: 40px;
     border: 2px solid red;
-    border-radius: 15px;
+    border-radius: 10px;
     color: red;
     background-color: white;
-    margin-top: 10px;
-    margin-right: auto;
-    // margin-right: 30px;
     font-weight: bold;
+    margin-right: 25px;
   }
   
   .cancel-button:hover {
-    font-weight: bold;
-    color: #f2f2f2;
+    color: white;
     background-color: red;
-    border-color: red;
+    font-weight: bold;
   }
+  
   
   .form-item-container {
     display: flex;

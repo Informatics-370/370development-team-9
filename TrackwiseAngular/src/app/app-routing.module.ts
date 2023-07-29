@@ -8,7 +8,7 @@ import { DriversComponent } from './Admin-Screen/drivers/drivers.component';
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
-
+import { AdminHomeComponent } from './Admin-Screen/admin-home/admin-home.component';
 
 import { OrdersComponent } from './Admin-Screen/orders/orders.component';
 
@@ -60,7 +60,7 @@ const routes: Routes = [
   {path: 'Authentication/login', component: LoginComponent},
   {path: 'Authentication/register', component: RegisterComponent},
 
-
+{path: 'Admin-Screen/admin-home', component: AdminHomeComponent},
 
   {path: 'Admin-Screen/customers', component: CustomersComponent},
 
