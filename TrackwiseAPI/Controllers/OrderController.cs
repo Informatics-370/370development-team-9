@@ -102,7 +102,7 @@ namespace TrackwiseAPI.Controllers
             // Convert OrderVM to OrderDTO
             var orderDto = new OrderDTO
             {
-                OrderLines = checkoutRequest.OrderVM.OrderLines.Select(ol => new OrderLineDTO
+                OrderLines = checkoutRequest.orderVM.OrderLines.Select(ol => new OrderLineDTO
                 {
                     Product = new ProductDTO { Product_ID = ol.ProductId },
                     Quantity = ol.Quantity
@@ -174,17 +174,17 @@ namespace TrackwiseAPI.Controllers
                 product.Quantity -= orderLineDto.Quantity;
             }
 
-            if (checkoutRequest == null || checkoutRequest.NewCard == null)
+            if (checkoutRequest == null || checkoutRequest.newCard == null)
             {
                 return BadRequest("Invalid request data. The 'checkoutRequest' or 'checkoutRequest.NewCard' is null.");
             }
 
             // Set the Order_ID in the NewCard model to the newly created order's ID
-            checkoutRequest.NewCard.Order_ID = order.Order_ID;
-            checkoutRequest.NewCard.Amount = (decimal)order.Total;
+            checkoutRequest.newCard.Order_ID = order.Order_ID;
+            checkoutRequest.newCard.Amount = (decimal)order.Total;
 
             // Call the AddNewCard method to process the payment and pass the newCard model
-            var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.NewCard);
+            var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.newCard);
 
             // Save the order and update the product quantities
             _dbContext.Orders.Add(order);

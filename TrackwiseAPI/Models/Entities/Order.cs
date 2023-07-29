@@ -25,7 +25,7 @@ namespace TrackwiseAPI.Models.Entities
 
     public class CheckoutRequest
     {
-        public OrderVM OrderVM { get; set; }
-        public NewCard NewCard { get; set; }
+        public OrderVM orderVM { get; set; }
+        public NewCard newCard { get; set; }
     }
 }
