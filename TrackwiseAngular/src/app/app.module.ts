@@ -66,6 +66,7 @@ import { ForgotpasswordComponent } from './password/forgotpassword/forgotpasswor
 
 import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
 import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
+import { AdminHomeComponent } from './Admin-Screen/admin-home/admin-home.component';
 
 
 
@@ -110,6 +111,8 @@ import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.componen
     CustomerHomeComponent,
     JobDetailsComponent,
     EditJobComponent,
+    AdminHomeComponent,
+  
 
   ],
   imports: [

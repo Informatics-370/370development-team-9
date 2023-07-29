@@ -45,14 +45,14 @@
  */
 
  .admin-navbar{
-  // position: fixed;
   background-color: #117fca;
   color: white;
-  margin-top: 0px;
+  // margin-top: -1150px;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 0;
+
  }
 
  .Admin-MyAccount{
@@ -71,7 +71,9 @@
 }
   
  .side-container {
-  min-width: 200px;
+  width: 200px;
+  margin-top: auto;
+  max-width: 220px;
   background-color: #004F9E;
   color: #f2f2f2;
  
@@ -88,8 +90,11 @@
 }
 
 .mat-nav-list a.mat-list-item {
-  color: #f2f2f2 !important;
-  font-weight: bold;
+  color: #FF0000 !important;
+}
+
+.nav-items{
+  color: #f2f2f2;
 }
 
 

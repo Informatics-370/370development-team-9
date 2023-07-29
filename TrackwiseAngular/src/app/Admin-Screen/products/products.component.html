@@ -1,7 +1,4 @@
-<br>
-<div class="row">
-<div class="col-lg-3 main-content"></div>
-<div class="col-lg-7 main-content">
+
 <div class="container container-fluid">
   <h2>Product List</h2>
       <!-- Search bar -->
@@ -21,7 +18,7 @@
       <br>
   
       <!-- Table -->
-      <table class="table table-hover">
+      <table class="table ">
         <thead id="header">
           <tr>
             <th>Name</th>
@@ -39,9 +36,9 @@
             <td colspan="5">No results were found.</td>
           </tr>
           <tr *ngFor="let product of products">
-            <td>{{product.product_Name}}</td>
+            <td style="font-weight: bold;">{{product.product_Name}}</td>
             <td>{{product.product_Description}}</td>
-            <td>R {{product.product_Price |number:"1.2-2"}}</td>
+            <td class="price">R {{product.product_Price |number:"1.2-2"}}</td>
             <td>{{product.quantity}}</td>
             <td>{{product.product_Category.name}}</td>
             <td>{{product.product_Type.name}}</td>
@@ -52,5 +49,3 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>  

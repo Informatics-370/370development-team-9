@@ -21,7 +21,7 @@
           <td style="text-align: left;"><b>{{ item.product_Name }}</b><br>
             <p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p>
           </td>
-          <td>
+          <td class="qty-col">
             <button class="qtyBtn" (click)="decreaseQuantity(item)">-</button>&nbsp;
             <span>{{ item.cartQuantity }}</span>&nbsp;
             <button class="qtyBtn" (click)="increaseQuantity(item)">+</button>

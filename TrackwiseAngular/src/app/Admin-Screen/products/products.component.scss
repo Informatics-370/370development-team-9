@@ -27,3 +27,25 @@
 .btn-outline-primary:hover{
     background-color: #117fca;
 }
+
+.table{
+    width: 100%;
+}
+
+tr{
+    border-bottom: 1px solid grey;
+}
+
+.container{
+    margin-top: 20px;
+    width: 80%;
+}
+
+/* Add white-space: nowrap; to the price column */
+.price {
+    display: flex;
+    white-space: nowrap;
+    border-bottom: none; /* Remove the bottom border */
+  }
+  
+  
