@@ -22,8 +22,7 @@ export class ProfileComponent {
     customer_ID: "",
     name: '',
     lastName: "",
-    email: "",
-    password: ""
+    email: ""
   }
 
   editCustomer: Customer = { ...this.customer };

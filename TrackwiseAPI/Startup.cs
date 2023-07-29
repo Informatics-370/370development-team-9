@@ -114,6 +114,8 @@ public class Startup
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IJobRepository, JobRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
