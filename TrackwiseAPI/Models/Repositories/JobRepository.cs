@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
@@ -25,7 +26,13 @@ namespace TrackwiseAPI.Models.Repositories
         {
             IQueryable<Job> query = _context.Jobs.Include(t => t.Deliveries).Include(t => t.JobStatus).Include(t => t.JobType);
             return await query.ToArrayAsync();
-        } 
+        }
+
+        public async Task<Delivery[]> GetAllDeliveries()
+        {
+            IQueryable<Delivery> query = _context.Deliveries.Include(t=>t.Job).Include(t=>t.Driver).Include(t => t.Trailer).Include(t => t.Truck);
+            return await query.ToArrayAsync();
+        }
 
         //GET DRIVER AVAILABLE STATUS
         public async Task<Driver[]> GetAvailableDriverAsync()
@@ -51,6 +58,11 @@ namespace TrackwiseAPI.Models.Repositories
         public async Task<bool> SaveChangesAsync()
         {
             return await _context.SaveChangesAsync() > 0;
+        }
+        // Begin a new database transaction
+        public IDbContextTransaction BeginTransaction()
+        {
+            return _context.Database.BeginTransaction();
         }
     }
 }

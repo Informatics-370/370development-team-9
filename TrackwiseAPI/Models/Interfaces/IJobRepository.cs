@@ -1,4 +1,5 @@
-﻿using TrackwiseAPI.Models.Entities;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.Models.Interfaces
 {
@@ -11,6 +12,8 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<Driver[]> GetAvailableDriverAsync();
         Task<Trailer[]> GetAvailableTrailerWithTypeAsync(string id);
         Task<Truck[]> GetAvailableTruckAsync();
+        IDbContextTransaction BeginTransaction();
+        Task<Delivery[]> GetAllDeliveries();
     }
-    
+
 }

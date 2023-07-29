@@ -16,6 +16,7 @@ import { Order } from '../shared/order';
 import { OrderLines } from '../shared/orderLines';
 import { RegisterUser } from '../shared/register';
 import { Job } from '../shared/job';
+import { Forgotpass } from '../shared/forgotpass';
 
 @Injectable({
   providedIn: 'root'
@@ -367,18 +368,10 @@ export class DataService {
   }
 
   /*PASSWORD */
-  resetPassword(email: string, token: string, newPassword: string): Observable<any> {
-    const resetPasswordUrl = `${this.apiUrl}User/reset-password`;
-    const body = { email: email, token: token, newPassword: newPassword };
-    return this.httpClient.post<any>(resetPasswordUrl, body);
+  forgotPassword(email: Forgotpass) {
+    console.log(email);
+    return this.httpClient.post<any>(`${this.apiUrl}Mail/ForgotPasswordEmail`,email,this.httpOptions );
   }
-
-  forgotPassword(email: string): Observable<any> {
-    const forgotPasswordUrl = `${this.apiUrl}User/forgot-password`;
-    return this.httpClient.post<any>(forgotPasswordUrl, { email: email });
-  }
-
-
 
   /*Product Section */
 
