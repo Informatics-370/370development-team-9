@@ -180,7 +180,6 @@ namespace TrackwiseAPI.Controllers
             }
 
 
-
             var Job_ID = Guid.NewGuid().ToString();
             var job = new Job
             {
