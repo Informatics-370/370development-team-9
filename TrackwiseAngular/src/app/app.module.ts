@@ -61,7 +61,6 @@ import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/custo
 import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
 
-import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
 
 import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
@@ -105,7 +104,6 @@ import { AdminHomeComponent } from './Admin-Screen/admin-home/admin-home.compone
     CustomerOrdersComponent,
     CartComponent,
     AboutUsComponent,
-    CreateJobComponent,
     ForgotpasswordComponent,
     ProfileComponent,
     CustomerHomeComponent,

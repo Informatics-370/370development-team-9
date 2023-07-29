@@ -85,8 +85,8 @@ namespace TrackwiseAPI.Controllers
         {
             var clientId = Guid.NewGuid().ToString();
 
-            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email, Password = cvm.Password };
-            var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, Password = client.Password, PhoneNumber = client.PhoneNumber };
+            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email};
+            var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, PhoneNumber = client.PhoneNumber, Password = client.Password };
 
             try
             {

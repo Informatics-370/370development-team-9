@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-job-details',
@@ -8,13 +10,29 @@ import { Component, OnInit } from '@angular/core';
 export class JobDetailsComponent implements OnInit{
   showDetails: boolean = true;
   showDocuments: boolean = false;
+  jobs: any[] = [];
   
-  // constructor(private dataService: DataService) { }
+   constructor(private dataService: DataService, private route: ActivatedRoute) { }
   
   ngOnInit(): void {
 
+    this.GetJobDetails();
     this.showDetails=true;
     this.showDocuments=false;
+  }
+
+  GetJobDetails(){
+    this.route.params.subscribe({
+      next: (params) => {
+        this.dataService.GetJob(params['job_ID']).subscribe({
+          next: (response) => {
+            //let userName = params['job_Id/userName'];
+            this.jobs.push(response);
+            console.log(this.jobs)
+          }
+        });
+      }
+    });
   }
 
   ShowDetails() {

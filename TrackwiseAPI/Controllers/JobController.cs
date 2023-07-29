@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
@@ -10,6 +11,10 @@ using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -20,12 +25,18 @@ namespace TrackwiseAPI.Controllers
     {
 
         private readonly IJobRepository _jobRepository;
+        private readonly UserManager<AppUser> _userManager;
 
-        public JobController(IJobRepository jobRepository, TruckRouteService truckRouteService)
+        public JobController(
+            IJobRepository jobRepository, 
+            TruckRouteService truckRouteService,
+            UserManager<AppUser> userManager
+            )
         {
             _jobRepository = jobRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
+            _userManager = userManager;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -43,6 +54,26 @@ namespace TrackwiseAPI.Controllers
             catch (Exception)
             {
                 return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetJob/{Job_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
+
+        public async Task<IActionResult> GetJobAsync(string Job_ID)
+        {
+            try
+            {
+                var result = await _jobRepository.GetJobAsync(Job_ID);
+
+                if (result == null) return NotFound("Job does not exist");
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
             }
         }
 
@@ -127,8 +158,28 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPost]
         [Route("CreateJob")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
         public async Task<IActionResult> CreateJob(JobVM jvm)
         {
+            // Retrieve the authenticated user's email address
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+            // Query the customer repository to get the customer ID
+            var user = await _userManager.FindByEmailAsync(userEmail);
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var userId = user.Id;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID not found");
+            }
+
+
             var Job_ID = Guid.NewGuid().ToString();
             var job = new Job
             {
@@ -138,9 +189,9 @@ namespace TrackwiseAPI.Controllers
                 Pickup_Location = jvm.Pickup_Location,
                 Dropoff_Location = jvm.Dropoff_Location,
                 Total_Weight = jvm.Total_Weight,
-                Admin_ID = jvm.Admin_ID,
+                Creator_ID = userId,
                 Job_Type_ID = jvm.Job_Type_ID,
-                Job_Status_ID = jvm.Job_Status_ID
+                Job_Status_ID = "1"
             };
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);

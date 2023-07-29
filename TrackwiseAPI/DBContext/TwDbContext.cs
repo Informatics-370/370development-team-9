@@ -180,10 +180,10 @@ namespace TrackwiseAPI.DBContext
             */
 
             //Admin and Job has a one-many
-            modelBuilder.Entity<Job>()
+/*            modelBuilder.Entity<Job>()
                 .HasOne(j => j.Admin)
                 .WithMany(c => c.Jobs)
-                .HasForeignKey(j => j.Admin_ID);
+                .HasForeignKey(j => j.Admin_ID);*/
 
 
             ////////////////////////////////////////////////////////////////////////////////
@@ -237,20 +237,20 @@ namespace TrackwiseAPI.DBContext
                     Dropoff_Location = "Bela-Bela, Limpopo, South Africa",
                     Total_Weight = 35.00,
                     //Client_ID = "1",
-                    Admin_ID = "1",
+                    Creator_ID = "1",
                     Job_Type_ID = "1",
                     Job_Status_ID = "2"
                 },
                 new Job
                 {
                     Job_ID = "2",
-                    //StartDate = new DateTime(2023, 8, 1),
-                    //DueDate = new DateTime(2023, 8, 11),
+                    StartDate = new DateTime(2023, 8, 1),
+                    DueDate = new DateTime(2023, 8, 11),
                     Pickup_Location = "lephalale, Limpopo, South Africa",
                     Dropoff_Location = "Bela-Bela, Limpopo, South Africa",
                     Total_Weight = 105.00,
                     //Client_ID = "1",
-                    Admin_ID = "1",
+                    Creator_ID = "1",
                     Job_Type_ID = "1",
                     Job_Status_ID = "2"                    
                 }

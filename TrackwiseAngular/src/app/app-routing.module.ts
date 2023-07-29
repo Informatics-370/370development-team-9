@@ -41,7 +41,6 @@ import { RegisterComponent } from './Authentication/register/register.component'
 
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
-import { CreateJobComponent } from './Admin-Screen/jobs/create-job/create-job.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
 
 //Customer components-----------------------------------------------------------
@@ -100,10 +99,9 @@ const routes: Routes = [
 
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
-  {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
 
   { path: 'password/forgotpassword', component: ForgotpasswordComponent },
-  {path: 'Admin-Screen/jobs/job-details', component: JobDetailsComponent},
+  {path: 'Admin-Screen/jobs/job-details/:job_ID', component: JobDetailsComponent},
   {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent},
 
 

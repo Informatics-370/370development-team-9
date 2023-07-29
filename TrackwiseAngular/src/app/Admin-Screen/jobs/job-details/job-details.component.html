@@ -13,13 +13,13 @@
         </button>
     </div>
 
-    <table class="details-table">
+    <table class="details-table" *ngFor="let jobDetails of jobs">
         <tr>
             <th>
                 Job ID
             </th>
             <td>
-                1548552
+                {{jobDetails.job_ID}}
             </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@
                 Start Date
             </th>
             <td>
-                2023-05-05
+                {{jobDetails.startDate}}
             </td>
         </tr>
         <tr>
@@ -35,7 +35,7 @@
                 End Date
             </th>
             <td>
-                2023-08-09
+                {{jobDetails.dueDate}}
             </td>
         </tr>
         <tr>
@@ -43,7 +43,7 @@
                 Weight
             </th>
             <td>
-                30 000 kg
+                {{jobDetails.total_Weight}} T
             </td>
         </tr>
         <tr>
@@ -51,7 +51,7 @@
                 Status
             </th>
             <td>
-                Busy
+                {{jobDetails.jobStatus.name}}
             </td>
         </tr>
         <tr>
@@ -59,23 +59,35 @@
                 Type
             </th>
             <td>
-                Coal
+                {{jobDetails.jobType.name}}
             </td>
         </tr>
         <tr>
             <th>
                 Driver(s)
             </th>
-            <td>
-                Johannes
+            <td >
+                <ul>    
+                    <li *ngFor=" let driver of jobDetails.deliveries">
+                        {{driver.driver.name + " " + driver.driver.lastname}} 
+                    </li>
+                </ul>
+               
             </td>
+
+ 
         </tr>
         <tr>
             <th>
                 Truck(s)
             </th>
-            <td>
-                HJ56HUGP
+            <td >   
+                <ul>    
+                    <li *ngFor=" let truck of jobDetails.deliveries">
+                        {{truck.truckID}} 
+                    </li>
+                </ul>
+               
             </td>
         </tr>
         <tr>
@@ -83,7 +95,7 @@
                 Client
             </th>
             <td>
-                Exxaro
+                {{jobDetails.creator_ID}}
             </td>
         </tr>
     </table>

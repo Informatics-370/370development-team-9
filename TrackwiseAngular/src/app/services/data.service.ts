@@ -360,6 +360,13 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetJob(job_ID: string): Observable<Job>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Job>(`${this.apiUrl}Job/GetJob/${job_ID}`, {headers} );
+  }
+
   CreateJob(AddProductReq: Job): Observable<Job>
   {
     let token = sessionStorage.getItem('Token');
@@ -524,11 +531,6 @@ export class DataService {
       }
 
     return this.itemsInCart;
-  }
-
-  /*PayGate Section*/
-  tokenizeCard(model: NewCard) {
-    return this.httpClient.post<CardPayment>(`${this.apiUrl}Order/CreateOrder/`, model);
   }
 
 }
