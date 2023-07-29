@@ -3,20 +3,14 @@ namespace TrackwiseAPI.Models.Password
 {
     public class ResetPassword
     {
+        public string Email { get; set; }
         [Required]
         public string Token { get; set; }
 
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public string Password { get; set; }
 
         [Required]
-        [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("NewPassword")]
         public string ConfirmPassword { get; set; }
     }
 }

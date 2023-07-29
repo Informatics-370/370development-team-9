@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TrackwiseAPI.Models.Password
+namespace TrackwiseAPI.Models.Email
 {
     public class ForgotPasswordVM
     {
         [Required]
-        [EmailAddress]
         public string Email { get; set; }
     }
 }

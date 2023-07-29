@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
+using TrackwiseAPI.Models.Password;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
 
@@ -24,21 +26,21 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly IClientRepository _clientRepository;
-        //private readonly MailController _mailController;
+        private readonly MailController _mailController;
 
         public ClientController(
             UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IClientRepository clientRepository
-            //MailController mailController
+            IClientRepository clientRepository,
+            MailController mailController
             )
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _clientRepository = clientRepository;
-            //_mailController = mailController;
+            _mailController = mailController;
         }
     
         //Get all clients
@@ -83,8 +85,8 @@ namespace TrackwiseAPI.Controllers
         {
             var clientId = Guid.NewGuid().ToString();
 
-            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email };
-            //var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, Password = client.Password, PhoneNumber = client.PhoneNumber };
+            var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email, Password = cvm.Password };
+            var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, Password = client.Password, PhoneNumber = client.PhoneNumber };
 
             try
             {
@@ -99,7 +101,8 @@ namespace TrackwiseAPI.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, cvm.Password);
-               // var mail = await _mailController.SendEmailUsingTemplate(newclientmail);
+                var mail = await _mailController.SendEmailUsingTemplate(newclientmail);
+
 
                 await _userManager.AddToRoleAsync(user, "Client");
 

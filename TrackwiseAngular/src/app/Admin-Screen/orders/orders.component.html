@@ -2,96 +2,109 @@
 
 <mat-toolbar class="search-navbar">
   <div class="navbar-container">
-      <div class="search-bar">
-          <input type="text" placeholder="Search for an order">
-          <button aria-label="Search">
-              <i class="material-icons">search</i>
-          </button>
-      </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search for an order">
+      <button aria-label="Search">
+        <i class="material-icons">search</i>
+      </button>
+    </div>
   </div>
 </mat-toolbar>
 
 <div class="MainContent">
 
-  <h3>Current Orders</h3>
+
 
   <!-- Current Orders -->
   <table>
-      <thead>
-          <tr class="table-headers">
-              <th>Order Number</th>
-              <th>Placed on</th>
-              <th>Status</th>
-              <th>Total</th>
-              <th></th>
-              <th></th>
-          </tr>
-      </thead>
+    <thead>
+      <tr>
+        <th colspan="6">
+          <h3>Current Orders</h3>
+        </th>
+      </tr>
+      <tr class="table-headers">
+        <th>Customer</th>
+        <th>Order Number</th>
+        <th>Placed on</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
 
-      <ng-container *ngIf="noOrdersOrdered">
-          <table class="item-table">
-            <tbody>
-              <tr class="NoItems">
-                There are currently no current orders.
-              </tr>
-            </tbody>
-          </table>
-        </ng-container>
-
-      <tbody *ngFor="let custOrders of allCustomerOrders">
-          <tr *ngIf="custOrders.status == 'Ordered'">
-              <td>{{custOrders.order_ID}}</td>
-              <td> {{custOrders.date | date: 'dd/MM/yyyy'}}</td>
-              <td style="color: #004F9E; font-weight: bold;">{{custOrders.status}}</td>
-              <td>R {{custOrders.total | number: '1.2-2'}}</td>
-              <td>
-                  <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
-              </td>
+    <ng-container *ngIf="noOrdersOrdered">
+      <table class="item-table">
+        <tbody>
+          <tr class="NoItems">
+            There are currently no current orders.
           </tr>
-      </tbody>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <tbody *ngFor="let custOrders of allCustomerOrders">
+      <tr *ngIf="custOrders.status == 'Ordered'">
+        <td></td>
+        <td>{{custOrders.order_ID}}</td>
+        <td> {{custOrders.date | date: 'dd/MM/yyyy'}}</td>
+        <td style="color: #004F9E; font-weight: bold;">{{custOrders.status}}</td>
+        <td>R {{custOrders.total | number: '1.2-2'}}</td>
+        <td>
+          <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
+        </td>
+      </tr>
+    </tbody>
   </table>
 
   <!-- Previous Orders -->
-  <h3>Order History</h3>
 
   <table>
-      <thead>
-          <tr class="table-headers">
-            <th>Customer Name</th>
-              <th>Order Number</th>
-              <th>Placed on</th>
-              <th>Status</th>
-              <th>Total</th>
-              <th></th>
-              <th></th>
-          </tr>
-      </thead>
-      
-      <ng-container *ngIf="noOrdersCancelledOrCollected">
-          <table class="item-table">
-            <tbody>
-              <tr class="NoItems">
-                There are currently no previous orders.
-              </tr>
-            </tbody>
-          </table>
-        </ng-container>
+    <thead>
+      <tr>
+        <th colspan="6">
+          <h3>Order History</h3>
+        </th>
+      </tr>
+      <tr class="table-headers">
+        <th>Customer</th>
+        <th>Order Number</th>
+        <th>Placed on</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
 
-          <tbody *ngFor="let custOrders of allCustomerOrders">
-          
-              <tr *ngIf="custOrders.status != 'Ordered'">
-                  <td>{{custOrders.order_ID}}</td>
-                  <td> {{custOrders.date | date: 'dd/MM/yyyy'}}</td>
-                  <td style="color: rgb(5, 218, 5); font-weight: bold;" *ngIf="custOrders.status == 'Collected'"> {{custOrders.status}} </td>
-                  <td style="color: red; font-weight: bold;" *ngIf="custOrders.status == 'Cancelled'"> {{custOrders.status}} </td>
-                  <td>R {{custOrders.total}}</td>
-                  <td>
-                      <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
-                  </td>
-                  <td>
-                  </td>
-              </tr>
-          </tbody>
+    <ng-container *ngIf="noOrdersCancelledOrCollected">
+      <table class="item-table">
+        <tbody>
+          <tr class="NoItems">
+            There are currently no previous orders.
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <tbody *ngFor="let custOrders of allCustomerOrders">
+
+      <tr *ngIf="custOrders.status != 'Ordered'">
+        <td></td>
+        <td>{{custOrders.order_ID}}</td>
+        <td> {{custOrders.date | date: 'dd/MM/yyyy'}}</td>
+        <td style="color: rgb(5, 218, 5); font-weight: bold;" *ngIf="custOrders.status == 'Collected'">
+          {{custOrders.status}} </td>
+        <td style="color: red; font-weight: bold;" *ngIf="custOrders.status == 'Cancelled'"> {{custOrders.status}} </td>
+        <td>R {{custOrders.total}}</td>
+        <td>
+          <button class="continueBtn" (click)="OpenModal(custOrders)">View</button>
+        </td>
+        <td>
+        </td>
+      </tr>
+    </tbody>
 
           <div *ngIf="showModal" class="ViewOrderModal">
             <div class="modal-content">
@@ -125,7 +138,8 @@
             </div>
           </div>
 
-<!-- <div *ngIf="showModal" class="ViewOrderModal">
+
+    <!-- <div *ngIf="showModal" class="ViewOrderModal">
   <div class="modal-content">
     <span class="close" (click)="CloseModal()">&times;</span>
     <table class="item-table" >
@@ -147,5 +161,3 @@
     </table>
   </div>
 </div> -->
-
-

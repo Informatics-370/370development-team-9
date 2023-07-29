@@ -7,5 +7,6 @@ namespace TrackwiseAPI.DBContext
     {
         public string? PasswordResetToken { get; set; }
         public DateTime? ResetTokenExpires { get; set; }
+
     }
 }

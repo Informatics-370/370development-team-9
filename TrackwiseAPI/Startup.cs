@@ -23,7 +23,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddScoped<MailController>();
         services.AddTransient<IMailService, MailService>();
+        services.AddScoped<IClientRepository, ClientRepository>();
+
         services.AddTransient<IEmailService, EmailService>();
         //services.AddTransient<IEmailService, MockEmailService>();
         services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));

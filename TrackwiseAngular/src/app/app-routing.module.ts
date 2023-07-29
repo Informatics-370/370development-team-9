@@ -8,7 +8,7 @@ import { DriversComponent } from './Admin-Screen/drivers/drivers.component';
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
-
+import { AdminHomeComponent } from './Admin-Screen/admin-home/admin-home.component';
 
 import { OrdersComponent } from './Admin-Screen/orders/orders.component';
 
@@ -51,6 +51,8 @@ import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component'
 import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
 import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
+import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
+import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
 
 
 
@@ -58,7 +60,7 @@ const routes: Routes = [
   {path: 'Authentication/login', component: LoginComponent},
   {path: 'Authentication/register', component: RegisterComponent},
 
-
+{path: 'Admin-Screen/admin-home', component: AdminHomeComponent},
 
   {path: 'Admin-Screen/customers', component: CustomersComponent},
 
@@ -99,7 +101,11 @@ const routes: Routes = [
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
   {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
-  { path: 'reset-password', component: ForgotpasswordComponent },
+
+  { path: 'password/forgotpassword', component: ForgotpasswordComponent },
+  {path: 'Admin-Screen/jobs/job-details', component: JobDetailsComponent},
+  {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent},
+
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},
@@ -108,6 +114,7 @@ const routes: Routes = [
   {path: 'Customer-Screen/cart', component: CartComponent},
   {path: 'Customer-Screen/profile', component: ProfileComponent},
   {path: 'Customer-Screen/customer-home', component: CustomerHomeComponent},
+
 
 
 
