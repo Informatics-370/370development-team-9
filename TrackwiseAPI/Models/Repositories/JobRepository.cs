@@ -64,5 +64,11 @@ namespace TrackwiseAPI.Models.Repositories
         {
             return _context.Database.BeginTransaction();
         }
+
+        public async Task<Job> GetJobAsync(string Job_ID)
+        {
+            IQueryable<Job> query = _context.Jobs.Where(j => j.Job_ID == Job_ID).Include(t => t.Deliveries).ThenInclude(d => d.Driver).Include(t => t.JobStatus).Include(t => t.JobType);
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

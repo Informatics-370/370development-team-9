@@ -14,6 +14,7 @@ namespace TrackwiseAPI.Models.Entities
         public string Pickup_Location { get; set; }
         public string Dropoff_Location { get; set; }
         public double Total_Weight { get; set; }
+        public string Creator_ID { get; set; }
 
         //Foreign key for Client
         /*
@@ -22,9 +23,9 @@ namespace TrackwiseAPI.Models.Entities
         public Client? Client { get; set; }
         */
         //Foreign key for Admin
-        public string Admin_ID { get; set; }
+/*        public string Admin_ID { get; set; }
         [ForeignKey("Admin_ID")]
-        public Admin Admin { get; set; }
+        public Admin Admin { get; set; }*/
 
         //Foreign key for Job_Type
         public string Job_Type_ID { get; set; }

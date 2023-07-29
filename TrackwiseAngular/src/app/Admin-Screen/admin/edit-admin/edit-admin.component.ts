@@ -25,7 +25,7 @@ export class EditAdminComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe({
       next: (params) => {
-
+        console.log(params)
           this.dataService.GetAdmin(params['admin_ID']).subscribe({
             next: (response) => {
               this.adminDetails = response;

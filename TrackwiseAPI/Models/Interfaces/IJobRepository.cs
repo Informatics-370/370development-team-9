@@ -14,6 +14,7 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<Truck[]> GetAvailableTruckAsync();
         IDbContextTransaction BeginTransaction();
         Task<Delivery[]> GetAllDeliveries();
+        Task<Job> GetJobAsync(string Job_ID);
     }
 
 }
