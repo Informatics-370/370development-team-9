@@ -33,7 +33,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobStatus> JobsStatus { get; set; }
         public DbSet<JobType> JobTypes { get; set; }
-        
+
 
         /// 
         /// 
@@ -347,9 +347,9 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Customer>().HasData(
-                new Customer { Customer_ID = "1", Name = "John", LastName = "Doe", Email = "johndoe@gmail.com", Password = "john123" },
-                new Customer { Customer_ID = "2", Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com", Password = "jane123" },
-                new Customer { Customer_ID = "3", Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com", Password = "joe123" }
+                new Customer { Customer_ID = "1", Name = "John", LastName = "Doe", Email = "johndoe@gmail.com" },
+                new Customer { Customer_ID = "2", Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com" },
+                new Customer { Customer_ID = "3", Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com" }
             );
 
             modelBuilder.Entity<Invoice>().HasData(
@@ -373,8 +373,8 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Admin>().HasData(
-                new Admin { Admin_ID = "1", Name = "Hanru", Lastname = "du Plessis", Email = "hanruduplessis@gmail.com", Password = "hanru123" },
-                new Admin { Admin_ID = "2", Name = "admin", Lastname="admin", Email="admin@gmail.com",Password="admin123" }
+                new Admin { Admin_ID = "1", Name = "Hanru", Lastname = "du Plessis", Email = "hanruduplessis@gmail.com"},
+                new Admin { Admin_ID = "2", Name = "admin", Lastname="admin", Email="admin@gmail.com"}
             );
 
             modelBuilder.Entity<Supplier>().HasData(

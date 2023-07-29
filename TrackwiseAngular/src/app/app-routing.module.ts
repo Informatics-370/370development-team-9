@@ -96,14 +96,16 @@ const routes: Routes = [
   {path: 'Admin-Screen/products/add-product', component: AddProductComponent},
   {path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent},
 
-  {path: '', redirectTo: 'Authentication/login', pathMatch:'full'},
+  {path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
 
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
   {path: 'Admin-Screen/jobs/create-job', component: CreateJobComponent},
-  { path: 'reset-password', component: ForgotpasswordComponent },
+
+  { path: 'password/forgotpassword', component: ForgotpasswordComponent },
   {path: 'Admin-Screen/jobs/job-details', component: JobDetailsComponent},
   {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent},
+
 
   //Customer components--------------------------------------------------
   {path: 'Customer-Screen/customer-products', component: CustomerProductComponent},

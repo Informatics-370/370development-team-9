@@ -15,6 +15,8 @@ using System.Runtime.Intrinsics.X86;
 using Microsoft.EntityFrameworkCore;
 using System.Web;
 using TrackwiseAPI.Models.Password;
+using System.Security.Cryptography;
+using TrackwiseAPI.Models.Email;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -28,13 +30,15 @@ namespace TrackwiseAPI.Controllers
         private readonly ICustomerRepository _customerRepository;
         private readonly IEmailService _emailService;
         private readonly TwDbContext _context;
+        private readonly MailController _mailController;
 
         public UserController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             ICustomerRepository customerRepository, 
             TwDbContext context, 
-            IEmailService emailService)
+            IEmailService emailService,
+            MailController mailController)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
@@ -42,6 +46,7 @@ namespace TrackwiseAPI.Controllers
             _customerRepository = customerRepository;
             _context = context;
             _emailService = emailService;
+            _mailController = mailController;
         }
 
 
@@ -50,7 +55,7 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> Register(CustomerVM cvm)
         {
             var customerId = Guid.NewGuid().ToString();
-            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email, Password = cvm.Password };
+            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
 
             try
             {
@@ -112,71 +117,54 @@ namespace TrackwiseAPI.Controllers
                 return NotFound("User does not exist or invalid credentials");
             }
         }
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
+        /*
+        [HttpPost("forgot-password/{email}")]
+        public async Task<IActionResult> ForgotPassword(string email)
         {
-            if (!ModelState.IsValid)
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var newclientmail = new NewClientMail { Email = user.Email, Name =user.UserName, Password="Test12345",PhoneNumber=user.PhoneNumber };
+
+            if (user==null)
             {
-                return BadRequest(ModelState);
+                return BadRequest("User not found");
             }
 
-            try
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user == null)
-                {
-                    // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
-                    return Ok();
-                }
+            //var mail = await _mailController.ForgotPasswordEmail(newclientmail);
+            await _context.SaveChangesAsync();
+            return Ok("Email has been sent");
+        }*/
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var encodedToken = HttpUtility.UrlEncode(token);
-
-                // Send the email using your email service
-                await _emailService.SendPasswordResetEmailAsync(user.Email, encodedToken);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or return an error response
-                return StatusCode(500, "An error occurred while sending the password reset email.");
-            }
-        }
-
+        /*
         [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword(ResetPassword model)
+        public async Task<IActionResult> ResetPassword(ResetPassword request)
         {
-            if (!ModelState.IsValid)
+            //var user1 = await _userManager.FindByEmailAsync(request.Email);
+            //var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null || user.ResetTokenExpires < DateTime.Now)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Invalid token");
             }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user == null)
+            var resetPasswordResult = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
+            if (!resetPasswordResult.Succeeded)
             {
-                // To prevent user enumeration, always return Ok() even if the email doesn't exist in the database.
-                return Ok();
+                // Password reset failed. You may handle specific error cases here if needed.
+                return BadRequest("Password reset failed.");
             }
-
-            var decodedToken = HttpUtility.UrlDecode(model.Token);
-            var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                // Handle password reset failure
-                return BadRequest("Failed to reset password.");
-            }
-
-            // You can clear the reset token and its expiration once the password is successfully reset.
             user.PasswordResetToken = null;
             user.ResetTokenExpires = null;
-            await _userManager.UpdateAsync(user);
+            await _context.SaveChangesAsync();
 
             return Ok("Password successfully reset.");
         }
 
-
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        }
+        */
 
         [HttpGet]
         private async Task<ActionResult> GenerateJWTToken(AppUser user)

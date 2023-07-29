@@ -11,6 +11,15 @@ import { Product } from 'src/app/shared/product';
 export class AddProductComponent {
   productTypes: any[] = []; 
   productCategories: any[] = []; 
+  
+  // AddProductRequest: {
+  //   product_Name: string; 
+  //   product_Description:string;
+  //   product_Price: number;
+  //   quantity: number; 
+  //   product_Category_ID:string;
+  //   product_Type_ID:string;
+  // }[] = [];
 
   AddProductRequest: Product =
   {
@@ -47,8 +56,9 @@ export class AddProductComponent {
 
   AddProduct()
   {
+    console.log(this.AddProductRequest);
     this.dataService.AddProduct(this.AddProductRequest).subscribe({
-      next: (trailer) => {this.router.navigate(['/Admin-Screen/products'])}
+      next: (product) => {this.router.navigate(['/Admin-Screen/products'])}
     })
   }
 

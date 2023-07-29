@@ -10,7 +10,6 @@ namespace TrackwiseAPI.Models.Entities
         public string Name { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
-        public string Password { get; set; }
 
         //Foreign key for User_ID
         //public int User_ID { get; set; }

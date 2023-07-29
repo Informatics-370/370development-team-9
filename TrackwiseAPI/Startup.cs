@@ -23,7 +23,10 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddScoped<MailController>();
         services.AddTransient<IMailService, MailService>();
+        services.AddScoped<IClientRepository, ClientRepository>();
+
         services.AddTransient<IEmailService, EmailService>();
         //services.AddTransient<IEmailService, MockEmailService>();
         services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
@@ -114,6 +117,8 @@ public class Startup
         services.AddScoped<ISupplierRepository, SupplierRepository>();
         services.AddScoped<IJobRepository, JobRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -155,19 +160,34 @@ public class Startup
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<TwDbContext>();
+                var admins = scope.ServiceProvider.GetRequiredService<Admin>;
 
                 string email = "admin@admin.com";
                 string password = "Test1234";
+                var adminId = Guid.NewGuid().ToString();
 
                 if (await userManager.FindByEmailAsync(email) == null)
                 {
                     var user = new AppUser();
+                    user.Id = adminId;
                     user.UserName = email;
                     user.Email = email;
 
                     await userManager.CreateAsync(user, password);
 
                     await userManager.AddToRoleAsync(user, "Admin");
+
+                    var admin = new Admin
+                    {
+                        Admin_ID = adminId,
+                        Name = "Default Admin",
+                        Lastname = "Default",
+                        Email = email
+                    };
+
+                    dbContext.Admins.Add(admin);
+                    await dbContext.SaveChangesAsync();
                 }
             }
 
@@ -197,8 +217,7 @@ public class Startup
                         Customer_ID = customerId,
                         Name = "Default Customer",
                         LastName = "Default",
-                        Email = email,
-                        Password = password
+                        Email = email
                     };
 
                     dbContext.Customers.Add(customer);

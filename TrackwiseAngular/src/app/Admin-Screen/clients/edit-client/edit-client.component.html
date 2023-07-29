@@ -6,7 +6,7 @@
 
       <h2>Edit Client</h2>
       
-      <form #form="ngForm" (ngSubmit)="form.form.valid && EditClient()"> 
+      <form #form="ngForm" (ngSubmit)="form.form.valid && EditClient()" autocomplete="off"> 
         <div class="mb-3">
           <label for="Name" class="form-label">Client Name</label>
           <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)]="clientDetails.name" name="Name" required>
@@ -26,12 +26,6 @@
           name="email" [(ngModel)]="clientDetails.email" required
           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
         <small class="text-muted">Please enter a valid email address.</small>
-        </div>
-
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.password"  
-                 name="password" [(ngModel)]="clientDetails.password" required>
         </div>
 
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="!form.valid">Save</button>&nbsp;

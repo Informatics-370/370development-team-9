@@ -6,7 +6,7 @@
 
     <h2>Add Admin</h2>
       
-    <form #form="ngForm" (ngSubmit)="AddAdmin()">
+    <form #form="ngForm" (ngSubmit)="AddAdmin()" autocomplete="off">
         <div class="mb-3">
             <label for="Name" class="form-label">Admin Name</label>
             <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "adminDetails.name"     
