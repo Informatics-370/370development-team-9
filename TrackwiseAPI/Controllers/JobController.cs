@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.Globalization;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.BingMapsAPI;
@@ -132,13 +133,14 @@ namespace TrackwiseAPI.Controllers
             var job = new Job
             {
                 Job_ID = Job_ID,  
-                StartDate = DateTime.ParseExact("2023-07-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
-                DueDate = DateTime.ParseExact("2023-07-31 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture),
+                StartDate = jvm.StartDate,
+                DueDate = jvm.DueDate,
                 Pickup_Location = jvm.Pickup_Location,
                 Dropoff_Location = jvm.Dropoff_Location,
                 Total_Weight = jvm.Total_Weight,
                 Admin_ID = jvm.Admin_ID,
-                Job_Type_ID = jvm.Job_Type_ID
+                Job_Type_ID = jvm.Job_Type_ID,
+                Job_Status_ID = jvm.Job_Status_ID
             };
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
@@ -172,12 +174,16 @@ namespace TrackwiseAPI.Controllers
             }
 
 
-            double JobHrs = 0;
-            double x = 0; int deliveries = 0;
-            
+            double JobHrs = 16.00; //dis die ure wat jy het om die job te doen.
+            double x = 0; int deliveries = 0; double y = 0;
+            double jobweight = 0;
+            double deliveryweight = 0;
+            double remainingweight = 0;
+            double piele = 0;
+
             if (drivers.Length>0 && trucks.Length>0 && trailers.Length>0) 
             {
-                if (totalTravelTime < JobHrs)
+                if (JobHrs<totalTravelTime)
                 {
                     return NotFound("Not enough time for delivery");
                 }
@@ -185,10 +191,16 @@ namespace TrackwiseAPI.Controllers
                 {
                     return NotFound("Delivery weight less than 30");
                 }
-                //35ton per trailer - > 35/35 = 1 trips nodig van 35ton
-                // -> 70/35 = 2 trips nodig van 35ton
-                x = job.Total_Weight / 35;
+
+                x = job.Total_Weight / 35; //   100/35 = 2.8 -> 2dels van 35 
                 deliveries = (int)x;
+
+                jobweight = (job.Total_Weight - (job.Total_Weight % 35))/deliveries; //35
+                remainingweight = job.Total_Weight - (deliveries * 35); // 30
+                if (remainingweight >= 30)
+                {
+                    deliveries++; //plus delivery vir die laaste 30+ ton
+                }
 
                 if (deliveries == 1)
                 {
@@ -223,24 +235,32 @@ namespace TrackwiseAPI.Controllers
                     var delivery = new Delivery
                     {
                         Delivery_ID = Delivery_ID,
-                        Delivery_Weight = job.Total_Weight,
+                        Delivery_Weight = jobweight,
                         Driver_ID = driverid,
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID
                     };
-                    try
+                    using (var transaction = _jobRepository.BeginTransaction()) // Begin the database transaction
                     {
-                        _jobRepository.Add(job);
-                        await _jobRepository.SaveChangesAsync();
-                        _jobRepository.Add(delivery);
-                        await _jobRepository.SaveChangesAsync();
-                    }
-                    catch (Exception)
-                    {
-                        return BadRequest("Invalid transaction");
-                    }
+                        try
+                        {
+                            _jobRepository.Add(job);
+                            _jobRepository.Add(delivery);
+                            //update statusses of the users
+                            driver.Driver_Status_ID = "2";
+                            truck.Truck_Status_ID = "2";
+                            trailer.Trailer_Status_ID = "2";
 
+                            await _jobRepository.SaveChangesAsync();
+                            transaction.Commit(); // Commit the transaction if everything is successful
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback(); // Rollback the transaction if an exception occurs
+                            return BadRequest("Invalid transaction");
+                        }
+                    }
                     return Ok(job);
                 }
                 if (deliveries>1)
@@ -275,38 +295,146 @@ namespace TrackwiseAPI.Controllers
                         }
                         var trailerId = trailer.TrailerID;
 
+                        piele = job.Total_Weight;
                         var deliveries1 = new List<Delivery>();
                         for (int i = 0; i < deliveries; i++)
                         {
+                            var Delivery_ID = Guid.NewGuid().ToString();
+                            var deliveryObj = new Delivery
+                            {
+                                
+                                Delivery_ID = Delivery_ID,
+                                Delivery_Weight = jobweight,
+                                Driver_ID = driverId,
+                                TruckID = truckId,
+                                TrailerID = trailerId,
+                                Job_ID = job.Job_ID
+                            };
+                            deliveries1.Add(deliveryObj);
+                            
+                            piele -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
+                            if((piele < 35) && (piele >= 30))
+                            {
+                                jobweight = piele;
+                            }
+                        }
+                        using (var transaction = _jobRepository.BeginTransaction())
+                        {
+                            try
+                            {
+                                _jobRepository.Add(job);
+                                foreach (var deliveryObj in deliveries1)
+                                {
+                                    _jobRepository.Add(deliveryObj);
+                                }
+                                // Update the statusses
+                                driver.Driver_Status_ID = "2";
+                                truck.Truck_Status_ID = "2";
+                                trailer.Trailer_Status_ID = "2";
+
+                                // Save changes to the database
+                                await _jobRepository.SaveChangesAsync();
+                                transaction.Commit(); // Commit the transaction if everything is successful
+                            }
+                            catch (Exception ex)
+                            {
+                                transaction.Rollback(); // Rollback the transaction if an exception occurs
+                                return BadRequest("Invalid transaction");
+                            }
+                        }
+                        return Ok(job);
+                    }
+                    else // Multiple drivers are required for all deliveries
+                    {
+                        int driversNeeded = (int)Math.Ceiling(totalsolotime / JobHrs);
+                        int trucksNeeded = driversNeeded; // Each driver must have a truck
+                        int trailersNeeded = driversNeeded; // Each driver must have a trailer
+
+                        // Check if we have enough available drivers, trucks, and trailers
+                        if (drivers.Length < driversNeeded || trucks.Length < trucksNeeded || trailers.Length < trailersNeeded)
+                        {
+                            return NotFound("Not enough available drivers/trucks/trailers for all deliveries");
+                        }
+                        piele = job.Total_Weight;
+                        List<Delivery> allDeliveries = new List<Delivery>();
+                        for (int i = 0; i < deliveries; i++)
+                        {
+                            // DRIVER
+                            var driver = drivers[i % drivers.Length]; // Distribute deliveries among available drivers
+                            var driverId = driver.Driver_ID;
+
+                            // TRUCK
+                            var truck = trucks[i % trucks.Length]; // Distribute deliveries among available trucks
+                            var truckId = truck.TruckID;
+
+                            // TRAILER
+                            var trailer = trailers[i % trailers.Length]; // Distribute deliveries among available trailers
+                            var trailerId = trailer.TrailerID;
 
                             var Delivery_ID = Guid.NewGuid().ToString();
                             var deliveryObj = new Delivery
                             {
                                 Delivery_ID = Delivery_ID,
-                                Delivery_Weight = job.Total_Weight/deliveries,
+                                Delivery_Weight = jobweight,
                                 Driver_ID = driverId,
                                 TruckID = truckId,
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID
                             };
 
-                            deliveries1.Add(deliveryObj);
-                        }
-                        foreach (var deliveryObj in deliveries1)
-                        {
-                            _jobRepository.Add(deliveryObj);
+                            allDeliveries.Add(deliveryObj);
+                            piele -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
+                            if ((piele < 35) && (piele >= 30))
+                            {
+                                jobweight = piele;
+                            }
                         }
 
-                        _jobRepository.Add(job);
-                        await _jobRepository.SaveChangesAsync();
+                        Driver driverToUpdate = null;
+                        Truck truckToUpdate = null;
+                        Trailer trailerToUpdate = null;
+
+                        using (var transaction = _jobRepository.BeginTransaction())
+                        {
+                            try
+                            {
+                                foreach (var deliveryObj in allDeliveries)
+                                {
+                                    _jobRepository.Add(deliveryObj);
+                                }
+
+                                _jobRepository.Add(job);
+
+                                // Update the statuses
+                                driverToUpdate = drivers.FirstOrDefault();
+                                truckToUpdate = trucks.FirstOrDefault();
+                                trailerToUpdate = trailers.FirstOrDefault();
+
+                                if (driverToUpdate != null) driverToUpdate.Driver_Status_ID = "2";
+                                if (truckToUpdate != null) truckToUpdate.Truck_Status_ID = "2";
+                                if (trailerToUpdate != null) trailerToUpdate.Trailer_Status_ID = "2";
+
+                                // Save changes to the database
+                                await _jobRepository.SaveChangesAsync();
+                                transaction.Commit(); // Commit the transaction if everything is successful
+                            }
+                            catch (Exception ex)
+                            {
+                                transaction.Rollback(); // Rollback the transaction if an exception occurs
+
+                                // Log the exception details
+                                Console.WriteLine(ex.Message);
+                                Console.WriteLine(ex.StackTrace);
+                                Console.WriteLine(ex.InnerException?.Message);
+                                Console.WriteLine(ex.InnerException?.StackTrace);
+
+                                return BadRequest("Invalid transaction");
+                            }
+                        }
+
                         return Ok(job);
                     }
-                    else if (totalsolotime>JobHrs)
-                    {
-
-                    }
                 }
-
 
             }
             else 
