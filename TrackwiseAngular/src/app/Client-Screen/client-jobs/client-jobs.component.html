@@ -1,0 +1,114 @@
+<div class="search-navbar">
+    <div class="navbar-container">
+      <div class="search-bar">
+        <input type="text" placeholder="Search for a product">
+        <button aria-label="Search">
+          <i class="material-icons">search</i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+<div class="view-container" >
+  
+    <!-- current----------------------------------------------- -->
+    <table class="job-table">
+      <thead>  
+        <tr class="title">
+            <th colspan="8">
+                <h3>Current Jobs</h3>
+            </th>
+        </tr>
+        <tr class="header">
+          <th>Job ID</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Type</th>
+          <th>Client</th>
+          <th>Status</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tr>
+        <td>1</td>
+        <td>2023-01-01</td>
+        <td>2023-05-01</td>
+        <td>Coal</td>
+        <td>Exxaro</td>
+        <td>Busy</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/job-details'">View</button>
+        </td>
+        <td>
+            <button class="cancel-btn">Cancel</button>
+          </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>2023-01-02</td>
+        <td>2023-05-01</td>
+        <td>Sand</td>
+        <td>Imperial</td>
+        <td>Completed</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>2023-01-03</td>
+        <td>2023-05-01</td>
+        <td>Weti</td>
+        <td>Starbucks</td>
+        <td>Not Started</td>
+      </tr>
+    </table>
+</div>
+
+    <!-- previous---------------------------------------------------- -->
+
+<div class="history-container">
+    <table class="history-table">
+        <thead>  
+          <tr class="history-title">
+              <th colspan="7">
+                  <h3>Current Jobs</h3>
+              </th>
+          </tr>
+          <tr class="header">
+            <th>Job ID</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Type</th>
+            <th>Client</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tr>
+          <td>1</td>
+          <td>2023-01-01</td>
+          <td>2023-05-01</td>
+          <td>Coal</td>
+          <td>Exxaro</td>
+          <td>Busy</td>
+          <td>
+            <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/job-details'">View</button>
+          </td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>2023-01-02</td>
+          <td>2023-05-01</td>
+          <td>Sand</td>
+          <td>Imperial</td>
+          <td>Completed</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>2023-01-03</td>
+          <td>2023-05-01</td>
+          <td>Weti</td>
+          <td>Starbucks</td>
+          <td>Not Started</td>
+        </tr>
+      </table>
+    </div>
