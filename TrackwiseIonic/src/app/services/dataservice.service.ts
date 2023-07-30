@@ -5,6 +5,7 @@ import { LoginUser } from '../shared/LoginUser';
 import { User } from '../shared/User';
 import { Delivery } from '../shared/Delivery';
 import { Forgotpass } from '../shared/Forgotpass';
+import { addDocument } from '../shared/Document';
 
 
 @Injectable({
@@ -36,6 +37,12 @@ export class DataserviceService {
   forgotPassword(email: Forgotpass) {
     console.log(email);
     return this.httpClient.post<any>(`${this.apiUrl}Mail/ForgotPasswordEmail`,email,this.httpOptions );
+  }
+
+  AddDoc(docrequest: addDocument): Observable<addDocument>
+  {
+    return this.httpClient.post<addDocument>(`${this.apiUrl}Job/AddDocuments/`, docrequest,this.httpOptions)
+    .pipe(map(result => result))
   }
 
 }

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using System.Data;
@@ -27,12 +29,15 @@ namespace TrackwiseAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IJobRepository _jobRepository;
-
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly TwDbContext _context;
 
         public JobController(
             IJobRepository jobRepository, 
             TruckRouteService truckRouteService,
-            UserManager<AppUser> userManager
+            UserManager<AppUser> userManager,
+            IWebHostEnvironment hostingEnvironment,
+            TwDbContext context
             )
 
         {
@@ -40,6 +45,8 @@ namespace TrackwiseAPI.Controllers
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
             _userManager = userManager;
+            _hostingEnvironment = hostingEnvironment;
+            _context = context;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -215,6 +222,29 @@ namespace TrackwiseAPI.Controllers
             return Ok(deliveryDTOs);
         }
 
+        [HttpPost]
+        [Route("AddDocuments")]
+        public async Task<IActionResult> AddDocuments(Document doc)
+        {
+            var document_ID = Guid.NewGuid().ToString();
+            var newDocument = new Document
+            {
+                Document_ID = document_ID,
+                Image = doc.Image,
+                Delivery_ID =doc.Delivery_ID,
+            };
+            try
+            {
+                _jobRepository.Add(newDocument);
+                await _jobRepository.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid transaction");
+            }
+
+            return Ok(newDocument);
+        }
 
         [HttpPost]
         [Route("CreateJob")]
@@ -347,7 +377,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Delivery_ID = Delivery_ID,
                         Delivery_Weight = jobweight,
-                        Driver_ID = "76761a1c-980f-40be-a9c7-796cee85cace",
+                        Driver_ID = "acbc5c17-aa74-42eb-8ba1-7c2c712e99ac", 
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID
