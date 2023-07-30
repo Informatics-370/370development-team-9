@@ -28,6 +28,7 @@ export class CustomerOrdersComponent {
   GetCustomerOrders() {
     this.dataService.GetCustomerOrders().subscribe(result => {
       let custOrderslist: any[] = result;
+      console.log(result);
       custOrderslist.forEach((element) => {
         this.customerOrders.push(element);
         console.log(element);

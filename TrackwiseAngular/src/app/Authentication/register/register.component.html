@@ -1,6 +1,11 @@
+<br>
+<br>
+<br>
+
 <div class="container">
   <div class="register-wrapper">
     <mat-card class="box" *ngIf="!isLoading">
+      <img class="logo" src="/assets/LTTLogo.jpg">
       <form class="register-form" [formGroup]="registerFormGroup">
         <div class="form-field">
           <input class="form-input" type="text" placeholder="Enter Name" formControlName="name" required>
@@ -35,7 +40,7 @@
 
         <!-- Rest of the form and submit button -->
         <button class="register-btn" (click)="RegisterUser()">Sign up</button><br>
-        <div class="login-section">Already have an account? Log in <a [routerLink]="['../register']">here.</a></div>
+        <div class="login-section">Already have an account? Log in <a [routerLink]="['/Authentication/login']">here.</a></div>
       </form>
     </mat-card>
     <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>

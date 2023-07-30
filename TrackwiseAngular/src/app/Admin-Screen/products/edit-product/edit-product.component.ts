@@ -58,4 +58,17 @@ export class EditProductComponent {
     })
   }
 
+  onImageSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      const file: File = event.target.files[0];
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        this.productDetails.image = e.target.result; // Assign the base64 string to the image property
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  }
+
 }

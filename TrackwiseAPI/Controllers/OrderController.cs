@@ -220,6 +220,12 @@ namespace TrackwiseAPI.Controllers
                     Total = order.Total,
                     Status = order.Status,
                     Customer_ID = order.Customer_ID,
+                    Customer = new CustomerDTO
+                    {
+                        Customer_ID = order.Customer_ID,
+                        Name = order.Customer.Name,
+                        LastName = order.Customer.LastName,
+                    },
                     OrderLines = order.OrderLines.Select(ol => new OrderLineDTO
                     {
                         Order_line_ID = ol.Order_line_ID,
@@ -294,6 +300,12 @@ namespace TrackwiseAPI.Controllers
                     Total = order.Total,
                     Status = order.Status,
                     Customer_ID = order.Customer_ID,
+                    Customer = new CustomerDTO
+                    {
+                        Customer_ID = order.Customer_ID,
+                        Name = order.Customer.Name,
+                        LastName = order.Customer.LastName,
+                    },
                     OrderLines = order.OrderLines.Select(ol => new OrderLineDTO
                     {
                         Order_line_ID = ol.Order_line_ID,

@@ -11,6 +11,7 @@ import { Product } from 'src/app/shared/product';
 export class AddProductComponent {
   productTypes: any[] = []; 
   productCategories: any[] = []; 
+  selectedImage: File | null = null;
   
   // AddProductRequest: {
   //   product_Name: string; 
@@ -28,6 +29,7 @@ export class AddProductComponent {
     product_Description:"",
     product_Price:0,
     quantity: 0,
+    image:"",
 
     product_Type:{
       product_Type_ID:"",
@@ -74,6 +76,19 @@ export class AddProductComponent {
         this.productCategories = result; // Assign the retrieved product types directly to the "productTypes" array
         console.log(this.productCategories);
       });
+    }
+
+    onImageSelected(event: any): void {
+      if (event.target.files && event.target.files.length > 0) {
+        const file: File = event.target.files[0];
+        const reader = new FileReader();
+    
+        reader.onload = (e: any) => {
+          this.AddProductRequest.image = e.target.result; // Assign the base64 string to the image property
+        };
+    
+        reader.readAsDataURL(file);
+      }
     }
 
 }

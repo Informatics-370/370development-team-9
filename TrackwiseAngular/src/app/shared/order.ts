@@ -7,7 +7,7 @@ export interface Order{
     total: number;
     status: string;
     customer_ID: string;
-    customer: Customer[];
+    customer?: Customer[];
     orderLines: OrderLine[];
 }
 

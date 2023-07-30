@@ -47,6 +47,12 @@
         <input type="number" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.quantity"  
                name="quantity" [(ngModel)]="AddProductRequest.quantity">
       </div>
+
+      <div class="mb-3">
+        <label for="image" style="padding-right: 20px;" class="form-label">Image Upload </label>
+        <input class="btn btn-info" type="file" accept="image/*"  id="image" (change)="onImageSelected($event)">
+      </div>
+
           
         
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="form.invalid">Add Product</button>&nbsp;

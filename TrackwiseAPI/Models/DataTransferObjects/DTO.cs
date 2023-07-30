@@ -9,7 +9,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double Total { get; set; }
         public string Status { get; set; }
         public string Customer_ID { get; set; }
-        public CustomerDTO Customer { get; set; } 
+        public CustomerDTO? Customer { get; set; } 
         public ICollection<OrderLineDTO> OrderLines { get; set; }
     }
 
