@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { CheckoutRequest, NewCard } from 'src/app/shared/cardPayment';
@@ -41,7 +42,7 @@ export class CartComponent implements OnInit {
     amount: 0
   }
 
-  constructor(private router: Router, public dataService: DataService) { }
+  constructor(private router: Router, public dataService: DataService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.CartItems();
@@ -145,6 +146,7 @@ export class CartComponent implements OnInit {
     this.dataService.CreateOrder(checkoutRequest).subscribe(
       () => {
         // Handle success or display success message
+        this.snackBar.open(` Order Successful`, 'X', {duration: 3000});
         sessionStorage.removeItem('cartItem');
         this.dataService.calculateQuantity();
         this.isLoading = false;

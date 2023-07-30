@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/app/services/data.service';
 import { Order } from 'src/app/shared/order';
 
@@ -10,7 +11,7 @@ import { Order } from 'src/app/shared/order';
 })
 export class CustomerOrdersComponent {
 
-  constructor(private dataService: DataService) {}
+  constructor(private dataService: DataService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.dataService.revertToLogin();
@@ -52,7 +53,7 @@ export class CustomerOrdersComponent {
     try {
       await this.dataService.CancelOrder(order.order_ID).toPromise();
       const updatedOrder = await this.dataService.GetOrder(order.order_ID).toPromise();
-
+      this.snackBar.open(`Order cancelled`, 'X', {duration: 3000});
       // Check if updatedOrder is not undefined before accessing its properties
       if (updatedOrder?.status) {
         const index = this.customerOrders.findIndex((o) => o.order_ID === order.order_ID);

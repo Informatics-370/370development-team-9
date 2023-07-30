@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Job } from 'src/app/shared/job';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class ClientJobsComponent {
     showAdd: boolean = false;
     minDateTime: string;
     
-    constructor(private dataService: DataService, private router:Router) {
+    constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) {
       this.minDateTime = this.getCurrentDateTime();
      }
     
@@ -96,7 +97,8 @@ export class ClientJobsComponent {
           this.jobs = [];
           this.GetClientJobs();
           this.showView = true;
-          this.showAdd = false;}
+          this.showAdd = false;
+          this.snackBar.open(`Job successfully registered`, 'X', {duration: 3000});}
         )   
   
   
