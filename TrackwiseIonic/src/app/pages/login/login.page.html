@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Login
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card class="box" *ngIf="!isLoading">
+
+    
+    <form [formGroup]="loginFormGroup">
+
+      <ion-item>
+        <ion-label>Email address</ion-label>
+        <ion-input type="emailaddress" formControlName="emailaddress" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Password</ion-label>
+        <ion-input type="password" formControlName="password" required></ion-input>
+      </ion-item>
+      <ion-button expand="full" (click)="LoginUser()">Log in</ion-button>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
+      <ion-button (click)="Route()"> Forgot password </ion-button>
+    </form> 
+
+  </ion-card>
+
+  <ion-spinner *ngIf="isLoading"></ion-spinner>
+</ion-content>
+
+
