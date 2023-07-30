@@ -59,6 +59,8 @@ import { ClientAddJobComponent } from './Client-Screen/client-add-job/client-add
 import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-edit-job.component';
 import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
 import { AdminGuard } from './Authentication/guards/adminGuard';
+import { CustomerGuard } from './Authentication/guards/customerGuard';
+import { ClientGuard } from './Authentication/guards/clientGuard';
 
 
 
@@ -107,24 +109,24 @@ const routes: Routes = [
   //Job components
   {path: 'Admin-Screen/jobs', component: JobsComponent},
 
-  { path: 'password/forgotpassword', component: ForgotpasswordComponent },
-  {path: 'Admin-Screen/jobs/job-details/:job_ID', component: JobDetailsComponent},
-  {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent},
+  { path: 'password/forgotpassword', component: ForgotpasswordComponent},
+  {path: 'Admin-Screen/jobs/job-details/:job_ID', component: JobDetailsComponent, canActivate: [AdminGuard]},
+  {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent, canActivate: [AdminGuard]},
 
 
   //Customer components--------------------------------------------------
-  { path: 'Customer-Screen/customer-products', component: CustomerProductComponent },
-  { path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent },
+  { path: 'Customer-Screen/customer-products', component: CustomerProductComponent},
+  { path: 'Customer-Screen/customer-orders', component: CustomerOrdersComponent, canActivate: [CustomerGuard] },
   { path: 'Customer-Screen/about-us', component: AboutUsComponent },
-  { path: 'Customer-Screen/cart', component: CartComponent },
-  { path: 'Customer-Screen/profile', component: ProfileComponent },
+  { path: 'Customer-Screen/cart', component: CartComponent, canActivate: [CustomerGuard] },
+  { path: 'Customer-Screen/profile', component: ProfileComponent, canActivate: [CustomerGuard] },
   { path: 'Customer-Screen/customer-home', component: CustomerHomeComponent },
 
   // Client components-------------------------------------------------
-  {path: 'Client-Screen/client-jobs', component: ClientJobsComponent},
-  {path: 'Client-Screen/client-add-jobs', component: ClientAddJobComponent},
-  {path: 'Client-Screen/client-edit-jobs', component: ClientEditJobComponent},
-  {path: 'Client-Screen/client-job-details', component: ClientJobDetailsComponent},
+  {path: 'Client-Screen/client-jobs', component: ClientJobsComponent, canActivate: [ClientGuard]},
+  {path: 'Client-Screen/client-add-jobs', component: ClientAddJobComponent, canActivate: [ClientGuard]},
+  {path: 'Client-Screen/client-edit-jobs', component: ClientEditJobComponent, canActivate: [ClientGuard]},
+  {path: 'Client-Screen/client-job-details', component: ClientJobDetailsComponent, canActivate: [ClientGuard]},
 
 ];
 
