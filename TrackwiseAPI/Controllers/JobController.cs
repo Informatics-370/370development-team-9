@@ -61,6 +61,45 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpGet]
+        [Route("GetAllClientJobs")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
+
+        public async Task<IActionResult> GetAllCustomerOrders()
+        {
+            try
+            {
+                // Retrieve the authenticated user's email address
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                // Query the customer repository to get the customer ID
+                var client = await _userManager.FindByEmailAsync(userEmail);
+
+                if (client == null)
+                {
+                    return BadRequest("Client not found");
+                }
+
+                var clientId = client.Id;
+
+                if (string.IsNullOrEmpty(clientId))
+                {
+                    return BadRequest("Client ID not found");
+                }
+
+                var result = await _jobRepository.GetAllClientJobsAsync(clientId);
+
+
+                if (result == null) return NotFound("Order does not exist");
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
+        [HttpGet]
         [Route("GetJob/{Job_ID}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
 
@@ -347,7 +386,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Delivery_ID = Delivery_ID,
                         Delivery_Weight = jobweight,
-                        Driver_ID = "76761a1c-980f-40be-a9c7-796cee85cace",
+                        Driver_ID = driverid,
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID

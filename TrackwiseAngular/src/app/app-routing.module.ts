@@ -126,7 +126,7 @@ const routes: Routes = [
   {path: 'Client-Screen/client-jobs', component: ClientJobsComponent, canActivate: [ClientGuard]},
   {path: 'Client-Screen/client-add-jobs', component: ClientAddJobComponent, canActivate: [ClientGuard]},
   {path: 'Client-Screen/client-edit-jobs', component: ClientEditJobComponent, canActivate: [ClientGuard]},
-  {path: 'Client-Screen/client-job-details', component: ClientJobDetailsComponent, canActivate: [ClientGuard]},
+  {path: 'Client-Screen/client-job-details/:job_ID/:userName', component: ClientJobDetailsComponent, canActivate: [ClientGuard]},
 
 ];
 

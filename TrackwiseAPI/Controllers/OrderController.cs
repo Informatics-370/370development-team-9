@@ -45,7 +45,7 @@ namespace TrackwiseAPI.Controllers
         [HttpGet]
         [Route("GetAllOrders")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> GetAllAdmins()
+        public async Task<IActionResult> GetAllOrders()
         {
             try
             {

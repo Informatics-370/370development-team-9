@@ -18,7 +18,6 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class ClientController : ControllerBase
     {
 
@@ -46,6 +45,7 @@ namespace TrackwiseAPI.Controllers
         //Get all clients
         [HttpGet]
         [Route("GetAllClients")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetAllClients()
         {
             try
@@ -62,6 +62,7 @@ namespace TrackwiseAPI.Controllers
         //Get a specific client
         [HttpGet]
         [Route("GetClient/{ClientID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
         public async Task<IActionResult> GetClientAsync(string ClientID)
         {
             try
@@ -81,6 +82,7 @@ namespace TrackwiseAPI.Controllers
         //Add a client
         [HttpPost]
         [Route("AddClient")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> AddClient(ClientVM cvm)
         {
             var clientId = Guid.NewGuid().ToString();
@@ -123,6 +125,7 @@ namespace TrackwiseAPI.Controllers
         //update client
         [HttpPut]
         [Route("EditClient/{ClientID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
         public async Task<ActionResult<ClientVM>> EditClient(string ClientID, ClientVM cvm)
         {
             try
@@ -171,6 +174,7 @@ namespace TrackwiseAPI.Controllers
         //Remove client
         [HttpDelete]
         [Route("DeleteClient/{ClientID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> DeleteClient(string ClientID)
         {
             try

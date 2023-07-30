@@ -461,6 +461,22 @@ form{
   font-weight: bold;
 }
 
+.cancel-job-btn{
+  border: 2px solid red;
+  border-radius: 10px;
+  background-color: white;
+  color: red;
+  font-weight: bold;
+  width: 100px;
+  height: 35px;
+}
+
+.cancel-job-btn:hover{
+  color: white;
+  background-color: red;
+  font-weight: bold;
+}
+
 .cancel-button {
   width: 150px;
   height: 40px;
