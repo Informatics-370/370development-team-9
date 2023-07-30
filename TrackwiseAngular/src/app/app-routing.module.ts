@@ -25,6 +25,7 @@ import { EditClientComponent } from './Admin-Screen/clients/edit-client/edit-cli
 import { AdminComponent } from './Admin-Screen/admin/admin.component';
 import { AddAdminComponent } from './Admin-Screen/admin/add-admin/add-admin.component';
 import { EditAdminComponent } from './Admin-Screen/admin/edit-admin/edit-admin.component';
+import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profile.component';
 
 import { TrucksComponent } from './Admin-Screen/trucks/trucks.component';
 import { AddTrucksComponent } from './Admin-Screen/trucks/add-trucks/add-trucks.component';
@@ -69,6 +70,7 @@ const routes: Routes = [
   { path: 'Authentication/register', component: RegisterComponent },
 
   { path: 'Admin-Screen/admin-home', component: AdminHomeComponent, canActivate: [AdminGuard] },
+  { path: 'Admin-Screen/admin-profile', component: AdminProfileComponent, canActivate: [AdminGuard] },
 
   { path: 'Admin-Screen/customers', component: CustomersComponent, canActivate: [AdminGuard] },
 
