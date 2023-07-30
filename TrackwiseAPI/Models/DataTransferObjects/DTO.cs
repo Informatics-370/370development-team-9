@@ -69,6 +69,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string PickupLocation { get; set; }
         public string DropoffLocation { get; set; }
         public string type { get; set; }
+        public string mapURL { get; set; }
         // Add other properties from Job that you want to include in the DTO
     }
 }
