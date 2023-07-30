@@ -10,6 +10,7 @@ namespace TrackwiseAPI.Models.Interfaces
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         Task<Job[]> GetAllAdminJobsAsync();
+        Task<Job[]> GetAllClientJobsAsync(string clientId);
         Task<Driver[]> GetAvailableDriverAsync();
         Task<Trailer[]> GetAvailableTrailerWithTypeAsync(string id);
         Task<Truck[]> GetAvailableTruckAsync();

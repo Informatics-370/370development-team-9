@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Job } from 'src/app/shared/job';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-jobs',
@@ -68,28 +69,51 @@ export class JobsComponent implements OnInit{
 
   GetUser(userID: string): Observable<string> {
     return new Observable((observer) => {
-      this.dataService.GetAdmin(userID).subscribe(
-        (result) => {
-          if (result == null) {
-            this.dataService.GetClient(userID).subscribe(
-              (name) => {
+      this.dataService.GetAdmin(userID).pipe(
+        catchError((error: HttpErrorResponse) => {
+          // Check if the error status is 404 (Not Found)
+          if (error.status === 404) {
+            // The admin was not found, try getting the client data
+            return this.dataService.GetClient(userID).pipe(
+              map((name) => {
+                // `name` will be a string in this case, so set it directly
                 this.users = name.name;
-                observer.next(this.users); // Emit the user name
-                observer.complete();
-              },
-              (error) => observer.error(error)
+                return this.users;
+              }),
+              catchError((clientError: HttpErrorResponse) => {
+                // Handle any errors that may occur while getting the client data
+                observer.error(clientError);
+                return throwError(clientError);
+              })
             );
           } else {
-            this.users = result.name;
-            observer.next(this.users); // Emit the user name
-            observer.complete();
+            // Handle other errors related to the GetAdmin call
+            observer.error(error);
+            return throwError(error);
           }
+        }),
+        map((result) => {
+          if (typeof result === 'string') {
+            // `result` is a string (not an Admin object)
+            // Do whatever you need to do with the string, e.g., store it in `this.users`
+            this.users = result;
+          } else {
+            // `result` is an Admin object
+            // Access the `name` property
+            this.users = result.name;
+          }
+          return this.users;
+        })
+      ).subscribe(
+        (userName) => {
+          observer.next(userName); // Emit the user name
+          observer.complete();
         },
         (error) => observer.error(error)
       );
     });
   }
-
+  
   CreateJob()
   {
     this.dataService.CreateJob(this.createJob).subscribe(
@@ -111,20 +135,25 @@ export class JobsComponent implements OnInit{
       const searchTextLower = this.searchText.toLowerCase();
 
       // Filter the admins based on the search text
-      const filteredAdmins = this.originalJobs.filter(jobs => {
-        const fullName = jobs.name.toLowerCase() + ' ' + jobs.lastname.toLowerCase();
-        const email = jobs.email.toLowerCase();
-        const password = jobs.password.toLowerCase();
+      const filteredJobs = this.originalJobs.filter(jobs => {
+        const jobID = jobs.job_ID.toLowerCase();
+        const startDate = jobs.startDate.toLowerCase();
+        const dueDate = jobs.dueDate.toLowerCase();
+        const jobType = jobs.jobType.name.toLowerCase();
+        const username = jobs.userName.toLowerCase();
+        const jobStatus = jobs.jobStatus.name.toLowerCase();
         return (
-          fullName.includes(searchTextLower) ||
-          jobs.lastname.toLowerCase().includes(searchTextLower) ||
-          email.includes(searchTextLower) || password.includes(searchTextLower)
-          
+          jobID.includes(searchTextLower) ||
+          startDate.includes(searchTextLower) || 
+          dueDate.includes(searchTextLower)||
+          jobType.includes(searchTextLower)||
+          username.includes(searchTextLower)||
+          jobStatus.includes(searchTextLower)
         );
       });
 
       // Update the admins array with the filtered results
-      this.jobs = filteredAdmins;
+      this.jobs = filteredJobs;
     }
   }
 

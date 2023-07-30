@@ -70,6 +70,7 @@ import { ClientJobsComponent } from './Client-Screen/client-jobs/client-jobs.com
 import { ClientAddJobComponent } from './Client-Screen/client-add-job/client-add-job.component';
 import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-edit-job.component';
 import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
+import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profile.component';
 
 
 
@@ -118,7 +119,7 @@ import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/cl
     ClientAddJobComponent,
     ClientEditJobComponent,
     ClientJobDetailsComponent,
-  
+    AdminProfileComponent
 
   ],
   imports: [
