@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Trailer } from 'src/app/shared/trailer';
@@ -29,7 +30,7 @@ export class AddTrailersComponent {
     },
   };
 
-  constructor(private dataService: DataService, private router:Router) { }
+  constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.dataService.revertToLogin();
@@ -38,7 +39,8 @@ export class AddTrailersComponent {
   AddTrailer()
   {
     this.dataService.AddTrailer(this.AddTrailerRequest).subscribe({
-      next: (trailer) => {this.router.navigate(['/Admin-Screen/trailers'])}
+      next: (trailer) => {this.router.navigate(['/Admin-Screen/trailers']);
+      this.snackBar.open(this.AddTrailerRequest.trailer_License + ` successfully registered`, 'X', {duration: 3000});}
     })
   }
 }

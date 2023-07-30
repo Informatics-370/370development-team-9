@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Admin } from 'src/app/shared/admin';
@@ -20,7 +21,7 @@ export class EditAdminComponent implements OnInit {
     
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -41,7 +42,9 @@ export class EditAdminComponent implements OnInit {
   EditAdmin()
   {    
     this.dataService.EditAdmin(this.adminDetails.admin_ID, this.adminDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/admins'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/admins']);
+      this.snackBar.open(`Admin successfully edited`, 'X', {duration: 3000});
+    }
     })
     console.log('yes')
   }

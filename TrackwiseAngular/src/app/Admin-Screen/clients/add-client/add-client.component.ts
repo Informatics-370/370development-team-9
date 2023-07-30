@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { Router } from '@angular/router';
 import { Client } from 'src/app/shared/client';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-client',
@@ -20,7 +21,7 @@ export class AddClientComponent {
     
   };
 
-  constructor(private dataService: DataService, private router:Router) { }
+  constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.dataService.revertToLogin();
@@ -29,7 +30,9 @@ export class AddClientComponent {
   AddClient()
   {
     this.dataService.AddClient(this.clientDetails).subscribe({
-      next: (client) => {this.router.navigate(['/Admin-Screen/clients'])}
+      next: (client) => {this.router.navigate(['/Admin-Screen/clients']);
+      this.snackBar.open(this.clientDetails.name + ` successfully registered`, 'X', {duration: 3000});
+    }
     })
   }
 }

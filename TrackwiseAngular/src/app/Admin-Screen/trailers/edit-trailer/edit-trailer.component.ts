@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Trailer } from 'src/app/shared/trailer';
@@ -30,7 +31,7 @@ export class EditTrailerComponent {
     },
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -52,7 +53,8 @@ export class EditTrailerComponent {
   EditTrailer()
   {    
     this.dataService.EditTrailer(this.trailerDetails.trailerID, this.trailerDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/trailers'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/trailers']);
+      this.snackBar.open(`Trailer successfully edited`, 'X', {duration: 3000});}
     })
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/services/data.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +21,7 @@ export class RegisterComponent {
   errorMessage: string = "";
   isLoading: boolean = false;
 
-  constructor(public dataService: DataService, private router: Router, private fb: FormBuilder) { }
+  constructor(public dataService: DataService, private router: Router, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
   matchPassword(control: AbstractControl) {
     const password = this.registerFormGroup.get('password')?.value;
@@ -57,6 +58,7 @@ export class RegisterComponent {
 
       this.dataService.Register(registerData).subscribe(
         (result: any) => {
+          this.snackBar.open(this.registerFormGroup.get('name')!.value + ` successfully registered`, 'X', {duration: 3000});
           this.router.navigateByUrl('Authentication/login');
         },
         (error) => {

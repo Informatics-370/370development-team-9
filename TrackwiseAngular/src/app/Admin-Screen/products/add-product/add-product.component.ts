@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Product } from 'src/app/shared/product';
@@ -48,7 +49,7 @@ export class AddProductComponent {
 
 
 
-  constructor(private dataService: DataService, private router:Router) { }
+  constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.dataService.revertToLogin();
@@ -60,7 +61,8 @@ export class AddProductComponent {
   {
     console.log(this.AddProductRequest);
     this.dataService.AddProduct(this.AddProductRequest).subscribe({
-      next: (product) => {this.router.navigate(['/Admin-Screen/products'])}
+      next: (product) => {this.router.navigate(['/Admin-Screen/products']);
+      this.snackBar.open(this.AddProductRequest.product_Name + ` successfully added`, 'X', {duration: 3000});}
     })
   }
 
