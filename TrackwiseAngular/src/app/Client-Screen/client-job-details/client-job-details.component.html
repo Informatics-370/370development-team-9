@@ -1,22 +1,28 @@
-<div class="details-container">
+<br>
+<br>
+
+<div class="details-container" *ngIf="showDetails==true">
+
+    <button class="details-btn-selected" (click)="ShowDetails()">View Details</button>
+    <button class="documents-btn" (click)="ShowDocuments()">Documents</button>
 
     <div class="item-container">
         <h3>Job Details</h3>
-        <button [routerLink]="'/Admin-Screen/jobs/edit-job'" class="edit-btn">
+        <!-- <button [routerLink]="'/Admin-Screen/jobs/edit-job'" class="edit-btn">
             Edit
-        </button>
-        <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+        </button> -->
+        <button [routerLink]="'/Client-Screen/client-jobs'" class="close-btn">
             Close
         </button>
     </div>
 
-    <table class="details-table">
+    <table class="details-table" *ngFor="let jobDetails of jobs">
         <tr>
             <th>
                 Job ID
             </th>
             <td>
-                1548552
+                {{jobDetails.job_ID}}
             </td>
         </tr>
         <tr>
@@ -24,7 +30,7 @@
                 Start Date
             </th>
             <td>
-                2023-05-05
+                {{jobDetails.startDate | date: 'dd/MM/yyyy'}}
             </td>
         </tr>
         <tr>
@@ -32,7 +38,7 @@
                 End Date
             </th>
             <td>
-                2023-08-09
+                {{jobDetails.dueDate | date: 'dd/MM/yyyy'}}
             </td>
         </tr>
         <tr>
@@ -40,7 +46,7 @@
                 Weight
             </th>
             <td>
-                30 000 kg
+                {{jobDetails.total_Weight}} T
             </td>
         </tr>
         <tr>
@@ -48,7 +54,7 @@
                 Status
             </th>
             <td>
-                Busy
+                {{jobDetails.jobStatus.name}}
             </td>
         </tr>
         <tr>
@@ -56,32 +62,47 @@
                 Type
             </th>
             <td>
-                Coal
+                {{jobDetails.jobType.name}}
             </td>
         </tr>
+        
         <tr>
             <th>
-                Driver(s)
+               Delivery information
             </th>
-            <td>
-                Johannes
-            </td>
+            <td >
+                <table class="delivery">
+                    <tr>
+                        <th>Driver</th>
+                        <th>Truck</th>
+                        <th>Trailer</th>
+                        <th>Load (T)</th>
+                    </tr>
+                    <tr *ngFor=" let jobdeliveries of jobDetails.deliveries">
+                        <td>{{jobdeliveries.driver.name + " " + jobdeliveries.driver.lastname}}</td>
+                        <td>{{jobdeliveries.truck.truck_License}} </td>
+                        <td>{{jobdeliveries.trailer.trailer_License}}</td>
+                        <td>{{jobdeliveries.delivery_Weight}}</td>
+                    </tr>
+                </table>  
+            </td> 
         </tr>
-        <tr>
-            <th>
-                Truck(s)
-            </th>
-            <td>
-                HJ56HUGP
-            </td>
-        </tr>
+       
         <tr>
             <th>
                 Client
             </th>
             <td>
-                Exxaro
+                {{jobDetails.userName}}
             </td>
         </tr>
     </table>
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------------- -->
+<div class="documents-container" *ngIf="showDocuments == true">
+    <button class="details-btn" (click)="ShowDetails()">View Details</button>
+    <button class="documents-btn-selected" (click)="ShowDocuments()">Documents</button>
+
 </div>

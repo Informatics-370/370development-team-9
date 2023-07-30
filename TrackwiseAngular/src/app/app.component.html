@@ -48,9 +48,10 @@
 
     <div class="navbar-buttons">
       <button mat-button [routerLink]="'/Customer-Screen/customer-home'">Home</button>
-      <button mat-button [routerLink]="'/Customer-Screen/customer-products'">Products</button>
+      <button mat-button [routerLink]="'/Customer-Screen/customer-products'" *ngIf="!dataService.isClient">Products</button>
       <button mat-button [routerLink]="'/Customer-Screen/about-us'">About Us</button>
       <button mat-button [routerLink]="'/Customer-Screen/customer-orders'" *ngIf="dataService.isCustomer">Orders</button>
+      <button mat-button [routerLink]="'/Customer-Screen/customer-orders'" *ngIf="dataService.isClient">Jobs</button>
     </div>
 
     <span class="spacer"></span>

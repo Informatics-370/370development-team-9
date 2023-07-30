@@ -1,6 +1,4 @@
 <br>
-<br>
-<br>
 
 <div class="container">
   <div class="register-wrapper">
@@ -21,20 +19,19 @@
         <div class="form-field">
           <input class="form-input" type="password" placeholder="Enter Password" formControlName="password" required>
           <div *ngIf="registerFormGroup.get('password')?.touched && registerFormGroup.get('password')?.hasError('required')">
-            <span>Password is required</span>
+            <span class="error-message">Password is required</span>
           </div>
           <div *ngIf="registerFormGroup.get('password')?.touched && registerFormGroup.get('password')?.hasError('pattern')">
-            <span>Password must have at least 8 characters, one uppercase letter, and one digit</span>
+            <span class="error-message">Password must have at least 8 characters, one uppercase letter, and one digit</span>
           </div>
         </div>
         
         <div class="form-field">
           <input class="form-input" type="password" placeholder="Re-enter password" formControlName="ReEnterPassword" required>
-          <div *ngIf="registerFormGroup.get('ReEnterPassword')?.touched && registerFormGroup.hasError('mismatch')">
-            <span>Passwords do not match</span>
+          <div *ngIf="registerFormGroup.get('ReEnterPassword')?.touched && registerFormGroup.get('ReEnterPassword')?.hasError('mismatch')">
+            <span class="error-message">Passwords do not match</span>
           </div>
         </div>
-        
         
         
 
