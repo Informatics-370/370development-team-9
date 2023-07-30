@@ -30,5 +30,7 @@ namespace TrackwiseAPI.Models.Entities
         [ForeignKey("TrailerID")]
         public Trailer Trailer { get; set; }
 
+        public ICollection<Document> Documents { get; set; }
+
     }
 }
