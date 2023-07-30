@@ -337,7 +337,7 @@ namespace TrackwiseAPI.Controllers
 
                 if (result == null) return NotFound("Order does not exist");
 
-                return Ok();
+                return Ok(orderDTOs);
             }
             catch (Exception)
             {
