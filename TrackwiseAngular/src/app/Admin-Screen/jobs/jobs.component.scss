@@ -1,5 +1,5 @@
 .view-container {
-  position: relative;
+  position: absolute;
   margin: 65px auto 0;
   padding: 20px;
   border: 3px solid #004F9E;
@@ -10,7 +10,7 @@
 }
 
 .add-container {
-  position: relative;
+  position: absolute;
   margin: 65px auto 0;
   padding: 20px;
   border: 3px solid #117fca;
@@ -19,6 +19,12 @@
   width: 50%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   background-color: #f2f2f2;
+}
+
+.main-container{
+    position: relative;
+    padding: 20px;
+    margin-left: 150px;
 }
 
 .view-jobs-btn {
@@ -247,7 +253,7 @@ label {
   border-radius: 20px;
   border: 2px solid #333;
   margin-bottom: 10px;
-  margin-left: auto;
+  margin-left: 10px;
   margin-right: 10%;
 }
 
@@ -402,4 +408,80 @@ form{
   color: white;
   background-color: #117fca;
   font-weight: bold;
+}
+
+
+.create-button {
+  width: 150px;
+  height: 40px;
+  border: 2px solid #117fca;
+  border-radius: 15px;
+  color: #117fca;
+  background-color: white;
+  margin-top: 10px;
+  margin-right: 10px;
+
+  font-weight: bold;
+}
+
+.create-button:hover {
+  font-weight: bold;
+  color: #f2f2f2;
+  background-color: #117fca;
+  border-color: #004F9E;
+}
+
+.form-item-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 20%;
+}
+
+form{
+  width: 90%;
+  align-items: center;
+  max-width: 600px;
+}
+
+
+.view-job-btn{
+  border: 2px solid #117fca;
+  border-radius: 10px;
+  background-color: white;
+  color: #117fca;
+  font-weight: bold;
+  width: 100px;
+  height: 35px;
+}
+
+.view-job-btn:hover{
+  color: white;
+  background-color: #117fca;
+  font-weight: bold;
+}
+
+.cancel-button {
+  width: 150px;
+  height: 40px;
+  border: 2px solid red;
+  border-radius: 15px;
+  color: red;
+  background-color: white;
+  margin-top: 10px;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.cancel-button:hover {
+  font-weight: bold;
+  color: #f2f2f2;
+  background-color: red;
+}
+
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center; /* Optional: To vertically center the buttons */
 }

@@ -1,3 +1,5 @@
+import { Customer } from "./customer";
+
 export interface Order{
 
     order_ID: string;
@@ -5,6 +7,7 @@ export interface Order{
     total: number;
     status: string;
     customer_ID: string;
+    customer?: Customer[];
     orderLines: OrderLine[];
 }
 

@@ -15,6 +15,8 @@ import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product
 export class CustomerProductComponent {
   productTypes: any[] = []; 
   productCategories: any[] = []; 
+  searchText: string = ''; // Property to store the search text
+  originalProducts: Product[] = []; // Property to store the original trailer data
 
   GetProductType: ProductTypes =
   {
@@ -64,7 +66,7 @@ GetAllProducts() {
   GetProducts() {
     this.dataService.GetProducts().subscribe((result) => {
       let productList: any[] = result;
-      
+
       // Add your code to process cart items and update product quantities
       let AddCartItem = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
       productList.forEach((product) => {
@@ -73,7 +75,7 @@ GetAllProducts() {
           product.quantity = CartItem.quantity - CartItem.cartQuantity;
         }
       });
-      
+      this.originalProducts = [...productList]
       // Push the products into the products array after processing
       productList.forEach((element) => {
         this.products.push(element);
@@ -164,6 +166,39 @@ GetAllProducts() {
     this.showModal = false;
   }
 
+  search() {
+    if (this.searchText.trim() === '') {
+      // If search text is empty, revert back to original product data
+      this.products = [...this.originalProducts];
+    } else {
+      const searchTextLower = this.searchText.toLowerCase();
+
+      // Filter the trailers based on the search text
+      const filteredProducts = this.originalProducts.filter(product => {
+        const name = product.product_Name.toLowerCase();
+        const description = product.product_Description.toLowerCase();
+        const price = product.product_Price;
+        const category = product.product_Category.name.toLowerCase();
+        const type = product.product_Type.name.toLowerCase();
+        
+        return (
+          name.includes(searchTextLower)||
+          price.toString().includes(searchTextLower)||
+          description.includes(searchTextLower) || 
+          category.includes(searchTextLower)||
+          type.includes(searchTextLower)
+        );
+      });
+
+      this.products = filteredProducts;
+    }
+  }
+
+  handleKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.search();
+    }
+  }
 
   // flipCard(product: Product): void {
   //   product.this.cardFlipped = !product.cardFlipped;

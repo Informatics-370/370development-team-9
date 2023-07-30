@@ -4,6 +4,7 @@ export interface Product {
     product_Description: string;
     product_Price:number;
     quantity:number;
+    image?:string;
     cartQuantity?:number;
 
     product_Type:{

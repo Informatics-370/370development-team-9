@@ -9,6 +9,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double Total { get; set; }
         public string Status { get; set; }
         public string Customer_ID { get; set; }
+        public CustomerDTO? Customer { get; set; } 
         public ICollection<OrderLineDTO> OrderLines { get; set; }
     }
 
@@ -20,6 +21,14 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double SubTotal { get; set; }
     }
 
+    public class CustomerDTO
+    {
+        public string Customer_ID { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+    }
+
     public class ProductDTO
     {
         public string Product_ID { get; set; }
@@ -27,6 +36,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Product_Description { get; set; }
         public double Product_Price { get; set; }
         public int Quantity { get; set; }
+        public string? Image { get; set; }
         public ProductTypeDTO Product_Type { get; set; }
         public ProductCategoryDTO Product_Category { get; set; }
     }

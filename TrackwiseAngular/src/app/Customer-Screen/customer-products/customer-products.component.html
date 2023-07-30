@@ -3,10 +3,11 @@
 <mat-toolbar class="search-navbar">
   <div class="navbar-container">
     <div class="search-bar">
-      <input type="text" placeholder="Search for a product">
-      <button aria-label="Search">
-        <i class="material-icons">search</i>
-      </button>
+      <input type="text" placeholder="Search for a product" aria-label="Search"
+      aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+    <button type="button" class="btn btn-outline-primary" (click)="search()">
+      <i class="material-icons">search</i>
+    </button>
     </div>
   </div>
 </mat-toolbar>
@@ -52,7 +53,8 @@
         <div class="front">
           <div class="header-content">
             <div class="centered">
-              <img src="assets/Mail.jpg">
+              <img [src]="'assets/Mail.jpg'" *ngIf="!product.image">
+              <img [src]="product.image" *ngIf="product.image">
             </div>
           </div>
 

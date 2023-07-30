@@ -54,7 +54,11 @@
                  name="quantity" [(ngModel)]="productDetails.quantity">
         </div>
 
-          
+        <div class="mb-3">
+          <label for="image" style="padding-right: 20px;" class="form-label">Image Upload </label>
+          <input class="btn btn-info" type="file" accept="image/*"  id="image" (change)="onImageSelected($event)" required>
+        </div>
+  
         
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
         <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/products">Cancel</button>

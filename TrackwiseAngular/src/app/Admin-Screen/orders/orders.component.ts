@@ -61,9 +61,9 @@ constructor(private dataService: DataService) { }
     })
   }
 
-  async CancelOrder(order: any) {
+  async CollectOrder(order: any) {
     try {
-      await this.dataService.CancelOrder(order.order_ID).toPromise();
+      await this.dataService.CollectOrder(order.order_ID).toPromise();
       const updatedOrder = await this.dataService.GetOrder(order.order_ID).toPromise();
 
       // Check if updatedOrder is not undefined before accessing its properties
@@ -74,8 +74,11 @@ constructor(private dataService: DataService) { }
         }
       }
     } catch (error) {
-      console.log('Error cancelling order:', error);
+      console.log('Error collecting order:', error);
     }
+    this.allCustomerOrders = [];
+    this.GetAllOrders();
+    this.CloseModal();
   }
 
 
