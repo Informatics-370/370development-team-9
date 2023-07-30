@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.ConstrainedExecution;
 using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.BingMapsAPI;
@@ -138,12 +139,30 @@ namespace TrackwiseAPI.Controllers
                 // Deserialize the JSON response into your RouteResponse model
                 var routeResponse = JsonConvert.DeserializeObject<RouteResponse>(truckRouteData);
 
+                var startLatitude = routeResponse.ResourceSets.FirstOrDefault()?.Resources.FirstOrDefault()?.RouteLegs.FirstOrDefault()?.ActualStart.Coordinates[0];
+                var startLongitude = routeResponse.ResourceSets.FirstOrDefault()?.Resources.FirstOrDefault()?.RouteLegs.FirstOrDefault()?.ActualStart.Coordinates[1];
+                var endLatitude = routeResponse.ResourceSets.FirstOrDefault()?.Resources.FirstOrDefault()?.RouteLegs.FirstOrDefault()?.ActualEnd.Coordinates[0];
+                var endLongitude = routeResponse.ResourceSets.FirstOrDefault()?.Resources.FirstOrDefault()?.RouteLegs.FirstOrDefault()?.ActualEnd.Coordinates[1];
+                var startWaypoint = new Location
+                {
+                    Latitude = startLatitude,
+                    Longitude = startLongitude
+                };
+                var endWaypoint = new Location
+                {
+                    Latitude = endLatitude,
+                    Longitude = endLongitude
+                };
+                var waypoints = new List<Location> { startWaypoint, endWaypoint };
+                string staticMapUrl = StaticMapService.GetStaticMapUrl(waypoints, _apiKey);
+
                 // Now you can access the data in the deserialized object
                 var distance = routeResponse.ResourceSets.FirstOrDefault()?.Resources.FirstOrDefault()?.RouteLegs.FirstOrDefault()?.TravelDistance;
                 var duration = routeResponse.ResourceSets.FirstOrDefault()?.Resources.FirstOrDefault()?.RouteLegs.FirstOrDefault()?.TravelDuration;
 
                 var truckRouteInfo = new TruckRouteInfo
                 {
+                    Mapurl = staticMapUrl,
                     Distance = (double)(distance * 1.60934), //km
                     Duration = (double)(duration / 3600)     //hrs
 
@@ -188,7 +207,8 @@ namespace TrackwiseAPI.Controllers
                     DueDate = delivery.Jobs.DueDate,
                     PickupLocation = delivery.Jobs.PickupLocation,
                     DropoffLocation = delivery.Jobs.DropoffLocation,
-                    type = delivery.Jobs.type
+                    type = delivery.Jobs.type,
+                    mapURL = delivery.Jobs.mapURL,
 
                 }
             }).ToArray();
@@ -203,25 +223,12 @@ namespace TrackwiseAPI.Controllers
         {
             // Retrieve the authenticated user's email address
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-            // Query the customer repository to get the customer ID
             var user = await _userManager.FindByEmailAsync(userEmail);
-
-            if (user == null)
-            {
-                return BadRequest("User not found");
-            }
-
+            if (user == null) {return BadRequest("User not found");}
             var userId = user.Id;
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                return BadRequest("User ID not found");
-            }
-
+            if (string.IsNullOrEmpty(userId)) {return BadRequest("User ID not found");}
 
             var Job_ID = Guid.NewGuid().ToString();
-
             var job = new Job
             {
                 Job_ID = Job_ID,  
@@ -232,15 +239,16 @@ namespace TrackwiseAPI.Controllers
                 Total_Weight = jvm.Total_Weight,
                 Creator_ID = userId,
                 Job_Type_ID = jvm.Job_Type_ID,
-                Job_Status_ID = "1"
+                Job_Status_ID = "1",
+                Map ="",
             };
-
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
             var drivers = await _jobRepository.GetAvailableDriverAsync();
             var trucks = await _jobRepository.GetAvailableTruckAsync();
 
             var truckRouteResult = await CalculateTruckRoute(job.Pickup_Location, job.Dropoff_Location);
+            string mapurl;
             double distanceInKm = 0; // Declare the distance variable with a default value
             double durationInHrs = 0; // Declare the duration variable with a default value
             if (truckRouteResult is OkObjectResult okObjectResult)
@@ -248,9 +256,14 @@ namespace TrackwiseAPI.Controllers
                 var truckRouteInfo = okObjectResult.Value as TruckRouteInfo;
 
                 // Now you can access the properties of truckRouteInfo like distance and duration
+                mapurl = truckRouteInfo.Mapurl;
+                job.Map = mapurl;
                 distanceInKm = truckRouteInfo.Distance;
                 durationInHrs = truckRouteInfo.Duration;
             }
+
+             
+
 
             // durationInHrs = 19;
             double breakInterval = 4.0;
@@ -267,7 +280,12 @@ namespace TrackwiseAPI.Controllers
             }
 
 
-            double JobHrs = 16.00; //dis die ure wat jy het om die job te doen.
+            //double JobHrs = 16.00; //dis die ure wat jy het om die job te doen.
+            var start = job.StartDate;
+            var due = job.DueDate;
+            TimeSpan timeSpan = due - start;
+            double JobHrs = timeSpan.TotalHours;
+
             double x = 0; int deliveries = 0; double y = 0;
             double jobweight = 0;
             double deliveryweight = 0;
@@ -329,7 +347,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Delivery_ID = Delivery_ID,
                         Delivery_Weight = jobweight,
-                        Driver_ID = driverid,
+                        Driver_ID = "76761a1c-980f-40be-a9c7-796cee85cace",
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID

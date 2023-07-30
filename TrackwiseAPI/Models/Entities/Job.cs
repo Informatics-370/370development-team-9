@@ -15,6 +15,7 @@ namespace TrackwiseAPI.Models.Entities
         public string Dropoff_Location { get; set; }
         public double Total_Weight { get; set; }
         public string Creator_ID { get; set; }
+        public string? Map { get;set; }
 
         //Foreign key for Client
         /*

@@ -11,6 +11,7 @@ using TrackwiseAPI.Models.BingMapsAPI;
 using TrackwiseAPI.Models.Password;
 using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
+using TrackwiseAPI.Models.ViewModels;
 
 public class Startup
 { 
@@ -32,6 +33,7 @@ public class Startup
         services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
         services.Configure<MailSettings>(Configuration.GetSection(nameof(MailSettings)));
         services.AddHttpClient<TruckRouteService>();
+        services.AddHttpClient<NewTruckRouteService>();
         services.AddSingleton<TruckRouteService>();
         services.AddCors(options => options.AddDefaultPolicy(
             include =>

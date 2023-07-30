@@ -70,6 +70,7 @@ namespace TrackwiseAPI.Models.Repositories
                     PickupLocation = delivery.Job.Pickup_Location,
                     DropoffLocation = delivery.Job.Dropoff_Location,
                     type = delivery.Job.JobType.Name,
+                    mapURL = delivery.Job.Map,
                 }
             }).ToArray();
 
