@@ -98,9 +98,9 @@
       <input required type="text" class="form-control" id="cvv" name="cvv" [(ngModel)]="newCard.cvv">
       <small class="form-text text-muted">3-digits found on back of the card</small>
     </div>
-
-      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total| number:"1.2-2"}}</button>
       <button *ngIf="!isLoading" class="btn btn-danger" (click)="cancelPayment()">Cancel</button>
+      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total| number:"1.2-2"}}</button>
+
     
     <div *ngIf="isLoading" class="spinner-border" role="status">
       <span class="sr-only">Loading...</span>

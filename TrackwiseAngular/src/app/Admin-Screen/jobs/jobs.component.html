@@ -80,7 +80,7 @@
         <option value="1">Coal</option>
         <option value="2">Fuel</option>
       </select>
-
+      <label>Weight: </label>
       <input class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required>
     </div>
 
@@ -89,14 +89,14 @@
       <label class="lbl-end">End Date</label>
     </div>
 
-    <div class="form-item-container">
-      <input class="date-start" type="datetime-local" name="startDate" [(ngModel)]="createJob.startDate" required>
-      <input class="date-end" type="datetime-local" name="dueDate" [(ngModel)]="createJob.dueDate" required>
-    </div>
+  <div class="form-item-container">
+    <input class="date-start" type="datetime-local" name="startDate" [(ngModel)]="createJob.startDate" [min]="minDateTime" required>
+    <input class="date-end" type="datetime-local" name="dueDate" [(ngModel)]="createJob.dueDate" [min]="minDateTime" required>
+  </div>
 
     <div class="footer-row">
-      <button [routerLink]="'/Admin-Screen/jobs/job-details'" class="cancel-button" type="submit">Cancel</button>
       <button class="create-button" type="submit">Create Job</button>
+      <button [routerLink]="'/Admin-Screen/jobs/job-details'" class="cancel-button" type="submit">Cancel</button>
     </div>
   </form>
 </div>
