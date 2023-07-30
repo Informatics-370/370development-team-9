@@ -19,7 +19,7 @@
   }
 
   .box {
-    margin-top: 15%;
+    margin-top: 20px;
     position: relative; /* This is required for positioning the pseudo-element */
     background-color: white; /* Set a background color for the .box element */
     height: auto; /* Set the desired height of the .box element */
@@ -133,4 +133,10 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+.error-message{
+  color: red;
+  font-weight: bold;
 }
