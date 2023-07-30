@@ -7,5 +7,6 @@ export interface Job {
     total_Weight:number,
     creator_ID:string,
     job_Type_ID : string,
-    job_Status_ID: string
+    job_Status_ID: string,
+    userName?:string
 }

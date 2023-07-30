@@ -11,6 +11,7 @@ namespace TrackwiseAPI.Models.Entities
         public string Product_Description { get; set; }
         public double Product_Price { get; set; }
         public int Quantity { get; set; }
+        public string? Image { get; set; }
 
         public Inventory Inventory { get; set; }
 

@@ -25,6 +25,7 @@
                   <th>Admin Name</th>
                   <th>Admin Surname</th>
                   <th>Email</th>
+                  <th>Phone Number</th>
                   <th></th>
                   <th></th>
                 </tr>
@@ -37,6 +38,7 @@
                   <td>{{admin.name}}</td>
                   <td>{{admin.lastname}}</td>
                   <td>{{admin.email}}</td>
+                  <td>{{admin.phoneNumber}}</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-admin', admin.admin_ID]">Edit</button></td>
             <td><button type="button" class="btn remove-btn" (click)="DeleteAdmin(admin.admin_ID)">Remove</button></td>
           </tr>

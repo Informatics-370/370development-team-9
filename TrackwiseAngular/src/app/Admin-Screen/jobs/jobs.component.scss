@@ -1,5 +1,5 @@
 .view-container {
-  position: relative;
+  position: absolute;
   margin: 65px auto 0;
   padding: 20px;
   border: 3px solid #004F9E;
@@ -10,7 +10,7 @@
 }
 
 .add-container {
-  position: relative;
+  position: absolute;
   margin: 65px auto 0;
   padding: 20px;
   border: 3px solid #117fca;
@@ -19,6 +19,12 @@
   width: 50%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   background-color: #f2f2f2;
+}
+
+.main-container{
+    position: relative;
+    padding: 20px;
+    margin-left: 150px;
 }
 
 .view-jobs-btn {

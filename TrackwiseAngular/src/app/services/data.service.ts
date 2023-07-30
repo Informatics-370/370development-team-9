@@ -103,23 +103,18 @@ export class DataService {
   /*getRole */
   getRole(): void {
     var role = JSON.parse(sessionStorage.getItem("Role")!)
-    console.log('Role:', role); // Add this line
     if (role == "Admin") {
       this.isLoggedIn = true;
       this.isAdmin = true;
-      console.log('Admin',this.isAdmin);
     } else if(role == "Customer"){
       this.isLoggedIn = true;
       this.isCustomer = true;
-      console.log('Customer',this.isCustomer);
     } else if(role == "Client"){
       this.isLoggedIn = true;
       this.isClient = true;
-      console.log('Client',this.isCustomer);
     } else if(role == "Driver"){
       this.isLoggedIn = true;
       this.isDriver = true;
-      console.log('Driver',this.isCustomer);
     }
   } 
 
@@ -498,6 +493,13 @@ export class DataService {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Order>(`${this.apiUrl}Order/GetOrder/${order_ID}`, {headers});
+  }
+
+  CollectOrder(order_ID: string):Observable<Order>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<Order>(`${this.apiUrl}Order/CollectOrder/${order_ID}`, {} ,{headers});
   }
 
   CancelOrder(order_ID: string):Observable<Order>

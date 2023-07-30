@@ -26,7 +26,8 @@ export class JobDetailsComponent implements OnInit{
       next: (params) => {
         this.dataService.GetJob(params['job_ID']).subscribe({
           next: (response) => {
-            //let userName = params['job_Id/userName'];
+            let userName = params['userName'];
+            response.userName = userName;
             this.jobs.push(response);
             console.log(this.jobs)
           }

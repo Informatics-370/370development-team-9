@@ -27,7 +27,7 @@
                 Start Date
             </th>
             <td>
-                {{jobDetails.startDate}}
+                {{jobDetails.startDate | date: 'dd/MM/yyyy'}}
             </td>
         </tr>
         <tr>
@@ -35,7 +35,7 @@
                 End Date
             </th>
             <td>
-                {{jobDetails.dueDate}}
+                {{jobDetails.dueDate | date: 'dd/MM/yyyy'}}
             </td>
         </tr>
         <tr>
@@ -62,40 +62,35 @@
                 {{jobDetails.jobType.name}}
             </td>
         </tr>
+        
         <tr>
             <th>
-                Driver(s)
+               Delivery information
             </th>
             <td >
-                <ul>    
-                    <li *ngFor=" let driver of jobDetails.deliveries">
-                        {{driver.driver.name + " " + driver.driver.lastname}} 
-                    </li>
-                </ul>
-               
-            </td>
-
- 
+                <table class="delivery">
+                    <tr>
+                        <th>Driver</th>
+                        <th>Truck</th>
+                        <th>Trailer</th>
+                        <th>Load (T)</th>
+                    </tr>
+                    <tr *ngFor=" let jobdeliveries of jobDetails.deliveries">
+                        <td>{{jobdeliveries.driver.name + " " + jobdeliveries.driver.lastname}}</td>
+                        <td>{{jobdeliveries.truck.truck_License}} </td>
+                        <td>{{jobdeliveries.trailer.trailer_License}}</td>
+                        <td>{{jobdeliveries.delivery_Weight}}</td>
+                    </tr>
+                </table>  
+            </td> 
         </tr>
-        <tr>
-            <th>
-                Truck(s)
-            </th>
-            <td >   
-                <ul>    
-                    <li *ngFor=" let truck of jobDetails.deliveries">
-                        {{truck.truckID}} 
-                    </li>
-                </ul>
-               
-            </td>
-        </tr>
+       
         <tr>
             <th>
                 Client
             </th>
             <td>
-                {{jobDetails.creator_ID}}
+                {{jobDetails.userName}}
             </td>
         </tr>
     </table>

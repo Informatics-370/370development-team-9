@@ -36,6 +36,7 @@ namespace TrackwiseAPI.Controllers
                     Product_Description = p.Product_Description,
                     Product_Price = p.Product_Price,
                     Quantity = p.Quantity,
+                    Image = p.Image,
                     Product_Category = new ProductCategoryDTO
                     {
                         Product_Category_ID = p.ProductCategory.Product_Category_ID,
@@ -78,6 +79,7 @@ namespace TrackwiseAPI.Controllers
                     Product_Description = product.Product_Description,
                     Product_Price = product.Product_Price,
                     Quantity = product.Quantity,
+                    Image = product.Image,
                     Product_Category = new ProductCategoryDTO
                     {
                         Product_Category_ID = product.ProductCategory.Product_Category_ID,
@@ -109,33 +111,17 @@ namespace TrackwiseAPI.Controllers
         {
             var productId = Guid.NewGuid().ToString();
 
-            var productDto = new ProductDTO
+
+            var newProduct = new Product
             {
                 Product_ID = productId,
                 Product_Name = product.Product_Name,
                 Product_Description = product.Product_Description,
                 Product_Price = product.Product_Price,
                 Quantity = product.Quantity,
-                Product_Category = new ProductCategoryDTO
-                {
-                    Product_Category_ID = product.Product_Category.Product_Category_ID,
-                },
-                Product_Type = new ProductTypeDTO
-                {
-                    Product_Type_ID = product.Product_Type.Product_Type_ID,
-                }
-                // Map other properties as needed
-            };
-
-            var newProduct = new Product
-            {
-                Product_ID = productDto.Product_ID,
-                Product_Name = productDto.Product_Name,
-                Product_Description = productDto.Product_Description,
-                Product_Price = productDto.Product_Price,
-                Quantity = productDto.Quantity,
-                Product_Category_ID = productDto.Product_Category.Product_Category_ID,
-                Product_Type_ID = productDto.Product_Type.Product_Type_ID
+                Image = product.Image,
+                Product_Category_ID = product.Product_Category.Product_Category_ID,
+                Product_Type_ID = product.Product_Type.Product_Type_ID
                 // Map other properties as needed
             };
 
@@ -167,6 +153,7 @@ namespace TrackwiseAPI.Controllers
                     existingProduct.Product_Description == productModel.Product_Description &&
                     existingProduct.Product_Price == productModel.Product_Price &&
                     existingProduct.Quantity == productModel.Quantity &&
+                    existingProduct.Image == productModel.Image &&
                     existingProduct.Product_Category_ID == productModel.Product_Category.Product_Category_ID &&
                     existingProduct.Product_Type_ID == productModel.Product_Type.Product_Type_ID)
                 {
@@ -178,6 +165,7 @@ namespace TrackwiseAPI.Controllers
                 existingProduct.Product_Description = productModel.Product_Description;
                 existingProduct.Product_Price = productModel.Product_Price;
                 existingProduct.Quantity = productModel.Quantity;
+                existingProduct.Image = productModel.Image;
                 existingProduct.Product_Category_ID = productModel.Product_Category.Product_Category_ID;
                 existingProduct.Product_Type_ID = productModel.Product_Type.Product_Type_ID;
 

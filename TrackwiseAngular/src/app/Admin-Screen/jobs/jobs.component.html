@@ -1,3 +1,5 @@
+<div class="main-container">
+  <h2>Jobs</h2>
 <div class="view-container" *ngIf="showView==true">
 
   <button class="view-jobs-btn-selected" (click)="ShowView()">View Jobs</button>
@@ -39,7 +41,7 @@
         <td>{{job.userName}}</td>
         <td>{{job.jobStatus.name}}</td>
         <td>
-          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID]">View</button>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
       </tr>
     </tbody>
@@ -53,7 +55,7 @@
         <td>{{job.userName}}</td>
         <td>{{job.jobStatus.name}}</td>
         <td>
-          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID]">View</button>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
       </tr>
     </tbody>
@@ -75,7 +77,8 @@
     <div class="form-item-container">
       <label>Type:</label>
       <select class="dropdown" name="jobType" [(ngModel)]="createJob.job_Type_ID" required>
-        <option value="1">1</option>
+        <option value="1">Coal</option>
+        <option value="2">Fuel</option>
       </select>
 
       <input class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required>
@@ -96,4 +99,5 @@
       <button class="create-button" type="submit">Create Job</button>
     </div>
   </form>
+</div>
 </div>

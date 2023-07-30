@@ -110,7 +110,7 @@ const routes: Routes = [
   {path: 'Admin-Screen/jobs', component: JobsComponent},
 
   { path: 'password/forgotpassword', component: ForgotpasswordComponent},
-  {path: 'Admin-Screen/jobs/job-details/:job_ID', component: JobDetailsComponent, canActivate: [AdminGuard]},
+  {path: 'Admin-Screen/jobs/job-details/:job_ID/:userName', component: JobDetailsComponent, canActivate: [AdminGuard]},
   {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent, canActivate: [AdminGuard]},
 
 

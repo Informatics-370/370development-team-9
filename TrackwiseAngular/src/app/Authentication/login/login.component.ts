@@ -37,8 +37,12 @@ export class LoginComponent {
           this.loginFormGroup.reset();
   
           if (role == "Admin") {
-            this.router.navigateByUrl('Admin-Screen/admins');
+            this.router.navigateByUrl('Admin-Screen/admin-home');
           } else if (role == "Customer") {
+            this.router.navigateByUrl('Customer-Screen/customer-products');
+          } else if (role == "Client") {
+            this.router.navigateByUrl('Client-Screen/client-jobs');
+          } else {
             this.router.navigateByUrl('Customer-Screen/customer-products');
           }
         },
