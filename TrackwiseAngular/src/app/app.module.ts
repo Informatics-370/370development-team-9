@@ -21,6 +21,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'src/app/shared/material.module';
 
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
+
 import { AddDriverComponent } from './Admin-Screen/drivers/add-driver/add-driver.component';
 import { EditDriverComponent } from './Admin-Screen/drivers/edit-driver/edit-driver.component';
 
@@ -49,7 +52,26 @@ import { AddProductComponent } from './Admin-Screen/products/add-product/add-pro
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
-import { HomeComponent } from './Customer-Screen/home/home.component';
+
+
+import { CustomerProductComponent } from './Customer-Screen/customer-products/customer-products.component';
+import { AboutUsComponent } from './Customer-Screen/about-us/about-us.component';
+import { CartComponent } from './Customer-Screen/cart/cart.component';
+import { CustomerOrdersComponent } from './Customer-Screen/customer-orders/customer-orders.component';
+import { ProfileComponent } from './Customer-Screen/profile/profile.component';
+import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
+
+import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
+
+import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
+import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
+import { AdminHomeComponent } from './Admin-Screen/admin-home/admin-home.component';
+import { ClientJobsComponent } from './Client-Screen/client-jobs/client-jobs.component';
+import { ClientAddJobComponent } from './Client-Screen/client-add-job/client-add-job.component';
+import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-edit-job.component';
+import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
+import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profile.component';
+
 
 
 @NgModule({
@@ -82,9 +104,23 @@ import { HomeComponent } from './Customer-Screen/home/home.component';
     EditProductComponent,
     LoginComponent,
     RegisterComponent,
-    HomeComponent,
-   
- 
+
+    CustomerProductComponent,
+    CustomerOrdersComponent,
+    CartComponent,
+    AboutUsComponent,
+    ForgotpasswordComponent,
+    ProfileComponent,
+    CustomerHomeComponent,
+    JobDetailsComponent,
+    EditJobComponent,
+    AdminHomeComponent,
+    ClientJobsComponent,
+    ClientAddJobComponent,
+    ClientEditJobComponent,
+    ClientJobDetailsComponent,
+    AdminProfileComponent
+
   ],
   imports: [
     BrowserModule,
@@ -99,7 +135,11 @@ import { HomeComponent } from './Customer-Screen/home/home.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

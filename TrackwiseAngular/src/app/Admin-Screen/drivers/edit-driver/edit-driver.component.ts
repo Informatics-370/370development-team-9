@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Driver } from 'src/app/shared/driver';
@@ -12,19 +13,21 @@ export class EditDriverComponent implements OnInit{
 
   driverDetails: Driver =
   {
-    driver_ID:0,
+    driver_ID:"",
     name:"",
     lastname:"",
     phoneNumber:"",
-    driver_Status_ID:0,
+    email:"",
+    password:"",
+    driver_Status_ID:"",
     driverStatus:{
-      driver_Status_ID:0,
+      driver_Status_ID:"",
       status:"",
       description:""
     },
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -38,12 +41,16 @@ export class EditDriverComponent implements OnInit{
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditDriver()
   {    
     this.dataService.EditDriver(this.driverDetails.driver_ID, this.driverDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/drivers'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/drivers']);
+      this.snackBar.open(`Driver successfully edited`, 'X', {duration: 3000});
+    }
     })
     console.log('yes')
   }

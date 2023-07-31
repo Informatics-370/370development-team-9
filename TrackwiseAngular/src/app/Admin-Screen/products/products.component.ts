@@ -18,6 +18,7 @@ export class ProductsComponent {
   
     ngOnInit(): void {
       this.GetProducts();
+      this.dataService.revertToLogin();
     }
   
   
@@ -45,15 +46,16 @@ export class ProductsComponent {
           const name = product.product_Name.toLowerCase();
           const description = product.product_Description.toLowerCase();
           const price = product.product_Price;
-          const category = product.productCategory.name.toLowerCase();
+          const category = product.product_Category.name.toLowerCase();
+          const type = product.product_Type.name.toLowerCase();
           
           return (
             name.includes(searchTextLower)||
             price.toString().includes(searchTextLower)||
             description.includes(searchTextLower) || 
             name.includes(searchTextLower) ||
-            category.includes(searchTextLower)
-       
+            category.includes(searchTextLower)||
+            type.includes(searchTextLower)
           );
         });
   
@@ -68,7 +70,7 @@ export class ProductsComponent {
       }
     }
   
-    DeleteProduct(ProductID:number)
+    DeleteProduct(ProductID:string)
     {
       this.dataService.DeleteProduct(ProductID).subscribe({
         next: (response) => location.reload()

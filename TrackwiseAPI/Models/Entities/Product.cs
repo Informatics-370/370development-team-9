@@ -6,21 +6,23 @@ namespace TrackwiseAPI.Models.Entities
     public class Product
     {
         [Key]
-        public int Product_ID { get; set; }
+        public string Product_ID { get; set; }
         public string Product_Name { get; set; }
         public string Product_Description { get; set; }
         public double Product_Price { get; set; }
+        public int Quantity { get; set; }
+        public string? Image { get; set; }
 
         public Inventory Inventory { get; set; }
 
 
         //Foreign Key for Product_Category
-        public int Product_Category_ID { get; set; }
+        public string Product_Category_ID { get; set; }
         [ForeignKey("Product_Category_ID")]
         public ProductCategory ProductCategory { get; set; }
 
         //Foreign Key for Product_Type
-        public int Product_Type_ID { get; set; }
+        public string Product_Type_ID { get; set; }
         [ForeignKey("Product_Type_ID")]
         public ProductType ProductType { get; set; }
 

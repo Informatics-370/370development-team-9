@@ -11,6 +11,12 @@ using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
 using TrackwiseAPI.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
+using System.Runtime.Intrinsics.X86;
+using Microsoft.EntityFrameworkCore;
+using System.Web;
+using TrackwiseAPI.Models.Password;
+using System.Security.Cryptography;
+using TrackwiseAPI.Models.Email;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -21,106 +27,63 @@ namespace TrackwiseAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
-        private readonly IAdminRepository _adminRepository;
-        private readonly IClientRepository _clientRepository;
         private readonly ICustomerRepository _customerRepository;
-        private readonly IDriverRepository _driverRepository;
-        private readonly IProductRepository _productRepository;
-        private readonly ISupplierRepository _supplierRepository;
-        private readonly ITrailerRepository _trailerRepository;
-        private readonly ITruckRepository _truckRepository;
+        private readonly IEmailService _emailService;
+        private readonly TwDbContext _context;
+        private readonly MailController _mailController;
 
         public UserController(UserManager<AppUser> userManager,
-     IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
+            IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            IAdminRepository adminRepository,
-            IClientRepository clientRepository,
-            ICustomerRepository customerRepository,
-            IDriverRepository driverRepository,
-            IProductRepository productRepository,
-            ISupplierRepository supplierRepository,
-            ITrailerRepository trailerRepository,
-            ITruckRepository truckRepository)
+            ICustomerRepository customerRepository, 
+            TwDbContext context, 
+            IEmailService emailService,
+            MailController mailController)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
-            _adminRepository = adminRepository;
-            _clientRepository = clientRepository;
             _customerRepository = customerRepository;
-            _driverRepository = driverRepository;
-            _productRepository = productRepository;
-            _supplierRepository = supplierRepository;
-            _trailerRepository = trailerRepository;
-            _truckRepository = truckRepository;
+            _context = context;
+            _emailService = emailService;
+            _mailController = mailController;
         }
-/*
-        [HttpPost]
-        [Route("AddNewAdmin")]
-        public async Task<IActionResult> AddNewAdmin(AdminVM avm)
-        {
-            var adminId = Guid.NewGuid().ToString();
 
-            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password };
+
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register(CustomerVM cvm)
+        {
+            var customerId = Guid.NewGuid().ToString();
+            var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
 
             try
             {
-                _adminRepository.Add(admin);
-                await _adminRepository.SaveChangesAsync();
+                _customerRepository.Add(customer);
+                await _customerRepository.SaveChangesAsync();
 
                 var user = new AppUser
                 {
-                    Id = adminId,
-                    UserName = avm.Email,
-                    Email = avm.Email
+                    Id = customerId,
+                    UserName = cvm.Email,
+                    Email = cvm.Email
                 };
+                var result = await _userManager.CreateAsync(user, cvm.Password);
 
-                var result = await _userManager.CreateAsync(user, avm.Password);
+                await _userManager.AddToRoleAsync(user, "Customer");
 
-                await _userManager.AddToRoleAsync(user, "Admin");
-
-                if (result.Errors.Count() > 0)
+                if (result.Errors.Count() > 0) 
                     return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-
             }
             catch (Exception)
             {
                 return BadRequest("Invalid transaction");
             }
 
-            return Ok(admin);
+            return Ok(customer);
+
         }
-*/
 
-
-        [HttpPost]
-        [Route("Register")]
-        public async Task<IActionResult> Register(UserVM uvm)
-        {
-            var user = await _userManager.FindByIdAsync(uvm.emailaddress);
-
-            if (user == null)
-            {
-                user = new AppUser
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    UserName = uvm.emailaddress,
-                    Email = uvm.emailaddress
-                };
-
-                var result = await _userManager.CreateAsync(user, uvm.password);
-
-                await _userManager.AddToRoleAsync(user, "Customer");
-
-                if (result.Errors.Count() > 0) return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-            }
-            else
-            {
-                return Forbid("Account already exists.");
-            }
-
-            return Ok();
-        }
 
 
         [HttpPost]
@@ -154,8 +117,54 @@ namespace TrackwiseAPI.Controllers
                 return NotFound("User does not exist or invalid credentials");
             }
         }
+        /*
+        [HttpPost("forgot-password/{email}")]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var newclientmail = new NewClientMail { Email = user.Email, Name =user.UserName, Password="Test12345",PhoneNumber=user.PhoneNumber };
 
+            if (user==null)
+            {
+                return BadRequest("User not found");
+            }
 
+            //var mail = await _mailController.ForgotPasswordEmail(newclientmail);
+            await _context.SaveChangesAsync();
+            return Ok("Email has been sent");
+        }*/
+
+        /*
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPassword request)
+        {
+            //var user1 = await _userManager.FindByEmailAsync(request.Email);
+            //var user = await _context.Users.FirstOrDefaultAsync(u => u.PasswordResetToken == request.Token);
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user == null || user.ResetTokenExpires < DateTime.Now)
+            {
+                return BadRequest("Invalid token");
+            }
+
+            var resetPasswordResult = await _userManager.ResetPasswordAsync(user, request.Token, request.Password);
+            if (!resetPasswordResult.Succeeded)
+            {
+                // Password reset failed. You may handle specific error cases here if needed.
+                return BadRequest("Password reset failed.");
+            }
+            user.PasswordResetToken = null;
+            user.ResetTokenExpires = null;
+            await _context.SaveChangesAsync();
+
+            return Ok("Password successfully reset.");
+        }
+
+        private string CreateRandomToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        }
+        */
 
         [HttpGet]
         private async Task<ActionResult> GenerateJWTToken(AppUser user)
@@ -164,7 +173,8 @@ namespace TrackwiseAPI.Controllers
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
+        new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+        new Claim(ClaimTypes.Email, user.Email)
     };
 
             var roles = await _userManager.GetRolesAsync(user);

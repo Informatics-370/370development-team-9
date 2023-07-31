@@ -16,24 +16,47 @@ export class LoginComponent {
   })
 
   isLoading:boolean = false
+  errorMessage: string = '';
 
   constructor(private router: Router, private dataService: DataService, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
 
-  async LoginUser(){
-    if(this.loginFormGroup.valid)
-    {
-      this.isLoading = true
-
-      await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(result => {
-        localStorage.setItem('User', JSON.stringify(result));
-        const role = result.role;
-        localStorage.setItem('Role', JSON.stringify(role));
-        this.loginFormGroup.reset();
-        this.router.navigateByUrl('Admin-Screen/admins');
-      })
+  async LoginUser() {
+    if (this.loginFormGroup.valid) {
+      this.isLoading = true;
+  
+      await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
+        (result) => {
+          // Handle successful login
+          sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
+          sessionStorage.setItem('Token', result.token.value.token);
+          const role = result.role;
+          sessionStorage.setItem('Role', JSON.stringify(role));
+          this.loginFormGroup.reset();
+  
+          if (role == "Admin") {
+            this.router.navigateByUrl('Admin-Screen/admin-home');
+          } else if (role == "Customer") {
+            this.router.navigateByUrl('Customer-Screen/customer-products');
+          } else if (role == "Client") {
+            this.router.navigateByUrl('Client-Screen/client-jobs');
+          } else {
+            this.router.navigateByUrl('Customer-Screen/customer-products');
+          }
+        },
+        (error) => {
+          // Handle login error
+          if (error.status === 404) {
+            this.errorMessage = 'Incorrect email or password. Please try again.';
+          } else {
+            this.errorMessage = 'An error occurred. Please try again later.';
+          }
+          this.isLoading = false; // Stop loading spinner
+        }
+      );
     }
   }
+  
 }

@@ -1,7 +1,4 @@
-<br>
-<div class="row">
-<div class="col-lg-3 main-content"></div>
-<div class="col-lg-7 main-content">
+
 <div class="container container-fluid">
       
   <h2>Driver List</h2>
@@ -28,6 +25,7 @@
                 <tr>
                   <th>Driver Name</th>
                   <th>Driver Surname</th>
+                  <th>Email</th>
                   <th>Phone Number</th>
                   <th>Status</th>
                   <th></th>
@@ -41,6 +39,7 @@
                 <tr *ngFor="let driver of drivers">
                   <td>{{driver.name}}</td>
                   <td>{{driver.lastname}}</td>
+                  <td>{{driver.email}}</td>
                   <td>{{driver.phoneNumber}}</td>
                   <td>{{driver.driverStatus.status}}</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-driver', driver.driver_ID]">Edit</button></td>
@@ -49,5 +48,3 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>  

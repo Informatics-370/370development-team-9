@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Supplier } from 'src/app/shared/supplier';
@@ -14,13 +15,14 @@ export class EditSupplierComponent implements OnInit{
 
   EditSupplierReq: Supplier =
   {
-    supplier_ID: 0,
+    supplier_ID: "",
     name: '',
     email:'',
+    password:'',
     contact_Number:'',
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -34,12 +36,15 @@ export class EditSupplierComponent implements OnInit{
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditSupplier()
   {    
     this.dataService.EditSupplier(this.EditSupplierReq.supplier_ID, this.EditSupplierReq).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/suppliers'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/suppliers']);
+      this.snackBar.open(`Supplier successfully edited`, 'X', {duration: 3000});}
     })
     console.log('yes')
   }

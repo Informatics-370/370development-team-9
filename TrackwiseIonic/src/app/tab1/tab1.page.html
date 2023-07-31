@@ -1,0 +1,89 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Deliveries
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Deliveries</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="deliveries.length > 0; else noDeliveries">
+    <ion-list>
+      <ion-card class="card" *ngFor="let delivery of deliveries">
+        <ion-item lines="none">
+          <ion-row>
+            <!-- Image Row -->
+            <ion-col size="12" class="ion-text-center">
+              <ion-thumbnail style="width: 340px; height: 200px;">
+                <img src="{{ delivery.jobs.mapURL }}" style="object-fit: cover; width: 100%; height: 100%;">
+              </ion-thumbnail>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+        <ion-item>
+          <!-- Data Row -->
+          <ion-grid class="grid">
+            <ion-row>
+              <ion-col>
+                <p>Start Date: <br>{{ delivery.jobs.startDate | date:'yyyy-MM-dd'}}</p>
+              </ion-col>
+              <ion-col>
+                <p>Due Date: <br> {{ delivery.jobs.dueDate | date:'yyyy-MM-dd'}}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <p>Pickup Location: {{ delivery.jobs.pickupLocation }}</p>
+              </ion-col>
+              <ion-col>
+                <p>Dropoff Location: {{ delivery.jobs.dropoffLocation }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <p>Total Job Weight: <br>{{ delivery.delivery_Weight }} ton </p>
+              </ion-col>
+              <ion-col>
+                <p>Job Type: <br> {{ delivery.jobs.type }}</p>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <ion-item>
+                  <div>
+                    <input type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files, delivery)" style="display:none;">
+                    <ion-button  (click)="file.click()">Upload File</ion-button>
+                    <ion-button (click)="AddDoc()">Submit</ion-button>
+                    <div *ngIf="fileNameUploaded.length > 0">
+                    <span> {{fileNameUploaded}}</span>
+                    <ion-col>
+                      <ion-button (click)="Complete(delivery, fileNameUploaded.length)"> Complete Delivery</ion-button>
+                    </ion-col>
+                  </div>
+                  </div>
+                </ion-item> 
+              </ion-col>
+
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </ion-card>
+    </ion-list>
+  </ng-container>
+  <ng-template #noDeliveries>
+    <ion-card>
+      <ion-item>
+        <ion-label>
+          <h1>No current deliveries available</h1>
+        </ion-label>
+      </ion-item>
+    </ion-card>
+  </ng-template>
+
+</ion-content>

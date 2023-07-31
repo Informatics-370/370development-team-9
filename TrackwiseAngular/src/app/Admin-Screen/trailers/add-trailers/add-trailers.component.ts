@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Trailer } from 'src/app/shared/trailer';
@@ -11,33 +12,35 @@ import { Trailer } from 'src/app/shared/trailer';
 export class AddTrailersComponent {
   AddTrailerRequest: Trailer =
   {
-    trailerID:0,
+    trailerID:"",
     trailer_License:"",
     model:"",
     weight:0,
-    trailer_Status_ID:1,
+    trailer_Status_ID:"",
     trailerStatus:{
-      trailer_Status_ID:0,
+      trailer_Status_ID:"",
       status:"",
       description:""
     },
-    trailer_Type_ID:1,
+    trailer_Type_ID:"",
     trailerType:{
-      trailer_Type_ID:0,
+      trailer_Type_ID:"",
       name:"",
       description:""
     },
   };
 
-  constructor(private dataService: DataService, private router:Router) { }
+  constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddTrailer()
   {
     this.dataService.AddTrailer(this.AddTrailerRequest).subscribe({
-      next: (trailer) => {this.router.navigate(['/Admin-Screen/trailers'])}
+      next: (trailer) => {this.router.navigate(['/Admin-Screen/trailers']);
+      this.snackBar.open(this.AddTrailerRequest.trailer_License + ` successfully registered`, 'X', {duration: 3000});}
     })
   }
 }

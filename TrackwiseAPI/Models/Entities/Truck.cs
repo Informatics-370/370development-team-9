@@ -6,12 +6,12 @@ namespace TrackwiseAPI.Models.Entities
     public class Truck
     {
         [Key]
-        public int TruckID { get; set; }
+        public string TruckID { get; set; }
         public string Truck_License { get; set; }
         public string Model { get; set; }
 
         //Foreign Key for truck status
-        public int Truck_Status_ID { get; set; }
+        public string Truck_Status_ID { get; set; }
         [ForeignKey("Truck_Status_ID")]
         public TruckStatus TruckStatus { get; set; }
 

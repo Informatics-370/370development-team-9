@@ -28,7 +28,7 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.ToArrayAsync();
         }
 
-        public async Task<Truck> GetTruckAsync(int TruckID)
+        public async Task<Truck> GetTruckAsync(string TruckID)
         {
             IQueryable<Truck> query = _context.Trucks.Where(t => t.TruckID == TruckID).Include(t => t.TruckStatus);
             return await query.FirstOrDefaultAsync();

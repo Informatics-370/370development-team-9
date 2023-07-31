@@ -6,7 +6,7 @@
 
     <h2>Edit Product</h2>
       
-    <form #form="ngForm" (ngSubmit)="EditProduct()">
+    <form #form="ngForm" (ngSubmit)="EditProduct()" autocomplete="off">
         <div class="mb-3">
           <label for="product_name" class="form-label">Product Name</label>
           <input type="text" class="form-control" id="product_name" aria-describedby="trailer_License" [(ngModel)] = "productDetails.product_Name"     
@@ -27,7 +27,7 @@
       
         <div class="mb-3">
             <label for="category" class="form-label">Category</label>
-            <select class="form-select" id="category" [(ngModel)]="productDetails.product_Category_ID" name="category">
+            <select class="form-select" id="category" [(ngModel)]="productDetails.product_Category.product_Category_ID" name="category">
               <option value="1">Engine</option>
               <option value="2">Transmission</option>
               <option value="3">Suspension</option>
@@ -42,14 +42,23 @@
 
         <div class="mb-3">
           <label for="type" class="form-label">Type</label>
-          <select class="form-select" id="type" [(ngModel)]="productDetails.product_Type_ID" name="type">
+          <select class="form-select" id="type" [(ngModel)]="productDetails.product_Type.product_Type_ID" name="type">
             <option value="1">Truck</option>
             <option value="2">Trailer</option>
           </select>
         </div>
 
+        <div class="mb-3">
+          <label for="quantity" class="form-label">Quantity (Stock)</label>
+          <input type="text" class="form-control" id="quantity" [(ngModel)] = "productDetails.quantity"  
+                 name="quantity" [(ngModel)]="productDetails.quantity">
+        </div>
 
-          
+        <div class="mb-3">
+          <label for="image" style="padding-right: 20px;" class="form-label">Image Upload </label>
+          <input class="btn btn-info" type="file" accept="image/*"  id="image" (change)="onImageSelected($event)" required>
+        </div>
+  
         
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
         <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/products">Cancel</button>

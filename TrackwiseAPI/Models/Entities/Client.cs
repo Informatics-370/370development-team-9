@@ -7,15 +7,10 @@ namespace TrackwiseAPI.Models.Entities
     public class Client
     {
         [Key]
-        public int Client_ID { get; set; }
+        public string Client_ID { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
-
-
-        /*       //Foreign key for User_ID
-                public int User_ID { get; set; }
-                [ForeignKey("User_ID")]
-                public User User { get; set; }*/
-        public ICollection<Job> jobs { get; set; }
+        public string Email { get; set; }
+        public string? Password { get; set; }
     }
 }

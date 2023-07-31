@@ -18,6 +18,7 @@ export class ClientsComponent implements OnInit {
   
   ngOnInit(): void {
     this.GetClients();
+    this.dataService.revertToLogin();
   }
 
   GetClients() {
@@ -60,7 +61,7 @@ export class ClientsComponent implements OnInit {
     }
   }
 
-  DeleteClient(client_ID:number)
+  DeleteClient(client_ID:string)
   {
     this.dataService.DeleteClient(client_ID).subscribe({
       next: (response) => location.reload()
