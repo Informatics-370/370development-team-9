@@ -16,6 +16,7 @@ export class TrailersComponent {
 
   ngOnInit(): void {
     this.GetTrailers();
+    this.dataService.revertToLogin();
   }
 
 
@@ -67,7 +68,7 @@ export class TrailersComponent {
     }
   }
 
-  DeleteTrailer(TrailerID:number)
+  DeleteTrailer(TrailerID:string)
   {
     this.dataService.DeleteTrailer(TrailerID).subscribe({
       next: (response) => location.reload()

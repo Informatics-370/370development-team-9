@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -9,6 +12,7 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class TrailerController : ControllerBase
     {
         private readonly ITrailerRepository _trailerRepository;
@@ -37,7 +41,7 @@ namespace TrackwiseAPI.Controllers
         //Get a specific trailer
         [HttpGet]
         [Route("GetTrailer/{TrailerID}")]
-        public async Task<IActionResult> GetTrailerAsync(int TrailerID)
+        public async Task<IActionResult> GetTrailerAsync(string TrailerID)
         {
             try
             {
@@ -58,7 +62,8 @@ namespace TrackwiseAPI.Controllers
         [Route("AddTrailer")]
         public async Task<IActionResult> AddTrailer(TrailerVM tvm)
         {
-            var trailer = new Trailer { Trailer_License = tvm.Trailer_License, Model = tvm.Model, Weight = tvm.Weight, Trailer_Status_ID = tvm.Trailer_Status_ID, Trailer_Type_ID = tvm.Trailer_Type_ID };
+            var trailerId = Guid.NewGuid().ToString();
+            var trailer = new Trailer { TrailerID = trailerId, Trailer_License = tvm.Trailer_License, Model = tvm.Model, Weight = tvm.Weight, Trailer_Status_ID = tvm.Trailer_Status_ID, Trailer_Type_ID = tvm.Trailer_Type_ID };
 
             try
             {
@@ -77,7 +82,7 @@ namespace TrackwiseAPI.Controllers
         //update trailer
         [HttpPut]
         [Route("EditTrailer/{TrailerID}")]
-        public async Task<ActionResult<TrailerVM>> EditTrailer(int TrailerID, TrailerVM tvm)
+        public async Task<ActionResult<TrailerVM>> EditTrailer(string TrailerID, TrailerVM tvm)
         {
             try
             {
@@ -114,7 +119,7 @@ namespace TrackwiseAPI.Controllers
         //Remove trailer
         [HttpDelete]
         [Route("DeleteTrailer/{TrailerID}")]
-        public async Task<IActionResult> DeleteTrailer(int TrailerID)
+        public async Task<IActionResult> DeleteTrailer(string TrailerID)
         {
             try
             {

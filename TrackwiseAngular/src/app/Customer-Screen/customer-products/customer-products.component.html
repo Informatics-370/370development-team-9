@@ -1,0 +1,93 @@
+<!-- NavBar/Searchbar -->
+
+<mat-toolbar class="search-navbar">
+  <div class="navbar-container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search for a job" aria-label="Search"
+      aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+    <button type="button" class="btn btn-outline-primary" (click)="search()">
+      <i class="material-icons">search</i>
+    </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<div class="sidebar">
+  <form class="form-container">
+    <!-- Radio sort buttons -->
+    <h4>Sort by:</h4>
+    <input type="radio" name="radioGroup" id="NameAZ">
+    <label for="NameAZ">&nbsp;Name (A-Z)</label><br>
+    <input type="radio" name="radioGroup" id="NameZA">
+    <label for="NameZA">&nbsp;Name (Z-A)</label><br>
+    <input type="radio" name="radioGroup" id="LowHigh">
+    <label for="LowHigh">&nbsp;Price (Low - High)</label><br>
+    <input type="radio" name="radioGroup" id="HighLow">
+    <label for="HighLow">&nbsp;Price (High - Low)</label><br><br>
+
+    <h4>Filter by:</h4>
+    <div class="category-filter">
+      <label for="CategoryDropdown">Category:&nbsp;</label>
+      <select name="CategoryDropdown" id="CategoryDropdown">
+
+        <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
+      </select>
+    </div>
+
+    <div class="type-filter">
+      <label for="TypeDropdown">Type:&nbsp;</label>
+      <select name="TypeDropdown" id="TypeDropdown">
+
+        <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
+      </select>
+    </div><br>
+
+    <button class="resetBtn">Reset All</button>
+  </form>
+</div>
+
+<div class="main-content">
+  <div class="card-container">
+    <div class="viewDetails" *ngFor="let product of products" (click)="OpenModal(product)">
+      <mat-card class="card">
+        <div class="front">
+          <div class="header-content">
+            <div class="centered">
+              <img [src]="'assets/Mail.jpg'" *ngIf="!product.image">
+              <img [src]="product.image" *ngIf="product.image">
+            </div>
+          </div>
+
+          <div class="card-content">
+            <h6>{{product.product_Name}}</h6>
+            <div class="price">R {{product.product_Price | number:"1.2-2"}}
+              <p style="font-weight: lighter;">Available: ({{product.quantity}})</p>
+            </div>
+          </div>
+
+          <mat-card-footer>
+            <mat-card-actions>
+              <button mat-button class="AddToCartBtn" [disabled]="isOutOfStock(product)" (click)="AddItemToCart($event, product)" [ngClass]="{ 'OutOfStockBtn': isOutOfStock(product) }">
+                {{ isOutOfStock(product) ? 'Out of Stock' : 'Add to Cart' }}
+              </button>              
+            </mat-card-actions>
+          </mat-card-footer>
+        </div>
+
+        <div class="back">
+          <mat-card-subtitle>{{product.product_Description}}</mat-card-subtitle><br>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal && selectedProduct" class="ProductModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseModal()">&times;</span>
+    <h4>{{ selectedProduct.product_Name }}</h4>
+    <p>{{ selectedProduct.product_Description }}</p>
+    <p class="price">R {{selectedProduct.product_Price | number:"1.2-2"}}</p>
+  </div>
+</div>

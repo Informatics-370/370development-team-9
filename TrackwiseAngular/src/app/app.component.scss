@@ -1,4 +1,4 @@
-.side-nav {
+/* .side-nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -29,7 +29,7 @@
   }
 
   .user-icon {
-    /* ... */
+    
     background-image: url('/assets/TrackWiseLogo.jpg');
     background-size: 16px 16px;
     background-position: center;
@@ -42,5 +42,173 @@
   background-color: #ccc;
 }
 
+ */
+
+ .admin-navbar{
+  background-color: #117fca;
+  color: white;
+  // margin-top: -1150px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 0;
+
+ }
+
+ .Admin-MyAccount{
+    margin-left: auto;
+    margin-right: 10px;
+    border: #f2f2f2 solid 2px;
+ }
+
+ .Admin-MyAccount:hover{
+  background-color: #f2f2f2;
+  color: #117fca;
+  font-weight: bold;
+  margin-left: auto;
+  margin-right: 10px;
+  border: #f2f2f2 solid 2px;
+}
   
+ .side-container {
+  width: 200px;
+  margin-top: auto;
+  max-width: 220px;
+  background-color: #004F9E;
+  color: #f2f2f2;
+ 
+}
+
+.sidenav-options{
+  color: #f2f2f2;
+  font-weight: bold;
+}
+
+.content-container {
+  padding: 10px;
+
+}
+
+.mat-nav-list a.mat-list-item {
+  color: #FF0000 !important;
+}
+
+.nav-items{
+  color: #f2f2f2;
+}
+
+
+.navbar {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  background-color: #004F9E;
+  color: white;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
   
+}
+
+.navbar-title {
+  display: flex;
+  align-items: center;
+}
+
+.logo-image {
+  max-width: 100px; /* Adjust the width as needed */
+  height: auto; /* Preserve the aspect ratio */
+  border-radius: 5%;
+}
+
+.navbar-buttons {
+  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-buttons button {
+  background-color: transparent;
+  transition: background-color 0.5s ease;
+  font-weight: bold;
+}
+
+.navbar-buttons button:hover {
+  background-color: #f2f2f2;
+  color: #004F9E;
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.MyAccountDD{
+  margin-bottom: 8px;
+}
+
+.badge {
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  // padding: 4px;
+  border-radius: 50%;
+  margin-left: 4px;
+}
+
+.dropdown-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dropdown-icon {
+  margin-left: 5px;
+  margin-right: -5px; /* Add this to offset the icon position */
+}
+
+.dropdown-menu {
+  margin-left: -10px;
+  margin-right: -5px; /* Add this to adjust the menu position */
+}
+
+.menu-icon {
+  margin-right: 5px;
+}
+
+.search-bar-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px; /* Adjust the height as needed */
+}
+
+// .rounded-search {
+//   border-radius: 20px;
+//   overflow: hidden;
+//   background-color: #f2f2f2;
+//   padding: 2px; /* Adjust the padding as needed */
+//   width: 150px; /* Adjust the width as needed */
+// }
+
+// .search-icon {
+//   color: gray;
+//   margin-right: 5px;
+//   font-size: 16px; /* Adjust the font size as needed */
+// }
+
+// .mat-form-field {
+//   margin-bottom: 0; /* Adjust the margin as needed */
+// }
+
+// .navbar-buttons {
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+// }
+
+
+
+

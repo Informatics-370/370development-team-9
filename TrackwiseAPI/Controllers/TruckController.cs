@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -9,6 +12,7 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
     public class TruckController : ControllerBase
     {
         private readonly ITruckRepository _truckRepository;
@@ -36,7 +40,7 @@ namespace TrackwiseAPI.Controllers
         //Get a specific truck
         [HttpGet]
         [Route("GetTruck/{TruckID}")]
-        public async Task<IActionResult> GetTruckAsync(int TruckID)
+        public async Task<IActionResult> GetTruckAsync(string TruckID)
         {
             try
             {
@@ -57,7 +61,8 @@ namespace TrackwiseAPI.Controllers
         [Route("AddTruck")]
         public async Task<IActionResult> AddTruck(TruckVM tvm)
         {
-            var truck = new Truck { Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID};
+            var truckId = Guid.NewGuid().ToString();
+            var truck = new Truck { TruckID = truckId, Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID};
 
             try
             {
@@ -76,7 +81,7 @@ namespace TrackwiseAPI.Controllers
         //update truck
         [HttpPut]
         [Route("EditTruck/{TruckID}")]
-        public async Task<ActionResult<TruckVM>> EditTruck(int TruckID, TruckVM tvm)
+        public async Task<ActionResult<TruckVM>> EditTruck(string TruckID, TruckVM tvm)
         {
             try
             {
@@ -109,7 +114,7 @@ namespace TrackwiseAPI.Controllers
         //Remove truck
         [HttpDelete]
         [Route("DeleteTruck/{TruckID}")]
-        public async Task<IActionResult> DeleteTruck(int TruckID)
+        public async Task<IActionResult> DeleteTruck(string TruckID)
         {
             try
             {

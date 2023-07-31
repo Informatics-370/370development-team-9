@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Truck } from 'src/app/shared/truck';
 import { DataService } from 'src/app/services/data.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-trucks',
@@ -11,26 +12,28 @@ import { Router } from '@angular/router';
 export class AddTrucksComponent {
   AddTruckRequest: Truck =
   {
-    truckID:0,
+    truckID:"",
     truck_License:"",
     model:"",
-    truck_Status_ID:1,
+    truck_Status_ID:"",
     truckStatus:{
-      truck_Status_ID:0,
+      truck_Status_ID:"",
       status:"",
       description:""
     },
   };
 
-  constructor(private dataService: DataService, private router:Router) { }
+  constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.dataService.revertToLogin();
   }
 
   AddTruck()
   {
     this.dataService.AddTruck(this.AddTruckRequest).subscribe({
-      next: (truck) => {this.router.navigate(['/Admin-Screen/trucks'])}
+      next: (truck) => {this.router.navigate(['/Admin-Screen/trucks']);
+      this.snackBar.open(this.AddTruckRequest.truck_License +  ` successfully registered`, 'X', {duration: 3000});}
     })
   }
 }

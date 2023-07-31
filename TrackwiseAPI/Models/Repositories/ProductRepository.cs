@@ -30,10 +30,27 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.ToArrayAsync();
         }
 
-        public async Task<Product> GetProductAsync(int productid)
+        public async Task<Product> GetProductAsync(string productid)
         {
             IQueryable<Product> query = _context.Products.Where(c => c.Product_ID == productid).Include(c => c.ProductCategory).Include(c => c.ProductType);
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<ProductType[]> GetProductTypeAsync()
+        {
+            IQueryable<ProductType> query = _context.ProductTypes;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<ProductCategory[]> GetProductCategoryAsync()
+        {
+            IQueryable<ProductCategory> query = _context.ProductCategories;
+            return await query.ToArrayAsync();
+        }
+
+        public void Update(Product product)
+        {
+            _context.Products.Update(product);
         }
 
         public async Task<bool> SaveChangesAsync()

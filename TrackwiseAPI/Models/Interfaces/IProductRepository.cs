@@ -7,9 +7,13 @@ namespace TrackwiseAPI.Models.Interfaces
         void Add<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
+        void Update(Product product);
 
         //Supplier
         Task<Product[]> GetAllProductsAsync();
-        Task<Product> GetProductAsync(int productId);
+        Task<Product> GetProductAsync(string productId);
+        //Categories and type
+        Task<ProductCategory[]> GetProductCategoryAsync();
+        Task<ProductType[]> GetProductTypeAsync();
     }
 }

@@ -1,0 +1,313 @@
+.container {
+    margin-top: 80px;
+  }
+  
+  /* ---------------------top */
+  .top-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .top-row img {
+    width: 25%;
+    animation: slideFromLeft 2s ease;
+  }
+  
+  @keyframes slideFromLeft {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .top-row h3 {
+    margin-top: 1%;
+    font-size: 180%;
+    color: #117fca;
+  }
+  
+  /* --------------------mid */
+  .mid-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .about-us {
+    flex: 1; /* Let it take available space */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    // margin-right: 200px;
+    margin-top: 20px;
+  }
+  
+  .about-us-img {
+    width: auto;
+    height: 200px;
+    display: block; /* Add this to make the image a block-level element */
+    margin: 0 auto; /* Center the image horizontally */
+    border-radius: 5px;
+  }
+  
+  
+  .about-us-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .about-us-text h3{
+    margin-top: 1%;
+    color: #117fca;
+  }
+  
+  .about-us-text {
+    position: absolute;
+    margin-bottom: 25px;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    max-width: 60%;
+    border-radius: 5px;
+  }
+  
+  .about-us-text p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  /* ----------------------bottom */
+  .bottom-row {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    background-color: #282828;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row; /* Change to 'column' to stack elements vertically */
+    align-items: center;
+    height: 220px;
+    width: 93%;
+    max-width: 870px;
+  }
+  
+  .br-content {
+    /* margin-left: 200px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: #ffffff; /* Text color for the content */
+    width: auto;
+  }
+  
+  .br-content h3 {
+    text-align: left;
+    font-size: 24px;
+    color: #117fca;
+    margin-bottom: 10px;
+  }
+  
+  .br-content p {
+    font-size: 14px;
+    text-align: left;
+  }
+  
+  /* slideshow.component.css */
+  .slideshow-container {
+    position: relative;
+    width: 100%; /* Adjust the width to leave space for the text */
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    opacity: 0;
+    z-index: 0;
+  }
+  
+  .slide.active {
+    z-index: 1;
+    opacity: 1;
+  }
+  
+  .slide-image {
+    max-width: 220px;
+    max-height: auto;
+    display: block;
+    margin: 0 auto;
+    animation: fadeInOut 8s infinite;
+    border-radius: 10px;
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  
+  .contact-us-row {
+    margin-top: 20px;
+    background-color: #282828;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row; /* Change to 'column' to stack elements vertically */
+    align-items: center;
+    height: 220px;
+    color: #ffffff;
+    justify-content: center;
+  }
+  
+  .contact-details {
+    flex: 1; /* Let it take available space */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the left side */
+    padding-left: 20px; /* Add some left padding for better spacing */
+  }
+  
+  .details {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .icon-detail {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .mat-icon {
+    margin-right: 8px;
+  }
+  
+  .fb-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: #ffffff;
+    width: 150px;
+    height: 40px;
+    border-radius: 7px;
+    border: 2px solid #ffffff;
+  }
+  
+  .fb-button:hover {
+    background-color: #4267B2;
+  }
+  
+  .fb-button mat-icon,
+  .fb-button p {
+    margin: 0; /* To remove default margins */
+  }
+  
+  .fb-button mat-icon {
+    margin-right: 8px; /* Add some space between icon and text */
+  }
+  
+  .comment {
+    flex: 1; /* Let it take available space */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the content horizontally */
+    // margin-right: 200px;
+  }
+  
+  .rating-img {
+    width: auto;
+    height: 200px;
+    display: block; /* Add this to make the image a block-level element */
+    margin: 0 auto; /* Center the image horizontally */
+    border-radius: 5px;
+  }  
+  
+  .image-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .rating-text {
+    position: absolute;
+    margin-bottom: 25px;
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    max-width: 60%;
+    border-radius: 10px;
+  }
+  
+  .rating-text p {
+    margin: 0;
+    font-size: 14px;
+    color: #ffffff;
+  }
+  
+  /* ---------------------------- */
+  
+  .contact-us-table {
+    margin-left: auto;
+    margin-right: auto;
+    align-items: center;
+    margin-top: 20px;
+    background-color: #282828;
+    border-radius: 10px;
+    height: 220px;
+    color: #ffffff;
+  }
+  
+  .contact-us-table td{
+    padding: 20px;
+  }
+  
+  
+  .trading-hours{
+    border: 3px solid #ffffff;
+    border-radius: 10px;
+  }
+  
+  .hours-details{
+    padding: 5px;
+  }
+  .title{
+    font-weight: bold;
+  }
+
+  .image-row {
+    display: flex;
+    justify-content: center; /* To center the images horizontally */
+    align-items: center; /* To center the images vertically */
+  }
+  
+  .ab-image {
+    width: 300px; /* Adjust the width as needed */
+    height: auto; /* Let the height scale proportionally based on the width */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .text-container{
+    text-align: center;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgb(235, 235, 235);
+  }

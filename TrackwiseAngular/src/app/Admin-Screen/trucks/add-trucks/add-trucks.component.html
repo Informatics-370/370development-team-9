@@ -6,7 +6,7 @@
 
     <h2>Add Truck</h2>
       
-    <form #form="ngForm" (ngSubmit)="AddTruck()">
+    <form #form="ngForm" (ngSubmit)="AddTruck()" autocomplete="off">
       <div class="mb-3">
         <label for="truck_License" class="form-label">Truck License</label>
         <input type="text" class="form-control" id="truck_License" aria-describedby="truck_License" required [(ngModel)]="AddTruckRequest.truck_License"

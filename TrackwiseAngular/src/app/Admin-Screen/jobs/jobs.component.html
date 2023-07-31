@@ -1,10 +1,111 @@
-<br>
-<div class="row">
-<div class="col-lg-3 main-content"></div>
-<div class="col-lg-7 main-content">
-<div class="container container-fluid">
-      
-      <h2>Done in Iteration5</h2>
+<div class="main-container">
+  <h2>Jobs</h2>
+<div class="view-container" *ngIf="showView==true">
+
+  <button class="view-jobs-btn-selected" (click)="ShowView()">View Jobs</button>
+  <button class="add-job-btn" (click)="ShowAdd()">Add Job</button>
+
+
+  
+  <div class="search-navbar">
+    <div class="navbar-container">
+      <div class="search-bar">
+        <input type="text" placeholder="Search for a job" aria-label="Search"
+        aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+      <button type="button" class="btn btn-outline-primary" (click)="search()">
+        <i class="material-icons">search</i>
+      </button>
+      </div>
     </div>
   </div>
+
+  <table class="job-table">
+    <thead>
+
+      <tr class="header">
+        <th>Job ID</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Type</th>
+        <th>Client</th>
+        <th>Status</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'In-operation'">
+        <td>{{job.job_ID}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td>{{job.userName}}</td>
+        <td>{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
+        </td>
+        <td>
+          <button class="cancel-job-btn" >Cancel</button>
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'Complete'">
+        <td>{{job.job_ID}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td>{{job.userName}}</td>
+        <td>{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
+        </td>
+        <td>
+          <button class="cancel-job-btn" >Cancel</button>
+        </td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------------- -->
+<div class="add-container" *ngIf="showAdd == true">
+  <button class="view-jobs-btn" (click)="ShowView()">View Jobs</button>
+  <button class="add-job-btn-selected" (click)="ShowAdd()">Add Job</button>
+
+  <form #form="ngForm" (ngSubmit)="CreateJob()">
+    <input class="txtbox" type="text" name="pickupLocation" placeholder=" Pickup Location" [(ngModel)]="createJob.pickup_Location" required>
+
+    <input class="txtbox" type="text" name="dropoffLocation" placeholder=" Drop-off Location" [(ngModel)]="createJob.dropoff_Location" required>
+
+    <div class="form-item-container">
+      <label>Type:</label>
+      <select class="dropdown" name="jobType" [(ngModel)]="createJob.job_Type_ID" required>
+        <option value="1">Coal</option>
+        <option value="2">Fuel</option>
+      </select>
+      <label>Weight: </label>
+      <input style="text-align: center;" class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required>
+    </div>
+
+    <div class="form-item-container">
+      <label class="lbl-start">Start Date</label>
+      <label class="lbl-end">End Date</label>
+    </div>
+
+  <div class="form-item-container">
+    <input class="date-start" type="datetime-local" name="startDate" [(ngModel)]="createJob.startDate" [min]="minDateTime" required>
+    <input class="date-end" type="datetime-local" name="dueDate" [(ngModel)]="createJob.dueDate" [min]="minDateTime" required>
+  </div>
+
+    <div class="footer-row">
+      <button class="create-button" type="submit">Create Job</button>
+      <button class="cancel-button" type="submit" (click)="ShowView()">Cancel</button>
+    </div>
+  </form>
+</div>
 </div>

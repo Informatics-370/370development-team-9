@@ -1,0 +1,89 @@
+<div class="container">
+
+  <div class="top-row">
+    <img src="/assets/LTTLogo.jpg">
+    <h3>All Things Trailer & Truck</h3>
+    <p>Supplier of parts for all manufacturers of heavy vehicles and trailers</p>
+  </div>
+
+  <div class="bottom-row">
+    <div class="slideshow-container">
+      <div *ngFor="let image of images; let i = index" class="slide" [ngClass]="{'active': i === currentSlideIndex}">
+        <img *ngIf="i === currentSlideIndex" [src]="image.url" alt="Image" class="slide-image">
+      </div>
+    </div>
+
+    <div class="br-content">
+      <h3>We strive to succeed</h3>
+      <p>Limpopo Trailer & Truck was founded in 2018 and established in Lephalale, Limpopo by two passionate men,
+        Gerhard
+        Kotzé & Peter-Murray Cross.
+        We supply top quality products and parts from the biggest brands at the best prices.
+      </p>
+    </div>
+  </div>
+
+  <div class="logo-row">
+    <img class="logo-img" src="/assets/CustHome/l1.jpg">
+    <img class="logo-img" src="/assets/CustHome/l2.jpg">
+    <img class="logo-img" src="/assets/CustHome/l3.png">
+    <img class="logo-img" src="/assets/CustHome/l4.png">
+  </div>
+
+  <table class="contact-us-table">
+    <tr>
+      <td>
+        <div class="contact-details">
+          <div class="details">
+            <mat-icon>email</mat-icon>
+            <p>sales1@limtt.co.za</p>
+          </div>
+          <div class="details">
+            <mat-icon>phone</mat-icon>
+            <p>014 940 5433</p>
+          </div>
+          <div class="details">
+            <button class="fb-button">
+              <mat-icon>facebook</mat-icon>
+              <p>Visit Us!</p>
+            </button>
+          </div>
+        </div>
+      </td>
+
+      <td>
+        <div class="comment">
+          <div class="image-container">
+            <img class="rating-img" src="/assets/CustHome/RatingImg.jpg" alt="Rating Image">
+            <div class="rating-text">
+              <mat-icon>star</mat-icon><mat-icon>star</mat-icon><mat-icon>star</mat-icon><mat-icon>star</mat-icon><mat-icon>star</mat-icon>
+              <p>Amazing service! Great prices! Best in the business! Would recommend to anyone! Louis Johann Botha (Customer)</p>
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <td>
+        <div class="trading-hours">
+          
+          <div class="hours-details">
+            <p class="title">
+              Trading Hours:
+            </p>
+            <p>
+              <b>Mon - Fri:</b> 08:00 - 16:30 <br><br>
+              <b>Sat - Sun:</b> Closed <br><br>
+              <b>Public<br> Holidays:</b>  Closed <br>
+            </p>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <div class="logo-row2">
+    <img class="logo-img2" src="/assets/CustHome/l5.png">
+    <img class="logo-img2" src="/assets/CustHome/l6.jpg">
+    <img class="logo-img2" src="/assets/CustHome/l7.jpg">
+    <img class="logo-img2" src="/assets/CustHome/l8.png">
+  </div>

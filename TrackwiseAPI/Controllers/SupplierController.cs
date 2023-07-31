@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.ViewModels;
@@ -8,6 +11,7 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class SupplierController : ControllerBase
     {
         private readonly ISupplierRepository _supplierRepository;
@@ -34,7 +38,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetSupplier/{supplierId}")]
-        public async Task<IActionResult> GetSupplierAsync(int supplierId)
+        public async Task<IActionResult> GetSupplierAsync(string supplierId)
         {
             try
             {
@@ -54,7 +58,8 @@ namespace TrackwiseAPI.Controllers
         [Route("AddSupplier")]
         public async Task<IActionResult> AddSupplier(SupplierVM supvm)
         {
-            var supplier = new Supplier { Name = supvm.Name, Email = supvm.Email, Contact_Number = supvm.Contact_Number};
+            var supplierId = Guid.NewGuid().ToString();
+            var supplier = new Supplier {Supplier_ID = supplierId, Name = supvm.Name, Email = supvm.Email, Contact_Number = supvm.Contact_Number};
 
             try
             {
@@ -72,7 +77,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPut]
         [Route("EditSupplier/{supplierId}")]
-        public async Task<ActionResult<SupplierVM>> EditSupplier(int supplierId, SupplierVM supplierModel)
+        public async Task<ActionResult<SupplierVM>> EditSupplier(string supplierId, SupplierVM supplierModel)
         {
             try
             {
@@ -108,7 +113,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteSupplier/{supplierId}")]
-        public async Task<IActionResult> DeleteSupplier(int supplierId)
+        public async Task<IActionResult> DeleteSupplier(string supplierId)
         {
             try
             {

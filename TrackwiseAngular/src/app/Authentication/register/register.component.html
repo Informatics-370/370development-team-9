@@ -1,0 +1,45 @@
+<br>
+
+<div class="container">
+  <div class="register-wrapper">
+    <mat-card class="box" *ngIf="!isLoading">
+      <img class="logo" src="/assets/LTTLogo.jpg">
+      <form class="register-form" [formGroup]="registerFormGroup">
+        <div class="form-field">
+          <input class="form-input" type="text" placeholder="Enter Name" formControlName="name" required>
+        </div>
+        <div class="form-field">
+          <input class="form-input" type="text" placeholder="Enter Surname" formControlName="lastName" required>
+        </div>
+        <div class="form-field">
+          <input class="form-input" type="text" placeholder="Enter Email Address" formControlName="email" required
+            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+        </div>
+
+        <div class="form-field">
+          <input class="form-input" type="password" placeholder="Enter Password" formControlName="password" required>
+          <div *ngIf="registerFormGroup.get('password')?.touched && registerFormGroup.get('password')?.hasError('required')">
+            <span class="error-message">Password is required</span>
+          </div>
+          <div *ngIf="registerFormGroup.get('password')?.touched && registerFormGroup.get('password')?.hasError('pattern')">
+            <span class="error-message">Password must have at least 8 characters, one uppercase letter, and one digit</span>
+          </div>
+        </div>
+        
+        <div class="form-field">
+          <input class="form-input" type="password" placeholder="Re-enter password" formControlName="ReEnterPassword" required>
+          <div *ngIf="registerFormGroup.get('ReEnterPassword')?.touched && registerFormGroup.get('ReEnterPassword')?.hasError('mismatch')">
+            <span class="error-message">Passwords do not match</span>
+          </div>
+        </div>
+        
+        
+
+        <!-- Rest of the form and submit button -->
+        <button class="register-btn" (click)="RegisterUser()">Sign up</button><br>
+        <div class="login-section">Already have an account? Log in <a [routerLink]="['/Authentication/login']">here.</a></div>
+      </form>
+    </mat-card>
+    <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>
+  </div>
+</div>

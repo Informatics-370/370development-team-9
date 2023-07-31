@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using TrackwiseAPI.DBContext;
+using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -9,18 +14,40 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class AdminController : ControllerBase
     {
-        private readonly IAdminRepository _adminRepository;
 
-        public AdminController(IAdminRepository adminRepository)
+
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
+        private readonly IConfiguration _configuration;
+        private readonly IAdminRepository _adminRepository;
+        private readonly MailController _mailController;
+
+        public AdminController(UserManager<AppUser> userManager,
+            IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
+            IConfiguration configuration,
+            IAdminRepository adminRepository,
+            MailController mailController)
         {
+            _userManager = userManager;
+            _claimsPrincipalFactory = claimsPrincipalFactory;
+            _configuration = configuration;
             _adminRepository = adminRepository;
+            _mailController = mailController;
+
         }
+
+        /*        public AdminController(IAdminRepository adminRepository)
+                {
+                    _adminRepository = adminRepository;
+                }*/
 
         //Get all admins
         [HttpGet]
         [Route("GetAllAdmin")]
+        
         public async Task<IActionResult> GetAllAdmins()
         {
             try
@@ -37,7 +64,8 @@ namespace TrackwiseAPI.Controllers
         //Get a specific admin
         [HttpGet]
         [Route("GetAdmin/{AdminID}")]
-        public async Task<IActionResult> GetAdminAsync(int AdminID)
+
+        public async Task<IActionResult> GetAdminAsync(string AdminID)
         {
             try
             {
@@ -56,14 +84,33 @@ namespace TrackwiseAPI.Controllers
         //Add a admin
         [HttpPost]
         [Route("AddAdmin")]
-        public async Task<IActionResult> AddAdmin(AdminVM avm)
+        public async Task<IActionResult> AddNewAdmin(AdminVM avm)
         {
-            var admin = new Admin { Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email, Password = avm.Password, };
+            var adminId = Guid.NewGuid().ToString();
+            var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email };
+            var existingadmin = await _userManager.FindByNameAsync(avm.Email);
+            if (existingadmin != null) return BadRequest("User already exists");
 
+            var newadminmail = new NewAdminMail { Email = admin.Email, Name = admin.Name, Password = avm.Password };
             try
             {
                 _adminRepository.Add(admin);
                 await _adminRepository.SaveChangesAsync();
+
+                var user = new AppUser
+                {
+                    Id = adminId,
+                    UserName = avm.Email,
+                    Email = avm.Email
+                };
+
+                var result = await _userManager.CreateAsync(user, avm.Password);
+                var mail = await _mailController.SendAdminEmail(newadminmail);
+
+                await _userManager.AddToRoleAsync(user, "Admin");
+
+                if (result.Errors.Count() > 0)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
 
             }
             catch (Exception)
@@ -74,29 +121,81 @@ namespace TrackwiseAPI.Controllers
             return Ok(admin);
         }
 
-        //update admin
+
         [HttpPut]
         [Route("EditAdmin/{AdminID}")]
-        public async Task<ActionResult<AdminVM>> EditAdmin(int AdminID, AdminVM avm)
+        public async Task<ActionResult<AdminVM>> EditAdmin(string AdminID, AdminVM avm)
         {
             try
             {
                 var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
-                if (existingAdmin == null) return NotFound($"The admin does not exist");
+                if (existingAdmin == null)
+                    return NotFound($"The admin does not exist");
+
+                var existingUser = await _userManager.FindByIdAsync(AdminID);
+                if (existingUser == null)
+                    return NotFound($"The corresponding user does not exist");
 
                 if (existingAdmin.Name == avm.Name &&
                     existingAdmin.Lastname == avm.Lastname &&
-                    existingAdmin.Email == avm.Email &&
-                    existingAdmin.Password == avm.Password)
+                    existingAdmin.Email == avm.Email)
                 {
-                    // No changes made, return the existing driver without updating
+                    // No changes made, return the existing admin without updating
                     return Ok(existingAdmin);
                 }
 
                 existingAdmin.Name = avm.Name;
                 existingAdmin.Lastname = avm.Lastname;
                 existingAdmin.Email = avm.Email;
-                existingAdmin.Password = avm.Password;
+
+                existingUser.UserName = avm.Email;
+                existingUser.Email = avm.Email;
+
+                await _userManager.RemovePasswordAsync(existingUser);
+                await _userManager.AddPasswordAsync(existingUser, avm.Password);
+                existingUser.SecurityStamp = Guid.NewGuid().ToString();
+
+                var adminUpdateResult = await _adminRepository.SaveChangesAsync();
+                var userUpdateResult = await _userManager.UpdateAsync(existingUser);
+
+                if (adminUpdateResult && userUpdateResult.Succeeded)
+                {
+                    return Ok(existingAdmin);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+
+            return BadRequest("Your request is invalid.");
+        }
+
+
+
+        //Remove admin
+        [HttpDelete]
+        [Route("DeleteAdmin/{AdminID}")]
+        public async Task<IActionResult> DeleteAdmin(string AdminID)
+        {
+            try
+            {
+                var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
+
+                if (existingAdmin == null) 
+                    return NotFound($"The admin does not exist");
+
+                var user = await _userManager.FindByEmailAsync(existingAdmin.Email);
+                if (user != null)
+                {
+                    var result = await _userManager.DeleteAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        return StatusCode(500, "Failed to delete the associated user.");
+                    }
+                }
+
+                _adminRepository.Delete(existingAdmin);
 
                 if (await _adminRepository.SaveChangesAsync())
                 {
@@ -107,28 +206,7 @@ namespace TrackwiseAPI.Controllers
             {
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
-            return BadRequest("Your request is invalid.");
-        }
 
-        //Remove admin
-        [HttpDelete]
-        [Route("DeleteAdmin/{AdminID}")]
-        public async Task<IActionResult> DeleteAdmin(int AdminID)
-        {
-            try
-            {
-                var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
-
-                if (existingAdmin == null) return NotFound($"The admin does not exist");
-                _adminRepository.Delete(existingAdmin);
-
-                if (await _adminRepository.SaveChangesAsync()) return Ok(existingAdmin);
-
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "Internal Server Error. Please contact support.");
-            }
             return BadRequest("Your request is invalid.");
         }
     }

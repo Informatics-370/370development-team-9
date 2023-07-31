@@ -1,7 +1,4 @@
-<br>
-<div class="row">
-<div class="col-lg-3 main-content"></div>
-<div class="col-lg-7 main-content">
+
 <div class="container container-fluid">
   <h2>Client List</h2>
       
@@ -25,6 +22,7 @@
             <table class="table table-hover">
               <thead id="header">
                 <tr>
+                  <th>Email</th>
                   <th>Client Name</th>
                   <th>Phone Number</th>
                   <th></th>
@@ -36,6 +34,7 @@
                   <td colspan="5">No results were found.</td>
                 </tr>
                 <tr *ngFor="let client of clients">
+                  <td>{{client.email}}</td>
                   <td>{{client.name}}</td>
                   <td>{{client.phoneNumber}}</td>
                   
@@ -45,5 +44,3 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>  

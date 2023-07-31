@@ -10,6 +10,6 @@ namespace TrackwiseAPI.Models.Interfaces
 
         // Admin
         Task<Admin[]> GetAllAdminsAsync();
-        Task<Admin> GetAdminAsync(int AdminID);
+        Task<Admin> GetAdminAsync(string AdminID);
     }
 }

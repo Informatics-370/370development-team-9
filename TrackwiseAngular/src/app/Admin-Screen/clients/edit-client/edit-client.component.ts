@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Client } from 'src/app/shared/client';
@@ -11,13 +12,15 @@ import { Client } from 'src/app/shared/client';
 export class EditClientComponent implements OnInit {
 
   clientDetails: Client = {
-    client_ID: 0,
+    client_ID: "0",
     name: "",
-    phoneNumber: ""
+    phoneNumber: "",
+    email:"",
+    password:"",
   };
   originalPhoneNumber = '';
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -29,6 +32,8 @@ export class EditClientComponent implements OnInit {
         });
       }
     });
+
+    this.dataService.revertToLogin();
   }
 
   KeepZeros() {
@@ -41,6 +46,7 @@ export class EditClientComponent implements OnInit {
     this.dataService.EditClient(this.clientDetails.client_ID, this.clientDetails).subscribe({
       next: (response) => {
         this.router.navigate(['/Admin-Screen/clients']);
+        this.snackBar.open(`Client successfully edited`, 'X', {duration: 3000});
       }
     });
   }

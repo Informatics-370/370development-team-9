@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Trailer } from 'src/app/shared/trailer';
@@ -11,26 +12,26 @@ import { Trailer } from 'src/app/shared/trailer';
 export class EditTrailerComponent {
   trailerDetails: Trailer =
   {
-    trailerID:0,
+    trailerID:"",
     trailer_License:"",
     model:"",
     weight:0,
     
-    trailer_Status_ID:1,
+    trailer_Status_ID:"",
     trailerStatus:{
-      trailer_Status_ID:0,
+      trailer_Status_ID:"",
       status:"",
       description:""
     },
-    trailer_Type_ID:1,
+    trailer_Type_ID:"",
     trailerType:{
-      trailer_Type_ID:0,
+      trailer_Type_ID:"",
       name:"",
       description:""
     },
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -45,12 +46,15 @@ export class EditTrailerComponent {
 
       }
     })
+
+    this.dataService.revertToLogin();
   }
 
   EditTrailer()
   {    
     this.dataService.EditTrailer(this.trailerDetails.trailerID, this.trailerDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/trailers'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/trailers']);
+      this.snackBar.open(`Trailer successfully edited`, 'X', {duration: 3000});}
     })
   }
 }

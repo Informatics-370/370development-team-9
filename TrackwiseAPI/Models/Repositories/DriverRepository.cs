@@ -28,7 +28,7 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.ToArrayAsync();
         }
 
-        public async Task<Driver> GetDriverAsync(int Driver_ID)
+        public async Task<Driver> GetDriverAsync(string Driver_ID)
         {
             IQueryable<Driver> query = _context.Drivers.Where(t => t.Driver_ID == Driver_ID).Include(t => t.DriverStatus);
             return await query.FirstOrDefaultAsync();

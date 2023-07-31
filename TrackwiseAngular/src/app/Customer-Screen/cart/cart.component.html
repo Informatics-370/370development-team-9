@@ -1,0 +1,146 @@
+<div class="container" *ngIf="isPayment == false">
+  <div class="cart-items">
+
+
+
+    <table class="item-table" *ngIf="cartItems == ''">
+      <tbody>
+        <tr class="NoItems">
+          There are currently no items in your cart.
+        </tr>
+      </tbody>
+    </table>
+
+
+
+
+    <table class="item-table">
+      <tbody>
+        <tr class="itemRow" *ngFor="let item of cartItems; let i = index">
+          <td><img [src]="item.image" [alt]="item.product_Name"></td>
+          <td style="text-align: left;"><b>{{ item.product_Name }}</b><br>
+            <p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p>
+          </td>
+          <td class="qty-col">
+            <button class="qtyBtn" (click)="decreaseQuantity(item)">-</button>&nbsp;
+            <span>{{ item.cartQuantity }}</span>&nbsp;
+            <button class="qtyBtn" (click)="increaseQuantity(item)">+</button>
+          </td>
+          <td style="font-weight: bold;">R {{ item.product_Price * item.cartQuantity | number:"1.2-2"}}</td>
+          <td>
+            <button class="removeBtn" (click)="removeFromCart(i)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="cart-summary">
+    <table class="summary-table">
+      <thead class="CSHead">
+        <tr>
+          <th>Cart Summary</th>
+        </tr>
+      </thead>
+
+      <tbody class="CSBody">
+        <td>
+          <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
+          <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
+        </td>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>
+            <button class="continueBtn" (click)="continueShopping()">Continue Shopping</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <button class="checkoutBtn" (click)="makePayment()" [disabled]="cartItems.length === 0">Checkout</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<div class="container " *ngIf="isPayment ==true ">
+<div class=" paygate offset-md-3 " >
+  <form (ngSubmit)="checkout(f)" #f="ngForm">
+    <div class="row mb-4 mt-4">
+      <h4 class="cardTitle">Add new card</h4>
+    </div>
+    <div class="form-group">
+      <label for="firstName">First name</label>
+      <input required type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="newCard.firstName">
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last name</label>
+      <input required type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="newCard.lastName">
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input required type="email" class="form-control" id="email" name="email" [(ngModel)]="newCard.email">
+    </div>
+    <div class="form-group">
+      <label for="cardNumber">Card number</label>
+      <input required type="text" class="form-control" id="cardNumber" name="cardNumber" [(ngModel)]="newCard.cardNumber">
+      <small class="form-text text-muted">16-digital card number</small>
+    </div>
+    <div class="form-group">
+      <label for="cardExp">Card expiry</label>
+      <input required type="text" class="form-control" id="cardExp" name="cardExpiry" [(ngModel)]="newCard.cardExpiry">
+      <small class="form-text text-muted">e.g 112024</small>
+    </div>
+    <div class="form-group">
+      <label for="cvv">Cvv</label>
+      <input required type="text" class="form-control" id="cvv" name="cvv" [(ngModel)]="newCard.cvv">
+      <small class="form-text text-muted">3-digits found on back of the card</small>
+    </div>
+      <button *ngIf="!isLoading" class="btn btn-danger" (click)="cancelPayment()">Cancel</button>
+      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total| number:"1.2-2"}}</button>
+
+    
+    <div *ngIf="isLoading" class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </form>
+</div>
+<div class="cart-summary">
+  <table class="summary-table">
+    <thead class="CSHead">
+      <tr>
+        <th>Cart Summary</th>
+      </tr>
+    </thead>
+    <div class="payment">
+       Secured with PayGate
+       <img src="https://www.paygate.co.za/wp-content/uploads/logo_285x110.png">
+    </div>
+   
+    <tbody class="CSBody">
+      <td>
+        <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
+        <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
+      </td>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<!-- <div class="ion-padding" *ngIf="Secure3DHTML">
+  <iframe
+          [src]="Secure3DHTML"
+          id="paygateFrame"
+          style="width: 98%;height: 400px;display: block;margin: auto;background: rgb(255, 255, 255);border:none;"
+  ></iframe>
+
+</div> -->
+
+<!-- <div class="row mt-4" *ngIf="paymentResult">
+  <h3>Payment result</h3>
+  <div class="mt-2 alert alert-info">
+    {{ paymentResult | json }}
+  </div>
+</div> -->

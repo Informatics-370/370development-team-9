@@ -17,6 +17,7 @@ export class DriversComponent implements OnInit {
   
   ngOnInit(): void {
     this.GetDrivers();
+    this.dataService.revertToLogin();
   }
 
   GetDrivers() {
@@ -63,7 +64,7 @@ export class DriversComponent implements OnInit {
     }
   }
 
-  DeleteDriver(driver_ID:number)
+  DeleteDriver(driver_ID:string)
   {
     this.dataService.DeleteDriver(driver_ID).subscribe({
       next: (response) => location.reload()

@@ -7,20 +7,33 @@ namespace TrackwiseAPI.Models.Entities
     public class Delivery
     {
         [Key]
-        public int Delivery_ID { get; set; }
-        public double weight { get; set; }
+        public string Delivery_ID { get; set; }
+        public double Delivery_Weight { get; set; }
 
         //Foreign Key for Job
-        public int Job_ID { get; set; }
+        public string  Job_ID { get; set; }
         [ForeignKey("Job_ID")]
         public Job Job { get; set; }
 
-        //Foreign Key for Truck
-    /*    public string Truck_License { get; set; }
-        [ForeignKey("Truck_License")]
-        public Truck Truck { get; set; }*/
+        //Foreign Key for Driver
+        public string Driver_ID { get; set; }
+        [ForeignKey("Driver_ID")]
+        public Driver Driver { get; set; }
 
-        public ICollection<Delivery_Assignment> Delivery_Assignments { get; set; }
+        //Foreign Key for Truck
+        public string TruckID { get; set; }
+        [ForeignKey("TruckID")]
+        public Truck Truck { get; set; }
+
+        //Foreign Key for Trailer
+        public string TrailerID { get; set; }
+        [ForeignKey("TrailerID")]
+        public Trailer Trailer { get; set; }
+        public string Delivery_Status_ID { get; set; }
+        [ForeignKey("Delivery_Status_ID")]
+        public DeliveryStatus DeliveryStatus { get; set; }
+
+        public ICollection<Document> Documents { get; set; }
 
     }
 }
