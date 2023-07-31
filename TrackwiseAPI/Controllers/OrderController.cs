@@ -15,6 +15,8 @@ using static TrackwiseAPI.Controllers.OrderController;
 using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.ViewModels;
 using TrackwiseAPI.Controllers;
+using TrackwiseAPI.Models.Email;
+using System.Runtime.Intrinsics.X86;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -27,19 +29,22 @@ namespace TrackwiseAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly TwDbContext _dbContext;
         private readonly IPaymentRepository _paymentRepository;
+        private readonly MailController _mailController;
 
         public OrderController(
             TwDbContext dbContext,
             IProductRepository productRepository,
             IOrderRepository orderRepository,
             IPaymentRepository paymentRepository,
-            UserManager<AppUser> userManager)
+            UserManager<AppUser> userManager,
+            MailController mailController)
         {
             _dbContext = dbContext;
             _productRepository = productRepository;
             _orderRepository = orderRepository;
             _userManager = userManager;
             _paymentRepository = paymentRepository;
+            _mailController = mailController;
         }
 
         [HttpGet]
@@ -190,14 +195,19 @@ namespace TrackwiseAPI.Controllers
             checkoutRequest.newCard.Amount = (decimal)order.Total;
 
             // Call the AddNewCard method to process the payment and pass the newCard model
+            /*
             var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.newCard);
-
+            var invoiceID = Guid.NewGuid().ToString();
+            var Invoice1 = new Invoice { Email = userEmail, InvoiceNumber = invoiceID };
+            var mail = await _mailController.SendInvoiceEmail(Invoice1);*/
             // Save the order and update the product quantities
             _dbContext.Orders.Add(order);
-/*            _dbContext.Orders.Add(order);*/
+
+
+            /*            _dbContext.Orders.Add(order);*/
             await _productRepository.SaveChangesAsync();
             await _dbContext.SaveChangesAsync();
-
+            
             return Ok();
         }
 

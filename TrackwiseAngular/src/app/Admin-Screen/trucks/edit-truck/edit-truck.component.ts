@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Truck } from 'src/app/shared/truck';
@@ -26,7 +27,7 @@ export class EditTruckComponent implements OnInit{
     },
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -48,7 +49,8 @@ export class EditTruckComponent implements OnInit{
   EditTruck()
   {    
     this.dataService.EditTruck(this.truckDetails.truckID, this.truckDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/trucks'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/trucks']);
+      this.snackBar.open(`Truck successfully edited`, 'X', {duration: 3000});}
     })
     console.log('yes')
   }

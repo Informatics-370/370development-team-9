@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Product } from 'src/app/shared/product';
@@ -32,7 +33,7 @@ export class EditProductComponent {
   
   };
 
-  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router) { }
+  constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -54,7 +55,9 @@ export class EditProductComponent {
   EditProduct()
   {    
     this.dataService.EditProduct(this.productDetails.product_ID, this.productDetails).subscribe({
-      next: (response) => {this.router.navigate(['/Admin-Screen/products'])}
+      next: (response) => {this.router.navigate(['/Admin-Screen/products']);
+      this.snackBar.open(`Product successfully edited`, 'X', {duration: 3000});
+    }
     })
   }
 

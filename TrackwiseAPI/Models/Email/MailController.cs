@@ -84,6 +84,28 @@ namespace TrackwiseAPI.Models.Email
             }
         }
 
+        [HttpPost("Invoice")]
+        public async Task<IActionResult> SendInvoiceEmail(Invoice invoice)
+        {
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { invoice.Email },
+                "Order Invoice",
+                _mail.GetEmailTemplate("Invoice", invoice));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
         [HttpPost("AdminCredentials")]
         public async Task<IActionResult> SendAdminEmail(NewAdminMail welcomeMail)
         {

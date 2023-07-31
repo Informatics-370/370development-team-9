@@ -437,7 +437,8 @@ namespace TrackwiseAPI.Controllers
                         Driver_ID = "5735e749-4480-48a5-b3ff-0d40a0e00af5",
                         TruckID = truckid,
                         TrailerID = trailerid,
-                        Job_ID = job.Job_ID
+                        Job_ID = job.Job_ID,
+                        Delivery_Status_ID = "1"
                     };
                     using (var transaction = _jobRepository.BeginTransaction()) // Begin the database transaction
                     {
@@ -506,7 +507,8 @@ namespace TrackwiseAPI.Controllers
                                 Driver_ID = driverId,
                                 TruckID = truckId,
                                 TrailerID = trailerId,
-                                Job_ID = job.Job_ID
+                                Job_ID = job.Job_ID,
+                                Delivery_Status_ID = "1"
                             };
                             deliveries1.Add(deliveryObj);
                             
@@ -577,7 +579,8 @@ namespace TrackwiseAPI.Controllers
                                 Driver_ID = driverId,
                                 TruckID = truckId,
                                 TrailerID = trailerId,
-                                Job_ID = job.Job_ID
+                                Job_ID = job.Job_ID,
+                                Delivery_Status_ID = "1"
                             };
 
                             allDeliveries.Add(deliveryObj);

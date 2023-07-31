@@ -30,6 +30,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Order_Line> Order_Lines { get; set; }
         public DbSet<Product_Supplier> Product_Suppliers { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
+        public DbSet<DeliveryStatus> DeliveryStatuses { get; set; }
         public DbSet<Job> Jobs { get; set; }
         public DbSet<JobStatus> JobsStatus { get; set; }
         public DbSet<JobType> JobTypes { get; set; }
@@ -99,12 +100,6 @@ namespace TrackwiseAPI.DBContext
                 .WithMany(c => c.orders)
                 .HasForeignKey(o => o.Customer_ID);
 
-            //Order and invoice has a 1-many relationship
-            modelBuilder.Entity<Invoice>()
-                .HasOne(i => i.Order)
-                .WithMany(o => o.invoices)
-                .HasForeignKey(i => i.Order_ID);
-
             //Order and Payment has a 1-many relationship
             modelBuilder.Entity<Payment>()
                 .HasOne(p => p.Order)
@@ -158,6 +153,11 @@ namespace TrackwiseAPI.DBContext
                 .HasOne(d => d.Truck)
                 .WithMany(j => j.Deliveries)
                 .HasForeignKey(d => d.TruckID);
+
+            modelBuilder.Entity<Delivery>()
+            .HasOne(j => j.DeliveryStatus)
+            .WithMany(js => js.Deliveries)
+            .HasForeignKey(j => j.Delivery_Status_ID);
 
 
             modelBuilder.Entity<Document>()
@@ -229,8 +229,14 @@ namespace TrackwiseAPI.DBContext
                 );
 
             modelBuilder.Entity<JobStatus>().HasData(
-                new JobStatus { Job_Status_ID = "1", Name = "In-opperation", Description = "Transporting in progress" },
-                new JobStatus { Job_Status_ID = "2", Name = "Complete", Description = "Transporting complete" }
+                new JobStatus { Job_Status_ID = "1", Name = "In-operation", Description = "Job in progress" },
+                new JobStatus { Job_Status_ID = "2", Name = "Complete", Description = "Job complete" },
+                new JobStatus { Job_Status_ID = "3", Name = "Cancelled", Description = "Job Cancelled"}
+                );
+
+            modelBuilder.Entity<DeliveryStatus>().HasData(
+                new DeliveryStatus { Delivery_Status_ID = "1", Name = "In-operation", Description = "Transporting in progress" },
+                new DeliveryStatus { Delivery_Status_ID = "2", Name = "Complete", Description = "Transporting complete" }
                 );
 
             //job data
@@ -268,20 +274,20 @@ namespace TrackwiseAPI.DBContext
                 //JOB1
                 new Delivery
                 {
-                    Delivery_ID = "1", Delivery_Weight = 35.00, Job_ID = "1", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                    Delivery_ID = "1", Delivery_Weight = 35.00, Job_ID = "1", Driver_ID = "1", TruckID = "1", TrailerID = "1",Delivery_Status_ID="2"
                 },
                 //JOB2 1driver 3 trips
                 new Delivery
                 {
-                    Delivery_ID = "2", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                    Delivery_ID = "2", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1",Delivery_Status_ID="2"
                 },
                 new Delivery
                 {
-                    Delivery_ID = "3", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                    Delivery_ID = "3", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1",Delivery_Status_ID="2"
                 },
                 new Delivery
                 {
-                    Delivery_ID = "4", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1"
+                    Delivery_ID = "4", Delivery_Weight = 35.00, Job_ID = "2", Driver_ID = "1", TruckID = "1", TrailerID = "1", Delivery_Status_ID="2"
                 }
             );
 
@@ -357,12 +363,6 @@ namespace TrackwiseAPI.DBContext
                 new Customer { Customer_ID = "1", Name = "John", LastName = "Doe", Email = "johndoe@gmail.com" },
                 new Customer { Customer_ID = "2", Name = "Jane", LastName = "Smith", Email = "janesmith@gmail.com" },
                 new Customer { Customer_ID = "3", Name = "Joe", LastName = "Mama", Email = "joemama@gmail.com" }
-            );
-
-            modelBuilder.Entity<Invoice>().HasData(
-                new Invoice { Invoice_number = "1", Order_ID = "1", Total_Amount = 200.50, Date = DateTime.Now },
-                new Invoice { Invoice_number = "2", Order_ID = "2", Total_Amount = 75.20, Date = DateTime.Now },
-                new Invoice { Invoice_number = "3", Order_ID = "3", Total_Amount = 450.00, Date = DateTime.Now }
             );
 
             modelBuilder.Entity<Payment>().HasData(
