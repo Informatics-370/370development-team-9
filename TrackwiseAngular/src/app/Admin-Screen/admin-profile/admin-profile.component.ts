@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
-import { Customer } from 'src/app/shared/customer';
+import { Admin } from 'src/app/shared/admin';
 
 @Component({
   selector: 'app-admin-profile',
@@ -14,18 +14,19 @@ export class AdminProfileComponent {
   
     ngOnInit(): void {
       this.dataService.revertToLogin();
-      this.GetCustomerProfile();
+      this.GetAdmin();
     }
   
-    customer : Customer =
+    admin : Admin =
     {
-      customer_ID: "",
+      admin_ID: "",
       name: '',
-      lastName: "",
-      email: ""
+      lastname: "",
+      email: "",
+      password:""
     }
   
-    editCustomer: Customer = { ...this.customer };
+    editCustomer: Admin = { ...this.admin };
     
     userName: string = 'John Doe';
     userEmail: string = 'john.doe@example.com';
@@ -37,22 +38,22 @@ export class AdminProfileComponent {
     cvv: string = "";
     showPaymentInfoForm:boolean = false;
   
-    GetCustomerProfile(){
-      this.dataService.GetCustomerProfile().subscribe((result) => {
-        this.customer = result;
-        this.editCustomer = { ...this.customer };
+    GetAdmin(){
+      this.dataService.GetAdmin(this.admin.admin_ID).subscribe((result) => {
+        this.admin = result;
+        this.editCustomer = { ...this.admin };
         console.log(result)
       })
     }
   
-    EditCustomerProfile() {
-      console.log(this.customer)
-      this.dataService.EditCustomerProfile( this.customer).subscribe({
-        next: (response) => {
-          this.router.navigate(['/Customer-Screen/customer-products']);
-        }
-      });
-    }
+    // EditCustomerProfile() {
+    //   console.log(this.customer)
+    //   this.dataService.EditCustomerProfile( this.customer).subscribe({
+    //     next: (response) => {
+    //       this.router.navigate(['/Customer-Screen/customer-products']);
+    //     }
+    //   });
+    // }
   
     toggleEditForm() {
       this.showEditForm = !this.showEditForm;

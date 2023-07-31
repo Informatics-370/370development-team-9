@@ -60,13 +60,16 @@
                     <input type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files, delivery)" style="display:none;">
                     <ion-button  (click)="file.click()">Upload File</ion-button>
                     <ion-button (click)="AddDoc()">Submit</ion-button>
-                    <span *ngIf="fileNameUploaded.length > 0"> {{fileNameUploaded}}</span>
+                    <div *ngIf="fileNameUploaded.length > 0">
+                    <span> {{fileNameUploaded}}</span>
+                    <ion-col>
+                      <ion-button (click)="Complete(delivery, fileNameUploaded.length)"> Complete Delivery</ion-button>
+                    </ion-col>
+                  </div>
                   </div>
                 </ion-item> 
               </ion-col>
-              <ion-col>
-                <ion-button> Complete Delivery</ion-button>
-              </ion-col>
+
             </ion-row>
           </ion-grid>
         </ion-item>

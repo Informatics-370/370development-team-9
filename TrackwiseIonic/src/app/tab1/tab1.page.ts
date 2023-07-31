@@ -48,6 +48,12 @@ export class Tab1Page implements OnInit{
       },
     });
   }
+
+  Complete(delivery : any, fileNameUploaded : any){
+      delivery.delivery_Status_ID = "2";
+      this.deliveries = delivery;
+      console.log(this.deliveries)
+  }
   
   formData = new FormData();
   fileNameUploaded = '';
