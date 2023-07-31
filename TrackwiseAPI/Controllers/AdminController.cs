@@ -151,9 +151,9 @@ namespace TrackwiseAPI.Controllers
                 existingUser.UserName = avm.Email;
                 existingUser.Email = avm.Email;
 
-/*                await _userManager.RemovePasswordAsync(existingUser);
+                await _userManager.RemovePasswordAsync(existingUser);
                 await _userManager.AddPasswordAsync(existingUser, avm.Password);
-                existingUser.SecurityStamp = Guid.NewGuid().ToString();*/
+                existingUser.SecurityStamp = Guid.NewGuid().ToString();
 
                 var adminUpdateResult = await _adminRepository.SaveChangesAsync();
                 var userUpdateResult = await _userManager.UpdateAsync(existingUser);
