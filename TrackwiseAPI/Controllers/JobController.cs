@@ -246,6 +246,7 @@ namespace TrackwiseAPI.Controllers
                 Delivery_ID = delivery.Delivery_ID,
                 Delivery_Weight = delivery.Delivery_Weight,
                 Driver_ID = driverId,
+                Delivery_Status_ID = delivery.Delivery_Status_ID,
                 Jobs = new JobDTO
                 {
                     Job_ID = delivery.Jobs.Job_ID,
@@ -434,7 +435,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Delivery_ID = Delivery_ID,
                         Delivery_Weight = jobweight,
-                        Driver_ID = "5735e749-4480-48a5-b3ff-0d40a0e00af5",
+                        Driver_ID = driverid,
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID,

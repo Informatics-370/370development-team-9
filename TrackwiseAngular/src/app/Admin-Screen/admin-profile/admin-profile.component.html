@@ -4,7 +4,7 @@
         <img src="assets/User Icon.jpg" alt="Profile Photo">
       </div>
       <div class="user-info" >
-        <h3>{{ editCustomer.name }} {{ editCustomer.lastName }}</h3>
+        <h3>{{ editCustomer.name }} {{ editCustomer.lastname }}</h3>
         <p>{{ editCustomer.email }}</p>
       </div>
     </div>
@@ -28,13 +28,13 @@
     <div class="edit-form" *ngIf="showEditForm" >
       <mat-form-field>
         <mat-label>Edit Name</mat-label>
-        <input matInput [(ngModel)]="customer.name" name="customers.name">
+        <input matInput [(ngModel)]="admin.name" name="customers.name">
       </mat-form-field>
       <mat-form-field >
         <mat-label>Edit Surname</mat-label>
-        <input matInput [(ngModel)]="customer.lastName" name="customers.lastName">
+        <input matInput [(ngModel)]="admin.lastname" name="customers.lastName">
       </mat-form-field>
-      <button mat-button class="SaveBtn" (click)="EditCustomerProfile()">Save Changes</button>
+      <button mat-button class="SaveBtn">Save Changes</button>
     </div>
 
 

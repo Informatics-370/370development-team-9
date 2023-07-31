@@ -35,7 +35,7 @@
     </thead>
 
     <tbody *ngFor="let job of jobs">
-      <tr *ngIf="job.jobStatus.name == 'In-opperation'">
+      <tr *ngIf="job.jobStatus.name == 'In-operation'">
         <td>{{job.job_ID}}</td>
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>

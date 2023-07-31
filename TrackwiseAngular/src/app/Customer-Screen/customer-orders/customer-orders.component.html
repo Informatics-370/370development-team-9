@@ -1,14 +1,15 @@
 <!-- NavBar/Searchbar -->
 
 <mat-toolbar class="search-navbar">
-    <div class="navbar-container">
-        <div class="search-bar">
-            <input type="text" placeholder="Search for an order">
-            <button aria-label="Search">
-                <i class="material-icons">search</i>
-            </button>
-        </div>
+  <div class="navbar-container">
+    <div class="search-bar">
+      <input type="text" placeholder="Search for a job" aria-label="Search"
+      aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+    <button type="button" class="btn btn-outline-primary" (click)="search()">
+      <i class="material-icons">search</i>
+    </button>
     </div>
+  </div>
 </mat-toolbar>
 
 <div class="MainContent">
