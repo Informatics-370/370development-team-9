@@ -39,10 +39,20 @@ export class DataserviceService {
     return this.httpClient.post<any>(`${this.apiUrl}Mail/ForgotPasswordEmail`,email,this.httpOptions );
   }
 
-  AddDoc(docrequest: addDocument): Observable<addDocument>
-  {
-    return this.httpClient.post<addDocument>(`${this.apiUrl}Job/AddDocuments/`, docrequest,this.httpOptions)
-    .pipe(map(result => result))
+  AddDoc(docrequest: addDocument): Observable<addDocument> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+
+    return this.httpClient
+      .post<addDocument>(
+        `${this.apiUrl}Job/AddDocuments/`,
+        docrequest,
+        httpOptions
+      )
+      .pipe(map((result) => result));
   }
 
 }

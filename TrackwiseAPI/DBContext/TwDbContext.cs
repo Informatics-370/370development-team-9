@@ -160,6 +160,12 @@ namespace TrackwiseAPI.DBContext
                 .HasForeignKey(d => d.TruckID);
 
 
+            modelBuilder.Entity<Document>()
+                .HasOne(o => o.Delivery)
+                .WithMany(o => o.Documents)
+                .HasForeignKey(ol => ol.Delivery_ID);
+
+
             //Job and JobType has a many-one
             modelBuilder.Entity<Job>()
                 .HasOne(j => j.JobType)
