@@ -19,7 +19,6 @@ namespace TrackwiseAPI.Models.Entities
 
         public ICollection<Payment> payments { get; set; }
         public ICollection<Order_Line> OrderLines { get; set; }
-        public ICollection<Invoice> invoices { get; set; }  
          
     }
 

@@ -29,6 +29,9 @@ namespace TrackwiseAPI.Models.Entities
         public string TrailerID { get; set; }
         [ForeignKey("TrailerID")]
         public Trailer Trailer { get; set; }
+        public string Delivery_Status_ID { get; set; }
+        [ForeignKey("Delivery_Status_ID")]
+        public DeliveryStatus DeliveryStatus { get; set; }
 
         public ICollection<Document> Documents { get; set; }
 
