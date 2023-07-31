@@ -54,12 +54,8 @@ export class CustomerOrdersComponent {
       const updatedOrder = await this.dataService.GetOrder(order.order_ID).toPromise();
 
       // Check if updatedOrder is not undefined before accessing its properties
-      if (updatedOrder?.status) {
-        const index = this.customerOrders.findIndex((o) => o.order_ID === order.order_ID);
-        if (index !== -1) {
-          this.customerOrders[index].status = updatedOrder.status;
-        }
-      }
+      this.customerOrders=[]
+      this.GetCustomerOrders()
     } catch (error) {
       console.log('Error cancelling order:', error);
     }

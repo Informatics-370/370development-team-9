@@ -1,7 +1,7 @@
 export interface addDocument {
-    document_ID: string;
-    image:string;
-    delivery:{
+  documents: {
+      document_ID: string;
+      image:string;
       delivery_ID:string;
-    }
+    }[];
   }

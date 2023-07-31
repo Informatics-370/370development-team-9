@@ -263,26 +263,44 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPost]
         [Route("AddDocuments")]
-        public async Task<IActionResult> AddDocuments(Document doc)
+        public async Task<IActionResult> AddDocuments(DocumentVM documentVM)
         {
-            var document_ID = Guid.NewGuid().ToString();
-            var newDocument = new Document
-            {
-                Document_ID = document_ID,
-                Image = doc.Image,
-                Delivery_ID =doc.Delivery_ID,
-            };
             try
             {
-                _jobRepository.Add(newDocument);
+                var documents = new DocumentVM
+                {
+                    Documents = documentVM.Documents.Select(ol => new DocumentDTO
+                    {
+                        Document_ID = ol.Document_ID,
+                        Image = ol.Image,
+                        Delivery_ID = ol.Delivery_ID
+                    }).ToList()
+                };
+
+                foreach (var document in documents.Documents)
+                {
+                    // Create a new Document entity
+                    var document_ID = Guid.NewGuid().ToString();
+                    var newDocument = new Document
+                    {
+                        Document_ID = document_ID,
+                        Image = document.Image,
+                        Delivery_ID = document.Delivery_ID,
+                    };
+
+                    // Add the new document to the context (not saving to the database yet)
+                    _context.Documents.Add(newDocument);
+                }
+
+                // Save all changes to the database at once
                 await _jobRepository.SaveChangesAsync();
+
+                return Ok("Documents added successfully");
             }
             catch (Exception)
             {
                 return BadRequest("Invalid transaction");
             }
-
-            return Ok(newDocument);
         }
 
         [HttpPost]
@@ -416,7 +434,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Delivery_ID = Delivery_ID,
                         Delivery_Weight = jobweight,
-                        Driver_ID = driverid,
+                        Driver_ID = "5735e749-4480-48a5-b3ff-0d40a0e00af5",
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID

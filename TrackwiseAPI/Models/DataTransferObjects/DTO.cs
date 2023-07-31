@@ -60,6 +60,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double Delivery_Weight { get; set; }
         public string Driver_ID { get; set; }
         public JobDTO Jobs { get; set; }
+        public ICollection<DocumentDTO> Documents { get; set; }
     }
     public class JobDTO
     {
@@ -71,5 +72,12 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string type { get; set; }
         public string mapURL { get; set; }
         // Add other properties from Job that you want to include in the DTO
+    }
+
+    public class DocumentDTO
+    {
+        public string Document_ID { get; set; }
+        public string Image { get; set; }
+        public string Delivery_ID { get; set; }
     }
 }
