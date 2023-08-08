@@ -20,6 +20,9 @@ export class DataserviceService {
       ContentType: 'application/json'
     })
   }
+
+  deliveries: Delivery[] = []; // Array to store the deliveries
+
   constructor(private httpClient: HttpClient) { }
   
   
@@ -64,7 +67,17 @@ export class DataserviceService {
     return this.httpClient.post<any>(`${this.apiUrl}Mail/ForgotPasswordEmail`,email,this.httpOptions );
   }
 
+  GetAllDriverDeliveries() {
+    this.GetDriverDeliveries().subscribe(result => {
+      this.deliveries = result;
+      console.log(result)
+    });
+  }
+
+  
+
   AddDoc(docrequest: addDocument): Observable<addDocument> {
+    console.log(docrequest)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

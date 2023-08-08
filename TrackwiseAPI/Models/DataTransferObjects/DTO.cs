@@ -82,5 +82,6 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Document_ID { get; set; }
         public string Image { get; set; }
         public string Delivery_ID { get; set; }
+        public string DocType { get; set; }
     }
 }

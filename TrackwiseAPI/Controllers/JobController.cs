@@ -399,6 +399,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Document_ID = ol.Document_ID,
                         Image = ol.Image,
+                        DocType = ol.DocType,
                         Delivery_ID = ol.Delivery_ID
                     }).ToList()
                 };
@@ -411,6 +412,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Document_ID = document_ID,
                         Image = document.Image,
+                        DocType = document.DocType,
                         Delivery_ID = document.Delivery_ID,
                     };
 
