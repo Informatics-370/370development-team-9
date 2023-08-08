@@ -59,6 +59,8 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Delivery_ID { get; set; }
         public double Delivery_Weight { get; set; }
         public string Driver_ID { get; set; }
+        public string TrailerID { get; set; }
+        public string TruckID { get; set; }
         public string Delivery_Status_ID { get; set; }
         public JobDTO Jobs { get; set; }
         public ICollection<DocumentDTO> Documents { get; set; }
