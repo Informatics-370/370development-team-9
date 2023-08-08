@@ -1,4 +1,5 @@
-﻿ using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.DataTransferObjects;
@@ -60,7 +61,7 @@ namespace TrackwiseAPI.Models.Repositories
                     .ThenInclude(j => j.JobStatus)
                 .Include(j=>j.Job)
                     .ThenInclude(j=>j.JobType)
-                .Where(t => t.Driver_ID == driverID && t.Job.Job_Status_ID == "1" && t.Delivery_Status_ID == "1")
+                .Where(t => t.Driver_ID == driverID && t.Delivery_Status_ID == "1")
                 .ToListAsync();
 
             // Map the entities to DTOs
@@ -69,8 +70,9 @@ namespace TrackwiseAPI.Models.Repositories
                 Delivery_ID = delivery.Delivery_ID,
                 Delivery_Weight = delivery.Delivery_Weight,
                 Driver_ID = delivery.Driver_ID,
-                Delivery_Status_ID = delivery.Delivery_Status_ID,
-                
+                TrailerID = delivery.TrailerID,
+                TruckID = delivery.TruckID,
+                Delivery_Status_ID = delivery.Delivery_Status_ID,                
                 Jobs = new JobDTO
                 {
                     Job_ID = delivery.Job.Job_ID,
