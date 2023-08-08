@@ -56,11 +56,11 @@ namespace TrackwiseAPI.Models.Repositories
                 .Include(t => t.Driver)
                 .Include(t => t.Trailer)
                 .Include(t => t.Truck)
-                .Include(t=> t.DeliveryStatus)
+                .Include(t => t.DeliveryStatus)
                 .Include(t => t.Job)
                     .ThenInclude(j => j.JobStatus)
-                .Include(j=>j.Job)
-                    .ThenInclude(j=>j.JobType)
+                .Include(j => j.Job)
+                    .ThenInclude(j => j.JobType)
                 .Where(t => t.Driver_ID == driverID && t.Delivery_Status_ID == "1")
                 .ToListAsync();
 
@@ -72,7 +72,8 @@ namespace TrackwiseAPI.Models.Repositories
                 Driver_ID = delivery.Driver_ID,
                 TrailerID = delivery.TrailerID,
                 TruckID = delivery.TruckID,
-                Delivery_Status_ID = delivery.Delivery_Status_ID,                
+                Delivery_Status_ID = delivery.Delivery_Status_ID,
+                
                 Jobs = new JobDTO
                 {
                     Job_ID = delivery.Job.Job_ID,

@@ -14,12 +14,12 @@
         name="email" [(ngModel)]="adminDetails.email" disabled>
       </div>
 
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="text" class="form-control" id="password" [(ngModel)] = "adminDetails.password"  
-                name="password" placeholder="********" [(ngModel)]="adminDetails.password" pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$">
-                <small class="text-muted"> Password must contain at least 1 capital letter, at least 1 number and at least 8 characters.</small>
-        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="text" class="form-control" id="password" [(ngModel)] = "adminDetails.password"  
+                  name="password" placeholder="********" [(ngModel)]="adminDetails.password" pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$">
+                  <small class="text-muted"> Password must contain at least 1 capital letter, at least 1 number and at least 8 characters.</small>
+          </div>
 
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>

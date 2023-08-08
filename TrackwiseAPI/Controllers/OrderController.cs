@@ -195,8 +195,9 @@ namespace TrackwiseAPI.Controllers
             checkoutRequest.newCard.Amount = (decimal)order.Total;
 
             // Call the AddNewCard method to process the payment and pass the newCard model
-            /*
+          
             var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.newCard);
+            /*
             var invoiceID = Guid.NewGuid().ToString();
             var Invoice1 = new Invoice { Email = userEmail, InvoiceNumber = invoiceID };
             var mail = await _mailController.SendInvoiceEmail(Invoice1);*/

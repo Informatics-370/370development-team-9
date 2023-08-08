@@ -21,6 +21,8 @@ export class CustomerOrdersComponent {
   noOrdersCancelledOrCollected: boolean = true;
   noOrdersOrdered: boolean = true;
   showModal: boolean = false;
+  originalOrders: Order[] = []; // Property to store the original trailer data
+  searchText: string = ''; // Property to store the search text
 
   customerOrders: any[] = [];
 
@@ -34,7 +36,7 @@ export class CustomerOrdersComponent {
         this.customerOrders.push(element);
         console.log(element);
       });
-  
+      this.originalOrders = [...custOrderslist]
       // Set the noOrdersCancelledOrCollected variable based on the orders' status
       this.noOrdersCancelledOrCollected = !this.customerOrders.some((order) => order.status === 'Collected' || order.status === 'Cancelled');
       this.noOrdersOrdered = !this.customerOrders.some((order) => order.status === 'Ordered');
@@ -74,5 +76,42 @@ export class CustomerOrdersComponent {
   CloseModal() {
     this.showModal = false;
   }
+  search() {
+    if (this.searchText.trim() === '') {
+      // If search text is empty, revert back to original product data
+      this.orders = [...this.originalOrders];
+    } else {
+      const searchTextLower = this.searchText.toLowerCase();
 
-}
+      // Filter the trailers based on the search text
+      const filteredProducts = this.originalOrders.filter(order => {
+        const order_ID = order.order_ID.toLowerCase();
+        const Date = order.date;
+        const status = order.status;
+        const total = order.total;
+        
+        return (
+          order_ID.includes(searchTextLower)||
+          Date.toString().includes(searchTextLower)||
+          status.includes(searchTextLower) || 
+          total
+        );
+      });
+
+      this.orders = filteredProducts;
+    }
+  }
+
+  handleKeyUp(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.search();
+    }
+  }
+
+  // flipCard(product: Product): void {
+  //   product.this.cardFlipped = !product.cardFlipped;
+  // }
+
+ }
+
+ 
