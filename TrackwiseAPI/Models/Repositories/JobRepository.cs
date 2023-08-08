@@ -1,4 +1,5 @@
-﻿ using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.DataTransferObjects;
@@ -72,6 +73,7 @@ namespace TrackwiseAPI.Models.Repositories
                 TrailerID = delivery.TrailerID,
                 TruckID = delivery.TruckID,
                 Delivery_Status_ID = delivery.Delivery_Status_ID,
+                
                 Jobs = new JobDTO
                 {
                     Job_ID = delivery.Job.Job_ID,

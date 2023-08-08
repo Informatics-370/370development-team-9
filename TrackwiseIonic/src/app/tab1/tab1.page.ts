@@ -27,9 +27,16 @@ export class Tab1Page implements OnInit{
   constructor(public dataService: DataserviceService, private router: Router,private datePipe: DatePipe,private http: HttpClient) {}
   
   ngOnInit() { // Implement ngOnInit lifecycle hook
-    this.dataService.GetAllDriverDeliveries(); // Call the correct method to get driver deliveries
+    this.GetDriverDeliveries(); // Call the correct method to get driver deliveries
   }
 
+  GetDriverDeliveries() {
+    this.dataService.GetDriverDeliveries().subscribe(result => {
+      this.deliveries = result;
+
+      console.log(result)
+    });
+  }
 
   RouteDoc(delivery_ID : string){
     this.router.navigate(['/tabs/tabs/tab2', delivery_ID]);
