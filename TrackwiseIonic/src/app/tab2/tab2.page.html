@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Documents
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +9,23 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Documents</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <h1>Weight</h1>
+  <table>
+      <tr  *ngFor="let row of rows; let i = index">
+        <td>
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="uploadFile(file.files)">
+        </td>
+      </tr>
+      <tr>
+        <ion-icon name="add-circle-outline" (click)="addRow()"></ion-icon>
+      </tr>
+  </table>
+  <br>
+  <ion-button>
+    Upload files
+  </ion-button>
 </ion-content>
