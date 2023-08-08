@@ -30,9 +30,14 @@ export class Tab1Page implements OnInit{
     this.GetDriverDeliveries(); // Call the correct method to get driver deliveries
   }
 
+  RouteDoc(){
+   this.router.navigate(['/tabs/tabs/tab2']);
+  }
+
   GetDriverDeliveries() {
     this.dataService.GetDriverDeliveries().subscribe(result => {
       this.deliveries = result;
+
       console.log(result)
     });
   }
