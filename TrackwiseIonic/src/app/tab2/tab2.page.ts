@@ -80,7 +80,7 @@ export class Tab2Page{
       await this.uploadFile(file);
     }
   
-    this.AddDoc();
+    await this.AddDoc();
     // Clear selected files and update docrequest if needed
     this.selectedFiles = [];
     // if (this.docrequest.documents.length > 0) {
