@@ -54,10 +54,10 @@ export class Tab2Page{
   // }
 
   AddDoc() {
-    //console.log(this.docrequest)
+    console.log(this.docrequest.documents)
     this.dataService.AddDoc(this.docrequest).subscribe({
       next: (result) => {
-        console.log(result);
+        //console.log(result);
         // Clear the document request after successful addition
         this.docrequest.documents = [];
       },
@@ -71,24 +71,17 @@ export class Tab2Page{
     let fileToUpload = <Files>files[0];
     fileToUpload.docType = docType;
     this.selectedFiles.push(fileToUpload);
-    console.log(fileToUpload)
+    //console.log(fileToUpload)
   }
 
   async uploadSelectedFiles() {
-    // Loop through selected files and upload them
-    for (const file of this.selectedFiles) {
-      await this.uploadFile(file);
-    }
+    const promises = this.selectedFiles.map(file => this.uploadFile(file));
+    await Promise.all(promises);
   
     await this.AddDoc();
+  
     // Clear selected files and update docrequest if needed
     this.selectedFiles = [];
-    // if (this.docrequest.documents.length > 0) {
-    //   // Perform any necessary action with docrequest, e.g., sending it to the server
-    //   console.log(this.docrequest);
-    //   // Reset docrequest for the next batch of uploads
-    //   this.docrequest.documents = [];
-    // }
   }
 
   // Complete(deliveryId: string, delivery:any) {
@@ -128,6 +121,7 @@ export class Tab2Page{
   fileNameUploaded = '';
 
   uploadFile = (files: any) => {
+    return new Promise<void>((resolve, reject) => {
     this.route.params.subscribe({
       next: (params) => {
         let deliveryID = params['delivery_ID'];
@@ -146,14 +140,16 @@ export class Tab2Page{
             delivery_ID: deliveryID, // Set the delivery_ID that corresponds to the delivery you want to associate this document with
             docType: files.docType,
           };
-          console.log(document);
+          //console.log(document);
           this.docrequest.documents.push(document);
-          console.log( this.docrequest.documents)
+          resolve();
+          //console.log( this.docrequest.documents)
         };
         reader.readAsDataURL(files);
         this.fileNameUploaded = files.name;
       }
     });
+  });
   }
   
 
