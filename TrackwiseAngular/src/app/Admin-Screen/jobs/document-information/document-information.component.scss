@@ -58,6 +58,43 @@
     font-weight: bold;
 }
 
+.milage-btn {
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    left: 275px;
+    color: #117fca;
+    background-color: transparent;
+    border: 3px solid;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-left-color: #117fca;
+    border-bottom-color: transparent;
+    padding: 10px 20px;
+    height: 40px;
+    width: 140px;
+    font-weight: bold;
+}
+
+.milage-btn-selected {
+    align-items: center;
+    position: absolute;
+    top: -40px;
+    left:  275px;
+    color: #f2f2f2;
+    background-color: #004F9E;
+    border: 3px solid #004F9E;
+    border-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-color: transparent;
+    padding: 10px 20px;
+    height: 40px;
+    width: 140px;
+    font-weight: bold;
+}
+
 .documents-btn {
     align-items: center;
     position: absolute;
@@ -83,8 +120,8 @@
     top: -40px;
     left: 137.5px;
     color: #f2f2f2;
-    background-color: #117fca;
-    border: 3px solid #117fca;
+    background-color: #004F9E;
+    border: 3px solid #004F9E;
     border-radius: 10px;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
@@ -93,6 +130,12 @@
     height: 40px;
     width: 140px;
     font-weight: bold;
+}
+
+.milage-btn:hover {
+    color: #f2f2f2;
+    background-color: #117fca;
+    border: 3px solid #117fca;
 }
 
 .documents-btn:hover {

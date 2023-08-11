@@ -43,6 +43,7 @@ import { RegisterComponent } from './Authentication/register/register.component'
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
+import { DocumentInformationComponent } from './Admin-Screen/jobs/document-information/document-information.component';
 
 //Customer components-----------------------------------------------------------
 import { CustomerProductComponent } from './Customer-Screen/customer-products/customer-products.component';
@@ -109,9 +110,10 @@ const routes: Routes = [
   {path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
 
   //Job components
-  {path: 'Admin-Screen/jobs', component: JobsComponent},
+  {path: 'Admin-Screen/jobs', component: JobsComponent, canActivate:[AdminGuard]},
+  {path: 'Admin-Screen/jobs/document-information', component: DocumentInformationComponent, canActivate:[AdminGuard]},
 
-  { path: 'password/forgotpassword', component: ForgotpasswordComponent},
+  {path: 'password/forgotpassword', component: ForgotpasswordComponent},
   {path: 'Admin-Screen/jobs/job-details/:job_ID/:userName', component: JobDetailsComponent, canActivate: [AdminGuard]},
   {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent, canActivate: [AdminGuard]},
 

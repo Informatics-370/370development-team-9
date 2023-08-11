@@ -158,6 +158,21 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("DeliveryDocuments")]
+        public async Task<IActionResult> DeliveryDocuments(string deliveryID)
+        {
+            try
+            {
+                var results = await _jobRepository.GetDocumentsByDeliveryID(deliveryID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
         [HttpPut]
         [Route("{deliveryId}/status")]
         public async Task<IActionResult> UpdateDeliveryStatus(string deliveryId)
@@ -298,8 +313,6 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
         }
-
-       
 
         [HttpGet("calculate")]
         public async Task<IActionResult> CalculateTruckRoute(string startLocation, string endLocation)

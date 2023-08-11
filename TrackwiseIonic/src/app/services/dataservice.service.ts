@@ -37,31 +37,6 @@ export class DataserviceService {
     .pipe(map(result => result));
   }
 
-  updateDeliveryStatus(deliveryId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${deliveryId}/status`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateJobStatus(jobId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${jobId}/jobstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateDriverStatus(DriverId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${DriverId}/driverstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateTrailerStatus(TrailerId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${TrailerId}/trailerstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateTruckStatus(TruckId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${TruckId}/truckstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
   forgotPassword(email: Forgotpass) {
     console.log(email);
     return this.httpClient.post<any>(`${this.apiUrl}Mail/ForgotPasswordEmail`,email,this.httpOptions );

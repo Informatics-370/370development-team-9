@@ -30,6 +30,7 @@ export class Tab1Page implements OnInit{
     this.dataService.GetAllDriverDeliveries(); // Call the correct method to get driver deliveries
   }
 
+
   RouteDoc(delivery_ID : string){
     this.router.navigate(['/tabs/tabs/tab2', delivery_ID]);
    }

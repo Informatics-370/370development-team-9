@@ -1,0 +1,50 @@
+<div class="details-container" *ngIf="showWB==true">
+
+    <button class="details-btn-selected" (click)="ShowWB()">Weight</button>
+    <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
+    <button class="milage-btn" (click)="ShowM()">Mileage</button>
+
+    <div class="item-container">
+        <h3>Weigh-bridge</h3>
+        <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+            Close
+        </button>
+    </div>
+
+    <img src="" style="width: 200px; height: 200px;">
+
+<!--     <form #form="ngForm" (ngSubmit)="EditAdmin()" autocomplete="off">
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" [(ngModel)]="adminDetails.email"  
+          name="email" [(ngModel)]="adminDetails.email" disabled>
+        </div>
+  
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" aria-describedby="name" [(ngModel)] = "adminDetails.name"     
+            name="name" [(ngModel)]="adminDetails.name" >
+          </div>      
+                      
+          <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+          <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/jobs">Cancel</button>
+        </form> -->
+</div>
+
+
+<!-- ----------------------------------------------------------------------------------------- -->
+<div class="documents-container" *ngIf="showFS == true">
+    <button class="details-btn" (click)="ShowWB()">Weight</button>
+    <button class="documents-btn-selected" (click)="ShowFS()">Fuel slip</button>
+    <button class="milage-btn" (click)="ShowM()">Mileage</button>
+
+</div>
+
+<!-- ----------------------------------------------------------------------------------------- -->
+<div class="documents-container" *ngIf="showM == true">
+    <button class="details-btn" (click)="ShowWB()">Weight</button>
+    <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
+    <button class="milage-btn-selected" (click)="ShowM()">Mileage</button>
+
+</div>
