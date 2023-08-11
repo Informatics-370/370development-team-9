@@ -74,12 +74,14 @@
                         <th>Truck</th>
                         <th>Trailer</th>
                         <th>Load (T)</th>
+                        <th></th>
                     </tr>
                     <tr *ngFor=" let jobdeliveries of jobDetails.deliveries">
                         <td>{{jobdeliveries.driver.name + " " + jobdeliveries.driver.lastname}}</td>
                         <td>{{jobdeliveries.truck.truck_License}} </td>
                         <td>{{jobdeliveries.trailer.trailer_License}}</td>
                         <td>{{jobdeliveries.delivery_Weight}}</td>
+                        <td> <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/document-information']"> Capture </button> </td>
                     </tr>
                 </table>  
             </td> 

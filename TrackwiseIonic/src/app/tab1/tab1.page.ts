@@ -42,10 +42,6 @@ export class Tab1Page implements OnInit{
     });
   }
 
-  RouteDoc(){
-    this.router.navigate(['/tabs/tabs/tab2']);
-   }
-
   // AddDoc() {
   //   this.dataService.AddDoc(this.docrequest).subscribe({
   //     next: (result) => {
