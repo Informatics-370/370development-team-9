@@ -8,6 +8,7 @@ namespace TrackwiseAPI.Models.Entities
         [Key]
         public string Document_ID { get; set; }
         public string? Image { get; set; }
+        public string DocType { get; set; }
         public string Delivery_ID { get; set; }
         [ForeignKey("Delivery_ID")]
         public Delivery Delivery { get; set; }
