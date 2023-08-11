@@ -13,9 +13,9 @@
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="deliveries.length > 0; else noDeliveries">
+  <ng-container *ngIf="dataService.deliveries.length > 0; else noDeliveries">
     <ion-list>
-      <ion-card class="card" *ngFor="let delivery of deliveries">
+      <ion-card class="card" *ngFor="let delivery of dataService.deliveries">
         <ion-item lines="none">
           <ion-row>
             <!-- Image Row -->
@@ -57,7 +57,7 @@
               <ion-col>
                 <ion-item>
                   <div>
-                    <ion-button (click)="RouteDoc()">Upload File</ion-button>
+                    <ion-button (click)="RouteDoc(delivery.delivery_ID)">Upload File</ion-button>
                     <!-- <input type="file" id="file" #file placeholder="Choose file" (change)="uploadFile(file.files, delivery)" style="display:none;">
                     <ion-button  (click)="file.click()">Upload File</ion-button>
                     <div *ngIf="fileNameUploaded.length > 0">

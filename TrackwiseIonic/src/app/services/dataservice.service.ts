@@ -20,6 +20,9 @@ export class DataserviceService {
       ContentType: 'application/json'
     })
   }
+
+  deliveries: Delivery[] = []; // Array to store the deliveries
+
   constructor(private httpClient: HttpClient) { }
   
   
@@ -39,33 +42,17 @@ export class DataserviceService {
     return this.httpClient.post<any>(`${this.apiUrl}Mail/ForgotPasswordEmail`,email,this.httpOptions );
   }
 
-  updateDeliveryStatus(deliveryId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${deliveryId}/status`;
-    return this.httpClient.put<void>(url, {});
+  GetAllDriverDeliveries() {
+    this.GetDriverDeliveries().subscribe(result => {
+      this.deliveries = result;
+      console.log(result)
+    });
   }
 
-  updateJobStatus(jobId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${jobId}/jobstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateDriverStatus(DriverId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${DriverId}/driverstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateTrailerStatus(TrailerId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${TrailerId}/trailerstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
-  updateTruckStatus(TruckId: string): Observable<void> {
-    const url = `${this.apiUrl}Job/${TruckId}/truckstatus`;
-    return this.httpClient.put<void>(url, {});
-  }
-
+  
 
   AddDoc(docrequest: addDocument): Observable<addDocument> {
+    console.log(docrequest)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

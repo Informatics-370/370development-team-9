@@ -17,30 +17,23 @@ import { Delivery } from '../shared/Delivery';
   providers:[DataserviceService, DatePipe],
 })
 export class Tab1Page implements OnInit{
-  deliveries: Delivery[] = []; // Array to store the deliveries
+
 
   docrequest: addDocument =
   {
       documents: []
   };
 
-  constructor(private dataService: DataserviceService, private router: Router,private datePipe: DatePipe,private http: HttpClient) {}
+  constructor(public dataService: DataserviceService, private router: Router,private datePipe: DatePipe,private http: HttpClient) {}
   
   ngOnInit() { // Implement ngOnInit lifecycle hook
-    this.GetDriverDeliveries(); // Call the correct method to get driver deliveries
+    this.dataService.GetAllDriverDeliveries(); // Call the correct method to get driver deliveries
   }
 
-  RouteDoc(){
-   this.router.navigate(['/tabs/tabs/tab2']);
-  }
 
-  GetDriverDeliveries() {
-    this.dataService.GetDriverDeliveries().subscribe(result => {
-      this.deliveries = result;
-
-      console.log(result)
-    });
-  }
+  RouteDoc(delivery_ID : string){
+    this.router.navigate(['/tabs/tabs/tab2', delivery_ID]);
+   }
 
   // AddDoc() {
   //   this.dataService.AddDoc(this.docrequest).subscribe({
