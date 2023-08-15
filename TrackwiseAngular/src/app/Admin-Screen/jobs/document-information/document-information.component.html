@@ -11,9 +11,23 @@
         </button>
     </div>
 
-    <img src="" style="width: 200px; height: 200px;">
+    <div *ngIf="!hasWeighBridgeDocuments">
+      No weigh-bridge documents
+    </div>
+    
+    <div *ngFor="let document of documents">
+      <div *ngIf="document.docType === 'Weight'"> 
+          <img src="{{ document.image }}" alt="Document Image">
+          
+          <form (ngSubmit)="updateActualWeight(document)">
+              <label for="actualWeight">Actual Weight:</label>
+              <input type="number" id="actualWeight" name="actualWeight" [(ngModel)]="document.actualWeight">
+              <button type="submit">Update</button>
+          </form>
+      </div>
+  </div>
 
-<!--     <form #form="ngForm" (ngSubmit)="EditAdmin()" autocomplete="off">
+<!--     <form #form="ngForm" (ngSubmit)="EditAdmin()" autocomplete="off"> 
 
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
@@ -39,6 +53,22 @@
     <button class="documents-btn-selected" (click)="ShowFS()">Fuel slip</button>
     <button class="milage-btn" (click)="ShowM()">Mileage</button>
 
+    <div class="item-container">
+      <h3>Fuel Slip</h3>
+      <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+          Close
+      </button>
+  </div>
+
+
+  <div *ngFor="let document of documents">
+    
+    <div *ngIf="document.docType === 'Fuel'"> 
+      <img src="{{ document.image }}" alt="Document Image">
+    </div>
+
+  </div>
+
 </div>
 
 <!-- ----------------------------------------------------------------------------------------- -->
@@ -46,5 +76,21 @@
     <button class="details-btn" (click)="ShowWB()">Weight</button>
     <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
     <button class="milage-btn-selected" (click)="ShowM()">Mileage</button>
+
+    <div class="item-container">
+      <h3>Mileage</h3>
+      <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+          Close
+      </button>
+  </div>
+
+
+  <div *ngFor="let document of documents">
+    
+    <div *ngIf="document.docType === 'Weight'"> 
+      <img src="{{ document.image }}" alt="Document Image">
+    </div>
+
+  </div>
 
 </div>
