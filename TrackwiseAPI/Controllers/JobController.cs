@@ -159,12 +159,12 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpGet]
-        [Route("DeliveryDocuments")]
-        public async Task<IActionResult> DeliveryDocuments(string deliveryID)
+        [Route("DeliveryDocuments/{delivery_ID}")]
+        public async Task<IActionResult> DeliveryDocuments(string delivery_ID)
         {
             try
             {
-                var results = await _jobRepository.GetDocumentsByDeliveryID(deliveryID);
+                var results = await _jobRepository.GetDocumentsByDeliveryID(delivery_ID);
                 return Ok(results);
             }
             catch (Exception)
@@ -172,8 +172,40 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
         }
+        public class UpdateActualWeightRequest
+        {
+            public double? Actual_Weight { get; set; }
+        }
 
-        [HttpPut]
+        [HttpPut("Updateweight")]
+        public async Task<ActionResult<UpdateActualWeightRequest>> UpdateActualWeight(string delivery_ID ,UpdateActualWeightRequest request)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+                if (delivery == null)
+                {
+                    return NotFound("Delivery not found");
+                }
+
+                delivery.Actual_weight = request.Actual_Weight;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Actual weight updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating actual weight");
+            }
+        }
+    
+
+    [HttpPut]
         [Route("{deliveryId}/status")]
         public async Task<IActionResult> UpdateDeliveryStatus(string deliveryId)
         {
