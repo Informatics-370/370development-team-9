@@ -84,4 +84,25 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Delivery_ID { get; set; }
         public string DocType { get; set; }
     }
+
+    public class LoadsDTO
+    {
+        public string Job_ID { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string PickupLocation { get; set; }
+        public string DropoffLocation { get; set; }
+        public double Weight { get; set; }
+        public string Creator_ID { get; set; }
+        public string type { get; set; }
+        public string Job_Status_ID { get; set; }
+        public JobStatusDTO JobStatus { get; set; }
+    }
+
+    public class JobStatusDTO
+    {
+        public string Job_Status_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
 }

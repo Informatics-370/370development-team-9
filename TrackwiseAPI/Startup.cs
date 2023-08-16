@@ -120,6 +120,7 @@ public class Startup
         services.AddScoped<IJobRepository, JobRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IReportRepository, ReportRepository>();
 
     }
 

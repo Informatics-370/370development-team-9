@@ -71,7 +71,7 @@ namespace TrackwiseAPI.Controllers
         [Route("GetAllClientJobs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
 
-        public async Task<IActionResult> GetAllCustomerOrders()
+        public async Task<IActionResult> GetAllClientJobs()
         {
             try
             {
