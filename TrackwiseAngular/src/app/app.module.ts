@@ -75,6 +75,7 @@ import { DocumentInformationComponent } from './Admin-Screen/jobs/document-infor
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -121,7 +122,8 @@ import { DocumentInformationComponent } from './Admin-Screen/jobs/document-infor
     ClientEditJobComponent,
     ClientJobDetailsComponent,
     AdminProfileComponent,
-    DocumentInformationComponent
+    DocumentInformationComponent,
+   
 
   ],
   imports: [
