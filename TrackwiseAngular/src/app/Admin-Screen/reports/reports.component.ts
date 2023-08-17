@@ -1,10 +1,97 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+import { Product } from 'src/app/shared/product';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
-export class ReportsComponent {
+export class ReportsComponent implements OnInit {
+  products: Product[] = [];
+  pdfSrc: string | null = null;
 
+  constructor(private dataService: DataService) { }
+
+  ngOnInit(): void {
+    this.getProducts();
+  }
+
+  // Methods-------------------------------------------------------------------------
+
+  getProducts() {
+    this.dataService.GetProducts().subscribe(result => {
+      this.products = result;
+    });
+  }
+
+
+
+
+
+  // Generate PDFs--------------------------------------------------------------------
+
+  // Generate Stock Report
+
+  generateStockReport() {
+    const doc = new jsPDF();
+
+    // Image
+
+    const img = new Image();
+    img.src = "assets/LTTLogo.jpg";
+    doc.addImage(img, 'JPG', 10, 5, 50, 30);
+
+    // Text
+
+    doc.setFontSize(18);
+    doc.setTextColor(0, 79, 158);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Product Stock Report', 130, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica');
+    const currentDate = new Date();
+    doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+
+
+    // Table and table data
+
+    const header = ['Product ID', 'Name', 'Quantity', 'Price', 'Category', 'Stock Level', ''];
+
+    const tableData = this.products.map(prod => [
+      prod.product_ID,
+      prod.product_Name,
+      prod.quantity,
+      `R ${prod.product_Price.toFixed(2)}`,
+      prod.product_Category.name,
+      prod.quantity == 0 ? 'No stock available' : prod.quantity >= 1 ? 'Available' : '',
+    ]);
+    
+    // Autotable layout
+
+    autoTable(doc, {
+      head: [header],
+      body: tableData,
+      startY: 50, // Adjust the starting Y-coordinate for the table
+    });
+
+    // Opening of the PDF
+
+    const pdfData = doc.output('datauristring');
+    this.pdfSrc = pdfData;
+
+    const pdfWindow = window.open();
+
+    // Validation for PDF load
+
+    if (pdfWindow) {
+      pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+    } else {
+      console.error('Failed to open PDF preview window.');
+    }
+  }
 }

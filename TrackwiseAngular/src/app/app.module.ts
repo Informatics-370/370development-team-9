@@ -74,7 +74,6 @@ import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profil
 import { DocumentInformationComponent } from './Admin-Screen/jobs/document-information/document-information.component';
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -121,12 +120,12 @@ import { DocumentInformationComponent } from './Admin-Screen/jobs/document-infor
     ClientEditJobComponent,
     ClientJobDetailsComponent,
     AdminProfileComponent,
-    DocumentInformationComponent
+    DocumentInformationComponent,
 
   ],
   imports: [
     BrowserModule,
-    MatInputModule ,
+    MatInputModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
