@@ -67,7 +67,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetLoadsCarried")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> GetLoadsCarried()
         {
             var results = await _reportRepository.GetLoadsCarriedAsync();
