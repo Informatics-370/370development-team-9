@@ -105,7 +105,7 @@ namespace TrackwiseAPI.Controllers
                     truckDataList.Add(truckData);
                 }
 
-                // Return the list of truck data in the response
+
                 return Ok(truckDataList);
             }
             catch (Exception)
