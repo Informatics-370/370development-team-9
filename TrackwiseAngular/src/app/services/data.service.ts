@@ -542,4 +542,12 @@ export class DataService {
     return this.itemsInCart;
   }
 
+  /*Reports Section */
+  GetLoadsCarried(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetLoadsCarried`, {headers})
+    .pipe(map(result => result))
+  }
+
 }
