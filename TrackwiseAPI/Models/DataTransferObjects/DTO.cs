@@ -105,4 +105,11 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Name { get; set; }
         public string Description { get; set; }
     }
+
+    public class LoadsCarriedDTO
+    {
+        public string Registration { get; set; }
+        public int Trip { get; set; }
+        public double Weight { get; set; }
+    }
 }

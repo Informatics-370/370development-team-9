@@ -4,6 +4,7 @@ namespace TrackwiseAPI.Models.Interfaces
 {
     public interface IReportRepository
     {
-        Task<Job[]> GetLoadsCarriedAsync();
+        Task<Job[]> GetCompleteJobsAsync();
+        Task<Delivery[]> GetLoadsCarriedAsync();
     }
 }
