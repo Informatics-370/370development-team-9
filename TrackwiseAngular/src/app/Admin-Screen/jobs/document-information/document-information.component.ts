@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Admin } from 'src/app/shared/admin';
 import {Document} from 'src/app/shared/document';
+import { Weight } from 'src/app/shared/weight';
 
 @Component({
   selector: 'app-document-information',
@@ -19,15 +20,8 @@ export class DocumentInformationComponent implements OnInit{
   hasFuelDocuments: boolean = false;
   hasMileageDocuments: boolean = false;
   documents: any[] = [];
-  /* docDetails: Document =
-  {
-    document_ID:"",
-    image:"",
-    type:"",
-    delivery:{
-        delivery_ID:"",
-    },
-  } */
+
+
    constructor(private dataService: DataService, private router:Router ,private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -60,27 +54,20 @@ export class DocumentInformationComponent implements OnInit{
     });
   }
 
-  actualWeight: any
+  request: Weight = {
+    actual_Weight: 0,
+  };
 
-  updateActualWeight(document: any) {
-    if (document.actualWeight !== undefined && document.actualWeight !== null) {
-        const payload = {
-            actual_weight: document.actualWeight, // Use 'actual_weight' as expected by your backend
-            // Add any other necessary properties
-        };
-
-        this.dataService.UpdateActualWeight(document.Delivery_ID, payload).subscribe(
-            response => {
-                // Handle success response
-                console.log("Actual weight updated successfully.");
-            },
-            error => {
-                // Handle error
-                console.error("Error updating actual weight:", error);
-            }
-        );
-    }
-}
+  updateActualWeight(): void {
+    this.dataService.UpdateActualWeight(this.delivery_ID, this.request).subscribe(
+      response => {
+        console.log(response); // Handle success, show a message, etc.
+      },
+      error => {
+        console.error(error); // Handle error, show an error message, etc.
+      }
+    );
+  }
 
   ShowWB() {
     this.showWB = true;

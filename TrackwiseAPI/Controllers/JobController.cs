@@ -174,11 +174,11 @@ namespace TrackwiseAPI.Controllers
         }
         public class UpdateActualWeightRequest
         {
-            public double? Actual_Weight { get; set; }
+            public double? actual_Weight { get; set; }
         }
 
-        [HttpPut("Updateweight")]
-        public async Task<ActionResult<UpdateActualWeightRequest>> UpdateActualWeight(string delivery_ID ,UpdateActualWeightRequest request)
+        [HttpPut("Updateweight/{delivery_ID}")]
+        public async Task<ActionResult<UpdateActualWeightRequest>> UpdateActualWeight(string delivery_ID, UpdateActualWeightRequest request)
         {
             try
             {
@@ -189,7 +189,7 @@ namespace TrackwiseAPI.Controllers
                     return NotFound("Delivery not found");
                 }
 
-                delivery.Actual_weight = request.Actual_Weight;
+                delivery.Actual_weight = request.actual_Weight;
 
                 // Save changes to the database
                 await _context.SaveChangesAsync();

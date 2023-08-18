@@ -19,6 +19,7 @@ import { Job } from '../shared/job';
 import { CardPayment, CheckoutRequest, NewCard } from '../shared/cardPayment';
 import { Forgotpass } from '../shared/forgotpass';
 import { Document } from '../shared/document';
+import { Weight } from '../shared/weight';
 
 @Injectable({
   providedIn: 'root'
@@ -377,11 +378,8 @@ export class DataService {
     return this.httpClient.get<any>(`${this.apiUrl}Job/DeliveryDocuments/${document_ID}`, {headers} );
   }
 
-  UpdateActualWeight(delivery_ID: string, actual_weight: number | null): Observable<any> {
-    const url = `${this.apiUrl}/Job/Updateweight/${delivery_ID}`;
-    const payload = { Actual_Weight: actual_weight }; // Use 'Actual_Weight' as expected by your backend
-    
-    return this.httpClient.put(url, payload);
+  UpdateActualWeight(delivery_ID: string, request:Weight): Observable<any> {
+    return this.httpClient.put<any>(`${this.apiUrl}/Job/Updateweight/${delivery_ID}`, request);
   }
   
   CreateJob(AddJob: Job): Observable<Job>
