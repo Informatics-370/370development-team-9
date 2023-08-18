@@ -161,6 +161,8 @@ namespace TrackwiseAPI.Controllers
         [HttpGet]
         [Route("DeliveryDocuments/{delivery_ID}")]
         public async Task<IActionResult> DeliveryDocuments(string delivery_ID)
+        [Route("DeliveryDocuments/{delivery_ID}")]
+        public async Task<IActionResult> DeliveryDocuments(string delivery_ID)
         {
             try
             {
