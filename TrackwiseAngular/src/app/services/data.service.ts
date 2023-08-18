@@ -379,7 +379,7 @@ export class DataService {
   }
 
   UpdateActualWeight(delivery_ID: string, request:Weight): Observable<any> {
-    return this.httpClient.put<any>(`${this.apiUrl}/Job/Updateweight/${delivery_ID}`, request);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/Updateweight/${delivery_ID}`, request);
   }
   
   CreateJob(AddJob: Job): Observable<Job>
