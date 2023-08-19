@@ -117,6 +117,7 @@ export class ReportsComponent implements OnInit {
   getLoadsCarried() {
     this.dataService.GetLoadsCarried().subscribe(result => {
       this.loadsCarried = result;
+      console.log(this.loadsCarried)
     });
   }
 
@@ -258,7 +259,7 @@ export class ReportsComponent implements OnInit {
     } else {
       console.error('Failed to open PDF preview window.');
     }
-
+  }
 
     // Generate Loads Carried Report
 
