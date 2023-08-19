@@ -118,6 +118,11 @@ namespace TrackwiseAPI.Models.Repositories
             IQueryable<Document> query = _context.Documents.Where(c => c.Delivery_ID == deliveryID);
             return await query.ToArrayAsync();
         }
+        public async Task<Delivery> GetDeliveryByID(string delivery_ID)
+        {
+            IQueryable<Delivery> query = _context.Deliveries.Where(c => c.Delivery_ID == delivery_ID);
+            return await query.FirstOrDefaultAsync();
+        }
 
         public async Task<Job> GetJobAsync(string Job_ID)
         {
