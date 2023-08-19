@@ -293,15 +293,9 @@ namespace TrackwiseAPI.DBContext
 
 
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Driver_ID = "1", Email = "Driver1@gmail.com" ,Name = "Driver1", Lastname = "Koen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "2", Email = "Driver2@gmail.com" , Name = "Driver2", Lastname = "Poen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "3", Email = "Driver3@gmail.com" , Name = "Driver3", Lastname = "Soen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "4", Email = "Driver4@gmail.com", Name = "Driver4", Lastname = "Loen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "5", Email = "Driver5@gmail.com", Name = "Driver5", Lastname = "Hoen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "6", Email = "Driver6@gmail.com", Name = "Driver6", Lastname = "Joen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "7", Email = "Driver7@gmail.com", Name = "Driver7", Lastname = "Doen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "8", Email = "Driver8@gmail.com", Name = "Driver8", Lastname = "Roen", PhoneNumber = "0761532265", Driver_Status_ID = "1" }
+                new Driver { Driver_ID = "1", Email = "Driver1@gmail.com", Name = "Driver1", Lastname = "Koen", PhoneNumber = "0761532265", Driver_Status_ID = "1" }
             );
+            
 
             modelBuilder.Entity<Truck>().HasData(
                 new Truck { TruckID = "1", Truck_License = "GH39QP L", Model = "Mercedes",  Truck_Status_ID = "1" },

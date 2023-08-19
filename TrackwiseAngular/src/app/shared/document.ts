@@ -1,8 +1,8 @@
 export interface Document {
-    document_ID: string;
-    image: string;
-    type: string;
-    delivery:{
+    documents: {
+        document_ID: string;
+        image:string;
         delivery_ID:string;
-    };
+        docType:string;
+      }[];
 }
