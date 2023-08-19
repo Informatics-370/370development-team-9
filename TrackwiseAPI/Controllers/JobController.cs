@@ -174,7 +174,7 @@ namespace TrackwiseAPI.Controllers
         }
         public class UpdateActualWeightRequest
         {
-            public double? actual_Weight { get; set; }
+            public double actual_Weight { get; set; }
         }
 
         [HttpPut("Updateweight/{delivery_ID}")]
@@ -189,7 +189,7 @@ namespace TrackwiseAPI.Controllers
                     return NotFound("Delivery not found");
                 }
 
-                delivery.Actual_weight = request.actual_Weight;
+                delivery.Delivery_Weight = request.actual_Weight;
 
                 // Save changes to the database
                 await _context.SaveChangesAsync();
@@ -681,7 +681,7 @@ namespace TrackwiseAPI.Controllers
                                 
                                 Delivery_ID = Delivery_ID,
                                 Delivery_Weight = jobweight,
-                                Driver_ID = "55d04a08-4203-4e6d-9c21-a85a5de23f16",
+                                Driver_ID = driverId,
                                 TruckID = truckId,
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID,
