@@ -27,7 +27,9 @@ export class JobsComponent implements OnInit{
     total_Weight: 0,
     creator_ID: '',
     job_Type_ID: '',
-    job_Status_ID:''
+    job_Status_ID: '',
+    jobType: '',
+    jobStatus: ''
   };
 
   showView: boolean = true;

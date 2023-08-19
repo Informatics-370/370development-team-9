@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { Product } from 'src/app/shared/product';
+import { Jobs } from 'src/app/shared/jobs';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Observable, catchError, map, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DatePipe, formatDate } from '@angular/common';
 import { LoadsCarried } from 'src/app/shared/loadsCarried';
+
 
 @Component({
   selector: 'app-reports',
@@ -12,14 +17,20 @@ import { LoadsCarried } from 'src/app/shared/loadsCarried';
 })
 export class ReportsComponent implements OnInit {
   products: Product[] = [];
+
+  jobs: any[] = [];
+  users : string = "";
+  originalJobs: any[] = [];
   loadsCarried : LoadsCarried[] = []
   pdfSrc: string | null = null;
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
     this.getProducts();
+    this.GetJobs();
     this.getLoadsCarried();
+
   }
 
   // Methods-------------------------------------------------------------------------
@@ -29,6 +40,79 @@ export class ReportsComponent implements OnInit {
       this.products = result;
     });
   }
+
+
+  GetJobs() {
+    this.dataService.GetJobs().subscribe((result) => {
+      let jobList: any[] = result;
+      this.originalJobs = [...jobList]; // Store a copy of the original admin data
+  
+      // Use Promise.all to handle multiple asynchronous calls efficiently
+      Promise.all(
+        jobList.map((element) => {
+          return this.GetUser(element.creator_ID).toPromise();
+        })
+      )
+        .then((userNames) => {
+          // Assign the user names to the corresponding elements
+          jobList.forEach((element, index) => {
+            element.userName = userNames[index];
+            this.jobs.push(element);
+            console.log(element);
+          });
+        })
+        .catch((error) => console.error('Error getting user names:', error));
+    });
+  }
+
+  GetUser(userID: string): Observable<string> {
+    return new Observable((observer) => {
+      this.dataService.GetAdmin(userID).pipe(
+        catchError((error: HttpErrorResponse) => {
+          // Check if the error status is 404 (Not Found)
+          if (error.status === 404) {
+            // The admin was not found, try getting the client data
+            return this.dataService.GetClient(userID).pipe(
+              map((name) => {
+                // `name` will be a string in this case, so set it directly
+                this.users = name.name;
+                return this.users;
+              }),
+              catchError((clientError: HttpErrorResponse) => {
+                // Handle any errors that may occur while getting the client data
+                observer.error(clientError);
+                return throwError(clientError);
+              })
+            );
+          } else {
+            // Handle other errors related to the GetAdmin call
+            observer.error(error);
+            return throwError(error);
+          }
+        }),
+        map((result) => {
+          if (typeof result === 'string') {
+            // `result` is a string (not an Admin object)
+            // Do whatever you need to do with the string, e.g., store it in `this.users`
+            this.users = result;
+          } else {
+            // `result` is an Admin object
+            // Access the `name` property
+            this.users = result.name;
+          }
+          return this.users;
+        })
+      ).subscribe(
+        (userName) => {
+          observer.next(userName); // Emit the user name
+          observer.complete();
+        },
+        (error) => observer.error(error)
+      );
+    });
+  }
+
+
 
   getLoadsCarried() {
     this.dataService.GetLoadsCarried().subscribe(result => {
@@ -106,6 +190,76 @@ export class ReportsComponent implements OnInit {
   }
 
 
+
+
+  // Generate Job list report 
+
+  generateJobReport(){
+
+    const document = new jsPDF('landscape'); //instance of the jsPDF class
+
+    const img = new Image();
+    img.src = "assets/LTTLogo.jpg";
+    document.addImage(img, 'JPG', 10, 5, 50, 30);
+
+    // Text
+
+    document.setFontSize(18);
+    document.setTextColor(0, 79, 158);
+    document.setFont('helvetica', 'bold');
+    document.text('Job Report', 230, 20);
+
+    document.setFontSize(10);
+    document.setTextColor(0, 0, 0);
+    document.setFont('helvetica');
+    const currentDate = new Date();
+    document.text('Generated On: ' + currentDate.toLocaleDateString(), 230, 27);
+
+
+    
+  
+
+    const header = ['Job' + '\n' + 'ID', 'Creator', 'Start' + '\n' + 'Date', 'End' + '\n' + 'Date', 'Pickup' + '\n' + 'Location', 'Drop-off' + '\n' + 'Location', 'Job' + '\n' + 'Type', 'Job' + '\n' + 'Status']
+
+    const tableData = this.jobs.map(job => [
+      job.job_ID,
+      job.userName,
+      job.startDate = this.datePipe.transform(job.startDate, 'yyyy/dd/MM'),
+      job.dueDate = this.datePipe.transform(job.dueDate, 'yyyy/MM/dd'),
+      job.pickup_Location,
+      job.dropoff_Location,
+      job.jobType.name,
+      job.jobStatus.name,
+    
+     
+    ]);
+
+
+   
+
+    autoTable(document, {
+      head: [header],
+      body: tableData,
+      startY: 50
+      
+    });
+
+
+
+    const pdfData = document.output('datauristring');
+    this.pdfSrc = pdfData;
+
+    const pdfWindow = window.open();
+
+    // Validation for PDF load
+
+    if (pdfWindow) {
+      pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+    } else {
+      console.error('Failed to open PDF preview window.');
+    }
+
+
     // Generate Loads Carried Report
 
     generateLoadsCarriedReport() {
@@ -163,5 +317,6 @@ export class ReportsComponent implements OnInit {
       } else {
         console.error('Failed to open PDF preview window.');
       }
+
     }
 }

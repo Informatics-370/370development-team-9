@@ -1,4 +1,6 @@
 export interface Job {
+    jobType: any;
+    jobStatus: any;
     job_ID:string,   
     startDate:string,
     dueDate:string,  

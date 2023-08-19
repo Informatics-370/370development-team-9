@@ -19,4 +19,20 @@ export interface Jobs
         name : string,
         description: string 
     }
+
+    Admin:{
+        admin_ID: string;
+        name: string;
+        lastname:String;
+        email:String;
+        password: String;
+    }
+
+    Client:{
+        client_ID: string;
+        name: string;
+        phoneNumber:String;
+        email:string;
+        password:string;
+    }
 }
