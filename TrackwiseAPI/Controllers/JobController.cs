@@ -480,6 +480,39 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        public class UpdateMileage
+        {
+            public double? Initial_Mileage { get; set; }
+            public double? Final_Mileage { get; set; }
+        }
+
+        //Mileage
+        [HttpPut]
+        [Route("EditMileage/{delivery_ID}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> EditMileage(string delivery_ID, UpdateMileage request)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+                delivery.Initial_Mileage = request.Initial_Mileage;
+                delivery.Final_Mileage = request.Final_Mileage;
+                await _context.SaveChangesAsync();
+
+
+                return Ok(new { Message = "Actual mileage updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating actual mileage");
+            }
+
+        }
+
+
         [HttpPost]
         [Route("CreateJob")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
