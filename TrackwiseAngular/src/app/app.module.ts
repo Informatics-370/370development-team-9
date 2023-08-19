@@ -72,6 +72,7 @@ import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-e
 import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
 import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profile.component';
 import { DocumentInformationComponent } from './Admin-Screen/jobs/document-information/document-information.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -142,7 +143,7 @@ import { DocumentInformationComponent } from './Admin-Screen/jobs/document-infor
     MatBadgeModule,
     MatMenuModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
