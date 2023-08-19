@@ -137,5 +137,6 @@ namespace TrackwiseAPI.Models.Repositories
                 .Include(t => t.JobType);
             return await query.FirstOrDefaultAsync();
         }
+
     }
 }
