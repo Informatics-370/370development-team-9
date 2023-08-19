@@ -60,15 +60,17 @@ export class ReportsComponent implements OnInit {
 
     // Table and table data
 
-    const header = ['Product ID', 'Name', 'Quantity', 'Price', 'Category', 'Stock Level', ''];
+    const header = ['Product ID', 'Name', 'Quantity', 'Price', 'Stock Level', ''];
 
     const tableData = this.products.map(prod => [
       prod.product_ID,
       prod.product_Name,
       prod.quantity,
       `R ${prod.product_Price.toFixed(2)}`,
-      prod.product_Category.name,
-      prod.quantity == 0 ? 'No stock available' : prod.quantity >= 1 ? 'Available' : '',
+      prod.quantity == 0 ? 'No stock available' :
+       prod.quantity >= 1 && prod.quantity <= 5 ? 'Low Stock' : 
+       prod.quantity >= 6 && prod.quantity <= 15 ? 'Moderate Stock':
+       'High Stock'  ,
     ]);
     
     // Autotable layout
