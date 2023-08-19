@@ -1,50 +1,94 @@
 <div class="details-container" *ngIf="showWB==true">
 
-    <button class="details-btn-selected" (click)="ShowWB()">Weight</button>
-    <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
-    <button class="milage-btn" (click)="ShowM()">Mileage</button>
+  <button class="details-btn-selected" (click)="ShowWB()">Weight</button>
+  <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
+  <button class="milage-btn" (click)="ShowM()">Mileage</button>
 
-    <div class="item-container">
-        <h3>Weigh-bridge</h3>
-        <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
-            Close
-        </button>
+  <div class="item-container">
+    <h3>Weigh-bridge</h3>
+    <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+      Close
+    </button>
+  </div>
+
+    <div *ngIf="!hasWeighBridgeDocuments">
+      No weigh-bridge documents
     </div>
-
-    <img src="" style="width: 200px; height: 200px;">
-
-<!--     <form #form="ngForm" (ngSubmit)="EditAdmin()" autocomplete="off">
-
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" id="email" [(ngModel)]="adminDetails.email"  
-          name="email" [(ngModel)]="adminDetails.email" disabled>
-        </div>
-  
-          <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" class="form-control" id="name" aria-describedby="name" [(ngModel)] = "adminDetails.name"     
-            name="name" [(ngModel)]="adminDetails.name" >
-          </div>      
-                      
-          <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
-          <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/jobs">Cancel</button>
-        </form> -->
-</div>
+    
+    <div *ngFor="let document of documents">
+      <div *ngIf="document.docType === 'Weight'"> 
+          <img src="{{ document.image }}" alt="Document Image">
+          <form #form="ngForm" (ngSubmit)=" updateActualWeight()" autocomplete="off">
+            <div class="mb-3">
+              <label for="actual_Weight" class="form-label">Weight</label>
+              <input type="number" class="form-control" id="actual_Weight" [(ngModel)] = "request.actual_Weight"  
+                     name="actual_Weight" [(ngModel)]="request.actual_Weight">
+            </div>
+            <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+        </form>
+      </div>
+  </div>
+  <div>
 
 
 <!-- ----------------------------------------------------------------------------------------- -->
 <div class="documents-container" *ngIf="showFS == true">
-    <button class="details-btn" (click)="ShowWB()">Weight</button>
-    <button class="documents-btn-selected" (click)="ShowFS()">Fuel slip</button>
-    <button class="milage-btn" (click)="ShowM()">Mileage</button>
+  <button class="details-btn" (click)="ShowWB()">Weight</button>
+  <button class="documents-btn-selected" (click)="ShowFS()">Fuel slip</button>
+  <button class="milage-btn" (click)="ShowM()">Mileage</button>
+
+    <div class="item-container">
+      <h3>Fuel Slip</h3>
+      <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+          Close
+      </button>
+  </div>
+
+
+  <div *ngFor="let document of documents">
+    
+    <div *ngIf="document.docType === 'Fuel'"> 
+      <img src="{{ document.image }}" alt="Document Image">
+    </div>
+
+  </div>
 
 </div>
 
 <!-- ----------------------------------------------------------------------------------------- -->
 <div class="documents-container" *ngIf="showM == true">
-    <button class="details-btn" (click)="ShowWB()">Weight</button>
-    <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
-    <button class="milage-btn-selected" (click)="ShowM()">Mileage</button>
+  <button class="details-btn" (click)="ShowWB()">Weight</button>
+  <button class="documents-btn" (click)="ShowFS()">Fuel slip</button>
+  <button class="milage-btn-selected" (click)="ShowM()">Mileage</button>
+
+  <div>
+    <h3>Mileage</h3>
+
+    <label for="initial-mileage">Initial Mileage:</label>
+    <input type="number" id="initial-mileage" name="initial-mileage" min="0" step="1" />
+
+    <label for="final-mileage">Final Mileage:</label>
+    <input type="number" id="final-mileage" name="final-mileage" min="0" step="1" />
+
+    <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+      Close
+    </button>
+  </div>
+
+    <div class="item-container">
+      <h3>Mileage</h3>
+      <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+          Close
+      </button>
+  </div>
+
+
+  <div *ngFor="let document of documents">
+    
+    <div *ngIf="document.docType === 'Weight'"> 
+      <img src="{{ document.image }}" alt="Document Image">
+    </div>
+
+  </div>
 
 </div>

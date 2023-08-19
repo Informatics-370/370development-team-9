@@ -18,6 +18,8 @@ import { RegisterUser } from '../shared/register';
 import { Job } from '../shared/job';
 import { CardPayment, CheckoutRequest, NewCard } from '../shared/cardPayment';
 import { Forgotpass } from '../shared/forgotpass';
+import { Document } from '../shared/document';
+import { Weight } from '../shared/weight';
 
 @Injectable({
   providedIn: 'root'
@@ -368,7 +370,18 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Job>(`${this.apiUrl}Job/GetJob/${job_ID}`, {headers} );
   }
+  
+  GetDocuments(document_ID : string): Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<any>(`${this.apiUrl}Job/DeliveryDocuments/${document_ID}`, {headers} );
+  }
 
+  UpdateActualWeight(delivery_ID: string, request:Weight): Observable<any> {
+    return this.httpClient.put<any>(`${this.apiUrl}Job/Updateweight/${delivery_ID}`, request);
+  }
+  
   CreateJob(AddJob: Job): Observable<Job>
   {
     let token = sessionStorage.getItem('Token');
@@ -540,6 +553,14 @@ export class DataService {
       }
 
     return this.itemsInCart;
+  }
+
+  /*Reports Section */
+  GetLoadsCarried(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetLoadsCarried`, {headers})
+    .pipe(map(result => result))
   }
 
 }

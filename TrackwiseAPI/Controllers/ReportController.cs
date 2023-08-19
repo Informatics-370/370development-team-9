@@ -17,20 +17,27 @@ namespace TrackwiseAPI.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportRepository _reportRepository;
+        private readonly ITruckRepository _truckRepository;
+        private readonly IJobRepository _jobRepository;
 
-        public ReportController(IReportRepository reportRepository)
+        public ReportController(
+            IReportRepository reportRepository, 
+            ITruckRepository truckRepository,
+            IJobRepository jobRepository)
         {
             _reportRepository = reportRepository;
+            _truckRepository = truckRepository;
+            _jobRepository = jobRepository;
         }
 
         [HttpGet]
-        [Route("GetLoadsCarried")]
+        [Route("GetCompleteJobs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> GetLoadsCarried()
+        public async Task<IActionResult> GetCompleteJobs()
         {
             try
             {
-                var results = await _reportRepository.GetLoadsCarriedAsync();
+                var results = await _reportRepository.GetCompleteJobsAsync();
                 var loadsDTO = results.Select(loads => new LoadsDTO
                 {
                     Job_ID = loads.Job_ID,
@@ -56,5 +63,56 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
         }
+
+
+        [HttpGet]
+        [Route("GetLoadsCarried")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> GetLoadsCarried()
+        {
+            var results = await _reportRepository.GetLoadsCarriedAsync();
+            var deliveries = await _jobRepository.GetAllDeliveries();
+            var trucks = await _truckRepository.GetAllTrucksAsync();
+
+            try
+            {
+                var truckDataList = new List<LoadsCarriedDTO>(); // Create a list to hold truck data
+
+                foreach (var truck in trucks)
+                {
+                    double delweight = 0;
+                    var trip = 0;
+
+                    var registration = truck.Truck_License;
+                    var truckid = truck.TruckID;
+                    foreach (var del in deliveries)
+                    {
+                        if (del.TruckID == truckid)
+                        {
+                            delweight += del.Delivery_Weight;
+                            trip++;
+                        }
+                    }
+
+                    // Create a TruckData object and add it to the list
+                    var truckData = new LoadsCarriedDTO
+                    {
+                        Registration = registration,
+                        Weight = delweight,
+                        Trip = trip
+                    };
+
+                    truckDataList.Add(truckData);
+                }
+
+
+                return Ok(truckDataList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
     }
 }

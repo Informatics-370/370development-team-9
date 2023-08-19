@@ -9,6 +9,7 @@ namespace TrackwiseAPI.Models.Entities
         [Key]
         public string Delivery_ID { get; set; }
         public double Delivery_Weight { get; set; }
+        public double? Actual_weight { get; set; }
 
         //Foreign Key for Job
         public string  Job_ID { get; set; }
