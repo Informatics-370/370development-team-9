@@ -9,7 +9,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double Total { get; set; }
         public string Status { get; set; }
         public string Customer_ID { get; set; }
-        public CustomerDTO? Customer { get; set; } 
+        public CustomerDTO? Customer { get; set; }
         public ICollection<OrderLineDTO> OrderLines { get; set; }
     }
 
@@ -113,6 +113,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double Weight { get; set; }
     }
 
+
     public class SalesDTO
     {
         public string Product_Name { get; set; }
@@ -122,4 +123,33 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public int Price_Per_Quantity { get; set; }
         public int Total { get; set; }
     }
+
+
+    public class MileageFuelDTO
+    {
+        public string Delivery_ID { get; set; }
+        public double? Mileage { get; set; }
+        public double? Fuel { get; set; }
+        //public double? Total_Mileage { get; set; }
+        //public double? Total_Fuel { get; set; }
+
+    }
+
+    public class TruckDataDTO
+    {
+        public string Registration { get; set; }
+        public List<MileageFuelDTO> MFList { get; set; } // Use a list to store multiple TruckMFDTO objects
+
+    }
+
+
+    public class TotalSalesDTO
+    {
+        public double Total { get; set; }
+        public DateTime Date { get; set; }
+        public int Amount { get; set; }
+
+    }
+
+
 }

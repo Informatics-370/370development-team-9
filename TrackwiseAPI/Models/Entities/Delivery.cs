@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Routing.Constraints;
+using Microsoft.EntityFrameworkCore.ValueGeneration.Internal;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +10,9 @@ namespace TrackwiseAPI.Models.Entities
         [Key]
         public string Delivery_ID { get; set; }
         public double Delivery_Weight { get; set; }
+        public double? Initial_Mileage { get; set; }
+        public double? Final_Mileage { get; set; }
+        public double? TotalFuel { get; set; }
 
         //Foreign Key for Job
         public string  Job_ID { get; set; }
