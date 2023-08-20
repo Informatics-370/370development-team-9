@@ -3,7 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Admin } from 'src/app/shared/admin';
 import {Document} from 'src/app/shared/document';
+import { MileageFuel } from 'src/app/shared/mileage_fuel';
 import { Weight } from 'src/app/shared/weight';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-document-information',
@@ -32,6 +35,7 @@ export class DocumentInformationComponent implements OnInit{
     this.showWB=true;
     this.showFS=false;
     this.showM=false;
+    
   }
 
   loadDocuments(delivery_ID : string) {
@@ -60,6 +64,28 @@ export class DocumentInformationComponent implements OnInit{
 
   updateActualWeight(): void {
     this.dataService.UpdateActualWeight(this.delivery_ID, this.request).subscribe(
+      response => {
+        console.log(response); // Handle success, show a message, etc.
+      },
+      error => {
+        console.error(error); // Handle error, show an error message, etc.
+      }
+    );
+  }
+
+  MileageRequest: MileageFuel = {
+    initial_Mileage: 0,
+    final_Mileage: 0,
+    total_Fuel:0,
+
+  delivery_ID: '',
+  mileage: 0,
+     fuel: 0
+
+  };
+
+  updateMileageFuel(): void {
+    this.dataService.EditMileageFuel(this.delivery_ID, this.MileageRequest).subscribe(
       response => {
         console.log(response); // Handle success, show a message, etc.
       },

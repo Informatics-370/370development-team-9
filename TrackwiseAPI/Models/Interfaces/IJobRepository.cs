@@ -20,6 +20,8 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<Job> GetJobAsync(string Job_ID);
         Task<Delivery> GetDeliveryByID(string delivery_ID);
         Task<Document[]> GetDocumentsByDeliveryID(string deliveryID);
+        Task<Delivery[]> GetAllMileageFuelAsync();
+
     }
 
 }

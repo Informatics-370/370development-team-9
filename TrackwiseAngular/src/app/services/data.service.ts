@@ -20,6 +20,7 @@ import { CardPayment, CheckoutRequest, NewCard } from '../shared/cardPayment';
 import { Forgotpass } from '../shared/forgotpass';
 import { Document } from '../shared/document';
 import { Weight } from '../shared/weight';
+import { MileageFuel } from '../shared/mileage_fuel';
 
 @Injectable({
   providedIn: 'root'
@@ -390,6 +391,27 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  // GetAllMileageFuel(): Observable<any>{
+  //   let token = sessionStorage.getItem('Token');
+  //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.httpClient.get(`${this.apiUrl}Job/GetAllMileageFuel`, {headers})
+  //   .pipe(map(result => result))
+  // }
+
+
+  GetMileageFuel(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Job/GetMileage`, {headers})
+    .pipe(map(result => result))
+  }
+
+  EditMileageFuel(delivery_ID: string, request:MileageFuel): Observable<any>
+  {
+    return this.httpClient.put<any>(`${this.apiUrl}Job/EditMileageFuel/${delivery_ID}`, request);
+
+  }
+
   /*PASSWORD */
   forgotPassword(email: Forgotpass) {
     console.log(email);
@@ -563,6 +585,18 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  // GetAllMileageFuel(): Observable<any>{
+  //   let token = sessionStorage.getItem('Token');
+  //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.httpClient.get(`${this.apiUrl}Report/GetAllMileageFuel`, {headers})
+  //   .pipe(map(result => result))
+  // }
+
+  GetAllMileageFuel(): Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}Report/GetAllMileageFuel`)
+      .pipe(map(result => result));
+  }
+  
   GetTotalSales():Observable<any> {
     return this.httpClient.get(`${this.apiUrl}Report/GetTotalSales`)
   }

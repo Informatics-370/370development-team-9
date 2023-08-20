@@ -23,5 +23,11 @@ namespace TrackwiseAPI.Models.Repositories
             IQueryable<Delivery> query = _context.Deliveries.Where(d => d.Delivery_Status_ID == "2");
             return await query.ToArrayAsync();
         }
+
+        public async Task<Delivery[]> GetAllMileageFuelAsync()
+        {
+            IQueryable<Delivery> query = _context.Deliveries.Where(d => d.Delivery_Status_ID == "2");
+            return await query.ToArrayAsync();
+        }
     }
 }

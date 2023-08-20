@@ -12,5 +12,7 @@
         public string Job_Type_ID { get; set; }
         public string? Job_Status_ID { get; set; }
 
+
+
     }
 }
