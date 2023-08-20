@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
-import { Product } from 'src/app/shared/product';
+import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product';
 import { Jobs } from 'src/app/shared/jobs';
+import { Order, OrderLine } from 'src/app/shared/order';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Observable, catchError, map, throwError } from 'rxjs';
@@ -17,12 +18,29 @@ import { LoadsCarried } from 'src/app/shared/loadsCarried';
 })
 export class ReportsComponent implements OnInit {
   products: Product[] = [];
-
+  productTypes: any[] = []; 
+  productCategories: any[] = []; 
   jobs: any[] = [];
+  orders: OrderLine[] = [];
   users : string = "";
   originalJobs: any[] = [];
   loadsCarried : LoadsCarried[] = []
   pdfSrc: string | null = null;
+
+
+  GetProductType: ProductTypes =
+  {
+    product_Type_ID:"",
+    name:"",
+    description:""
+  };
+
+  GetProductCategory: ProductCategories =
+  {
+    product_Category_ID:"",
+    name:"",
+    description:""
+  };
 
   constructor(private dataService: DataService, private datePipe: DatePipe) { }
 
@@ -30,6 +48,9 @@ export class ReportsComponent implements OnInit {
     this.getProducts();
     this.GetJobs();
     this.getLoadsCarried();
+    this.GetProductCategories();
+    this.GetProductTypes();
+    this.getOrders();
 
   }
 
@@ -39,6 +60,10 @@ export class ReportsComponent implements OnInit {
     this.dataService.GetProducts().subscribe(result => {
       this.products = result;
     });
+  }
+
+  getOrders(){
+    this.dataService.GetAllOrders().subscribe(result => this.orders = result);
   }
 
 
@@ -111,6 +136,20 @@ export class ReportsComponent implements OnInit {
       );
     });
   }
+
+  GetProductTypes() {
+    this.dataService.GetProductTypes().subscribe(result => {
+      this.productTypes = result; // Assign the retrieved product types directly to the "productTypes" array
+      console.log(this.productTypes);
+    });
+  }
+    
+    GetProductCategories() {
+      this.dataService.GetProductCategories().subscribe(result => {
+        this.productCategories = result; // Assign the retrieved product types directly to the "productTypes" array
+        console.log(this.productCategories);
+      });
+    }
 
 
 
@@ -217,8 +256,6 @@ export class ReportsComponent implements OnInit {
     document.text('Generated On: ' + currentDate.toLocaleDateString(), 230, 27);
 
 
-    
-  
 
     const header = ['Job' + '\n' + 'ID', 'Creator', 'Start' + '\n' + 'Date', 'End' + '\n' + 'Date', 'Pickup' + '\n' + 'Location', 'Drop-off' + '\n' + 'Location', 'Job' + '\n' + 'Type', 'Job' + '\n' + 'Status']
 
@@ -261,63 +298,68 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-    // Generate Loads Carried Report
+  // Generate Loads Carried Report
 
-    generateLoadsCarriedReport() {
-      const doc = new jsPDF();
-  
-      // Image
-  
-      const img = new Image();
-      img.src = "assets/LTTLogo.jpg";
-      doc.addImage(img, 'JPG', 10, 5, 50, 30);
-  
-      // Text
-  
-      doc.setFontSize(18);
-      doc.setTextColor(0, 79, 158);
-      doc.setFont('helvetica', 'bold');
-      doc.text('Loads Carried Report', 130, 20);
-  
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.setFont('helvetica');
-      const currentDate = new Date();
-      doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
-  
-  
-      // Table and table data
-  
-      const header = ['Registration', 'Number of Trips', 'Weight Carried'];
-  
-      const tableData = this.loadsCarried.map(load => [
-        load.registration,
-        load.trip,
-        load.weight + " T",
-      ]);
-      
-      // Autotable layout
-  
-      autoTable(doc, {
-        head: [header],
-        body: tableData,
-        startY: 50, // Adjust the starting Y-coordinate for the table
-      });
-  
-      // Opening of the PDF
-  
-      const pdfData = doc.output('datauristring');
-      this.pdfSrc = pdfData;
-  
-      const pdfWindow = window.open();
-  
-      // Validation for PDF load
-  
-      if (pdfWindow) {
-        pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
-      } else {
-        console.error('Failed to open PDF preview window.');
-      }
+  generateLoadsCarriedReport() {
+    const doc = new jsPDF();
 
+    // Image
+
+    const img = new Image();
+    img.src = "assets/LTTLogo.jpg";
+    doc.addImage(img, 'JPG', 10, 5, 50, 30);
+
+    // Text
+
+    doc.setFontSize(18);
+    doc.setTextColor(0, 79, 158);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Loads Carried Report', 130, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica');
+    const currentDate = new Date();
+    doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+
+
+    // Table and table data
+
+    const header = ['Registration', 'Number of Trips', 'Weight Carried'];
+
+    const tableData = this.loadsCarried.map(load => [
+      load.registration,
+      load.trip,
+      load.weight + " T",
+    ]);
+    
+    // Autotable layout
+
+    autoTable(doc, {
+      head: [header],
+      body: tableData,
+      startY: 50, // Adjust the starting Y-coordinate for the table
+    });
+
+    // Opening of the PDF
+
+    const pdfData = doc.output('datauristring');
+    this.pdfSrc = pdfData;
+
+    const pdfWindow = window.open();
+
+    // Validation for PDF load
+
+    if (pdfWindow) {
+      pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+    } else {
+      console.error('Failed to open PDF preview window.');
     }
+
+  }
+
+
+
+  //
+
 }

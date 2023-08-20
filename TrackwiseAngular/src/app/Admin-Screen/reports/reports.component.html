@@ -87,12 +87,30 @@
   </div>
 
 
+  <!--PRODUCT SALES-->
   <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
-        <h4>Sales/Orders Report</h4>
+        <h4>Product Sales Report</h4>
         <div class="centered">
           <img [src]="'assets/Reports/SalesOrders.jpg'">
+
+          <h4>Filter by:</h4>
+          <div class="category-filter">
+            <label for="CategoryDropdown">Category:&nbsp;</label>
+            <select name="CategoryDropdown" id="CategoryDropdown">
+      
+              <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
+            </select>
+          </div>
+      
+          <div class="type-filter">
+            <label for="TypeDropdown">Type:&nbsp;</label>
+            <select name="TypeDropdown" id="TypeDropdown">
+      
+              <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -102,7 +120,7 @@
 
       <mat-card-footer>
         <mat-card-actions>
-          <button (click)="generateStockReport()">Generate Report</button> <!-- Add label for the button -->
+          <button (click)="generateProductSalesReport()">Generate Prouct Sales Report</button> <!-- Add label for the button -->
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
@@ -131,17 +149,22 @@
   </div>
 
 
-  <div class="viewDetails">
+
+  
+    <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
         <h4>Product Sales Report</h4>
         <div class="centered">
           <img [src]="'assets/Reports/ProductSales.jpg'">
         </div>
+
+
       </div>
 
       <div class="card-content">
         <!-- Add your card content here -->
+     
       </div>
 
       <mat-card-footer>
