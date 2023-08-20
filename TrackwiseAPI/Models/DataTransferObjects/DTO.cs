@@ -112,4 +112,12 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public int Trip { get; set; }
         public double Weight { get; set; }
     }
+
+    public class TotalSalesDTO
+    {
+        public double Total { get; set; }
+        public DateTime Date { get; set; }
+        public int Amount { get; set; }
+
+    }
 }

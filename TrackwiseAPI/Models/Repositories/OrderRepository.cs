@@ -2,6 +2,7 @@
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
+using TrackwiseAPI.Models.ViewModels;
 
 namespace TrackwiseAPI.Models.Repositories
 {
@@ -65,9 +66,7 @@ namespace TrackwiseAPI.Models.Repositories
                             .ThenInclude(p => p.ProductCategory);
             return await query.ToArrayAsync();
         }
-    }
 
-
-   
+    }  
 }
 
