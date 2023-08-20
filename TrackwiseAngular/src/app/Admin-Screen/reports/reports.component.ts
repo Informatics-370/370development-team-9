@@ -553,7 +553,7 @@ generateProductSalesReport(){
     } else {
       console.error('Failed to open PDF preview window.');
     }
-
+  }
 
 
     selectedMonths='';
