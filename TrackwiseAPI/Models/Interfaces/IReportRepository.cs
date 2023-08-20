@@ -6,5 +6,6 @@ namespace TrackwiseAPI.Models.Interfaces
     {
         Task<Job[]> GetCompleteJobsAsync();
         Task<Delivery[]> GetLoadsCarriedAsync();
+        Task<Delivery[]> GetAllMileageFuelAsync();
     }
 }

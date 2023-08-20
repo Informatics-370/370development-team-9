@@ -7,6 +7,7 @@ using Microsoft.VisualBasic;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.DataTransferObjects;
 using TrackwiseAPI.Models.Email;
+using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 
@@ -113,6 +114,106 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
         }
+
+
+        //[HttpGet]
+        //[Route("GetAllMileageFuel")]
+        //public async Task<IActionResult> GetAllMileageFuel()
+        //{
+        //    //var results = await _reportRepository.GetLoadsCarriedAsync();
+        //    var deliveries = await _jobRepository.GetAllDeliveries();
+        //    var trucks = await _truckRepository.GetAllTrucksAsync();
+
+        //    try
+        //    {
+        //        var truckDataList = new List<MileageFuelDTO>(); // Create a list to hold truck data
+
+        //        foreach (var truck in trucks)
+        //        {
+        //            double? mileage = 0;
+        //            double? fuel = 0;
+
+
+        //            var registration = truck.Truck_License;
+        //            var truckid = truck.TruckID;
+        //            foreach (var del in deliveries)
+        //            {
+        //                if (del.TruckID == truckid)
+        //                {
+        //                    mileage = del.Final_Mileage - del.Initial_Mileage;
+        //                    fuel = del.TotalFuel;
+        //                }
+        //            }
+
+        //            // Create a TruckData object and add it to the list
+        //            var truckData = new MileageFuelDTO
+        //            {
+        //                Registration = registration,
+        //                Total_Mileage = mileage,
+        //                Total_Fuel = fuel,
+        //            };
+
+        //            truckDataList.Add(truckData);
+        //        }
+
+
+        //        return Ok(truckDataList);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(500, "Internal Server Error. Please contact support.");
+        //    }
+        //}
+
+        [HttpGet]
+        [Route("GetAllMileageFuel")]
+        public async Task<IActionResult> GetAllMileageFuel()
+        {
+            var deliveries = await _jobRepository.GetAllDeliveries();
+            var trucks = await _truckRepository.GetAllTrucksAsync();
+
+            try
+            {
+                var truckDataList = new List<TruckDataDTO>(); // Create a list to hold truck data
+
+                foreach (var truck in trucks)
+                {
+                    var truckData = new TruckDataDTO
+                    {
+                        Registration = truck.Truck_License,
+                        MFList = new List<MileageFuelDTO>() // Create a list for MileageFuelDTO objects
+                    };
+
+                    foreach (var del in deliveries)
+                    {
+                        if (del.TruckID == truck.TruckID)
+                        {
+                            var mileage = del.Final_Mileage - del.Initial_Mileage;
+                            var fuel = del.TotalFuel;
+
+                            var mileageFuelData = new MileageFuelDTO
+                            {
+                                Delivery_ID = del.Delivery_ID,
+                                Mileage = mileage,
+                                Fuel = fuel
+                            };
+
+                            truckData.MFList.Add(mileageFuelData);
+                        }
+                    }
+
+                    truckDataList.Add(truckData); // Move this line here
+                }
+
+                return Ok(truckDataList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+
 
     }
 }

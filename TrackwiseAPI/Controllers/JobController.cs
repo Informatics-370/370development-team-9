@@ -480,17 +480,110 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
-        public class UpdateMileage
+
+
+        public class UpdateFuel
+        {
+            public double? Total_Fuel { get; set; }
+        }
+
+        //Fuel
+        //[HttpGet]
+        //[Route("GetFuel/{delivery_ID}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
+        //public async Task<IActionResult> GetFuelAsync(string delivery_ID)
+        //{
+        //    try
+        //    {
+        //        var result = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+        //        if (result == null) return NotFound("Job does not exist");
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(500, "Internal Server Error. Please contact support");
+        //    }
+        //}
+
+
+        //[HttpPut]
+        //[Route("EditFuel/{delivery_ID}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //public async Task<IActionResult> EditFuel(string delivery_ID, UpdateFuel request)
+        //{
+        //    try
+        //    {
+        //        var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+        //        delivery.TotalFuel = request.Total_Fuel;
+        //        await _context.SaveChangesAsync();
+
+
+        //        return Ok(new { Message = "Total fuel updated successfully" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception
+
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating fuel");
+        //    }
+
+        //}
+
+
+        public class UpdateMileageFuel
         {
             public double? Initial_Mileage { get; set; }
             public double? Final_Mileage { get; set; }
+            public double? Total_Fuel { get; set; }
+            //public string TruckID { get; set; }
         }
 
         //Mileage
+        [HttpGet]
+        [Route("GetAllMileageFuel")]
+        public async Task<IActionResult> GetAllMileageFuel()
+        {
+            try
+            {
+                var results = await _jobRepository.GetAllMileageFuelAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetMileageFuel/{delivery_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
+        public async Task<IActionResult> GetMileageAsync(string delivery_ID)
+        {
+            try
+            {
+                var result = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+                if (result == null) return NotFound("Job does not exist");
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
+        
         [HttpPut]
-        [Route("EditMileage/{delivery_ID}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> EditMileage(string delivery_ID, UpdateMileage request)
+        [Route("EditMileageFuel/{delivery_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> EditMileage(string delivery_ID, UpdateMileageFuel request)
         {
             try
             {
@@ -498,6 +591,7 @@ namespace TrackwiseAPI.Controllers
 
                 delivery.Initial_Mileage = request.Initial_Mileage;
                 delivery.Final_Mileage = request.Final_Mileage;
+                delivery.TotalFuel = request.Total_Fuel;
                 await _context.SaveChangesAsync();
 
 
@@ -507,7 +601,7 @@ namespace TrackwiseAPI.Controllers
             {
                 // Log the exception
 
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating actual mileage");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating mileage");
             }
 
         }
