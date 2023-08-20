@@ -46,6 +46,14 @@
       
   </div>
 
+  <form #form="ngForm" (ngSubmit)="updateMileageFuel()" autocomplete="off">
+     
+    <label for="fuel">Total Fuel Consumed:</label><br>
+    <input class="fuel-input" type="number" id="fuel" name="fuel" [(ngModel)]="MileageRequest.fuel" /><br>
+  
+    <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+  </form>
+
   <div *ngFor="let document of documents">
     
     <div *ngIf="document.docType === 'Fuel'"> 
@@ -72,7 +80,7 @@
   </div>
 
   
-  <form #form="ngForm" (ngSubmit)="updateMileage()" autocomplete="off">
+  <form #form="ngForm" (ngSubmit)="updateMileageFuel()" autocomplete="off">
     <label for="initial-mileage">Initial Mileage:</label><br>
     <input class="mileage-input" type="number" id="initial-mileage" name="initial-mileage" [(ngModel)]="MileageRequest.initial_Mileage"  /><br>
   

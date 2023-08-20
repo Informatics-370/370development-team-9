@@ -5,6 +5,8 @@ import { Admin } from 'src/app/shared/admin';
 import {Document} from 'src/app/shared/document';
 import { MileageFuel } from 'src/app/shared/mileage_fuel';
 import { Weight } from 'src/app/shared/weight';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-document-information',
@@ -33,6 +35,7 @@ export class DocumentInformationComponent implements OnInit{
     this.showWB=true;
     this.showFS=false;
     this.showM=false;
+    
   }
 
   loadDocuments(delivery_ID : string) {
@@ -81,7 +84,7 @@ export class DocumentInformationComponent implements OnInit{
 
   };
 
-  updateMileage(): void {
+  updateMileageFuel(): void {
     this.dataService.EditMileageFuel(this.delivery_ID, this.MileageRequest).subscribe(
       response => {
         console.log(response); // Handle success, show a message, etc.

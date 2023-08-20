@@ -408,7 +408,7 @@ export class DataService {
 
   EditMileageFuel(delivery_ID: string, request:MileageFuel): Observable<any>
   {
-    return this.httpClient.put<any>(`${this.apiUrl}Job/EditMileage/${delivery_ID}`, request);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/EditMileageFuel/${delivery_ID}`, request);
 
   }
 

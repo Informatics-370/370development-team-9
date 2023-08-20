@@ -561,7 +561,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetMileageFuel/{delivery_ID}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
 
         public async Task<IActionResult> GetMileageAsync(string delivery_ID)
         {
@@ -582,7 +582,7 @@ namespace TrackwiseAPI.Controllers
         
         [HttpPut]
         [Route("EditMileageFuel/{delivery_ID}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> EditMileage(string delivery_ID, UpdateMileageFuel request)
         {
             try
