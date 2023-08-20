@@ -8,6 +8,8 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
 import { LoadsCarried } from 'src/app/shared/loadsCarried';
+import { Admin } from 'src/app/shared/admin';
+import { Driver } from 'src/app/shared/driver';
 
 
 @Component({
@@ -21,7 +23,10 @@ export class ReportsComponent implements OnInit {
   jobs: any[] = [];
   users : string = "";
   originalJobs: any[] = [];
-  loadsCarried : LoadsCarried[] = []
+  loadsCarried : LoadsCarried[] = [];
+  admins: Admin[]=[];
+  drivers: Driver[] = [];
+  jobdetails: Jobs[] = [];
   pdfSrc: string | null = null;
 
   constructor(private dataService: DataService, private datePipe: DatePipe) { }
@@ -30,6 +35,10 @@ export class ReportsComponent implements OnInit {
     this.getProducts();
     this.GetJobs();
     this.getLoadsCarried();
+    this.getAdmins();
+    this.getDrivers();
+    // this.getJobDetails();
+    
 
   }
 
@@ -121,7 +130,28 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+ getAdmins() {
+  this.dataService.GetAdmins().subscribe(result => {
+    this.admins = result;
+    console.log(this.getAdmins)
+  });
+}
 
+ getDrivers() {
+  this.dataService.GetDrivers().subscribe(result => {
+    this.drivers = result;
+    console.log(this.getDrivers)
+  });
+}
+
+  getAllJobs() {
+    this.dataService.GetJobDetails().subscribe(result => {
+      this.jobdetails = result;
+      console.log(this.getAllJobs)
+    });
+  }
+
+ 
 
 
   // Generate PDFs--------------------------------------------------------------------
@@ -320,4 +350,145 @@ export class ReportsComponent implements OnInit {
       }
 
     }
-}
+
+    // generate Staff report
+    generateStaffReport() {
+      const doc = new jsPDF();
+  
+      // Image
+  
+      const img = new Image();
+      img.src = "assets/LTTLogo.jpg";
+      doc.addImage(img, 'JPG', 10, 5, 50, 30);
+  
+      // Text
+  
+      doc.setFontSize(18);
+      doc.setTextColor(0, 79, 158);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Staff Report', 130, 20);
+  
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica');
+      const currentDate = new Date();
+      doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+  
+  
+      // Table and table data
+  
+      const adminHeader = ['Admin ID', 'Name', 'Last Name', 'Email'];
+  
+      const adminTableData = this.admins.map(adm => [
+        adm.admin_ID,
+        adm.name,
+        adm.lastname,
+        adm.email,
+        
+       
+      ]);
+
+      const driverHeader = ['Driver ID', 'Name', 'Last Name', 'Email','Phone Number', 'Driver Status ID','Driver Status'];
+  
+      const driverTableData = this.drivers.map(driver => [
+        driver.driver_ID,
+        driver.name,
+        driver.lastname,
+        driver.email,
+        driver.phoneNumber,
+        driver.driver_Status_ID,
+        driver.driverStatus,
+        
+       
+      ]);
+      
+      // Autotable layout
+  
+      autoTable(document, {
+        head: [adminHeader],
+        body: adminTableData,
+        startY: 50 
+      });
+
+      autoTable(doc, {
+        head: [driverHeader],
+        body: driverTableData,
+        startY: 50, // Adjust the starting Y-coordinate for the table
+      });
+  
+      // Opening of the PDF
+  
+      const pdfData = doc.output('datauristring');
+      this.pdfSrc = pdfData;
+  
+      const pdfWindow = window.open();
+  
+      // Validation for PDF load
+  
+      if (pdfWindow) {
+        pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+      } else {
+        console.error('Failed to open PDF preview window.');
+      }
+    }
+
+    generateJobDetailsReport() {
+      const doc = new jsPDF();
+  
+      // Image
+  
+      const img = new Image();
+      img.src = "assets/LTTLogo.jpg";
+      doc.addImage(img, 'JPG', 10, 5, 50, 30);
+  
+      // Text
+  
+      doc.setFontSize(18);
+      doc.setTextColor(0, 79, 158);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Job Details Report', 130, 20);
+  
+      doc.setFontSize(10);
+      doc.setTextColor(0, 0, 0);
+      doc.setFont('helvetica');
+      const currentDate = new Date();
+      doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+  
+  
+      // Table and table data
+  
+      const header = ['Job', 'Weight (T)', 'Trips'];
+  
+      const tableData = this.jobdetails.map(job => [
+        job.job_ID,
+        job.total_Weight,
+        
+      ]);
+      
+      // Autotable layout
+  
+      autoTable(doc, {
+        head: [header],
+        body: tableData,
+        startY: 50, // Adjust the starting Y-coordinate for the table
+      });
+  
+      // Opening of the PDF
+  
+      const pdfData = doc.output('datauristring');
+      this.pdfSrc = pdfData;
+  
+      const pdfWindow = window.open();
+  
+      // Validation for PDF load
+  
+      if (pdfWindow) {
+        pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+      } else {
+        console.error('Failed to open PDF preview window.');
+      }
+
+    }
+  
+   
+  }

@@ -563,4 +563,24 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetAllAdmins(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetAdmins`, {headers})
+    .pipe(map(result => result))
+  }
+
+  GetAllDrivers(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetDrivers`, {headers})
+    .pipe(map(result => result))
+  }
+
+  GetJobDetails(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetJobDetails`, {headers})
+    .pipe(map(result => result))
+  }
 }

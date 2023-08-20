@@ -19,15 +19,21 @@ namespace TrackwiseAPI.Controllers
         private readonly IReportRepository _reportRepository;
         private readonly ITruckRepository _truckRepository;
         private readonly IJobRepository _jobRepository;
+        private readonly IAdminRepository _adminRepository;
+        private readonly IDriverRepository _driverRepository;
 
         public ReportController(
             IReportRepository reportRepository, 
             ITruckRepository truckRepository,
-            IJobRepository jobRepository)
+            IJobRepository jobRepository,
+            IAdminRepository adminRepository,
+            IDriverRepository driverRepository)
         {
             _reportRepository = reportRepository;
             _truckRepository = truckRepository;
             _jobRepository = jobRepository;
+            _adminRepository = adminRepository;
+            _driverRepository = driverRepository;
         }
 
         [HttpGet]
@@ -114,5 +120,152 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetAdmins")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        
+        public async Task<IActionResult> GetAdmins()
+        {
+            var admins = await _adminRepository.GetAllAdminsAsync();
+            
+
+            try
+            {
+                var adminDataList = new List<AdminDTO>(); // Create a list to hold admin data
+
+                foreach (var adm in admins)
+                {
+
+
+                    var admin_id = adm.Admin_ID;
+                    var name = adm.Name;
+                    var lastName = adm.Lastname;
+                    var email = adm.Email;
+
+                    // Create a AdminData object and add it to the list
+                    var adminData = new AdminDTO
+                    {
+                        Admin_ID = admin_id,
+                        Name = name,
+                        Lastname = lastName,
+                        Email = email,
+                    };
+
+                    adminDataList.Add(adminData);
+                }
+
+
+                return Ok(adminDataList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetDrivers")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
+        public async Task<IActionResult> GetDrivers()
+        {
+            var drivers = await _driverRepository.GetAllDriversAsync();
+
+
+            try
+            {
+                var driverDataList = new List<DriverDTO>(); // Create a list to hold driver data
+
+                foreach (var driver in drivers)
+                {
+
+
+                    var driverID = driver.Driver_ID;
+                    var name = driver.Name;
+                    var lastName = driver.Lastname;
+                    var email = driver.Email;
+                    var phoneNum = driver.PhoneNumber;
+                    var driverStatusID = driver.Driver_Status_ID;
+                    var driverStatus = driver.DriverStatus;
+
+                    // Create a DriverData object and add it to the list
+                    var driverData = new DriverDTO
+                    {
+                        Driver_ID = driverID,
+                        Name = name,
+                        Lastname = lastName,
+                        Email = email,
+                        PhoneNumber = phoneNum,
+                        Driver_Status_ID = driverStatusID,
+                        DriverStatus = driverStatus,
+                    };
+
+                    driverDataList.Add(driverData);
+                }
+
+
+                return Ok(driverDataList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+            [HttpGet]
+            [Route("GetJobDetails")]
+            [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+            public async Task<IActionResult> GetJobDetails()
+            {
+
+            var jobs = await _jobRepository.GetAllAdminJobsAsync();
+            var deliveries = await _jobRepository.GetAllDeliveries();
+            
+            //client jobs?
+
+
+            try
+                {
+                    var jobDataList = new List<JobDetailDTO>(); // Create a list to hold jobDetail data
+
+                    foreach (var job in jobs)
+                    {
+                        double jobWeight = 0;
+                        var trip = 0;
+                        
+
+                        var jobID = job.Job_ID;
+                        
+                        foreach (var del in deliveries)
+                        {
+                            if (del.Job_ID == jobID)
+                            {
+                                jobWeight += del.Delivery_Weight;
+                                trip++;
+                            }
+                        }
+
+                        // Create a JobDetailData object and add it to the list
+                        var jobDetailData = new JobDetailDTO
+                        {
+                            Job_ID = jobID,
+                            Total_Weight= jobWeight,
+                            Trips = trip
+                        };
+
+                        jobDataList.Add(jobDetailData);
+                    }
+
+
+                    return Ok(jobDataList);
+                }
+                catch (Exception)
+                {
+                    return StatusCode(500, "Internal Server Error. Please contact support.");
+                }
+            }
+        }
+
     }
-}
+
