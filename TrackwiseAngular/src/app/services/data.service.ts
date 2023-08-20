@@ -597,4 +597,8 @@ export class DataService {
       .pipe(map(result => result));
   }
   
+  GetTotalSales():Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}Report/GetTotalSales`)
+  }
+
 }

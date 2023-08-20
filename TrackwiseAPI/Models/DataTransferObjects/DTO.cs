@@ -113,6 +113,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public double Weight { get; set; }
     }
 
+
     public class MileageFuelDTO
     {
         public string Delivery_ID { get; set; }
@@ -127,6 +128,15 @@ namespace TrackwiseAPI.Models.DataTransferObjects
     {
         public string Registration { get; set; }
         public List<MileageFuelDTO> MFList { get; set; } // Use a list to store multiple TruckMFDTO objects
+
+    }
+
+
+    public class TotalSalesDTO
+    {
+        public double Total { get; set; }
+        public DateTime Date { get; set; }
+        public int Amount { get; set; }
 
     }
 

@@ -20,15 +20,18 @@ namespace TrackwiseAPI.Controllers
         private readonly IReportRepository _reportRepository;
         private readonly ITruckRepository _truckRepository;
         private readonly IJobRepository _jobRepository;
+        private readonly IOrderRepository _orderRepository;
 
         public ReportController(
             IReportRepository reportRepository, 
             ITruckRepository truckRepository,
-            IJobRepository jobRepository)
+            IJobRepository jobRepository,
+            IOrderRepository orderRepository)
         {
             _reportRepository = reportRepository;
             _truckRepository = truckRepository;
             _jobRepository = jobRepository;
+            _orderRepository = orderRepository;
         }
 
         [HttpGet]
@@ -114,7 +117,6 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
         }
-
 
         //[HttpGet]
         //[Route("GetAllMileageFuel")]
@@ -213,6 +215,40 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetTotalSales")]
+        public async Task<IActionResult> GetTotalSales()
+        {
+            var sales = await _orderRepository.GetAllOrdersAsync();
+            var totalSalesPerMonth = new Dictionary<string, TotalSalesDTO>();
+            try
+            {
+                var total = 0.0;
+                var amount = 0;
+
+                foreach (var order in sales)
+                {
+                    var orderMonth = order.Date.ToString("yyyy-MM");
+                    if (!totalSalesPerMonth.ContainsKey(orderMonth))
+                    {
+                        totalSalesPerMonth[orderMonth] = new TotalSalesDTO
+                        {
+                            Total = 0.0,
+                            Amount = 0,
+                            Date = order.Date
+                        };
+                    }
+                    totalSalesPerMonth[orderMonth].Total += order.Total;
+                    totalSalesPerMonth[orderMonth].Amount++;
+
+                };
+
+                var result = totalSalesPerMonth.Values.ToList();
+
+                return Ok(result);
+            } 
+            catch (Exception) { return StatusCode(500, "Internal Server Error."); }
+        }
 
 
     }
