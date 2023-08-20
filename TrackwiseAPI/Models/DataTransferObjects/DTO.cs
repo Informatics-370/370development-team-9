@@ -114,6 +114,17 @@ namespace TrackwiseAPI.Models.DataTransferObjects
     }
 
 
+    public class SalesDTO
+    {
+        public string Product_Name { get; set; }
+        public string Product_Category { get; set; }
+        public string Product_Type { get; set; }
+        public int Quantity_Sold { get; set; }
+        public int Price_Per_Quantity { get; set; }
+        public int Total { get; set; }
+    }
+
+
     public class MileageFuelDTO
     {
         public string Delivery_ID { get; set; }
@@ -139,5 +150,6 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public int Amount { get; set; }
 
     }
+
 
 }

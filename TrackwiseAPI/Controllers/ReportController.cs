@@ -21,17 +21,24 @@ namespace TrackwiseAPI.Controllers
         private readonly ITruckRepository _truckRepository;
         private readonly IJobRepository _jobRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly IProductRepository _productRepository;
+
 
         public ReportController(
             IReportRepository reportRepository, 
             ITruckRepository truckRepository,
             IJobRepository jobRepository,
-            IOrderRepository orderRepository)
+            IOrderRepository orderRepository,
+            IProductRepository productRepository
+            )
+
         {
             _reportRepository = reportRepository;
             _truckRepository = truckRepository;
             _jobRepository = jobRepository;
             _orderRepository = orderRepository;
+            _productRepository = productRepository;
+
         }
 
         [HttpGet]
@@ -117,6 +124,34 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
         }
+
+
+
+        //[HttpGet]
+        //[Route("GetOrders")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //public  async Task<IActionResult> GetOrders()
+        //{
+        //    var result = await _reportRepository.GetOrdersAsync();
+        //    var product = await _productRepository.GetAllProductsAsync();
+        //    var prodType = await _productRepository.GetProductTypeAsync();
+        //    var prodCategory = await _productRepository.GetProductCategoryAsync();
+
+
+        //    try
+        //    {
+        //        var salesListData = new List<SalesDTO>(); // Create a list to hold truck data
+
+        //        foreach (var prod in product) 
+        //        {
+
+
+        //            return Ok(salesListData);
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+
 
         //[HttpGet]
         //[Route("GetAllMileageFuel")]
@@ -249,7 +284,6 @@ namespace TrackwiseAPI.Controllers
             } 
             catch (Exception) { return StatusCode(500, "Internal Server Error."); }
         }
-
 
     }
 }
