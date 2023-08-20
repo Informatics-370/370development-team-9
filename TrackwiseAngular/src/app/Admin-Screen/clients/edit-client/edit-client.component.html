@@ -1,43 +1,39 @@
 <br>
 <div class="row">
-  <div class="col-lg-3 main-content"></div>
-  <div class="col-lg-7 main-content">
-    <div class="container container-fluid">
+<div class="col-lg-3 main-content"></div>
+<div class="col-lg-7 main-content">
+<div class="container container-fluid">
 
-      <h2>Edit Client</h2>
-
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" [(ngModel)]="clientDetails.email"  
-        name="email" [(ngModel)]="clientDetails.email" disabled>
-      </div>
-
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="text" class="form-control" id="password" [(ngModel)] = "clientDetails.password"  
-                name="password" placeholder="********" [(ngModel)]="clientDetails.password" disabled>
-        </div>
+    <h2>Edit Client</h2>
       
-      <form #form="ngForm" (ngSubmit)="form.form.valid && EditClient()" autocomplete="off"> 
+    <form #form="ngForm" (ngSubmit)="EditClient()">
         <div class="mb-3">
           <label for="Name" class="form-label">Client Name</label>
-          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)]="clientDetails.name" name="Name" required>
+          <input type="text" class="form-control" id="Name" aria-describedby="Name" [(ngModel)] = "clientDetails.name"     
+          name="Name" [(ngModel)]="clientDetails.name" >
+        </div>
+      
+        <div class="mb-3">
+          <label for="lastname" class="form-label">Client Surname</label>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.lastname"  
+                 name="lastname" [(ngModel)]="clientDetails.lastname">
         </div>
 
         <div class="mb-3">
           <label for="phoneNumber" class="form-label">Phone Number</label>
-          <input type="tel" class="form-control" id="phoneNumber" [(ngModel)]="clientDetails.phoneNumber"  
-            name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber" required
-            pattern="0[0-9]{9}" maxlength="10">
-          <small class="text-muted">Please enter a 10-digit phone number starting with 0.</small>
+          <input type="text" class="form-control" id="model" [(ngModel)] = "clientDetails.phoneNumber"  
+                 name="phoneNumber" [(ngModel)]="clientDetails.phoneNumber">
         </div>
-
-
-        <button type="submit" class="btn btn-primary" style="border-radius: 12px;" [disabled]="!form.valid">Save</button>&nbsp;
+      
+        
+          
+        
+        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
         <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/clients">Cancel</button>
       </form>
       <br>
 
     </div>
   </div>
-</div>
+</div>  
+
