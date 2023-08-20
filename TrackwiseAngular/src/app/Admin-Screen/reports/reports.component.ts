@@ -4,7 +4,7 @@ import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product
 import { Jobs } from 'src/app/shared/jobs';
 import { Order, OrderLine } from 'src/app/shared/order';
 import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import autoTable, { Row } from 'jspdf-autotable';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
@@ -20,6 +20,7 @@ export class ReportsComponent implements OnInit {
   products: Product[] = [];
   productTypes: any[] = []; 
   productCategories: any[] = []; 
+  selectedCategory: string = '';
   jobs: any[] = [];
   orders: OrderLine[] = [];
   users : string = "";
@@ -63,7 +64,23 @@ export class ReportsComponent implements OnInit {
   }
 
   getOrders(){
-    this.dataService.GetAllOrders().subscribe(result => this.orders = result);
+    this.dataService.GetAllOrders().subscribe(result => {
+      this.orders = result
+      
+      if(this.selectedCategory){
+        this.dataService.GetProductCategories().subscribe(result => {
+            this.orders = result;
+            this.generateProductSalesReport();
+        })
+      }
+      else {
+        this.orders = [];
+      }
+
+    });
+
+       
+        
   }
 
 
@@ -297,6 +314,89 @@ export class ReportsComponent implements OnInit {
       console.error('Failed to open PDF preview window.');
     }
   }
+
+
+// Generate Product sales report
+
+generateProductSalesReport(){
+
+  const document = new jsPDF('landscape'); //instance of the jsPDF class
+
+    const img = new Image();
+    img.src = "assets/LTTLogo.jpg";
+    document.addImage(img, 'JPG', 10, 5, 50, 30);
+
+    // Text
+
+    document.setFontSize(18);
+    document.setTextColor(0, 79, 158);
+    document.setFont('helvetica', 'bold');
+    document.text('Product Sales Report', 230, 20);
+
+    document.setFontSize(10);
+    document.setTextColor(0, 0, 0);
+    document.setFont('helvetica');
+    const currentDate = new Date();
+    document.text('Generated On: ' + currentDate.toLocaleDateString(), 230, 27);
+
+
+
+    const header = ['Product Name', 'Category', 'Quantity Sold', 'Price/Quantity', 'Total (R)']
+
+    const tableData = this.orders.map(order => {
+
+      const filteredCategory = this.orders.filter(order => order.product.productCategory.name === this.selectedCategory);
+
+
+
+      const totalPrice = order.product.quantity * order.product.product_Price;
+  
+      return [
+        order.product.product_Name,
+        order.product.productCategory.name,
+        order.product.quantity, // Make sure this is accessing the correct property
+        order.product.product_Price,
+        totalPrice.toFixed(2)  // Format total price to two decimal places
+      ];
+    });
+  
+
+    const subTotal = tableData.reduce((total, row) => total + parseFloat(String(row[5])), 0);
+
+    // Add an empty row if there is no data to avoid an issue with empty table rendering
+    if (tableData.length === 0) {
+      tableData.push(['No data', '', '', '', '', '', '']);
+    }
+
+
+   
+
+    autoTable(document, {
+      head: [header],
+      body: tableData,
+      startY: 50
+      
+    });
+
+
+
+    const pdfData = document.output('datauristring');
+    this.pdfSrc = pdfData;
+
+    const pdfWindow = window.open();
+
+    // Validation for PDF load
+
+    if (pdfWindow) {
+      pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+    } else {
+      console.error('Failed to open PDF preview window.');
+    }
+
+}
+
+
+
 
   // Generate Loads Carried Report
 
