@@ -72,8 +72,10 @@ import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-e
 import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
 import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profile.component';
 import { DocumentInformationComponent } from './Admin-Screen/jobs/document-information/document-information.component';
+
 import { NgChartsModule } from 'ng2-charts';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -145,7 +147,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgChartsModule,
     MatDatepickerModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
