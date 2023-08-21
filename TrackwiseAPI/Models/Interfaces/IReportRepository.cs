@@ -8,6 +8,8 @@ namespace TrackwiseAPI.Models.Interfaces
         Task<Delivery[]> GetLoadsCarriedAsync();
         //Task<Delivery[]> GetOrdersAsync();
         Task<Delivery[]> GetAllMileageFuelAsync();
+        Task<Admin[]> GetAllAdminsAsync();
+        Task<Driver[]> GetAllDriversAsync();
 
     }
 }

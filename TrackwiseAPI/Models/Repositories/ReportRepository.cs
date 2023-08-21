@@ -29,5 +29,24 @@ namespace TrackwiseAPI.Models.Repositories
             IQueryable<Delivery> query = _context.Deliveries.Where(d => d.Delivery_Status_ID == "2");
             return await query.ToArrayAsync();
         }
+
+        public async Task<Admin[]> GetAllAdminsAsync()
+        {
+            IQueryable<Admin> query = _context.Admins;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Driver[]> GetAllDriversAsync()
+        {
+            IQueryable<Driver> query = _context.Drivers.Include(t => t.DriverStatus);
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Job[]> GetAllJobDetailsAsync()
+        {
+            IQueryable<Job> query = _context.Jobs.Include(d => d.Deliveries);
+            return await query.ToArrayAsync();
+        }
+
     }
 }
