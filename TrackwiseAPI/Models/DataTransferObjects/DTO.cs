@@ -180,6 +180,8 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public int Total_Trips { get; set; }
         public string Pickup_Location { get; set; }
         public string Dropoff_Location { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DueDate { get; set; }
         public List<deliveryDetailDTO> deliveryList { get; set; }
     }
     public class deliveryDetailDTO
