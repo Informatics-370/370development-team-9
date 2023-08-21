@@ -326,7 +326,7 @@ namespace TrackwiseAPI.Controllers
         //    {
         //        return StatusCode(500, "Internal Server Error. Please contact support.");
         //    }
-        //}
+        //}#
 
         [HttpGet]
         [Route("GetAllMileageFuel")]
