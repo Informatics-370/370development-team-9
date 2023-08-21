@@ -1,4 +1,5 @@
-﻿using TrackwiseAPI.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using TrackwiseAPI.Models.Entities;
 
 namespace TrackwiseAPI.Models.DataTransferObjects
 {
@@ -142,14 +143,51 @@ namespace TrackwiseAPI.Models.DataTransferObjects
 
     }
 
-
     public class TotalSalesDTO
     {
         public double Total { get; set; }
         public DateTime Date { get; set; }
         public int Amount { get; set; }
-
     }
 
+    public class JobListingDTO
+    {
+        public string Job_ID { get; set; }
+        public double Weight { get; set; }
+        public string Creator { get; set; }
+        public int Trips { get; set; }
+    }
+
+    public class AdminDTO
+    {
+        public string Name { get; set; }
+        public string Lastname { get; set; }
+        public string Email { get; set; }
+    }
+
+    public class DriverDTO
+    {
+        public string Name { get; set; }
+        public string Lastname { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
+    public class JobDetailDTO
+    {
+        public string Job_ID { get; set; }
+        public double Total_Weight { get; set; }
+        public int Total_Trips { get; set; }
+        public string Pickup_Location { get; set; }
+        public string Dropoff_Location { get; set; }
+        public List<deliveryDetailDTO> deliveryList { get; set; }
+    }
+    public class deliveryDetailDTO
+    {
+        public string Delivery_ID { get; set; }
+        public double Delivery_Weight { get; set; }
+        public int Trips { get; set; }
+        
+    }
 
 }

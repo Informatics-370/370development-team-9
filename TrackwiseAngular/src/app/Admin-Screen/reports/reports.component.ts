@@ -3,22 +3,29 @@ import { DataService } from 'src/app/services/data.service';
 import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product';
 import { Jobs } from 'src/app/shared/jobs';
 import { Order, OrderLine } from 'src/app/shared/order';
-import { jsPDF } from 'jspdf';
+import  jsPDF from 'jspdf';
 import autoTable, { Row } from 'jspdf-autotable';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
 import { LoadsCarried } from 'src/app/shared/loadsCarried';
 import { MileageFuel } from 'src/app/shared/mileage_fuel';
-import { TruckData } from 'src/app/shared/mileage_fuel';
-
+import { TruckData } from 'src/app/shared/mileage_fuel';  
 
 import { ChartType, ChartOptions, ChartDataset } from 'chart.js';
 import html2canvas from 'html2canvas';
 import {Colors} from 'chart.js';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-
-
+import { Joblist } from 'src/app/shared/joblist';
+import { admindto, driverdto } from 'src/app/shared/Staff';
+import { JobDetailDTO } from 'src/app/shared/jobDetail';
+import 'jspdf-autotable';
+import { style } from '@angular/animations';
+declare module 'jspdf' {
+  interface jsPDF {
+    autoTable: (options: any) => jsPDF;
+  }
+}
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -33,7 +40,7 @@ export class ReportsComponent implements OnInit {
   orders: OrderLine[] = [];
   users : string = "";
   originalJobs: any[] = [];
-  loadsCarried : LoadsCarried[] = []
+  loadsCarried : LoadsCarried[] = [];
   mileageFuel : MileageFuel[] = [];
   truckData: TruckData[] = [];
   pdfSrc: string | null = null;
@@ -65,7 +72,10 @@ export class ReportsComponent implements OnInit {
 
     this.getMileageFuel();
     this.getTotalSales();
-
+    this.GetJobList();
+    this.getAdmins();
+    this.getDrivers();
+    this.getJobDetail();
   }
 
   // Methods-------------------------------------------------------------------------
@@ -91,9 +101,6 @@ export class ReportsComponent implements OnInit {
       }
 
     });
-
-       
-        
   }
 
 
@@ -181,8 +188,6 @@ export class ReportsComponent implements OnInit {
       });
     }
 
-
-
   getLoadsCarried() {
     this.dataService.GetLoadsCarried().subscribe(result => {
       this.loadsCarried = result;
@@ -209,24 +214,197 @@ export class ReportsComponent implements OnInit {
   }
   
 
-  
+// Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
+jobsdata: JobDetailDTO[]=[];
+  getJobDetail() {
+    this.dataService.GetJobDetail().subscribe(result => {
+      this.jobsdata = result;
+      console.log("JOB DETAILS NANNANA",this.jobsdata );
+    });
+  }  
 
-
-  // Generate PDFs--------------------------------------------------------------------
-
-  // Generate Stock Report
-
-  generateStockReport() {
-    const doc = new jsPDF();
-
+  generateJobdetailReport() {
+    const doc = new jsPDF('landscape');
     // Image
-
     const img = new Image();
     img.src = "assets/LTTLogo.jpg";
     doc.addImage(img, 'JPG', 10, 5, 50, 30);
-
     // Text
+    doc.setFontSize(18);
+    doc.setTextColor(0, 79, 158);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Staff Report', 130, 20);
 
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica');
+    const currentDate = new Date();
+    doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+      
+    var body = []; // Initialize the body array
+    
+    // Iterate through each job
+    this.jobsdata.forEach(job => {
+      var jobSubtotal = job.deliveryList.reduce((sum, delivery) => sum + delivery.delivery_Weight, 0);
+      var jobIdAdded = false; // Flag to track if JobID is added for this job
+    
+      // Iterate through each delivery within the job
+      job.deliveryList.forEach((delivery, index) => {
+        if (!jobIdAdded) {
+          body.push([job.job_ID, index + 1, job.pickup_Location, job.dropoff_Location, delivery.delivery_Weight]); // Add JobID, DeliveryID, Pickup Location, Drop-off Location for the first row
+          jobIdAdded = true;
+        } else {
+          body.push(['', index + 1, '', '', delivery.delivery_Weight]); // Empty cells for DeliveryID, Pickup Location, and Drop-off Location on subsequent rows
+        }
+      });
+    
+      // Add job subtotal row
+      body.push(['Job Subtotal', '', '', '', jobSubtotal]);
+  
+      // Add an empty row for spacing
+      body.push(['', '', '', '', '']);
+    });
+    
+    // Calculate total of all job subtotals
+    var total = this.jobsdata.reduce((sum, job) => sum + job.deliveryList.reduce((subSum, delivery) => subSum + delivery.delivery_Weight, 0), 0);
+    
+    // Add total row
+    body.push(['', '', '', { content: 'Total', styles: { font: 'bold' } }, total]); // Make the "Total" text bold
+
+  
+  // Generate the PDF table
+  const table = doc.autoTable({
+    head: [['JobID', 'DeliveryID', 'Pickup Location', 'Drop-off Location','Weight (T)']], // Header row
+    body: body,
+    startY: 50,
+    didParseCell: function(data: { row: { section: string; index: number; }; cell: { styles: { fillColor: number[]; fontStyle:string; };  text: any; }; }) {
+      if (data.row.section === 'body' && data.cell.text === 'Total') {
+        data.cell.styles.fontStyle = 'bold'; // Apply bold font style to "Total" cells
+      }
+      if (data.row.section === 'body' && (data.row.index + 1)) {
+        data.cell.styles.fillColor = [223, 237, 250]; // Apply light blue to every third row
+      }
+    }
+  });
+    // Opening of the PDF
+    const pdfData = doc.output('datauristring');
+    this.pdfSrc = pdfData;
+    const pdfWindow = window.open();
+    // Validation for PDF load
+    if (pdfWindow) {
+      pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+    } else {
+      console.error('Failed to open PDF preview window.');
+    }
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+// Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
+  getAdmins() {
+    this.dataService.GetAdmins().subscribe(result => {
+      this.admins = result;
+      console.log(this.getAdmins)
+    });
+  }
+  
+   getDrivers() {
+    this.dataService.GetDrivers().subscribe(result => {
+      this.drivers = result;
+      console.log(this.getDrivers)
+    });
+  }
+
+ // generate Staff report
+ admins: admindto[]=[];
+ drivers: driverdto[] = [];
+ generateStaffReport() {
+  const doc = new jsPDF();
+  // Image
+  const img = new Image();
+  img.src = "assets/LTTLogo.jpg";
+  doc.addImage(img, 'JPG', 10, 5, 50, 30);
+  // Text
+  doc.setFontSize(18);
+  doc.setTextColor(0, 79, 158);
+  doc.setFont('helvetica', 'bold');
+  doc.text('Staff Report', 130, 20);
+
+  doc.setFontSize(10);
+  doc.setTextColor(0, 0, 0);
+  doc.setFont('helvetica');
+  const currentDate = new Date();
+  doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+
+  doc.setFontSize(14);
+  doc.text('Admins', 14, 48);
+  const adminHeader = ['Name', 'Last Name', 'Email'];
+  const adminTableData = this.admins.map(adm => [
+    adm.name,
+    adm.lastname,
+    adm.email,
+  ]);
+
+  doc.text('Drivers', 14, 108);
+  const driverHeader = ['Name', 'Last Name', 'Email','Phone Number'];
+  const driverTableData = this.drivers.map(driver => [
+    driver.name,
+    driver.lastname,
+    driver.email,
+    driver.phoneNumber,   
+  ]);
+  
+  // Autotable layout
+
+  autoTable(doc, {
+    head: [adminHeader],
+    body: adminTableData,
+    startY: 50 
+  });
+
+  autoTable(doc, {
+    head: [driverHeader],
+    body: driverTableData,
+    startY: 110, // Adjust the starting Y-coordinate for the table
+  });
+
+  // Opening of the PDF
+  const pdfData = doc.output('datauristring');
+  this.pdfSrc = pdfData;
+  const pdfWindow = window.open();
+  // Validation for PDF load
+  if (pdfWindow) {
+    pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+  } else {
+    console.error('Failed to open PDF preview window.');
+  }
+}
+
+
+  // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
+  // Generate Stock Report
+  generateStockReport() {
+    const doc = new jsPDF();
+    // Image
+    const img = new Image();
+    img.src = "assets/LTTLogo.jpg";
+    doc.addImage(img, 'JPG', 10, 5, 50, 30);
+    // Text
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
     doc.setFont('helvetica', 'bold');
@@ -237,12 +415,9 @@ export class ReportsComponent implements OnInit {
     doc.setFont('helvetica');
     const currentDate = new Date();
     doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
-
-
     // Table and table data
 
     const header = ['Product ID', 'Name', 'Quantity', 'Price', 'Stock Level', ''];
-
     const tableData = this.products.map(prod => [
       prod.product_ID,
       prod.product_Name,
@@ -255,42 +430,31 @@ export class ReportsComponent implements OnInit {
     ]);
     
     // Autotable layout
-
     autoTable(doc, {
       head: [header],
       body: tableData,
       startY: 50, // Adjust the starting Y-coordinate for the table
     });
-
     // Opening of the PDF
-
     const pdfData = doc.output('datauristring');
     this.pdfSrc = pdfData;
-
     const pdfWindow = window.open();
-
     // Validation for PDF load
-
     if (pdfWindow) {
       pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
     } else {
       console.error('Failed to open PDF preview window.');
     }
   }
-
+  // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Mileage/Fuel Report
-
   generateMileageFuelReport() {
     const doc = new jsPDF();
-
     // Image
-
     const img = new Image();
     img.src = "assets/LTTLogo.jpg";
     doc.addImage(img, 'JPG', 10, 5, 50, 30);
-
     // Text
-
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
     doc.setFont('helvetica', 'bold');
@@ -301,12 +465,8 @@ export class ReportsComponent implements OnInit {
     doc.setFont('helvetica');
     const currentDate = new Date();
     doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
-
-
     // Table and table data
-
     const header = ['Registration', 'Delivery', 'Mileage', 'Fuel Consumed'];
-
     const tableData: any[] = [];
     this.truckData.forEach(truck => {
       truck.mFList.forEach(delivery => {
@@ -319,25 +479,17 @@ export class ReportsComponent implements OnInit {
       });
     });
     
-
-  
     // Autotable layout
-
     autoTable(doc, {
       head: [header],
       body: tableData,
       startY: 50, // Adjust the starting Y-coordinate for the table
     });
-
     // Opening of the PDF
-
     const pdfData = doc.output('datauristring');
     this.pdfSrc = pdfData;
-
     const pdfWindow = window.open();
-
     // Validation for PDF load
-
     if (pdfWindow) {
       pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
     } else {
@@ -346,19 +498,14 @@ export class ReportsComponent implements OnInit {
 
   }
 
-
+  // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Job list report 
-
   generateJobReport(){
-
     const document = new jsPDF('landscape'); //instance of the jsPDF class
-
     const img = new Image();
     img.src = "assets/LTTLogo.jpg";
     document.addImage(img, 'JPG', 10, 5, 50, 30);
-
     // Text
-
     document.setFontSize(18);
     document.setTextColor(0, 79, 158);
     document.setFont('helvetica', 'bold');
@@ -370,10 +517,7 @@ export class ReportsComponent implements OnInit {
     const currentDate = new Date();
     document.text('Generated On: ' + currentDate.toLocaleDateString(), 230, 27);
 
-
-
     const header = ['Job' + '\n' + 'ID', 'Creator', 'Start' + '\n' + 'Date', 'End' + '\n' + 'Date', 'Pickup' + '\n' + 'Location', 'Drop-off' + '\n' + 'Location', 'Job' + '\n' + 'Type', 'Job' + '\n' + 'Status']
-
     const tableData = this.jobs.map(job => [
       job.job_ID,
       job.userName,
@@ -413,9 +557,8 @@ export class ReportsComponent implements OnInit {
     }
   }
 
-
+  // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
 // Generate Product sales report
-
 generateProductSalesReport(){
 
   const document = new jsPDF('landscape'); //instance of the jsPDF class
@@ -466,17 +609,12 @@ generateProductSalesReport(){
       tableData.push(['No data', '', '', '', '', '', '']);
     }
 
-
-   
-
     autoTable(document, {
       head: [header],
       body: tableData,
       startY: 50
       
     });
-
-
 
     const pdfData = document.output('datauristring');
     this.pdfSrc = pdfData;
@@ -495,9 +633,8 @@ generateProductSalesReport(){
 
 
 
-
+  // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Loads Carried Report
-
   generateLoadsCarriedReport() {
     const doc = new jsPDF();
 
@@ -555,7 +692,7 @@ generateProductSalesReport(){
     }
   }
 
-
+  // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
     selectedMonths='';
     startMonth: number | any;
     startYear: number | any;
@@ -638,6 +775,11 @@ generateProductSalesReport(){
       legend: {
         display: true,
       },
+      title:{
+        display:true,
+        text: 'Total Sales Report',
+        size:16,
+      },
     },
     scales: {
       x: {
@@ -717,5 +859,67 @@ generateProductSalesReport(){
     }
   });
   }
+
+
+  //##################################################################################################################
+  joblist: Joblist[]=[];
+  GetJobList(){
+    this.dataService.GetJobList().subscribe(result => {
+      this.joblist = result;
+      console.log("JOB LISTING DATA ",this.joblist)
+    });
+  }
+
+  generateJobListReport() {
+    const doc = new jsPDF();
+    // Image
+    const img = new Image();
+    img.src = "assets/LTTLogo.jpg";
+    doc.addImage(img, 'JPG', 10, 5, 50, 30);
+
+    // Text
+    doc.setFontSize(18);
+    doc.setTextColor(0, 79, 158);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Job List Report', 130, 20);
+
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica');
+    const currentDate = new Date();
+    doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+
+    // Table and table data
+    const header = ['JobID', 'Weight Carried', 'Number of Trips'];
+    const tableData = this.joblist.map(job => [
+      job.job_ID,
+      job.weight + " T",
+      job.trips,
+    ]);
+    
+    // Autotable layout
+
+    autoTable(doc, {
+      head: [header],
+      body: tableData,
+      startY: 50, // Adjust the starting Y-coordinate for the table
+    });
+
+    // Opening of the PDF
+
+    const pdfData = doc.output('datauristring');
+    this.pdfSrc = pdfData;
+
+    const pdfWindow = window.open();
+
+    // Validation for PDF load
+
+    if (pdfWindow) {
+      pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
+    } else {
+      console.error('Failed to open PDF preview window.');
+    }
+  }
+
 
 }

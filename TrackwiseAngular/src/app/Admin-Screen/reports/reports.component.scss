@@ -19,9 +19,15 @@
 
 
 
-img {
-  width: auto;
-  height: 110px;
+.lol {
+  width: 220px;
+  height: 290px;
+  // max-height: 120px;
+  // max-width: 150px;
+}
+.lol2 {
+  width: 220px;
+  height: 135px;
   // max-height: 120px;
   // max-width: 150px;
 }
@@ -42,7 +48,7 @@ img {
   border-radius: 4px;
   padding: 10px;
   width: 250px;
-  height: 300px; /* Adjust width as needed */
+  height: 400px; /* Adjust width as needed */
   margin: 10px; /* Adjust margin as needed */
   transition: transform 1500ms;
   transform-style: preserve-3d;
@@ -112,7 +118,6 @@ button{
   font-weight: bold;
   background-color: white;
   border: 2px solid #004F9E;
-  margin-top: 35%;
   width: 100%;
   height: 35px;
   border-radius: 5px;

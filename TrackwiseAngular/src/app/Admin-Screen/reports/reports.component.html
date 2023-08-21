@@ -1,19 +1,38 @@
 
-<div class="card-container">
+ <!-- #####################################################################################################-->
+ <div class="card-container">
+ <div class="viewDetails">
+  <mat-card class="card">
+    <div class="header-content">
+      <h4>Staff Report</h4>
+      <div class="centered">
+        <img class="lol" [src]="'assets/Reports/LTTLogo.jpg'">
+      </div>
+    </div>
+    <div class="card-content">
+      <!-- Add your card content here -->
+    </div>
+    <mat-card-footer>
+      <mat-card-actions>
+        <button (click)="generateStaffReport()">Generate Report</button> <!-- Add label for the button -->
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>
+ <!-- #####################################################################################################-->
+
+
   <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
         <h4>Stock Report</h4>
         <div class="centered">
-          <img [src]="'assets/Reports/Stock.jpg'">
+          <img class="lol" [src]="'assets/Reports/Stock.jpg'">
         </div>
       </div>
-
       <div class="card-content">
         <!-- Add your card content here -->
       </div>
-      
-
       <mat-card-footer>
         <mat-card-actions>
           <button (click)="generateStockReport()">Generate Report</button> <!-- Add label for the button -->
@@ -21,13 +40,14 @@
       </mat-card-footer>
     </mat-card>
   </div>
+   <!-- #####################################################################################################-->
 
   <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
-        <h4>Staff Report</h4>
+        <h4>Loads Carried Report</h4>
         <div class="centered">
-          <img [src]="'assets/Reports/LTTLogo.jpg'">
+          <img class="lol" [src]="'assets/Reports/LoadsCarried.jpg'">
         </div>
       </div>
 
@@ -37,47 +57,24 @@
 
       <mat-card-footer>
         <mat-card-actions>
-          <button (click)="generateStockReport()">Generate Report</button> <!-- Add label for the button -->
+          <button (click)="generateLoadsCarriedReport()">Generate Report</button> <!-- Add label for the button -->
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
   </div>
+   <!-- #####################################################################################################-->
 
-  <div class="viewDetails">
-    <mat-card class="card">
-      <div class="header-content">
-        <h4>Job List Report</h4>
-        <div class="centered">
-          <img [src]="'assets/Reports/Job.jpg'">
-        </div>
-      </div>
-
-      <div class="card-content">
-        <!-- Add your card content here -->
-      </div>
-
-      <mat-card-footer>
-        <mat-card-actions>
-          <button mat-button (click)="generateJobReport()">Generate Report</button> <!-- Add label for the button -->
-        </mat-card-actions>
-      </mat-card-footer>
-    </mat-card>
-  </div>
-
-
-  <div class="viewDetails">
+   <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
         <h4>Mileage/Fuel Report</h4>
         <div class="centered">
-          <img [src]="'assets/Reports/Mileage.jpeg'">
+          <img class="lol" [src]="'assets/Reports/Mileage.jpeg'">
         </div>
       </div>
-
       <div class="card-content">
         <!-- Add your card content here -->
       </div>
-
       <mat-card-footer>
         <mat-card-actions>
           <button (click)="generateMileageFuelReport()">Generate Report</button> <!-- Add label for the button -->
@@ -86,9 +83,30 @@
     </mat-card>
   </div>
 
+ <!-- #####################################################################################################-->
+
+ <div class="viewDetails">
+  <mat-card class="card">
+    <div class="header-content">
+      <h4>Job Detail Report</h4>
+      <div class="centered">
+        <img class="lol" [src]="'assets/Reports/Job.jpg'">
+      </div>
+    </div>
+    <div class="card-content">
+      <!-- Add your card content here -->
+    </div>
+    <mat-card-footer>
+      <mat-card-actions>
+        <button (click)="generateJobdetailReport()">Generate Report</button> <!-- Add label for the button -->
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>
+ <!-- #####################################################################################################-->
 
   <!--PRODUCT SALES-->
-  <div class="viewDetails">
+<!--   <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
         <h4>Product Sales Report</h4>
@@ -105,52 +123,44 @@
           </div>
         </div>
       </div>
-
       <div class="card-content">
-        <!-- Add your card content here -->
       </div>
-
       <mat-card-footer>
         <mat-card-actions>
-          <button (click)="generateProductSalesReport()">Generate Prouct Sales Report</button> <!-- Add label for the button -->
+          <button (click)="generateProductSalesReport()">Generate Prouct Sales Report</button> 
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
-  </div>
+  </div> -->
+ <!-- #####################################################################################################-->
 
-
-  <div class="viewDetails">
-    <mat-card class="card">
-      <div class="header-content">
-        <h4>Loads Carried Report</h4>
-        <div class="centered">
-          <img [src]="'assets/Reports/LoadsCarried.jpg'">
-        </div>
+ <div class="viewDetails">
+  <mat-card class="card">
+    <div class="header-content">
+      <h4>Job List Report</h4>
+      <div class="centered">
+        <img class="lol" [src]="'assets/Reports/Job.jpg'">
       </div>
-
-      <div class="card-content">
-        <!-- Add your card content here -->
-      </div>
-
-      <mat-card-footer>
-        <mat-card-actions>
-          <button mat-button (click)="generateLoadsCarriedReport()">Generate Report</button> <!-- Add label for the button -->
-        </mat-card-actions>
-      </mat-card-footer>
-    </mat-card>
-  </div>
+    </div>
 
 
 
-  
+    <mat-card-footer>
+      <mat-card-actions>
+        <button  (click)="generateJobListReport()">Generate Report</button> <!-- Add label for the button -->
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>
+
+ <!-- #####################################################################################################-->
     <div class="viewDetails">
     <mat-card class="card">
       <div class="header-content">
         <h4> Sales Report </h4>
         <div class="centered">
-          <img [src]="'assets/Reports/ProductSales.jpg'">
+          <img class="lol2" [src]="'assets/Reports/ProductSales.jpg'">
         </div>
-
 
       </div>
       <mat-form-field class="dates">

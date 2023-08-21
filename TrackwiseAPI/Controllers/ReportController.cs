@@ -10,6 +10,7 @@ using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
+using TrackwiseAPI.Models.ViewModels;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -22,6 +23,8 @@ namespace TrackwiseAPI.Controllers
         private readonly IJobRepository _jobRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IDriverRepository _driverRepository;
+        private readonly IAdminRepository _adminRepository;
 
 
         public ReportController(
@@ -29,7 +32,9 @@ namespace TrackwiseAPI.Controllers
             ITruckRepository truckRepository,
             IJobRepository jobRepository,
             IOrderRepository orderRepository,
-            IProductRepository productRepository
+            IProductRepository productRepository,
+            IDriverRepository driverRepository,
+            IAdminRepository adminRepository
             )
 
         {
@@ -38,8 +43,129 @@ namespace TrackwiseAPI.Controllers
             _jobRepository = jobRepository;
             _orderRepository = orderRepository;
             _productRepository = productRepository;
-
+            _driverRepository = driverRepository;
+            _adminRepository = adminRepository;
         }
+
+        [HttpGet]
+        [Route("GetJobDetail")]
+        public async Task<IActionResult> GetJobDetail()
+        {
+            var deliveries = await _jobRepository.GetAllDeliveries();
+            var jobs = await _jobRepository.GetAllAdminJobsAsync();
+            try
+            {
+                var joblist = new List<JobDetailDTO>(); // Create a list to hold job data
+                foreach (var job in jobs)
+                {
+                    var jobData = new JobDetailDTO
+                    {
+                        Job_ID = job.Job_ID,
+                        Pickup_Location = job.Pickup_Location,
+                        Dropoff_Location = job.Dropoff_Location,
+                        StartDate = job.StartDate,
+                        DueDate = job.DueDate,
+                        Total_Weight = 0, // Initialize total weight to 0
+                        Total_Trips = 0, // Initialize total trips to 0
+                        deliveryList = new List<deliveryDetailDTO>() // Create a list for delivery details
+                    };
+                    foreach (var del in deliveries)
+                    {
+                        if (del.Job_ID == job.Job_ID)
+                        {
+                            jobData.Total_Weight += del.Delivery_Weight; // Add delivery weight to total weight
+                            jobData.Total_Trips++; // Increment total trips
+                            var deliveryDetailDTO = new deliveryDetailDTO
+                            {
+                                Delivery_ID = del.Delivery_ID,
+                                Delivery_Weight = del.Delivery_Weight,
+                                Trips = jobData.Total_Trips, // Use total trips for this delivery
+                            };
+                            jobData.deliveryList.Add(deliveryDetailDTO);
+                        }
+                    }
+                    joblist.Add(jobData); // Add job data to the list
+                }
+                return Ok(joblist);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetDrivers")]
+
+        public async Task<IActionResult> GetDrivers()
+        {
+            var drivers = await _driverRepository.GetAllDriversAsync();
+            try
+            {
+                var driverDataList = new List<DriverDTO>(); // Create a list to hold driver data
+
+                foreach (var driver in drivers)
+                {
+                    var driverID = driver.Driver_ID;
+                    var name = driver.Name;
+                    var lastName = driver.Lastname;
+                    var email = driver.Email;
+                    var phoneNum = driver.PhoneNumber;
+
+                    // Create a DriverData object and add it to the list
+                    var driverData = new DriverDTO
+                    {
+                        Name = name,
+                        Lastname = lastName,
+                        Email = email,
+                        PhoneNumber = phoneNum,
+                    };
+                    driverDataList.Add(driverData);
+                }
+                return Ok(driverDataList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetAdmins")]
+
+        public async Task<IActionResult> GetAdmins()
+        {
+            var admins = await _adminRepository.GetAllAdminsAsync();
+            try
+            {
+                var adminDataList = new List<AdminDTO>(); // Create a list to hold admin data
+
+                foreach (var adm in admins)
+                {
+
+                    var admin_id = adm.Admin_ID;
+                    var name = adm.Name;
+                    var lastName = adm.Lastname;
+                    var email = adm.Email;
+
+                    // Create a AdminData object and add it to the list
+                    var adminData = new AdminDTO
+                    {
+                        Name = name,
+                        Lastname = lastName,
+                        Email = email,
+                    };
+
+                    adminDataList.Add(adminData);
+                }
+                return Ok(adminDataList);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
 
         [HttpGet]
         [Route("GetCompleteJobs")]
@@ -283,6 +409,49 @@ namespace TrackwiseAPI.Controllers
                 return Ok(result);
             } 
             catch (Exception) { return StatusCode(500, "Internal Server Error."); }
+        }
+
+        [HttpGet]
+        [Route("GetJobListing")]
+        public async Task<IActionResult> GetJobListing()
+        {
+            //ek soek admin jobs
+            var jobs = await _jobRepository.GetAllAdminJobsAsync();
+            var deliveries = await _jobRepository.GetAllDeliveries();
+            try
+            {
+                var JoblistData = new List<JobListingDTO>(); // Create a list to hold truck data
+
+                foreach (var job in jobs)
+                {
+                    double delweight = 0;
+                    var trip = 0;
+                    foreach (var del in deliveries)
+                    {
+                        if (del.Job_ID == job.Job_ID)
+                        {
+                            delweight += del.Delivery_Weight;
+                            trip++;
+                        }
+
+                    }
+                    var Data = new JobListingDTO
+                    {
+                        Job_ID = job.Job_ID,
+                        Weight = delweight,
+                        Trips = trip,
+                        Creator = job.Creator_ID
+                    };
+                    JoblistData.Add(Data); // Move this line here
+                }
+
+                return Ok(JoblistData);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            
         }
 
     }

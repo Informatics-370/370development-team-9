@@ -585,6 +585,27 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetJobList(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetJobListing`)
+    .pipe(map(result => result))
+  }
+
+  GetAllAdmins(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetAdmins` )
+    .pipe(map(result => result))
+  }
+
+  GetAllDrivers(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetDrivers`)
+    .pipe(map(result => result))
+  }
+
+  GetJobDetail(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetJobDetail`)
+    .pipe(map(result => result))
+  }
+
+
   // GetAllMileageFuel(): Observable<any>{
   //   let token = sessionStorage.getItem('Token');
   //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
