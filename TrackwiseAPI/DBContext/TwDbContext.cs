@@ -230,13 +230,15 @@ namespace TrackwiseAPI.DBContext
 
             modelBuilder.Entity<JobStatus>().HasData(
                 new JobStatus { Job_Status_ID = "1", Name = "In-operation", Description = "Job in progress" },
-                new JobStatus { Job_Status_ID = "2", Name = "Complete", Description = "Job complete" },
-                new JobStatus { Job_Status_ID = "3", Name = "Cancelled", Description = "Job Cancelled"}
+                new JobStatus { Job_Status_ID = "2", Name = "Job Details Required", Description = "Job Details Required" },
+                new JobStatus { Job_Status_ID = "3", Name = "Cancelled", Description = "Job Cancelled"},
+                new JobStatus { Job_Status_ID = "4", Name = "Job Complete", Description = "Job Complete" }
                 );
 
             modelBuilder.Entity<DeliveryStatus>().HasData(
                 new DeliveryStatus { Delivery_Status_ID = "1", Name = "In-operation", Description = "Transporting in progress" },
-                new DeliveryStatus { Delivery_Status_ID = "2", Name = "Complete", Description = "Transporting complete" }
+                new DeliveryStatus { Delivery_Status_ID = "2", Name = "Complete", Description = "Transporting complete" },
+                new DeliveryStatus { Delivery_Status_ID = "3", Name = "Cancelled", Description = "Transporting cancelled" }
                 );
 
             //job data

@@ -29,11 +29,13 @@ namespace TrackwiseAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IJobRepository _jobRepository;
+        private readonly IDriverRepository _driverRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly TwDbContext _context;
 
         public JobController(
             IJobRepository jobRepository, 
+            IDriverRepository driverRepository,
             TruckRouteService truckRouteService,
             UserManager<AppUser> userManager,
             IWebHostEnvironment hostingEnvironment,
@@ -42,6 +44,7 @@ namespace TrackwiseAPI.Controllers
 
         {
             _jobRepository = jobRepository;
+            _driverRepository = driverRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
             _userManager = userManager;
@@ -632,6 +635,8 @@ namespace TrackwiseAPI.Controllers
                 Job_Type_ID = jvm.Job_Type_ID,
                 Job_Status_ID = "1",
                 Map ="",
+                DeliveryCount = 0,
+                CompletedDeliveries = 0,
             };
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
@@ -703,6 +708,8 @@ namespace TrackwiseAPI.Controllers
                 {
                     deliveries++; //plus delivery vir die laaste 30+ ton
                 }
+
+                job.DeliveryCount = deliveries;
 
                 if (deliveries == 1)
                 {
@@ -950,6 +957,68 @@ namespace TrackwiseAPI.Controllers
 
 
         }
+
+        [HttpPut]
+        [Route("CompleteDelivery/{delivery_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Driver")]
+        public async Task<IActionResult> CompleteDelivery(string delivery_ID)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+                var job = await _jobRepository.GetJobAsync(delivery.Job_ID);
+
+                delivery.Delivery_Status_ID = "2";
+                await _jobRepository.SaveChangesAsync();
+
+                job.CompletedDeliveries += 1;
+
+                // Retrieve the authenticated user's email address
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                // Query the customer repository to get the customer ID
+                var user = await _userManager.FindByEmailAsync(userEmail);
+
+                if (user == null)
+                {
+                    return BadRequest("Driver not found");
+                }
+
+                var userId = user.Id;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("Driver ID not found");
+                }
+
+                var driver = await _driverRepository.GetDriverAsync(userId);
+
+                var driverDeliveries = await _jobRepository.GetDriverDeliveriesAsync(userId);
+
+                if (driverDeliveries.Length == 0)
+                {
+                    driver.Driver_Status_ID = "1";
+                    delivery.Truck.Truck_Status_ID = "1";
+                    delivery.Trailer.Trailer_Status_ID = "1";
+                }
+
+                if (job.CompletedDeliveries == job.DeliveryCount)
+                {
+                    job.Job_Status_ID = "2";
+                }
+
+                if (await _jobRepository.SaveChangesAsync())
+                {
+                    return Ok(delivery);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
 
     }
 }
