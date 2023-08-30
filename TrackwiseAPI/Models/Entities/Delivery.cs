@@ -13,6 +13,8 @@ namespace TrackwiseAPI.Models.Entities
         public double? Initial_Mileage { get; set; }
         public double? Final_Mileage { get; set; }
         public double? TotalFuel { get; set; }
+        public bool WeightCaptured { get; set; }
+        public bool MileageCaptured { get; set; }
 
         //Foreign Key for Job
         public string  Job_ID { get; set; }

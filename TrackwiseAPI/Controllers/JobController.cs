@@ -193,6 +193,7 @@ namespace TrackwiseAPI.Controllers
                 }
 
                 delivery.Delivery_Weight = request.actual_Weight;
+                delivery.WeightCaptured = true;
 
                 // Save changes to the database
                 await _context.SaveChangesAsync();
@@ -595,6 +596,7 @@ namespace TrackwiseAPI.Controllers
                 delivery.Initial_Mileage = request.Initial_Mileage;
                 delivery.Final_Mileage = request.Final_Mileage;
                 delivery.TotalFuel = request.Total_Fuel;
+                delivery.MileageCaptured = true;
                 await _context.SaveChangesAsync();
 
 
@@ -749,7 +751,10 @@ namespace TrackwiseAPI.Controllers
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID,
-                        Delivery_Status_ID = "1"
+                        Delivery_Status_ID = "1",
+                        TotalFuel = 0,
+                        WeightCaptured = false,
+                        MileageCaptured = false
                     };
                     using (var transaction = _jobRepository.BeginTransaction()) // Begin the database transaction
                     {
@@ -819,7 +824,10 @@ namespace TrackwiseAPI.Controllers
                                 TruckID = truckId,
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID,
-                                Delivery_Status_ID = "1"
+                                Delivery_Status_ID = "1",
+                                TotalFuel = 0,
+                                WeightCaptured = false,
+                                MileageCaptured = false
                             };
                             deliveries1.Add(deliveryObj);
                             
@@ -891,7 +899,10 @@ namespace TrackwiseAPI.Controllers
                                 TruckID = truckId,
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID,
-                                Delivery_Status_ID = "1"
+                                Delivery_Status_ID = "1",
+                        TotalFuel = 0,
+                        WeightCaptured = false,
+                        MileageCaptured = false
                             };
 
                             allDeliveries.Add(deliveryObj);
@@ -1019,6 +1030,40 @@ namespace TrackwiseAPI.Controllers
             return BadRequest("Your request is invalid.");
         }
 
+        [HttpPut]
+        [Route("CompleteJob/{Job_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> CompleteJob(string Job_ID)
+        {
+            try
+            {
+                var job = await _jobRepository.GetJobAsync(Job_ID);
+                var capturedCount = 0;
+
+                foreach(var delivery in job.Deliveries)
+                {
+                    if (delivery.MileageCaptured == true && delivery.WeightCaptured == true)
+                    {
+                        capturedCount++;
+                    }
+                }
+
+                if (capturedCount == job.DeliveryCount)
+                {
+                    job.Job_Status_ID = "4";
+                }
+
+                if (await _jobRepository.SaveChangesAsync())
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
 
     }
 }
