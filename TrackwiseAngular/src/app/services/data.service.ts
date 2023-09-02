@@ -606,6 +606,12 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+
+  GetAudits(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Audit/GetAllAudit`)
+    .pipe(map(result => result))
+  }
+
   CompleteJob(job_ID: string):Observable<any>
   {
     let token = sessionStorage.getItem('Token');

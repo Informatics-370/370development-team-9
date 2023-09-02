@@ -27,6 +27,7 @@ namespace TrackwiseAPI.Controllers
         private readonly IAdminRepository _adminRepository;
 
 
+
         public ReportController(
             IReportRepository reportRepository, 
             ITruckRepository truckRepository,

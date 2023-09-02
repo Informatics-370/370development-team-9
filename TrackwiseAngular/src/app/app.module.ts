@@ -79,6 +79,7 @@ import { DatePipe } from '@angular/common';
 import { CancelNotificationComponent } from './ConfirmationNotifications/cancel-notification/cancel-notification.component';
 import { CollectNotificationComponent } from './ConfirmationNotifications/collect-notification/collect-notification.component';
 import { RemoveNotificationComponent } from './ConfirmationNotifications/remove-notification/remove-notification.component';
+import { AuditComponent } from './Admin-Screen/audit/audit.component';
 
 @NgModule({
   declarations: [
@@ -130,7 +131,7 @@ import { RemoveNotificationComponent } from './ConfirmationNotifications/remove-
     CancelNotificationComponent,
     CollectNotificationComponent,
     RemoveNotificationComponent,
-
+    AuditComponent,
   ],
   imports: [
     BrowserModule,

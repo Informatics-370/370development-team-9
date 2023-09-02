@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -16,10 +17,12 @@ namespace TrackwiseAPI.Controllers
     public class TruckController : ControllerBase
     {
         private readonly ITruckRepository _truckRepository;
+        private readonly IAuditRepository _auditRepository;
 
-        public TruckController(ITruckRepository truckRepository)
+        public TruckController(ITruckRepository truckRepository, IAuditRepository auditRepository)
         {
             _truckRepository = truckRepository;
+            _auditRepository = auditRepository;
         }
 
         [HttpGet]
@@ -64,10 +67,16 @@ namespace TrackwiseAPI.Controllers
             var truckId = Guid.NewGuid().ToString();
             var truck = new Truck { TruckID = truckId, Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID, Mileage = 0 };
 
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Truck", CreatedDate = DateTime.Now , User = userEmail };
+
             try
             {
                 _truckRepository.Add(truck);
                 await _truckRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
 
             }
             catch (Exception)
@@ -83,6 +92,9 @@ namespace TrackwiseAPI.Controllers
         [Route("EditTruck/{TruckID}")]
         public async Task<ActionResult<TruckVM>> EditTruck(string TruckID, TruckVM tvm)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Truck", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingTruck = await _truckRepository.GetTruckAsync(TruckID);
@@ -104,8 +116,11 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _truckRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingTruck);
                 }
+
             }
             catch (Exception)
             {
@@ -119,14 +134,24 @@ namespace TrackwiseAPI.Controllers
         [Route("DeleteTruck/{TruckID}")]
         public async Task<IActionResult> DeleteTruck(string TruckID)
         {
+
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Truck", CreatedDate = DateTime.Now, User = userEmail };
                 var existingTruck = await _truckRepository.GetTruckAsync(TruckID);
 
                 if (existingTruck == null) return NotFound($"The truck does not exist");
                 _truckRepository.Delete(existingTruck);
 
-                if (await _truckRepository.SaveChangesAsync()) return Ok(existingTruck);
+                if (await _truckRepository.SaveChangesAsync())
+                {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    return Ok(existingTruck);
+                }
+                    
 
             }
             catch (Exception)

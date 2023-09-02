@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using TrackwiseAPI.Models.DataTransferObjects;
+using System.Security.Claims;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -16,10 +17,11 @@ namespace TrackwiseAPI.Controllers
     public class ProductController : ControllerBase
     {
         private readonly IProductRepository _productRepository;
-
-        public ProductController(IProductRepository productRepository)
+        private readonly IAuditRepository _auditRepository;
+        public ProductController(IProductRepository productRepository, IAuditRepository auditRepository)
         {
             _productRepository = productRepository;
+            _auditRepository = auditRepository;
         }
 
         [HttpGet]
@@ -110,7 +112,9 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> AddProduct(ProductDTO product)
         {
             var productId = Guid.NewGuid().ToString();
-
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Product", CreatedDate = DateTime.Now, User = userEmail };
 
             var newProduct = new Product
             {
@@ -129,6 +133,8 @@ namespace TrackwiseAPI.Controllers
             {
                 _productRepository.Add(newProduct);
                 await _productRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -144,6 +150,9 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<ProductVM>> EditProduct(string productId, ProductDTO productModel)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Product", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingProduct = await _productRepository.GetProductAsync(productId);
@@ -173,6 +182,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _productRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingProduct);
                 }
             }
@@ -191,13 +202,21 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Trailer", CreatedDate = DateTime.Now, User = userEmail };
                 var existingProduct = await _productRepository.GetProductAsync(productId);
 
                 if (existingProduct == null) return NotFound($"The product does not exist");
 
                 _productRepository.Delete(existingProduct);
 
-                if (await _productRepository.SaveChangesAsync()) return Ok(existingProduct);
+                if (await _productRepository.SaveChangesAsync()) 
+                {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    return Ok(existingProduct);
+                }
 
             }
             catch (Exception)

@@ -63,7 +63,7 @@ import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/cl
 import { AdminGuard } from './Authentication/guards/adminGuard';
 import { CustomerGuard } from './Authentication/guards/customerGuard';
 import { ClientGuard } from './Authentication/guards/clientGuard';
-
+import { AuditComponent } from './Admin-Screen/audit/audit.component';
 
 
 
@@ -72,6 +72,7 @@ const routes: Routes = [
   { path: 'Authentication/login', component: LoginComponent },
   { path: 'Authentication/register', component: RegisterComponent },
 
+  {path: 'Admin-Screen/audits', component:AuditComponent, canActivate:[AdminGuard]},
   { path: 'Admin-Screen/admin-home', component: AdminHomeComponent, canActivate: [AdminGuard] },
   { path: 'Admin-Screen/admin-profile', component: AdminProfileComponent, canActivate: [AdminGuard] },
 
