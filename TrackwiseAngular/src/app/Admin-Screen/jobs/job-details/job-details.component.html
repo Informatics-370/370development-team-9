@@ -1,7 +1,6 @@
 <div class="details-container" *ngIf="showDetails==true">
 
     <button class="details-btn-selected" (click)="ShowDetails()">View Details</button>
-    <button class="documents-btn" (click)="ShowDocuments()">Documents</button>
 
     <div class="item-container">
         <h3>Job Details</h3>
@@ -101,7 +100,7 @@
     </table>
     <div *ngFor="let jobDetails of jobs">
         <div class="item-container" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'">
-            <button class="complete-btn" (click)="CompleteJob(jobDetails.job_ID)"> Complete Job </button>
+            <button class="complete-btn" (click)="CompleteJob(jobDetails)"> Complete Job </button>
         </div>
     </div>
 </div>

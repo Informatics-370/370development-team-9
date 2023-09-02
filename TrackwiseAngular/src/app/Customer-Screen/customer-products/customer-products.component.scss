@@ -320,3 +320,12 @@ img {
   background-color: #f4f4f4;
 }
 
+.checkbox-item {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-item input {
+  margin-right: 8px; /* Adjust the spacing between the checkbox and label as needed */
+}
+

@@ -29,6 +29,12 @@
               <option value="3">Under Maintenance</option>
             </select>
           </div>
+
+          <div class="mb-3">
+            <label for="price" class="form-label">Mileage</label>
+            <input type="number" class="form-control" id="price" required [(ngModel)] = "truckDetails.mileage"  
+                   name="price" [(ngModel)]="truckDetails.mileage">
+          </div>
           
         
         <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;

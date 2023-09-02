@@ -30,7 +30,7 @@ export class AddSupplierComponent {
   {
     this.dataService.AddSupplier(this.AddSupplierReq).subscribe({
       next: (supplier) => {this.router.navigate(['/Admin-Screen/suppliers']);
-      this.snackBar.open(this.AddSupplierReq+ ` successfully registered`, 'X', {duration: 3000});}
+      this.snackBar.open(this.AddSupplierReq.name + ` successfully registered`, 'X', {duration: 3000});}
     })
   }
 
