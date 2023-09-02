@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class JobDetailsComponent implements OnInit{
   showDocuments: boolean = false;
   jobs: any[] = [];
   
-   constructor(private dataService: DataService, private route: ActivatedRoute) { }
+   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
   
   ngOnInit(): void {
 
@@ -32,6 +32,14 @@ export class JobDetailsComponent implements OnInit{
             console.log(this.jobs)
           }
         });
+      }
+    });
+  }
+
+  CompleteJob(job_ID : string) {
+    this.dataService.CompleteJob(job_ID).subscribe({
+      next: (response) => {
+        this.router.navigate(['/Admin-Screen/jobs']);
       }
     });
   }

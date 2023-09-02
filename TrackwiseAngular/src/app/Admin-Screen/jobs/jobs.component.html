@@ -34,33 +34,33 @@
     </thead>
 
     <tbody *ngFor="let job of jobs">
-      <tr *ngIf="job.jobStatus.name == 'Job Details Required'">
-        <td>{{job.userName}}</td>
-        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
-        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
-        <td>{{job.jobType.name}}</td>
-        <td>{{job.jobStatus.name}}</td>
-        <td>
-          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
-        </td>
-        <td>
-          <button class="cancel-job-btn" >Cancel</button>
-        </td>
-      </tr>
-    </tbody>
-
-    <tbody *ngFor="let job of jobs">
       <tr *ngIf="job.jobStatus.name == 'In-operation'">
         <td>{{job.userName}}</td>
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{job.jobType.name}}</td>
-        <td>{{job.jobStatus.name}}</td>
+        <td style="color: #004F9E; font-weight: bold;">{{job.jobStatus.name}}</td>
         <td>
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
         <td>
-          <button class="cancel-job-btn" >Cancel</button>
+          <button class="cancel-job-btn" (click)="CancelJob(job.job_ID)" >Cancel</button>
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'Job Details Required'">
+        <td>{{job.userName}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td style="color: orange; font-weight: bold;">{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
+        </td>
+        <td>
+
         </td>
       </tr>
     </tbody>
@@ -71,12 +71,12 @@
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{job.jobType.name}}</td>
-        <td>{{job.jobStatus.name}}</td>
+        <td style="color: rgb(5, 218, 5); font-weight: bold;">{{job.jobStatus.name}}</td>
         <td>
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
         <td>
-          <button class="cancel-job-btn" >Cancel</button>
+
         </td>
       </tr>
     </tbody>
@@ -87,12 +87,12 @@
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{job.jobType.name}}</td>
-        <td>{{job.jobStatus.name}}</td>
+        <td style="color: red; font-weight: bold;">{{job.jobStatus.name}}</td>
         <td>
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
         <td>
-          <button class="cancel-job-btn" >Cancel</button>
+
         </td>
       </tr>
     </tbody>

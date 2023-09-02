@@ -605,6 +605,19 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  CompleteJob(job_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CompleteJob/${job_ID}`, {}, {headers});
+  }
+
+  CancelJob(job_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CancelJob/${job_ID}`, {}, {headers});
+  }
 
   // GetAllMileageFuel(): Observable<any>{
   //   let token = sessionStorage.getItem('Token');

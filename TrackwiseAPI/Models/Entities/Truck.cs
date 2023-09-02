@@ -9,6 +9,7 @@ namespace TrackwiseAPI.Models.Entities
         public string TruckID { get; set; }
         public string Truck_License { get; set; }
         public string Model { get; set; }
+        public double? Mileage { get; set; }
 
         //Foreign Key for truck status
         public string Truck_Status_ID { get; set; }
