@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -16,10 +17,12 @@ namespace TrackwiseAPI.Controllers
     public class TrailerController : ControllerBase
     {
         private readonly ITrailerRepository _trailerRepository;
+        private readonly IAuditRepository _auditRepository;
 
-        public TrailerController(ITrailerRepository trailerRepository)
+        public TrailerController(ITrailerRepository trailerRepository, IAuditRepository auditRepository)
         {
             _trailerRepository = trailerRepository;
+            _auditRepository = auditRepository;
         }
 
         //Get all trailers
@@ -64,12 +67,15 @@ namespace TrackwiseAPI.Controllers
         {
             var trailerId = Guid.NewGuid().ToString();
             var trailer = new Trailer { TrailerID = trailerId, Trailer_License = tvm.Trailer_License, Model = tvm.Model, Weight = tvm.Weight, Trailer_Status_ID = tvm.Trailer_Status_ID, Trailer_Type_ID = tvm.Trailer_Type_ID };
-
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Trailer", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 _trailerRepository.Add(trailer);
                 await _trailerRepository.SaveChangesAsync();
-
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -84,6 +90,9 @@ namespace TrackwiseAPI.Controllers
         [Route("EditTrailer/{TrailerID}")]
         public async Task<ActionResult<TrailerVM>> EditTrailer(string TrailerID, TrailerVM tvm)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Trailer", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingTrailer = await _trailerRepository.GetTrailerAsync(TrailerID);
@@ -106,6 +115,8 @@ namespace TrackwiseAPI.Controllers
                 existingTrailer.Trailer_Type_ID = tvm.Trailer_Type_ID;
                 if (await _trailerRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingTrailer);
                 }
             }
@@ -123,12 +134,21 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Truck", CreatedDate = DateTime.Now, User = userEmail };
                 var existingTrailer = await _trailerRepository.GetTrailerAsync(TrailerID);
 
                 if (existingTrailer == null) return NotFound($"The trailer does not exist");
                 _trailerRepository.Delete(existingTrailer);
 
-                if (await _trailerRepository.SaveChangesAsync()) return Ok(existingTrailer);
+                if (await _trailerRepository.SaveChangesAsync())
+                {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    return Ok(existingTrailer);
+                } 
+                   
 
             }
             catch (Exception)

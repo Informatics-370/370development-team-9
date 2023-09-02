@@ -605,7 +605,10 @@ export class DataService {
     .pipe(map(result => result))
   }
 
-
+  GetAudits(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Audit/GetAllAudit`)
+    .pipe(map(result => result))
+  }
   // GetAllMileageFuel(): Observable<any>{
   //   let token = sessionStorage.getItem('Token');
   //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

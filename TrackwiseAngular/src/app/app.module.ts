@@ -76,6 +76,7 @@ import { DocumentInformationComponent } from './Admin-Screen/jobs/document-infor
 import { NgChartsModule } from 'ng2-charts';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { DatePipe } from '@angular/common';
+import { AuditComponent } from './Admin-Screen/audit/audit.component';
 
 @NgModule({
   declarations: [
@@ -124,6 +125,7 @@ import { DatePipe } from '@angular/common';
     ClientJobDetailsComponent,
     AdminProfileComponent,
     DocumentInformationComponent,
+    AuditComponent,
 
   ],
   imports: [

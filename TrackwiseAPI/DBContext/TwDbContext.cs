@@ -35,6 +35,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<JobStatus> JobsStatus { get; set; }
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<Audit> Audits { get; set; }
 
 
         /// 
