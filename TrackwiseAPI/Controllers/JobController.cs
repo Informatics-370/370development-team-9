@@ -30,12 +30,14 @@ namespace TrackwiseAPI.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IJobRepository _jobRepository;
         private readonly IDriverRepository _driverRepository;
+        private readonly ITruckRepository _truckRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly TwDbContext _context;
 
         public JobController(
             IJobRepository jobRepository, 
             IDriverRepository driverRepository,
+            ITruckRepository truckRepository,
             TruckRouteService truckRouteService,
             UserManager<AppUser> userManager,
             IWebHostEnvironment hostingEnvironment,
@@ -45,6 +47,7 @@ namespace TrackwiseAPI.Controllers
         {
             _jobRepository = jobRepository;
             _driverRepository = driverRepository;
+            _truckRepository = truckRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
             _userManager = userManager;
@@ -592,13 +595,14 @@ namespace TrackwiseAPI.Controllers
             try
             {
                 var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+                var truck = await _truckRepository.GetTruckAsync(delivery.TruckID);
 
                 delivery.Initial_Mileage = request.Initial_Mileage;
                 delivery.Final_Mileage = request.Final_Mileage;
                 delivery.TotalFuel = request.Total_Fuel;
                 delivery.MileageCaptured = true;
 
-                delivery.Truck.Mileage = request.Final_Mileage;
+                truck.Mileage = request.Final_Mileage;
                 await _context.SaveChangesAsync();
 
 

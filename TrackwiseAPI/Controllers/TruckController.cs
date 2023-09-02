@@ -90,7 +90,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingTruck.Truck_License == tvm.Truck_License &&
                     existingTruck.Model == tvm.Model &&
-                    existingTruck.Truck_Status_ID == tvm.Truck_Status_ID)
+                    existingTruck.Truck_Status_ID == tvm.Truck_Status_ID &&
+                    existingTruck.Mileage == tvm.Mileage)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingTruck);
@@ -99,6 +100,8 @@ namespace TrackwiseAPI.Controllers
                 existingTruck.Truck_License = tvm.Truck_License;
                 existingTruck.Model = tvm.Model;
                 existingTruck.Truck_Status_ID = tvm.Truck_Status_ID;
+                existingTruck.Mileage = tvm.Mileage;
+
                 if (await _truckRepository.SaveChangesAsync())
                 {
                     return Ok(existingTruck);

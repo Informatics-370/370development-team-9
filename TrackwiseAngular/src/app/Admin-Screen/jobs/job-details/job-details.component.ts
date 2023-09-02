@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 
@@ -12,7 +13,7 @@ export class JobDetailsComponent implements OnInit{
   showDocuments: boolean = false;
   jobs: any[] = [];
   
-   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
+   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar) { }
   
   ngOnInit(): void {
 
@@ -36,12 +37,26 @@ export class JobDetailsComponent implements OnInit{
     });
   }
 
-  CompleteJob(job_ID : string) {
-    this.dataService.CompleteJob(job_ID).subscribe({
-      next: (response) => {
-        this.router.navigate(['/Admin-Screen/jobs']);
+  CompleteJob(job : any) {
+    let capturedCount = 0;
+
+    job.deliveries.forEach((element: { mileageCaptured: boolean; weightCaptured: boolean; }) => {
+      if(element.mileageCaptured == true && element.weightCaptured == true){
+        capturedCount++;
+      }
+
+      if(capturedCount == job.deliveryCount){
+        this.dataService.CompleteJob(job.job_ID).subscribe({
+          next: (response) => {
+            this.router.navigate(['/Admin-Screen/jobs']);
+          } 
+        });
+      } else {
+        this.snackBar.open(` Delivery info not captured`, 'X', {duration: 3000});
       }
     });
+
+    
   }
 
   ShowDetails() {

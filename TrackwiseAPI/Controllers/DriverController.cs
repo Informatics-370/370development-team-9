@@ -79,7 +79,7 @@ namespace TrackwiseAPI.Controllers
         {
             var driverId = Guid.NewGuid().ToString();
 
-            var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Driver_Status_ID = dvm.Driver_Status_ID };
+            var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Driver_Status_ID = "1" };
             var newdrivermail = new NewDriverMail { Email = driver.Email, Name = driver.Name, PhoneNumber = driver.PhoneNumber, Driver_Status_ID = "1", Password = dvm.Password };
             var existingadmin = await _userManager.FindByNameAsync(dvm.Email);
             if (existingadmin != null) return BadRequest("User already exists");
@@ -133,8 +133,7 @@ namespace TrackwiseAPI.Controllers
                 if (existingDriver.Name == dvm.Name &&
                     existingDriver.Lastname == dvm.Lastname &&
                     existingDriver.Email == dvm.Email &&
-                    existingDriver.PhoneNumber == dvm.PhoneNumber &&
-                    existingDriver.Driver_Status_ID == dvm.Driver_Status_ID)
+                    existingDriver.PhoneNumber == dvm.PhoneNumber)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingDriver);
@@ -144,7 +143,6 @@ namespace TrackwiseAPI.Controllers
                 existingDriver.Lastname = dvm.Lastname;
                 existingDriver.Email = dvm.Email;
                 existingDriver.PhoneNumber = dvm.PhoneNumber;
-                existingDriver.Driver_Status_ID = dvm.Driver_Status_ID;
 
                 existingUser.UserName = dvm.Email;
                 existingUser.Email = dvm.Email;
