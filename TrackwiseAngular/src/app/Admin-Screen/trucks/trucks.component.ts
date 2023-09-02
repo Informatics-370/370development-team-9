@@ -2,6 +2,9 @@ import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService} from 'src/app/services/data.service';
 import { Truck } from 'src/app/shared/truck';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-trucks',
@@ -15,7 +18,7 @@ export class TrucksComponent implements OnInit {
   searchText: string = '';
   originalTrucks: Truck[]=[];
 
-  constructor( private dataService: DataService) { }
+  constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.GetTrucks()
@@ -64,6 +67,20 @@ export class TrucksComponent implements OnInit {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+
+  openConfirmationDialog(TruckID: string): void {
+    const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { TruckID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.DeleteTruck(TruckID);
+        this.snackBar.open(`Truck Successfully Removed`, 'X', {duration: 3000});
+      }
+    });
   }
 
   DeleteTruck(TruckID:string)

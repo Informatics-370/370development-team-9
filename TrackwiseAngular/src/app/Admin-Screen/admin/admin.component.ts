@@ -1,7 +1,10 @@
 import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
 import { DataService} from 'src/app/services/data.service';
 import { Admin } from 'src/app/shared/admin';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin',
@@ -13,7 +16,7 @@ export class AdminComponent implements OnInit {
   admins: any[] = []; // Property to store the admin data
   originalAdmins: any[] = []; // Property to store the original admin data
   
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
   ngOnInit(): void {
     this.GetAdmins();
@@ -60,6 +63,20 @@ export class AdminComponent implements OnInit {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+
+  openConfirmationDialog(admin_ID : string): void {
+    const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { admin_ID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.DeleteAdmin(admin_ID);
+        this.snackBar.open(` Admin Successfully Removed`, 'X', {duration: 3000});
+      }
+    });
   }
 
   DeleteAdmin(admin_ID:string)
