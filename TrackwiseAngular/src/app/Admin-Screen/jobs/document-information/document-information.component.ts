@@ -6,6 +6,7 @@ import {Document} from 'src/app/shared/document';
 import { MileageFuel } from 'src/app/shared/mileage_fuel';
 import { Weight } from 'src/app/shared/weight';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Fuel } from 'src/app/shared/fuel';
 
 
 @Component({
@@ -83,6 +84,21 @@ export class DocumentInformationComponent implements OnInit{
      fuel: 0
 
   };
+
+  fuelRequest: Fuel = {
+    total_Fuel:0,
+  };
+
+  updateFuel(): void {
+    this.dataService.EditFuel(this.delivery_ID, this.fuelRequest).subscribe(
+      response => {
+        console.log(response); // Handle success, show a message, etc.
+      },
+      error => {
+        console.error(error); // Handle error, show an error message, etc.
+      }
+    );
+  }
 
   updateMileageFuel(): void {
     this.dataService.EditMileageFuel(this.delivery_ID, this.MileageRequest).subscribe(
