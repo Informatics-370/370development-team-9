@@ -229,4 +229,21 @@ td{
     background-color: #117fca;
     font-weight: bold;
   }
+
+  .complete-btn {
+    border: 2px solid forestgreen;
+    border-radius: 5px;
+    background-color: white;
+    color: forestgreen;
+    font-weight: bold;
+    width: 25%;
+    height: 35px;
+    margin-left: auto;
+}
+
+.complete-btn:hover {
+    color: white;
+    background-color: forestgreen;
+    font-weight: bold;
+}
   

@@ -597,6 +597,8 @@ namespace TrackwiseAPI.Controllers
                 delivery.Final_Mileage = request.Final_Mileage;
                 delivery.TotalFuel = request.Total_Fuel;
                 delivery.MileageCaptured = true;
+
+                delivery.Truck.Mileage = request.Final_Mileage;
                 await _context.SaveChangesAsync();
 
 
@@ -688,7 +690,6 @@ namespace TrackwiseAPI.Controllers
             double jobweight = 0;
             double deliveryweight = 0;
             double remainingweight = 0;
-            double piele = 0;
 
             if (drivers.Length>0 && trucks.Length>0 && trailers.Length>0) 
             {
@@ -810,7 +811,7 @@ namespace TrackwiseAPI.Controllers
                         }
                         var trailerId = trailer.TrailerID;
 
-                        piele = job.Total_Weight;
+                        deliveryweight = job.Total_Weight;
                         var deliveries1 = new List<Delivery>();
                         for (int i = 0; i < deliveries; i++)
                         {
@@ -830,11 +831,11 @@ namespace TrackwiseAPI.Controllers
                                 MileageCaptured = false
                             };
                             deliveries1.Add(deliveryObj);
-                            
-                            piele -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
-                            if((piele < 35) && (piele >= 30))
+
+                            deliveryweight -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
+                            if((deliveryweight < 35) && (deliveryweight >= 30))
                             {
-                                jobweight = piele;
+                                jobweight = deliveryweight;
                             }
                         }
                         using (var transaction = _jobRepository.BeginTransaction())
@@ -874,7 +875,7 @@ namespace TrackwiseAPI.Controllers
                         {
                             return NotFound("Not enough available drivers/trucks/trailers for all deliveries");
                         }
-                        piele = job.Total_Weight;
+                        deliveryweight = job.Total_Weight;
                         List<Delivery> allDeliveries = new List<Delivery>();
                         for (int i = 0; i < deliveries; i++)
                         {
@@ -900,16 +901,16 @@ namespace TrackwiseAPI.Controllers
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID,
                                 Delivery_Status_ID = "1",
-                        TotalFuel = 0,
-                        WeightCaptured = false,
-                        MileageCaptured = false
+                                TotalFuel = 0,
+                                WeightCaptured = false,
+                                MileageCaptured = false
                             };
 
                             allDeliveries.Add(deliveryObj);
-                            piele -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
-                            if ((piele < 35) && (piele >= 30))
+                            deliveryweight -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
+                            if ((deliveryweight < 35) && (deliveryweight >= 30))
                             {
-                                jobweight = piele;
+                                jobweight = deliveryweight;
                             }
                         }
 
@@ -1052,6 +1053,39 @@ namespace TrackwiseAPI.Controllers
                 {
                     job.Job_Status_ID = "4";
                 }
+
+                if (await _jobRepository.SaveChangesAsync())
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
+        [HttpPut]
+        [Route("CancelJob/{Job_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> CancelJob(string Job_ID)
+        {
+            try
+            {
+                var job = await _jobRepository.GetJobAsync(Job_ID);
+
+                foreach (var delivery in job.Deliveries)
+                {
+
+                    delivery.Delivery_Status_ID = "3";
+                    var driver = await _driverRepository.GetDriverAsync(delivery.Driver_ID);
+                    driver.Driver_Status_ID = "1";
+                    delivery.Truck.Truck_Status_ID = "1";
+                    delivery.Trailer.Trailer_Status_ID = "1";
+                }
+
+                job.Job_Status_ID = "3";
 
                 if (await _jobRepository.SaveChangesAsync())
                 {

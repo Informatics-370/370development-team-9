@@ -81,7 +81,10 @@
                         <td>{{jobdeliveries.truck.truck_License}} </td>
                         <td>{{jobdeliveries.trailer.trailer_License}}</td>
                         <td>{{jobdeliveries.delivery_Weight}}</td>
-                        <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/document-information/' + jobdeliveries.delivery_ID" [disabled]="jobDetails.jobStatus.job_Status_ID !== '2'"> Capture </button>
+                        <td>
+                            <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/document-information/' + jobdeliveries.delivery_ID" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'"> Capture </button>
+                        </td>
+                        
                     </tr>
                 </table>  
             </td> 
@@ -96,8 +99,10 @@
             </td>
         </tr>
     </table>
-    <div class="item-container">
-        <button class="close-btn"> Complete Job </button>
+    <div *ngFor="let jobDetails of jobs">
+        <div class="item-container" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'">
+            <button class="complete-btn" (click)="CompleteJob(jobDetails.job_ID)"> Complete Job </button>
+        </div>
     </div>
 </div>
 

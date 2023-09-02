@@ -62,7 +62,7 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> AddTruck(TruckVM tvm)
         {
             var truckId = Guid.NewGuid().ToString();
-            var truck = new Truck { TruckID = truckId, Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID};
+            var truck = new Truck { TruckID = truckId, Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID, Mileage = 0 };
 
             try
             {

@@ -129,6 +129,15 @@ export class JobsComponent implements OnInit{
 
   }
 
+  CancelJob(job_ID : string) {
+    this.dataService.CancelJob(job_ID).subscribe({
+      next: (response) => {
+        this.jobs = [];
+        this.GetJobs();
+      }
+    });
+  }
+
   search() {
     if (this.searchText.trim() === '') {
       // If search text is empty, revert back to original admin data
