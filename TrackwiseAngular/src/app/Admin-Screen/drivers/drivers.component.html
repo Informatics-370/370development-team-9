@@ -43,7 +43,7 @@
                   <td>{{driver.phoneNumber}}</td>
                   <td>{{driver.driverStatus.status}}</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-driver', driver.driver_ID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="DeleteDriver(driver.driver_ID)">Remove</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="openConfirmationDialog(driver.driver_ID)">Remove</button></td>
           </tr>
         </tbody>
       </table>

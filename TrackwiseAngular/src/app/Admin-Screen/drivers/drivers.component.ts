@@ -2,6 +2,10 @@ import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService} from 'src/app/services/data.service';
 import { Driver } from 'src/app/shared/driver';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-drivers',
@@ -13,7 +17,7 @@ export class DriversComponent implements OnInit {
   drivers: any[] = []; // Property to store the driver data
   originalDrivers: any[] = []; // Property to store the original driver data
   
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
   ngOnInit(): void {
     this.GetDrivers();
@@ -62,6 +66,20 @@ export class DriversComponent implements OnInit {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+
+  openConfirmationDialog(client_ID: string): void {
+    const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { client_ID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.DeleteDriver(client_ID);
+        this.snackBar.open(` Driver Successfully Removed`, 'X', {duration: 3000});
+      }
+    });
   }
 
   DeleteDriver(driver_ID:string)

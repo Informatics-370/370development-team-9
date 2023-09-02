@@ -137,7 +137,7 @@
               </table>  
               <br>  
               <div class="collect" *ngFor="let order of orders">
-                <button *ngIf="order.status == 'Ordered'" class="collectBtn" (click)="CollectOrder(order)" >Collect Order</button>
+                <button *ngIf="order.status == 'Ordered'" class="collectBtn" (click)="openConfirmationDialog(order)" >Collect Order</button>
               </div>   
   
             </div>

@@ -44,7 +44,7 @@
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
         <td>
-          <button class="cancel-job-btn" (click)="CancelJob(job.job_ID)" >Cancel</button>
+          <button class="cancel-job-btn" (click)="openConfirmationDialog(job.job_ID)" >Cancel</button>
         </td>
       </tr>
     </tbody>

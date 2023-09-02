@@ -37,7 +37,7 @@
                   <td>{{supplier.email}}</td>
                   <td>{{supplier.contact_Number}}</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-supplier', supplier.supplier_ID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="DeleteSupplier(supplier.supplier_ID)">Remove</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="openConfirmationDialog(supplier.supplier_ID)">Remove</button></td>
           </tr>
         </tbody>
       </table>

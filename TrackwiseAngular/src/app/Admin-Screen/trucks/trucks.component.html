@@ -39,7 +39,7 @@
             <td>{{truck.truckStatus.status}}</td>
             <td>{{truck.mileage}} km</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-truck', truck.truckID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="DeleteTruck(truck.truckID)">Remove</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="openConfirmationDialog(truck.truckID)">Remove</button></td>
           </tr>
         </tbody>
       </table>

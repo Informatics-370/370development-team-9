@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
 import { DataService } from 'src/app/services/data.service';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-suppliers',
@@ -12,7 +15,7 @@ export class SuppliersComponent {
   suppliers: any[] = []; // Property to store the driver data
   originalSuppliers: any[] = []; // Property to store the original driver data
   
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
   ngOnInit(): void {
     this.GetSuppliers();
@@ -58,6 +61,20 @@ export class SuppliersComponent {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+
+  openConfirmationDialog(supplier_ID: string): void {
+    const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { supplier_ID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.DeleteSupplier(supplier_ID);
+        this.snackBar.open(` Supplier Successfully Removed`, 'X', {duration: 3000});
+      }
+    });
   }
 
   DeleteSupplier(supplier_ID:string)
