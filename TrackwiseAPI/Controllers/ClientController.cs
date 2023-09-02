@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
+using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
@@ -26,13 +27,14 @@ namespace TrackwiseAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IClientRepository _clientRepository;
         private readonly MailController _mailController;
+        private readonly IAuditRepository _auditRepository;
 
         public ClientController(
             UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             IClientRepository clientRepository,
-            MailController mailController
+            MailController mailController, IAuditRepository auditRepository
             )
         {
             _userManager = userManager;
@@ -40,6 +42,7 @@ namespace TrackwiseAPI.Controllers
             _configuration = configuration;
             _clientRepository = clientRepository;
             _mailController = mailController;
+            _auditRepository = auditRepository;
         }
     
         //Get all clients
@@ -86,7 +89,9 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> AddClient(ClientVM cvm)
         {
             var clientId = Guid.NewGuid().ToString();
-
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Client", CreatedDate = DateTime.Now, User = userEmail };
 
             var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email };
             var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, PhoneNumber = client.PhoneNumber, Password = cvm.Password };
@@ -96,7 +101,8 @@ namespace TrackwiseAPI.Controllers
             {
                 _clientRepository.Add(client);
                 await _clientRepository.SaveChangesAsync();
-
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
                 var user = new AppUser
                 {
                     Id = clientId,
@@ -128,6 +134,9 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
         public async Task<ActionResult<ClientVM>> EditClient(string ClientID, ClientVM cvm)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Client", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingClient = await _clientRepository.GetClientAsync(ClientID);
@@ -161,6 +170,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (clientUpdateResult && userUpdateResult.Succeeded)
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingClient);
                 }
             }
@@ -179,6 +190,9 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Client", CreatedDate = DateTime.Now, User = userEmail };
                 var existingClient = await _clientRepository.GetClientAsync(ClientID);
 
                 if (existingClient == null) 
@@ -198,6 +212,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _clientRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingClient);
                 }
             }

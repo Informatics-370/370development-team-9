@@ -22,17 +22,20 @@ namespace TrackwiseAPI.Controllers
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly ICustomerRepository _customerRepository;
+        private readonly IAuditRepository _auditRepository;
 
 
         public CustomerController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository,
+            IAuditRepository auditRepository)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _customerRepository = customerRepository;
+            _auditRepository = auditRepository;
         }
 
 
@@ -158,6 +161,8 @@ namespace TrackwiseAPI.Controllers
             try
             {
                 var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Update Customer Profile", CreatedDate = DateTime.Now, User = userEmail };
 
                 // Query the customer repository to get the customer ID
                 var customer = await _userManager.FindByEmailAsync(userEmail);
@@ -197,6 +202,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (customerUpdateResult)
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingCustomer);
                 }
             }
@@ -212,6 +219,9 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Customer")]
         public async Task<ActionResult<CustomerVM>> EditCustomer(string customerId, CustomerVM cvm)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Customer", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingCustomer = await _customerRepository.GetCustomerAsync(customerId);
@@ -245,6 +255,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (customerUpdateResult && userUpdateResult.Succeeded)
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingCustomer);
                 }
             }
@@ -263,6 +275,9 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Customer", CreatedDate = DateTime.Now, User = userEmail };
                 var existingCustomer = await _customerRepository.GetCustomerAsync(customerId);
 
                 if (existingCustomer == null) 
@@ -282,6 +297,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _customerRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingCustomer);
                 }
                     

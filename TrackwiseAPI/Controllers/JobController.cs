@@ -32,6 +32,7 @@ namespace TrackwiseAPI.Controllers
         private readonly IDriverRepository _driverRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly TwDbContext _context;
+        private readonly IAuditRepository _auditRepository;
 
         public JobController(
             IJobRepository jobRepository, 
@@ -39,8 +40,8 @@ namespace TrackwiseAPI.Controllers
             TruckRouteService truckRouteService,
             UserManager<AppUser> userManager,
             IWebHostEnvironment hostingEnvironment,
-            TwDbContext context
-            )
+            TwDbContext context,
+            IAuditRepository auditRepository)
 
         {
             _jobRepository = jobRepository;
@@ -50,6 +51,7 @@ namespace TrackwiseAPI.Controllers
             _userManager = userManager;
             _hostingEnvironment = hostingEnvironment;
             _context = context;
+            _auditRepository = auditRepository;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -446,6 +448,9 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Upload documents", CreatedDate = DateTime.Now, User = userEmail };
                 var documents = new DocumentVM
                 {
                     Documents = documentVM.Documents.Select(ol => new DocumentDTO
@@ -475,6 +480,8 @@ namespace TrackwiseAPI.Controllers
 
                 // Save all changes to the database at once
                 await _jobRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
 
                 return Ok("Documents added successfully");
             }
@@ -619,6 +626,9 @@ namespace TrackwiseAPI.Controllers
         {
             // Retrieve the authenticated user's email address
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Create Job", CreatedDate = DateTime.Now, User = userEmail };
+
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null) {return BadRequest("User not found");}
             var userId = user.Id;
@@ -768,6 +778,8 @@ namespace TrackwiseAPI.Controllers
                             trailer.Trailer_Status_ID = "2";
 
                             await _jobRepository.SaveChangesAsync();
+                            _auditRepository.Add(audit);
+                            await _auditRepository.SaveChangesAsync();
                             transaction.Commit(); // Commit the transaction if everything is successful
                         }
                         catch (Exception)
@@ -852,6 +864,8 @@ namespace TrackwiseAPI.Controllers
                                 trailer.Trailer_Status_ID = "2";
 
                                 // Save changes to the database
+                                _auditRepository.Add(audit);
+                                await _auditRepository.SaveChangesAsync();
                                 await _jobRepository.SaveChangesAsync();
                                 transaction.Commit(); // Commit the transaction if everything is successful
                             }
@@ -938,6 +952,8 @@ namespace TrackwiseAPI.Controllers
                                 if (trailerToUpdate != null) trailerToUpdate.Trailer_Status_ID = "2";
 
                                 // Save changes to the database
+                                _auditRepository.Add(audit);
+                                await _auditRepository.SaveChangesAsync();
                                 await _jobRepository.SaveChangesAsync();
                                 transaction.Commit(); // Commit the transaction if everything is successful
                             }
@@ -986,7 +1002,8 @@ namespace TrackwiseAPI.Controllers
 
                 // Retrieve the authenticated user's email address
                 var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Driver Delivery Completed", CreatedDate = DateTime.Now, User = userEmail };
                 // Query the customer repository to get the customer ID
                 var user = await _userManager.FindByEmailAsync(userEmail);
 
@@ -1020,6 +1037,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _jobRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(delivery);
                 }
             }
@@ -1039,8 +1058,11 @@ namespace TrackwiseAPI.Controllers
             {
                 var job = await _jobRepository.GetJobAsync(Job_ID);
                 var capturedCount = 0;
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Job Completed", CreatedDate = DateTime.Now, User = userEmail };
 
-                foreach(var delivery in job.Deliveries)
+                foreach (var delivery in job.Deliveries)
                 {
                     if (delivery.MileageCaptured == true && delivery.WeightCaptured == true)
                     {
@@ -1055,6 +1077,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _jobRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok();
                 }
             }
