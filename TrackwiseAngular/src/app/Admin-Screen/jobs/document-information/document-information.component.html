@@ -46,10 +46,10 @@
       
   </div>
 
-  <form #form="ngForm" (ngSubmit)="updateMileageFuel()" autocomplete="off">
+  <form #form="ngForm" (ngSubmit)="updateFuel()" autocomplete="off">
      
     <label for="fuel">Total Fuel Consumed:</label><br>
-    <input class="fuel-input" type="number" id="fuel" name="fuel" [(ngModel)]="MileageRequest.fuel" /><br>
+    <input class="fuel-input" type="number" id="fuel" name="fuel" [(ngModel)]="fuelRequest.total_Fuel" /><br>
   
     <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
   </form>

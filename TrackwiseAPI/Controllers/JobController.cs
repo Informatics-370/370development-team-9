@@ -516,29 +516,29 @@ namespace TrackwiseAPI.Controllers
         //}
 
 
-        //[HttpPut]
-        //[Route("EditFuel/{delivery_ID}")]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        //public async Task<IActionResult> EditFuel(string delivery_ID, UpdateFuel request)
-        //{
-        //    try
-        //    {
-        //        var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+        [HttpPut]
+        [Route("EditFuel/{delivery_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> EditFuel(string delivery_ID, UpdateFuel request)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
 
-        //        delivery.TotalFuel = request.Total_Fuel;
-        //        await _context.SaveChangesAsync();
+                delivery.TotalFuel = request.Total_Fuel;
+                await _context.SaveChangesAsync();
 
 
-        //        return Ok(new { Message = "Total fuel updated successfully" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception
+                return Ok(new { Message = "Total fuel updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
 
-        //        return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating fuel");
-        //    }
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating fuel");
+            }
 
-        //}
+        }
 
 
         public class UpdateMileageFuel
@@ -599,7 +599,6 @@ namespace TrackwiseAPI.Controllers
 
                 delivery.Initial_Mileage = request.Initial_Mileage;
                 delivery.Final_Mileage = request.Final_Mileage;
-                delivery.TotalFuel = request.Total_Fuel;
                 delivery.MileageCaptured = true;
 
                 truck.Mileage = request.Final_Mileage;
