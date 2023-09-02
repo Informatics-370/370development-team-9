@@ -12,25 +12,27 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './audit.component.html',
   styleUrls: ['./audit.component.scss']
 })
-export class AuditComponent implements AfterViewInit, OnInit{
+export class AuditComponent implements AfterViewInit{
   displayedColumns: string[] = ['createdDate', 'user', 'action'];
   dataSource = new MatTableDataSource<Audit>();
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort!: MatSort;
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.sort.sort({
+      id: 'createdDate',
+      start: 'desc',
+      disableClear: false,
+    });
+    this.dataService.GetAudits().subscribe((products: any) => {
+      this.dataSource.data = products;
+    });
   }
-  ngOnInit(): void {
+/*   ngOnInit(): void {
     //this.GetAudits();
     this.dataService.GetAudits().subscribe((products:any) => {this.dataSource.data = products});
-  }
+  } */
   constructor( private dataService: DataService) { }
 
-/*   GetAudits()
-  {
-    this.dataService.GetAudits().subscribe(result => {
-      this.audit = result;
-      console.log(result);
-    })
-  } */
 }
