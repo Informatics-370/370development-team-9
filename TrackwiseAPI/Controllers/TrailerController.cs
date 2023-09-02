@@ -136,7 +136,7 @@ namespace TrackwiseAPI.Controllers
             {
                 var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 var auditId = Guid.NewGuid().ToString();
-                var audit = new Audit { Audit_ID = auditId, Action = "Delete Truck", CreatedDate = DateTime.Now, User = userEmail };
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Trailer", CreatedDate = DateTime.Now, User = userEmail };
                 var existingTrailer = await _trailerRepository.GetTrailerAsync(TrailerID);
 
                 if (existingTrailer == null) return NotFound($"The trailer does not exist");
