@@ -301,11 +301,11 @@ namespace TrackwiseAPI.DBContext
             
 
             modelBuilder.Entity<Truck>().HasData(
-                new Truck { TruckID = "1", Truck_License = "GH39QP L", Model = "Mercedes",  Truck_Status_ID = "1" },
-                new Truck { TruckID = "2", Truck_License = "AJ11LL L", Model = "Mercedes",  Truck_Status_ID = "1" },
-                new Truck { TruckID = "3", Truck_License = "LL19AQ L", Model = "Mercedes",  Truck_Status_ID = "1" },
-                new Truck { TruckID = "4", Truck_License = "TT11PP L", Model = "Mercedes", Truck_Status_ID = "1" },
-                new Truck { TruckID = "5", Truck_License = "QW12ER L", Model = "Mercedes", Truck_Status_ID = "1" }
+                new Truck { TruckID = "1", Truck_License = "GH39QP L", Model = "Mercedes",  Truck_Status_ID = "1", Mileage = 12400 },
+                new Truck { TruckID = "2", Truck_License = "AJ11LL L", Model = "Mercedes",  Truck_Status_ID = "1", Mileage = 1489 },
+                new Truck { TruckID = "3", Truck_License = "LL19AQ L", Model = "Mercedes",  Truck_Status_ID = "1", Mileage = 21988 },
+                new Truck { TruckID = "4", Truck_License = "TT11PP L", Model = "Mercedes", Truck_Status_ID = "1", Mileage = 18677 },
+                new Truck { TruckID = "5", Truck_License = "QW12ER L", Model = "Mercedes", Truck_Status_ID = "1", Mileage = 13900 }
             );
 
             modelBuilder.Entity<Trailer>().HasData(

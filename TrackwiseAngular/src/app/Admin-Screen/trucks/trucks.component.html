@@ -24,6 +24,7 @@
             <th>Registration Nr.</th>
             <th>Model</th>
             <th>Status</th>
+            <th>Mileage</th>
             <th></th>
             <th></th>
           </tr>
@@ -36,6 +37,7 @@
             <td>{{truck.truck_License}}</td>
             <td>{{truck.model}}</td>
             <td>{{truck.truckStatus.status}}</td>
+            <td>{{truck.mileage}} km</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-truck', truck.truckID]">Edit</button></td>
             <td><button type="button" class="btn remove-btn" (click)="DeleteTruck(truck.truckID)">Remove</button></td>
           </tr>

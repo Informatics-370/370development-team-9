@@ -76,6 +76,7 @@ export class CustomerOrdersComponent {
   CloseModal() {
     this.showModal = false;
   }
+  
   search() {
     if (this.searchText.trim() === '') {
       // If search text is empty, revert back to original product data

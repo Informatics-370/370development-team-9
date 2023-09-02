@@ -65,7 +65,7 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> AddTruck(TruckVM tvm)
         {
             var truckId = Guid.NewGuid().ToString();
-            var truck = new Truck { TruckID = truckId, Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID};
+            var truck = new Truck { TruckID = truckId, Truck_License = tvm.Truck_License, Model = tvm.Model, Truck_Status_ID = tvm.Truck_Status_ID, Mileage = 0 };
 
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var auditId = Guid.NewGuid().ToString();
@@ -102,7 +102,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (existingTruck.Truck_License == tvm.Truck_License &&
                     existingTruck.Model == tvm.Model &&
-                    existingTruck.Truck_Status_ID == tvm.Truck_Status_ID)
+                    existingTruck.Truck_Status_ID == tvm.Truck_Status_ID &&
+                    existingTruck.Mileage == tvm.Mileage)
                 {
                     // No changes made, return the existing driver without updating
                     return Ok(existingTruck);
@@ -111,6 +112,8 @@ namespace TrackwiseAPI.Controllers
                 existingTruck.Truck_License = tvm.Truck_License;
                 existingTruck.Model = tvm.Model;
                 existingTruck.Truck_Status_ID = tvm.Truck_Status_ID;
+                existingTruck.Mileage = tvm.Mileage;
+
                 if (await _truckRepository.SaveChangesAsync())
                 {
                     _auditRepository.Add(audit);

@@ -21,6 +21,7 @@ import { Forgotpass } from '../shared/forgotpass';
 import { Document } from '../shared/document';
 import { Weight } from '../shared/weight';
 import { MileageFuel } from '../shared/mileage_fuel';
+import { Fuel } from '../shared/fuel';
 
 @Injectable({
   providedIn: 'root'
@@ -605,10 +606,26 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+
   GetAudits(): Observable<any>{
     return this.httpClient.get(`${this.apiUrl}Audit/GetAllAudit`)
     .pipe(map(result => result))
   }
+
+  CompleteJob(job_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CompleteJob/${job_ID}`, {}, {headers});
+  }
+
+  CancelJob(job_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CancelJob/${job_ID}`, {}, {headers});
+  }
+
   // GetAllMileageFuel(): Observable<any>{
   //   let token = sessionStorage.getItem('Token');
   //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
@@ -619,6 +636,12 @@ export class DataService {
   GetAllMileageFuel(): Observable<any> {
     return this.httpClient.get(`${this.apiUrl}Report/GetAllMileageFuel`)
       .pipe(map(result => result));
+  }
+
+  EditFuel(delivery_ID: string, request:Fuel): Observable<any> {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/EditFuel/${delivery_ID}`, request, {headers});
   }
   
   GetTotalSales():Observable<any> {
