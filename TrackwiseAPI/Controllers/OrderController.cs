@@ -30,6 +30,7 @@ namespace TrackwiseAPI.Controllers
         private readonly TwDbContext _dbContext;
         private readonly IPaymentRepository _paymentRepository;
         private readonly MailController _mailController;
+        private readonly IAuditRepository _auditRepository;
 
         public OrderController(
             TwDbContext dbContext,
@@ -37,7 +38,8 @@ namespace TrackwiseAPI.Controllers
             IOrderRepository orderRepository,
             IPaymentRepository paymentRepository,
             UserManager<AppUser> userManager,
-            MailController mailController)
+            MailController mailController,
+            IAuditRepository auditRepository)
         {
             _dbContext = dbContext;
             _productRepository = productRepository;
@@ -45,6 +47,7 @@ namespace TrackwiseAPI.Controllers
             _userManager = userManager;
             _paymentRepository = paymentRepository;
             _mailController = mailController;
+            _auditRepository = auditRepository;
         }
 
         [HttpGet]
@@ -110,6 +113,7 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
         public async Task<IActionResult> Checkout(CheckoutRequest checkoutRequest)
         {
+
             // Convert OrderVM to OrderDTO
             var orderDto = new OrderDTO
             {
@@ -121,7 +125,8 @@ namespace TrackwiseAPI.Controllers
             };
             // Retrieve the authenticated user's email address
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Create Order", CreatedDate = DateTime.Now, User = userEmail };
             // Query the customer repository to get the customer ID
             var customer = await _userManager.FindByEmailAsync(userEmail);
 
@@ -208,7 +213,8 @@ namespace TrackwiseAPI.Controllers
             /*            _dbContext.Orders.Add(order);*/
             await _productRepository.SaveChangesAsync();
             await _dbContext.SaveChangesAsync();
-            
+            _auditRepository.Add(audit);
+            await _auditRepository.SaveChangesAsync();
             return Ok();
         }
 
@@ -361,6 +367,9 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Customer")]
         public async Task<IActionResult> CancelOrder(string orderId)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Cancel Order", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingOrder = await _orderRepository.GetOrderAsync(orderId);
@@ -392,6 +401,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _orderRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingOrder);
                 }
             }
@@ -407,6 +418,9 @@ namespace TrackwiseAPI.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> CollectOrder(string orderId)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Collect Order", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingOrder = await _orderRepository.GetOrderAsync(orderId);
@@ -424,6 +438,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _orderRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingOrder);
                 }
             }

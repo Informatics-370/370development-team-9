@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
@@ -24,19 +25,20 @@ namespace TrackwiseAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IAdminRepository _adminRepository;
         private readonly MailController _mailController;
-
+        private readonly IAuditRepository _auditRepository;
         public AdminController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             IAdminRepository adminRepository,
-            MailController mailController)
+            MailController mailController,
+            IAuditRepository auditRepository)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _adminRepository = adminRepository;
             _mailController = mailController;
-
+            _auditRepository = auditRepository;
         }
 
         /*        public AdminController(IAdminRepository adminRepository)
@@ -86,6 +88,9 @@ namespace TrackwiseAPI.Controllers
         [Route("AddAdmin")]
         public async Task<IActionResult> AddNewAdmin(AdminVM avm)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Admin", CreatedDate = DateTime.Now, User = userEmail };
             var adminId = Guid.NewGuid().ToString();
             var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email };
             var existingadmin = await _userManager.FindByNameAsync(avm.Email);
@@ -96,7 +101,8 @@ namespace TrackwiseAPI.Controllers
             {
                 _adminRepository.Add(admin);
                 await _adminRepository.SaveChangesAsync();
-
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
                 var user = new AppUser
                 {
                     Id = adminId,
@@ -126,6 +132,9 @@ namespace TrackwiseAPI.Controllers
         [Route("EditAdmin/{AdminID}")]
         public async Task<ActionResult<AdminVM>> EditAdmin(string AdminID, AdminVM avm)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Admin", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
@@ -160,6 +169,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (adminUpdateResult && userUpdateResult.Succeeded)
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingAdmin);
                 }
             }
@@ -180,6 +191,9 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Admin", CreatedDate = DateTime.Now, User = userEmail };
                 var existingAdmin = await _adminRepository.GetAdminAsync(AdminID);
 
                 if (existingAdmin == null) 
@@ -199,6 +213,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _adminRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingAdmin);
                 }
             }

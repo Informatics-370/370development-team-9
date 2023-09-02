@@ -27,7 +27,7 @@ public class Startup
         services.AddScoped<MailController>();
         services.AddTransient<IMailService, MailService>();
         services.AddScoped<IClientRepository, ClientRepository>();
-
+        services.AddScoped<IAuditRepository, AuditRepository>();
         services.AddTransient<IEmailService, EmailService>();
         //services.AddTransient<IEmailService, MockEmailService>();
         services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Runtime.Intrinsics.X86;
+using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
@@ -24,18 +25,20 @@ namespace TrackwiseAPI.Controllers
         private readonly IConfiguration _configuration;
         private readonly IDriverRepository _driverRepository;
         private readonly MailController _mailController;
-
+        private readonly IAuditRepository _auditRepository;
         public DriverController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             IDriverRepository driverRepository,
-            MailController mailController)
+            MailController mailController,
+            IAuditRepository auditRepository)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _driverRepository = driverRepository;
             _mailController = mailController;
+            _auditRepository = auditRepository;
         }
 
         [HttpGet]
@@ -78,6 +81,9 @@ namespace TrackwiseAPI.Controllers
         public async Task<IActionResult> AddDriver(DriverVM dvm)
         {
             var driverId = Guid.NewGuid().ToString();
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Driver", CreatedDate = DateTime.Now, User = userEmail };
 
             var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Driver_Status_ID = "1" };
             var newdrivermail = new NewDriverMail { Email = driver.Email, Name = driver.Name, PhoneNumber = driver.PhoneNumber, Driver_Status_ID = "1", Password = dvm.Password };
@@ -88,6 +94,8 @@ namespace TrackwiseAPI.Controllers
             {
                 _driverRepository.Add(driver);
                 await _driverRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
 
                 var user = new AppUser
                 {
@@ -118,7 +126,9 @@ namespace TrackwiseAPI.Controllers
         [Route("EditDriver/{Driver_ID}")]
         public async Task<ActionResult<DriverVM>> EditDriver(string Driver_ID, DriverVM dvm)
         {
-
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Driver", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingDriver = await _driverRepository.GetDriverAsync(Driver_ID);
@@ -155,6 +165,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (driverUpdateResult && userUpdateResult.Succeeded)
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingDriver);
                 }
             }
@@ -172,6 +184,9 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Driver", CreatedDate = DateTime.Now, User = userEmail };
                 var existingDriver = await _driverRepository.GetDriverAsync(Driver_ID);
 
                 if (existingDriver == null) 
@@ -191,6 +206,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _driverRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingDriver);
                 }
                    
