@@ -49,7 +49,12 @@ export class DataserviceService {
     });
   }
 
-  
+  CompleteDelivery(delivery_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CompleteDelivery/${delivery_ID}`, {}, {headers});
+  }
 
   AddDoc(docrequest: addDocument): Observable<addDocument> {
     console.log(docrequest)

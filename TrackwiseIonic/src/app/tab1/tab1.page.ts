@@ -35,6 +35,14 @@ export class Tab1Page implements OnInit{
     this.router.navigate(['/tabs/tabs/tab2', delivery_ID]);
    }
 
+   CompleteDelivery(delivery_ID : string) {
+    this.dataService.CompleteDelivery(delivery_ID).subscribe({
+      next: (response) => {
+        this.dataService.GetAllDriverDeliveries(); 
+      }
+    });
+  }
+
   // AddDoc() {
   //   this.dataService.AddDoc(this.docrequest).subscribe({
   //     next: (result) => {
