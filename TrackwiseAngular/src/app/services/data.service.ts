@@ -22,6 +22,7 @@ import { Document } from '../shared/document';
 import { Weight } from '../shared/weight';
 import { MileageFuel } from '../shared/mileage_fuel';
 import { Fuel } from '../shared/fuel';
+import { Delivery } from '../shared/delivery';
 
 @Injectable({
   providedIn: 'root'
@@ -258,6 +259,13 @@ export class DataService {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}`, {headers});
+  }
+
+  GetAdminProfile(): Observable<Admin>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdminProfile`, {headers});
   }
 
   EditAdmin(admin_ID: string , EditAdminReq: Admin):Observable<Admin>
@@ -577,6 +585,14 @@ export class DataService {
 
     return this.itemsInCart;
   }
+
+  GetDelivery(delivery_ID: string): Observable<Delivery>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Delivery>(`${this.apiUrl}Job/GetDelivery/${delivery_ID}`, {headers});
+  }
+
 
   /*Reports Section */
   GetLoadsCarried(): Observable<any>{
