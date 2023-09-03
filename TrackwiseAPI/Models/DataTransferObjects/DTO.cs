@@ -21,6 +21,13 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public int Quantity { get; set; }
         public double SubTotal { get; set; }
     }
+    public class OrderLineInvoiceDTO
+    {
+        public string Order_line_ID { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public double SubTotal { get; set; }
+    }
 
     public class CustomerDTO
     {
