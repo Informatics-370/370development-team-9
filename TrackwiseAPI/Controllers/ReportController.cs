@@ -97,7 +97,6 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("GetDrivers")]
-
         public async Task<IActionResult> GetDrivers()
         {
             var drivers = await _driverRepository.GetAllDriversAsync();

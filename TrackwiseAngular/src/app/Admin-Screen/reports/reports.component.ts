@@ -70,7 +70,6 @@ export class ReportsComponent implements OnInit {
     this.GetProductCategories();
     this.GetProductTypes();
     this.getOrders();
-
     this.getMileageFuel();
     this.getTotalSales();
     this.GetJobList();

@@ -127,6 +127,43 @@ namespace TrackwiseAPI.Controllers
             return Ok(admin);
         }
 
+        [HttpGet]
+        [Route("GetAdminProfile")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> GetAdminProfileAsync()
+        {
+            try
+            {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
+                // Query the customer repository to get the customer ID
+                var admin = await _userManager.FindByEmailAsync(userEmail);
+
+                if (admin == null)
+                {
+                    return BadRequest("Admin not found");
+                }
+
+                var adminId = admin.Id;
+
+                if (string.IsNullOrEmpty(adminId))
+                {
+                    return BadRequest("Admin ID not found");
+                }
+
+                var result = await _adminRepository.GetAdminAsync(adminId);
+
+                if (result == null)
+                    return NotFound("Admin does not exist. You need to create it first");
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
 
         [HttpPut]
         [Route("EditAdmin/{AdminID}")]

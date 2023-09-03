@@ -22,7 +22,7 @@
         <div class="mb-3">
             <label for="price" class="form-label">Price</label>
             <input type="number" class="form-control" id="price" required [(ngModel)] = "AddProductRequest.product_Price"  
-                   name="price" [(ngModel)]="AddProductRequest.product_Price">
+                   name="price" [(ngModel)]="AddProductRequest.product_Price" min="0" (blur)="removeNegativeSign()">
           </div>
 
         <div class="mb-3">
@@ -45,7 +45,7 @@
       <div class="mb-3">
         <label for="quantity" class="form-label">Quantity (Stock)</label>
         <input type="number" class="form-control" id="quantity" [(ngModel)] = "AddProductRequest.quantity"  
-               name="quantity" [(ngModel)]="AddProductRequest.quantity">
+               name="quantity" [(ngModel)]="AddProductRequest.quantity" min="0" (blur)="removeNegativeSign()">
       </div>
 
       <div class="mb-3">

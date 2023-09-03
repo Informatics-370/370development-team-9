@@ -81,7 +81,7 @@
                         <td>{{jobdeliveries.trailer.trailer_License}}</td>
                         <td>{{jobdeliveries.delivery_Weight}}</td>
                         <td>
-                            <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/document-information/' + jobdeliveries.delivery_ID" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'"> Capture </button>
+                            <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/document-information/' + jobdeliveries.delivery_ID +'/' + jobdeliveries.truck.mileage" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'"> Capture </button>
                         </td>
                         
                     </tr>
