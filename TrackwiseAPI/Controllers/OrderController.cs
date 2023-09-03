@@ -203,9 +203,12 @@ namespace TrackwiseAPI.Controllers
           
             var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.newCard);
             /*
-            var invoiceID = Guid.NewGuid().ToString();
-            var Invoice1 = new Invoice { Email = userEmail, InvoiceNumber = invoiceID };
-            var mail = await _mailController.SendInvoiceEmail(Invoice1);*/
+            var InvoiceNumber = Guid.NewGuid().ToString();
+            var Invoice1 = new Invoice { InvoiceNumber = InvoiceNumber, Email = userEmail, 
+                CustomerName = customer.UserName, TotalAmount =  order.Total };
+
+            var mail = await _mailController.SendInvoiceEmail(Invoice1);
+            */
             // Save the order and update the product quantities
             _dbContext.Orders.Add(order);
 
@@ -215,6 +218,7 @@ namespace TrackwiseAPI.Controllers
             await _dbContext.SaveChangesAsync();
             _auditRepository.Add(audit);
             await _auditRepository.SaveChangesAsync();
+            
             return Ok();
         }
 

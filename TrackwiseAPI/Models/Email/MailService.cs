@@ -60,9 +60,6 @@ namespace TrackwiseAPI.Models.Email
                 var body = new BodyBuilder();
                 mail.Subject = mailData.Subject;
 
-                //var image = body.LinkedResources.Add("../Frontend/src/assets/Images/moyo-full-logo.png");
-                //image.ContentId = MimeUtils.GenerateMessageId();
-
                 body.HtmlBody = mailData.Body;
                 mail.Body = body.ToMessageBody();
 
@@ -83,7 +80,6 @@ namespace TrackwiseAPI.Models.Email
                 await smtp.AuthenticateAsync(_settings.UserName, _settings.Password, ct);
                 await smtp.SendAsync(mail, ct);
                 await smtp.DisconnectAsync(true, ct);
-
                 #endregion
 
                 return true;
