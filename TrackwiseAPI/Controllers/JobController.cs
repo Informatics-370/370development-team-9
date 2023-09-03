@@ -185,6 +185,21 @@ namespace TrackwiseAPI.Controllers
             public double actual_Weight { get; set; }
         }
 
+        [HttpGet]
+        [Route("GetDelivery/{delivery_ID}")]
+        public async Task<IActionResult> GetDeliveryByID(string delivery_ID)
+        {
+            try
+            {
+                var results = await _jobRepository.GetDeliveryByID(delivery_ID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
         [HttpPut("Updateweight/{delivery_ID}")]
         public async Task<ActionResult<UpdateActualWeightRequest>> UpdateActualWeight(string delivery_ID, UpdateActualWeightRequest request)
         {
