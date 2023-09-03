@@ -74,4 +74,14 @@ export class EditProductComponent {
     }
   }
 
+  removeNegativeSign() {
+    if (this.productDetails.product_Price < 0) {
+      this.productDetails.product_Price = 0;
+    }
+
+    if (this.productDetails.quantity < 0) {
+      this.productDetails.quantity = 0;
+    }
+  }
+
 }

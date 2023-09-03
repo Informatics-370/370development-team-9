@@ -14,7 +14,7 @@ export class AdminProfileComponent {
   
     ngOnInit(): void {
       this.dataService.revertToLogin();
-      this.GetAdmin();
+      this.GetAdminProfile();
     }
   
     admin : Admin =
@@ -26,7 +26,7 @@ export class AdminProfileComponent {
       password:""
     }
   
-    editCustomer: Admin = { ...this.admin };
+    editAdmin: Admin = { ...this.admin };
     
     userName: string = 'John Doe';
     userEmail: string = 'john.doe@example.com';
@@ -38,22 +38,22 @@ export class AdminProfileComponent {
     cvv: string = "";
     showPaymentInfoForm:boolean = false;
   
-    GetAdmin(){
-      this.dataService.GetAdmin(this.admin.admin_ID).subscribe((result) => {
+    GetAdminProfile(){
+      this.dataService.GetAdminProfile().subscribe((result) => {
         this.admin = result;
-        this.editCustomer = { ...this.admin };
+        this.editAdmin = { ...this.admin };
         console.log(result)
       })
     }
   
-    // EditCustomerProfile() {
-    //   console.log(this.customer)
-    //   this.dataService.EditCustomerProfile( this.customer).subscribe({
-    //     next: (response) => {
-    //       this.router.navigate(['/Customer-Screen/customer-products']);
-    //     }
-    //   });
-    // }
+    EditAdmin() {
+      console.log(this.admin)
+      this.dataService.EditAdmin(this.admin.admin_ID ,this.admin).subscribe({
+        next: (response) => {
+          this.router.navigate(['/Admin-Screen/admin-home']);
+        }
+      });
+    }
   
     toggleEditForm() {
       this.showEditForm = !this.showEditForm;

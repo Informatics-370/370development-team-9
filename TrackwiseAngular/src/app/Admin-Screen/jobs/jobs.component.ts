@@ -198,6 +198,12 @@ export class JobsComponent implements OnInit{
     })
   }
 
+  removeNegativeSign() {
+    if (this.createJob.total_Weight < 0) {
+      this.createJob.total_Weight = 0;
+    }
+  }
+
   ShowView() {
     this.showView = true;
     this.showAdd = false;

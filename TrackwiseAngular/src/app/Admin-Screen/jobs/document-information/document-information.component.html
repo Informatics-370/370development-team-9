@@ -22,7 +22,7 @@
             <div class="mb-3">
               <label for="actual_Weight" class="form-label">Weight</label>
               <input type="number" class="form-control" id="actual_Weight" [(ngModel)] = "request.actual_Weight"  
-                     name="actual_Weight" [(ngModel)]="request.actual_Weight">
+                     name="actual_Weight" [(ngModel)]="request.actual_Weight" min="0" (blur)="removeNegativeSign()">
             </div>
             <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
         </form>
@@ -49,7 +49,7 @@
   <form #form="ngForm" (ngSubmit)="updateFuel()" autocomplete="off">
      
     <label for="fuel">Total Fuel Consumed:</label><br>
-    <input class="fuel-input" type="number" id="fuel" name="fuel" [(ngModel)]="fuelRequest.total_Fuel" /><br>
+    <input class="fuel-input" type="number" id="fuel" name="fuel" min="0" (blur)="removeNegativeSign()" [(ngModel)]="fuelRequest.total_Fuel" /><br>
   
     <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
   </form>
@@ -82,10 +82,10 @@
   
   <form #form="ngForm" (ngSubmit)="updateMileageFuel()" autocomplete="off">
     <label for="initial-mileage">Initial Mileage:</label><br>
-    <input class="mileage-input" type="number" id="initial-mileage" name="initial-mileage" [(ngModel)]="MileageRequest.initial_Mileage"  /><br>
+    <input class="mileage-input" type="number" id="initial-mileage" name="initial-mileage" min="0" (blur)="removeNegativeSign()" [(ngModel)]="MileageRequest.initial_Mileage"  /><br>
   
     <label for="final-mileage">Final Mileage:</label><br>
-    <input class="mileage-input" type="number" id="final-mileage" name="final-mileage" [(ngModel)]="MileageRequest.final_Mileage"  /><br>
+    <input class="mileage-input" type="number" id="final-mileage" name="final-mileage" min="0" (blur)="removeNegativeSign()" [(ngModel)]="MileageRequest.final_Mileage"  /><br>
 
     <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
   </form>
