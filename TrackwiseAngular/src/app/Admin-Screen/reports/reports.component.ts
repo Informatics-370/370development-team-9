@@ -269,7 +269,7 @@ jobsdata: JobDetailDTO[]=[];
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
     doc.setFont('helvetica', 'bold');
-    doc.text('Staff Report', 130, 20);
+    doc.text('Job Details', 130, 20);
 
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
@@ -278,7 +278,6 @@ jobsdata: JobDetailDTO[]=[];
     doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
       
     var body = []; // Initialize the body array
-    
     // Iterate through each job
     this.jobsdata.forEach(job => {
       var jobSubtotal = job.deliveryList.reduce((sum, delivery) => sum + delivery.delivery_Weight, 0);
@@ -293,34 +292,24 @@ jobsdata: JobDetailDTO[]=[];
           body.push(['', index + 1, '', '', delivery.delivery_Weight]); // Empty cells for DeliveryID, Pickup Location, and Drop-off Location on subsequent rows
         }
       });
-    
       // Add job subtotal row
-      body.push(['Job Subtotal', '', '', '', jobSubtotal]);
-  
+      body.push(['', '', '', 'Job Subtotal', jobSubtotal]);
       // Add an empty row for spacing
       body.push(['', '', '', '', '']);
     });
     
     // Calculate total of all job subtotals
     var total = this.jobsdata.reduce((sum, job) => sum + job.deliveryList.reduce((subSum, delivery) => subSum + delivery.delivery_Weight, 0), 0);
-    
-    // Add total row
-    body.push(['', '', '', { content: 'Total', styles: { font: 'bold' } }, total]); // Make the "Total" text bold
-
+    body.push(['', '', '', 'Total Weight', total]); // Make the "Total" text bold
   
   // Generate the PDF table
   const table = doc.autoTable({
+    theme: 'grid',
+    columnStyles: { 4: { halign: 'center' } },
+    lineWidth: 2,  
     head: [['JobID', 'DeliveryID', 'Pickup Location', 'Drop-off Location','Weight (T)']], // Header row
     body: body,
     startY: 50,
-    didParseCell: function(data: { row: { section: string; index: number; }; cell: { styles: { fillColor: number[]; fontStyle:string; };  text: any; }; }) {
-      if (data.row.section === 'body' && data.cell.text === 'Total') {
-        data.cell.styles.fontStyle = 'bold'; // Apply bold font style to "Total" cells
-      }
-      if (data.row.section === 'body' && (data.row.index + 1)) {
-        data.cell.styles.fillColor = [223, 237, 250]; // Apply light blue to every third row
-      }
-    }
   });
     // Opening of the PDF
     const pdfData = doc.output('datauristring');
@@ -840,7 +829,12 @@ generateProductSalesReport(){
             const saleDate = new Date(sale.date);
             return saleDate >= startDate && saleDate <= endDate;
           });
-
+          filteredData.sort((a: any, b: any) => {
+            const dateA:any = new Date(a.date);
+            const dateB:any = new Date(b.date);
+            return dateA - dateB;
+          });
+    
           this.salesArray = data.map((sale: any) => sale.total);
           // Calculate and set average sales
           const totalSalesSum = this.salesArray.reduce((sum, sale) => sum + sale, 0);
@@ -899,7 +893,7 @@ generateProductSalesReport(){
     },
     elements: {
       line: {
-        tension: 0.5, // Adjust the tension value (between 0 and 1)
+        tension: 0, // Adjust the tension value (between 0 and 1)
       },
       point: {
         radius: 4,
@@ -912,6 +906,7 @@ generateProductSalesReport(){
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType: ChartType = 'line';
+
 
   generateSalesReport() {
     this.getTotalSales();
@@ -938,7 +933,6 @@ generateProductSalesReport(){
   // Canvas Options
 
   html2canvas(Data).then(canvas => {
-  
     // Convert canvas to image and add to PDF
     let Graph = canvas.toDataURL('image/png');
     const img1 = new Image();

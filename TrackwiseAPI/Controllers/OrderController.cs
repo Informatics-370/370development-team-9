@@ -162,6 +162,7 @@ namespace TrackwiseAPI.Controllers
             };
 
 
+            var orderLinesForInvoice = new List<OrderLineInvoiceDTO>();
 
             foreach (var orderLineDto in orderDto.OrderLines)
             {
@@ -185,6 +186,15 @@ namespace TrackwiseAPI.Controllers
                 };
 
                 order.OrderLines.Add(orderLine);
+                // Add order line details to the list for the invoice
+                var subtotal = (decimal)(orderLineDto.Quantity * product.Product_Price);
+                orderLinesForInvoice.Add(new OrderLineInvoiceDTO
+                {
+                    ProductName = product.Product_Name,
+                    Quantity = orderLineDto.Quantity,
+                    SubTotal = (double)subtotal,
+                    // Add other relevant properties here
+                });
 
                 // Update the product quantity
                 product.Quantity -= orderLineDto.Quantity;
@@ -202,13 +212,17 @@ namespace TrackwiseAPI.Controllers
             // Call the AddNewCard method to process the payment and pass the newCard model
           
             var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.newCard);
-            /*
+            
             var InvoiceNumber = Guid.NewGuid().ToString();
-            var Invoice1 = new Invoice { InvoiceNumber = InvoiceNumber, Email = userEmail, 
-                CustomerName = customer.UserName, TotalAmount =  order.Total };
+            var Invoice1 = new newInvoice { InvoiceNumber = InvoiceNumber, Email = userEmail, 
+                Name = customer.UserName, Total =  order.Total,
+                OrderLines = orderLinesForInvoice,
+                OrderNumber = order.Order_ID,
+                OrderDate = order.Date
+            };
 
             var mail = await _mailController.SendInvoiceEmail(Invoice1);
-            */
+            
             // Save the order and update the product quantities
             _dbContext.Orders.Add(order);
 
