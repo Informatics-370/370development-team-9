@@ -11,23 +11,26 @@
     </button>
   </div>
 
-    <div *ngIf="!hasWeighBridgeDocuments">
+    <!-- <div *ngIf="!hasWeighBridgeDocuments">
       No weigh-bridge documents
     </div>
-    
-    <div *ngFor="let document of documents">
-      <div *ngIf="document.docType === 'Weight'"> 
-          <img src="{{ document.image }}" alt="Document Image">
+     -->
+
+      
           <form #form="ngForm" (ngSubmit)=" updateActualWeight()" autocomplete="off">
             <div class="mb-3">
               <label for="actual_Weight" class="form-label">Weight</label>
               <input type="number" class="form-control" id="actual_Weight" [(ngModel)] = "request.actual_Weight"  
                      name="actual_Weight" [(ngModel)]="request.actual_Weight" min="0" (blur)="removeNegativeSign()">
             </div>
-            <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+            <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp; <br>
         </form>
+        <div *ngFor="let document of documents">
+          <div *ngIf="document.docType === 'Weight'"> 
+           <img src="{{ document.image }}" alt="Document Image">
       </div>
-  </div>
+      </div>
+
 </div>
  
 
@@ -49,9 +52,9 @@
   <form #form="ngForm" (ngSubmit)="updateFuel()" autocomplete="off">
      
     <label for="fuel">Total Fuel Consumed:</label><br>
-    <input class="fuel-input" type="number" id="fuel" name="fuel" min="0" (blur)="removeNegativeSign()" [(ngModel)]="fuelRequest.total_Fuel" /><br>
+    <input class="fuel-input" type="number" id="fuel" name="fuel" min="0" (blur)="removeNegativeSign()" [(ngModel)]="fuelRequest.total_Fuel" /><br><br>
   
-    <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+    <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;<br>
   </form>
 
   <div *ngFor="let document of documents">
@@ -73,7 +76,7 @@
 
     <div class="item-container">
       <h3>Mileage</h3>
-      <button [routerLink]="'/Admin-Screen/jobs'" class="close-btn">
+      <button [routerLink]="'/'" class="close-btn">
           Close
       </button>
 
@@ -85,7 +88,7 @@
     <input class="mileage-input" type="number" id="initial-mileage" name="initial-mileage" min="0" (blur)="removeNegativeSign()" [(ngModel)]="MileageRequest.initial_Mileage"  /><br>
   
     <label for="final-mileage">Final Mileage:</label><br>
-    <input class="mileage-input" type="number" id="final-mileage" name="final-mileage" min="0" (blur)="removeNegativeSign()" [(ngModel)]="MileageRequest.final_Mileage"  /><br>
+    <input class="mileage-input" type="number" id="final-mileage" name="final-mileage" min="0" (blur)="removeNegativeSign()" [(ngModel)]="MileageRequest.final_Mileage"  /><br><br>
 
     <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
   </form>
