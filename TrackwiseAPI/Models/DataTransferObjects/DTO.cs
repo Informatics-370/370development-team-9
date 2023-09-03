@@ -86,7 +86,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string DocType { get; set; }
     }
 
-    public class LoadsDTO
+    public class CompleteJobsDTO
     {
         public string Job_ID { get; set; }
         public DateTime StartDate { get; set; }
@@ -98,6 +98,10 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string type { get; set; }
         public string Job_Status_ID { get; set; }
         public JobStatusDTO JobStatus { get; set; }
+        public string Delivery_ID { get; set; }
+        public Delivery Deliveries { get; set; }
+        public string TruckID { get; set; }
+        public Truck Truck { get; set; }
     }
 
     public class JobStatusDTO

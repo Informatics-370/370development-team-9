@@ -5,11 +5,11 @@ import { Jobs } from 'src/app/shared/jobs';
 import { Order, OrderLine } from 'src/app/shared/order';
 import  jsPDF from 'jspdf';
 import autoTable, { Row } from 'jspdf-autotable';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
 import { LoadsCarried } from 'src/app/shared/loadsCarried';
-import { MileageFuel } from 'src/app/shared/mileage_fuel';
+import { KiloLitres, MileageFuel } from 'src/app/shared/mileage_fuel';
 import { TruckData } from 'src/app/shared/mileage_fuel';  
 
 import { ChartType, ChartOptions, ChartDataset } from 'chart.js';
@@ -21,6 +21,8 @@ import { admindto, driverdto } from 'src/app/shared/Staff';
 import { JobDetailDTO } from 'src/app/shared/jobDetail';
 import 'jspdf-autotable';
 import { style } from '@angular/animations';
+import { CompletedJob } from 'src/app/shared/completedJobs';
+import { Truck } from 'src/app/shared/truck';
 
 declare module 'jspdf' {
   interface jsPDF {
@@ -38,13 +40,32 @@ export class ReportsComponent implements OnInit {
   productCategories: any[] = []; 
   selectedCategory: string = '';
   jobs: any[] = [];
+  kilolitres: KiloLitres[] = [];
   orders: OrderLine[] = [];
   users : string = "";
   originalJobs: any[] = [];
   loadsCarried : LoadsCarried[] = [];
-  mileageFuel : MileageFuel[] = [];
+  mileageFuel : any[] = [];
   truckData: TruckData[] = [];
   pdfSrc: string | null = null;
+  trucks: any[] = [];
+  selectedTruckId: any;
+
+  completedJobs: CompletedJob[] = [];
+
+  truckDetails: Truck =
+  {
+    truckID:"",
+    truck_License:"",
+    model:"",
+    mileage:0,
+    truck_Status_ID:"",
+    truckStatus:{
+      truck_Status_ID:"",
+      status:"",
+      description:""
+    },
+  };
 
 
   GetProductType: ProductTypes =
@@ -76,6 +97,7 @@ export class ReportsComponent implements OnInit {
     this.getAdmins();
     this.getDrivers();
     this.getJobDetail();
+    this.GetAllTrucks();
   }
 
   // Methods-------------------------------------------------------------------------
@@ -83,6 +105,12 @@ export class ReportsComponent implements OnInit {
   getProducts() {
     this.dataService.GetProducts().subscribe(result => {
       this.products = result;
+    });
+  }
+
+  GetAllTrucks(){
+    this.dataService.GetTrucks().subscribe(result => {
+      this.trucks = result;
     });
   }
 
@@ -103,6 +131,14 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  GetCompleteJobs(truckid:string){
+    this.dataService.GetCompleteJobs(truckid).subscribe((result) => {
+        this.completedJobs = result;
+        console.log(this.completedJobs);
+        console.log("yes");
+        this.getMilageData(truckid)
+  })
+}
 
   GetJobs() {
     this.dataService.GetJobs().subscribe((result) => {
@@ -298,22 +334,6 @@ jobsdata: JobDetailDTO[]=[];
     }
   }
   
-  
-  
-  
-  
-  
-  
-  
-
-
-
-
-
-
-
-
-
 
 // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   getAdmins() {
@@ -448,6 +468,70 @@ jobsdata: JobDetailDTO[]=[];
   }
   // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Mileage/Fuel Report
+  job_ID:string = ''
+  truckID:string=''
+  kilosDriven:number = 0
+  fuelInput:number = 0
+  
+  getMilageData(truck_ID: string) {
+    this.kilolitres = [];
+    let totalKilosDriven = 0;
+    let totalFuelInput = 0;
+  
+    const observables = this.completedJobs.map((element) => {
+      let job_ID = '';
+      let truckID = '';
+      let kilosDriven = 0;
+      let fuelInput = 0;
+  
+      element.deliveries.forEach((del) => {
+        if (del.truckID === truck_ID) {
+          kilosDriven += del.final_Mileage - del.initial_Mileage;
+          fuelInput += del.totalFuel;
+          job_ID = del.job_ID;
+          truckID = del.truckID;
+        }
+      });
+  
+      return this.dataService.GetTruck(truck_ID).pipe(
+        map((result) => {
+          return {
+            job_ID,
+            truckDetails: result,
+            kilosDriven,
+            fuelInput,
+          };
+        })
+      );
+    });
+  
+    forkJoin(observables).subscribe((results) => {
+      results.forEach((result) => {
+        const { job_ID, truckDetails, kilosDriven, fuelInput } = result;
+  
+        // Create a new KiloLitres object
+        const kiloLitresEntry: KiloLitres = {
+          truck_License: truckDetails.truck_License,
+          job_ID,
+          kilosDriven,
+          fuelInput,
+        };
+  
+        // Increment subtotals
+        totalKilosDriven += kilosDriven;
+        totalFuelInput += fuelInput;
+  
+        // Push the KiloLitres object into the kilolitres array
+        this.kilolitres.push(kiloLitresEntry);
+      });
+  
+      // Now that all data is fetched, you can generate the PDF
+      this.generateMileageFuelReport();
+    });
+  }
+  
+  
+  
   generateMileageFuelReport() {
     const doc = new jsPDF();
     // Image
@@ -458,45 +542,60 @@ jobsdata: JobDetailDTO[]=[];
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
     doc.setFont('helvetica', 'bold');
-    doc.text('Loads Carried Report', 130, 20);
-
+    doc.text('Mileage/Fuel Report', 130, 20);
+  
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
     doc.setFont('helvetica');
     const currentDate = new Date();
     doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+  
     // Table and table data
-    const header = ['Registration', 'Delivery', 'Mileage', 'Fuel Consumed'];
-    const tableData: any[] = [];
-    this.truckData.forEach(truck => {
-      truck.mFList.forEach(delivery => {
-        tableData.push([
-          truck.registration,
-          delivery.delivery_ID,
-          delivery.mileage !== undefined ? delivery.mileage: 0,
-          delivery.fuel !== null ? delivery.fuel : 0
-        ]);
-      });
+    const header = ['Truck Registration', 'Job ID', 'Kilometres Driven', 'Amount refueled'];
+    const tableData = this.kilolitres.map(result => [
+      result.truck_License,
+      result.job_ID,
+      result.kilosDriven + " km",
+      result.fuelInput + "l",
+    ]);
+  
+    // Calculate subtotals
+    let totalKilosDriven = 0;
+    let totalFuelInput = 0;
+    this.kilolitres.forEach((result) => {
+      totalKilosDriven += result.kilosDriven;
+      totalFuelInput += result.fuelInput;
     });
-    
+  
+    // Add subtotals row
+    tableData.push([
+      'Subtotals',
+      '',
+      totalKilosDriven + ' km',
+      totalFuelInput + 'l',
+    ]);
+  
     // Autotable layout
     autoTable(doc, {
       head: [header],
       body: tableData,
       startY: 50, // Adjust the starting Y-coordinate for the table
     });
+  
     // Opening of the PDF
     const pdfData = doc.output('datauristring');
     this.pdfSrc = pdfData;
+  
     const pdfWindow = window.open();
+  
     // Validation for PDF load
     if (pdfWindow) {
       pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
     } else {
       console.error('Failed to open PDF preview window.');
     }
-
   }
+  
 
   // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Job list report 

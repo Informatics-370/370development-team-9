@@ -14,7 +14,7 @@ namespace TrackwiseAPI.Models.Repositories
         }
         public async Task<Job[]> GetCompleteJobsAsync()
         {
-            IQueryable<Job> query = _context.Jobs.Include(t => t.JobStatus).Include(t => t.JobType).Where(s => s.Job_Status_ID == "2");
+            IQueryable<Job> query = _context.Jobs.Include(t => t.Deliveries).Include(t => t.JobStatus).Include(t => t.JobType).Where(s => s.Job_Status_ID == "4");
             return await query.ToArrayAsync();
         }
 

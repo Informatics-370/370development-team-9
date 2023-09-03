@@ -76,9 +76,15 @@
         <!-- Add your card content here -->
       </div>
       <mat-card-footer>
-        <mat-card-actions>
-          <button (click)="generateMileageFuelReport()">Generate Report</button> <!-- Add label for the button -->
-        </mat-card-actions>
+        <mat-card-footer>
+          <div class="truck-filter">
+            <label for="TruckDropdown">Select Truck:&nbsp;</label>
+            <select name="TruckDropdown" id="TruckDropdown" [(ngModel)]="selectedTruckId">
+              <option *ngFor="let truck of trucks" [value]="truck.truckID">{{truck.truck_License}}</option>
+            </select>
+          </div>
+          <button (click)="GetCompleteJobs(selectedTruckId)">Generate Report</button>
+        </mat-card-footer>        
       </mat-card-footer>
     </mat-card>
   </div>
