@@ -101,6 +101,10 @@ export class DocumentInformationComponent implements OnInit{
   }
 
   updateMileageFuel(): void {
+  //   if (this.AddProductRequest.quantity < 0) {
+  //     this.AddProductRequest.quantity = 0;
+  //   }
+  // }
     this.dataService.EditMileageFuel(this.delivery_ID, this.MileageRequest).subscribe(
       response => {
         console.log(response); // Handle success, show a message, etc.
@@ -109,6 +113,24 @@ export class DocumentInformationComponent implements OnInit{
         console.error(error); // Handle error, show an error message, etc.
       }
     );
+  }
+
+  removeNegativeSign() {
+    if (this.MileageRequest.initial_Mileage < 0) {
+      this.MileageRequest.initial_Mileage = 0;
+    }
+
+    if (this.MileageRequest.final_Mileage < 0) {
+      this.MileageRequest.final_Mileage = 0;
+    }
+
+    if (this.fuelRequest.total_Fuel < 0) {
+      this.fuelRequest.total_Fuel = 0;
+    }
+
+    if (this.request.actual_Weight < 0) {
+      this.request.actual_Weight = 0;
+    }
   }
 
   ShowWB() {

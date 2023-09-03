@@ -93,4 +93,14 @@ export class AddProductComponent {
       }
     }
 
+    removeNegativeSign() {
+      if (this.AddProductRequest.product_Price < 0) {
+        this.AddProductRequest.product_Price = 0;
+      }
+
+      if (this.AddProductRequest.quantity < 0) {
+        this.AddProductRequest.quantity = 0;
+      }
+    }
+
 }

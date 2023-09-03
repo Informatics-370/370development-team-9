@@ -260,6 +260,13 @@ export class DataService {
     return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}`, {headers});
   }
 
+  GetAdminProfile(): Observable<Admin>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdminProfile`, {headers});
+  }
+
   EditAdmin(admin_ID: string , EditAdminReq: Admin):Observable<Admin>
   {
     let token = sessionStorage.getItem('Token');

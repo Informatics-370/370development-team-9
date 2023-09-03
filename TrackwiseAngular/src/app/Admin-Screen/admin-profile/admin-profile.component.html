@@ -1,63 +1,67 @@
 <mat-card class="user-card">
-    <div class="grid-container">
-      <div class="profile-photo">
-        <img src="assets/User Icon.jpg" alt="Profile Photo">
-      </div>
-      <div class="user-info" >
-        <h3>{{ editCustomer.name }} {{ editCustomer.lastname }}</h3>
-        <p>{{ editCustomer.email }}</p>
-      </div>
+  <div class="grid-container">
+    <div class="profile-photo">
+      <img src="assets/User Icon.jpg" alt="Profile Photo">
     </div>
-    <mat-card-actions>
-      <button class="EditProfileBtn" mat-button (click)="toggleEditForm()">
-        Edit Profile
-        <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
-          keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
-        </mat-icon>
-      </button>
-
-      <!-- <button class="EditPaymentInfoBtn" mat-button (click)="togglePaymentForm()">
-        Payment Information
-        <mat-icon [ngClass]="{'arrow-up': showPaymentInfoForm, 'arrow-down': !showPaymentInfoForm}">
-          keyboard_arrow_{{ showPaymentInfoForm ? 'up' : 'down' }}
-        </mat-icon>
-      </button> -->
-    </mat-card-actions>
-  
-    <!-- Custom dropdown form -->
-    <div class="edit-form" *ngIf="showEditForm" >
-      <mat-form-field>
-        <mat-label>Edit Name</mat-label>
-        <input matInput [(ngModel)]="admin.name" name="customers.name">
-      </mat-form-field>
-      <mat-form-field >
-        <mat-label>Edit Surname</mat-label>
-        <input matInput [(ngModel)]="admin.lastname" name="customers.lastName">
-      </mat-form-field>
-      <button mat-button class="SaveBtn">Save Changes</button>
+    <div class="user-info" >
+      <h3>{{ editAdmin.name }} {{ editAdmin.lastname }}</h3>
+      <p>{{ editAdmin.email }}</p>
     </div>
+  </div>
+  <mat-card-actions>
+    <button class="EditProfileBtn" mat-button (click)="toggleEditForm()">
+      Edit Profile
+      <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
+        keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
+      </mat-icon>
+    </button>
+
+    <!-- <button class="EditPaymentInfoBtn" mat-button (click)="togglePaymentForm()">
+      Payment Information
+      <mat-icon [ngClass]="{'arrow-up': showPaymentInfoForm, 'arrow-down': !showPaymentInfoForm}">
+        keyboard_arrow_{{ showPaymentInfoForm ? 'up' : 'down' }}
+      </mat-icon>
+    </button> -->
+  </mat-card-actions>
+
+  <!-- Custom dropdown form -->
+  <div class="edit-form" *ngIf="showEditForm" >
+    <mat-form-field>
+      <mat-label>Edit Name</mat-label>
+      <input matInput [(ngModel)]="admin.name" name="admin.name">
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label>Edit Surname</mat-label>
+      <input matInput [(ngModel)]="admin.lastname" name="admin.lastname">
+    </mat-form-field>
+    <mat-form-field >
+      <mat-label>Edit Password</mat-label>
+      <input matInput [(ngModel)]="admin.password" name="admin.password" name="password" placeholder="********" pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$" autocomplete="off">
+      <small class="text-muted"> Password must contain at least 1 capital letter, at least 1 number and at least 8 characters.</small>
+    </mat-form-field>
+    <button mat-button class="SaveBtn" (click)="EditAdmin()">Save Changes</button>
+  </div>
 
 
-    <!-- Payment details -->
-    <!-- <div class="edit-form" *ngIf="showPaymentInfoForm">
-        <mat-form-field class="form-field">
-          <mat-label>Cardholder Name</mat-label>
-          <input matInput [(ngModel)]="cardholderName" name="cardholderName">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Card Number</mat-label>
-          <input matInput [(ngModel)]="cardNumber" name="cardNumber" maxlength="16">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Expiration Date</mat-label>
-          <input matInput [(ngModel)]="expirationDate" name="expirationDate" maxlength="5" placeholder="MM/YY">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>CVV</mat-label>
-          <input matInput [(ngModel)]="cvv" name="cvv" maxlength="3">
-        </mat-form-field>
-        <button mat-raised-button color="primary" class="SaveBtn">Save Changes</button>
-      </div> -->
-    
-  </mat-card>
+  <!-- Payment details -->
+  <!-- <div class="edit-form" *ngIf="showPaymentInfoForm">
+      <mat-form-field class="form-field">
+        <mat-label>Cardholder Name</mat-label>
+        <input matInput [(ngModel)]="cardholderName" name="cardholderName">
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>Card Number</mat-label>
+        <input matInput [(ngModel)]="cardNumber" name="cardNumber" maxlength="16">
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>Expiration Date</mat-label>
+        <input matInput [(ngModel)]="expirationDate" name="expirationDate" maxlength="5" placeholder="MM/YY">
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <mat-label>CVV</mat-label>
+        <input matInput [(ngModel)]="cvv" name="cvv" maxlength="3">
+      </mat-form-field>
+      <button mat-raised-button color="primary" class="SaveBtn">Save Changes</button>
+    </div> -->
   
+</mat-card>

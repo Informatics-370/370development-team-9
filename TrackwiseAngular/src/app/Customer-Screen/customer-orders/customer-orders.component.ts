@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CancelNotificationComponent } from 'src/app/ConfirmationNotifications/cancel-notification/cancel-notification.component';
 import { DataService } from 'src/app/services/data.service';
 import { Order } from 'src/app/shared/order';
 
@@ -11,7 +13,7 @@ import { Order } from 'src/app/shared/order';
 })
 export class CustomerOrdersComponent {
 
-  constructor(private dataService: DataService, private snackBar: MatSnackBar) {}
+  constructor(private dataService: DataService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.dataService.revertToLogin();
@@ -51,21 +53,31 @@ export class CustomerOrdersComponent {
     })
   }
 
+  openConfirmationDialog(order : any): void {
+    const dialogRef = this.dialog.open(CancelNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { order }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.CancelOrder(order);
+        this.snackBar.open(`Order cancelled`, 'X', {duration: 3000});
+      }
+    });
+  }
+
   async CancelOrder(order: any) {
     try {
       await this.dataService.CancelOrder(order.order_ID).toPromise();
       const updatedOrder = await this.dataService.GetOrder(order.order_ID).toPromise();
-      this.snackBar.open(`Order cancelled`, 'X', {duration: 3000});
       // Check if updatedOrder is not undefined before accessing its properties
       this.customerOrders=[]
       this.GetCustomerOrders()
     } catch (error) {
       console.log('Error cancelling order:', error);
     }
-  }
-
-  
-  
+  } 
   
   OpenModal(order:any) {
     this.GetOrder(order.order_ID)

@@ -22,10 +22,6 @@ import { JobDetailDTO } from 'src/app/shared/jobDetail';
 import 'jspdf-autotable';
 import { style } from '@angular/animations';
 
-import * as pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from 'pdfmake/build/vfs_fonts';
-
-(<any>pdfMake).vfs = pdfFonts.pdfMake.vfs;
 
 declare module 'jspdf' {
   interface jsPDF {
@@ -38,37 +34,6 @@ declare module 'jspdf' {
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
-  try: any[] = [];
-  generatePDF() {
-    // Define your document content
-    const documentDefinition = {
-      content: [
-        { text: 'Simple PDF Report', style: 'header' },
-        { text: 'Hello, this is a simple PDF report created using PDFMake.' },
-        { text: 'You can add more content and formatting as needed.' },
-        {
-          table: {
-            body: [
-              ['1','2','3'],
-              ['','','']
-            ]
-          }
-        }
-      ],
-      styles: {
-        header: {
-          fontSize: 18,
-          bold: true
-        }
-      }
-    };
-    const pdfDocGenerator = pdfMake.createPdf(documentDefinition);
-    console.log('this is admins',...this.admins.map(admin=> admin.email)[1]);
-    pdfDocGenerator.open();
-  }
-
-
-
   products: Product[] = [];
   productTypes: any[] = []; 
   productCategories: any[] = []; 
@@ -106,7 +71,6 @@ export class ReportsComponent implements OnInit {
     this.GetProductCategories();
     this.GetProductTypes();
     this.getOrders();
-
     this.getMileageFuel();
     this.getTotalSales();
     this.GetJobList();
