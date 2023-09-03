@@ -86,6 +86,7 @@ export class DocumentInformationComponent implements OnInit{
     this.dataService.UpdateActualWeight(this.delivery_ID, this.request).subscribe(
       response => {
         console.log(response); // Handle success, show a message, etc.
+        this.snackBar.open(` Weight Updated`, 'X', {duration: 3000});
       },
       error => {
         console.error(error); // Handle error, show an error message, etc.
@@ -112,6 +113,7 @@ export class DocumentInformationComponent implements OnInit{
     this.dataService.EditFuel(this.delivery_ID, this.fuelRequest).subscribe(
       response => {
         console.log(response); // Handle success, show a message, etc.
+        this.snackBar.open(` Fuel Updated`, 'X', {duration: 3000});
       },
       error => {
         console.error(error); // Handle error, show an error message, etc.
