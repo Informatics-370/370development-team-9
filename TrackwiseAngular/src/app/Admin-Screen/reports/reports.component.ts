@@ -22,7 +22,6 @@ import { JobDetailDTO } from 'src/app/shared/jobDetail';
 import 'jspdf-autotable';
 import { style } from '@angular/animations';
 
-
 declare module 'jspdf' {
   interface jsPDF {
     autoTable: (options: any) => jsPDF;

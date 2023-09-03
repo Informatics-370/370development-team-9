@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using TrackwiseAPI.DBContext;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrackwiseAPI.Models.Email
 {
@@ -84,13 +86,14 @@ namespace TrackwiseAPI.Models.Email
             }
         }
 
-        [HttpPost("Invoice")]
-        public async Task<IActionResult> SendInvoiceEmail(Invoice invoice)
+        [HttpPost]
+        [Route("Invoice")]
+        public async Task<IActionResult> SendInvoiceEmail(newInvoice invoice)
         {
             // Create MailData object
             MailData mailData = new MailData(
                 new List<string> { invoice.Email },
-                "Order Invoice",
+                "Order Invoice", 
                 _mail.GetEmailTemplate("Invoice", invoice));
 
 
