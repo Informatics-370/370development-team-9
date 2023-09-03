@@ -12,3 +12,10 @@ export interface TruckData{
     registration: string;
     mFList: MileageFuel[];
 }
+
+export interface KiloLitres{
+  truck_License:string;
+  job_ID:string;
+  kilosDriven: number;
+  fuelInput: number;
+}

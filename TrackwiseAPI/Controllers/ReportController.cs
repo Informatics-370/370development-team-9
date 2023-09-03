@@ -168,32 +168,18 @@ namespace TrackwiseAPI.Controllers
 
 
         [HttpGet]
-        [Route("GetCompleteJobs")]
+        [Route("GetCompleteJobs/{truckID}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> GetCompleteJobs()
+        public async Task<IActionResult> GetCompleteJobs(string truckID)
         {
             try
             {
                 var results = await _reportRepository.GetCompleteJobsAsync();
-                var loadsDTO = results.Select(loads => new LoadsDTO
-                {
-                    Job_ID = loads.Job_ID,
-                    StartDate = loads.StartDate,
-                    DueDate = loads.DueDate,
-                    PickupLocation = loads.Pickup_Location,
-                    DropoffLocation = loads.Dropoff_Location,
-                    type = loads.Job_Type_ID,
-                    Weight = loads.Total_Weight,
-                    Creator_ID = loads.Creator_ID,
-                    Job_Status_ID = loads.Job_Status_ID,
-                    JobStatus = new JobStatusDTO
-                    {
-                        Job_Status_ID = loads.Job_Status_ID,
-                        Name = loads.JobStatus.Name,
-                        Description = loads.JobStatus.Description,
-                    },
-                });
-                return Ok(loadsDTO);
+
+                // Filter the jobs where delivery.TruckID matches the provided truckID
+                var matchingJobs = results.Where(job => job.Deliveries.Any(delivery => delivery.TruckID == truckID)).ToList();
+
+                return Ok(matchingJobs);
             }
             catch (Exception)
             {

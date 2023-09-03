@@ -607,6 +607,13 @@ export class DataService {
     .pipe(map(result => result))
   }
 
+  GetCompleteJobs(truckID:string): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetCompleteJobs/${truckID}`, {headers})
+    .pipe(map(result => result))
+  }
+
   GetAllAdmins(): Observable<any>{
     return this.httpClient.get(`${this.apiUrl}Report/GetAdmins` )
     .pipe(map(result => result))
