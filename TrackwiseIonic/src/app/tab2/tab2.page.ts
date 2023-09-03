@@ -7,7 +7,7 @@ import { addDocument } from '../shared/Document';
 import { Delivery } from '../shared/Delivery';
 import { DataserviceService } from '../services/dataservice.service';
 import { HttpClient,HttpClientModule } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Files extends File {
   docType:string
@@ -34,7 +34,7 @@ export class Tab2Page{
       documents: []
   };
 
-  constructor(private route: ActivatedRoute, private dataService : DataserviceService, private http: HttpClient) {  }
+  constructor(private route: ActivatedRoute, private dataService : DataserviceService, private http: HttpClient, private router: Router) {  }
 
   addWeightRow() {
     this.weightRows.push({ showUploadOptions: true });
@@ -82,6 +82,7 @@ export class Tab2Page{
   
     // Clear selected files and update docrequest if needed
     this.selectedFiles = [];
+    this.router.navigate(['/tabs/tabs/tab1']);
   }
 
   // Complete(deliveryId: string, delivery:any) {
