@@ -1,11 +1,5 @@
 <h2>Audit Logs</h2>
 <div class="mat-elevation-z8">
-
-  <mat-form-field appearance="fill">
-    <mat-label>Search</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
-  </mat-form-field>
-
 <table mat-table [dataSource]="dataSource" matSort>
 
     <ng-container matColumnDef="createdDate">

@@ -35,9 +35,4 @@ export class AuditComponent implements AfterViewInit{
   } */
   constructor( private dataService: DataService) { }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
 }
