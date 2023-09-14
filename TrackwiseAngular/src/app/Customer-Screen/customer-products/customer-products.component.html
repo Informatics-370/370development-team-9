@@ -59,7 +59,7 @@
 
           <div class="card-content">
             <h6>{{product.product_Name}}</h6>
-            <div class="price">R {{product.product_Price | number:"1.2-2"}}
+            <div class="price">R {{(product.product_Price + (product.product_Price * VAT.vaT_Amount)) |number:"1.2-2"}}
               <p style="font-weight: lighter;">Available: ({{product.quantity}})</p>
             </div>
           </div>
@@ -87,6 +87,6 @@
     <span class="close" (click)="CloseModal()">&times;</span>
     <h4>{{ selectedProduct.product_Name }}</h4>
     <p>{{ selectedProduct.product_Description }}</p>
-    <p class="price">R {{selectedProduct.product_Price | number:"1.2-2"}}</p>
+    <p class="price">R {{(selectedProduct.product_Price + (selectedProduct.product_Price * VAT.vaT_Amount)) |number:"1.2-2"}}</p>
   </div>
 </div>

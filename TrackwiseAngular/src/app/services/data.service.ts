@@ -23,6 +23,7 @@ import { Weight } from '../shared/weight';
 import { MileageFuel } from '../shared/mileage_fuel';
 import { Fuel } from '../shared/fuel';
 import { Delivery } from '../shared/delivery';
+import { VAT } from '../shared/VAT';
 
 @Injectable({
   providedIn: 'root'
@@ -477,6 +478,19 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get(`${this.apiUrl}Product/GetProductCategory`,{headers})
     .pipe(map(result => result))
+  }
+
+  /*VAT Section*/
+  GetVAT(): Observable<VAT>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<VAT>(`${this.apiUrl}VAT/GetVAT`, {headers});
+  }
+  UpdateVAT():Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT`, {}, {headers});
   }
 
   /*Customer Section*/

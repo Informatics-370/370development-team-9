@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
 import { DataService } from 'src/app/services/data.service';
+import { VAT } from 'src/app/shared/VAT';
 import { Product } from 'src/app/shared/product';
 
 @Component({
@@ -14,6 +15,9 @@ export class ProductsComponent {
 
 
     products: Product[] = [];
+    VAT: VAT = {
+      vaT_Amount: 0
+    };
     searchText: string = ''; // Property to store the search text
     originalProducts: Product[] = []; // Property to store the original trailer data
   
@@ -21,6 +25,7 @@ export class ProductsComponent {
   
     ngOnInit(): void {
       this.GetProducts();
+      this.GetVAT();
       this.dataService.revertToLogin();
     }
   
@@ -34,6 +39,16 @@ export class ProductsComponent {
           this.products.push(element)
           console.log(element);
         });
+      })
+    }
+
+    GetVAT()
+    {
+      this.dataService.GetVAT().subscribe({
+        next: (response) => {
+          this.VAT = response;
+          console.log(this.VAT)
+        }
       })
     }
   

@@ -15,7 +15,6 @@ namespace TrackwiseAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     public class VATController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
@@ -50,6 +49,7 @@ namespace TrackwiseAPI.Controllers
 
         [HttpPut]
         [Route("UpdateVAT")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<IActionResult> UpdateVAT(decimal vat)
         {
             try
