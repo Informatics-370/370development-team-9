@@ -36,6 +36,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Audit> Audits { get; set; }
+        public DbSet<VAT> VAT { get; set; }
 
 
         /// 
@@ -418,6 +419,14 @@ namespace TrackwiseAPI.DBContext
                 new DriverStatus { Driver_Status_ID = "2", Status = "Unavailable", Description = "Driver is busy with a job" },
                 new DriverStatus { Driver_Status_ID = "3", Status = "Busy", Description = "Driver is unable to do a job" }
             );
+
+            modelBuilder.Entity<VAT>()
+            .HasIndex(v => v.VAT_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<VAT>().HasData(
+                new VAT { VAT_ID = Guid.NewGuid().ToString(), VAT_Amount = 0.15M }
+                );
 
         }
     }

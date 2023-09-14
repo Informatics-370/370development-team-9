@@ -932,7 +932,8 @@ generateProductSalesReport(){
     let Graph = '';
   // Canvas Options
 
-  html2canvas(Data).then(canvas => {
+  setTimeout(() => {
+    html2canvas(Data).then(canvas => {
     // Convert canvas to image and add to PDF
     let Graph = canvas.toDataURL('image/png');
     const img1 = new Image();
@@ -950,8 +951,9 @@ generateProductSalesReport(){
     } else {
       console.error('Failed to open PDF preview window.');
     }
-  });
-  }
+    });
+  }, 1000); // Adjust the delay time as needed.
+}
 
 
   //##################################################################################################################

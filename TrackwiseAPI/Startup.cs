@@ -121,7 +121,7 @@ public class Startup
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IReportRepository, ReportRepository>();
-
+        services.AddScoped<IVATRepository, VATRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

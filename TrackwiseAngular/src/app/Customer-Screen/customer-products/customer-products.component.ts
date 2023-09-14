@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { VAT } from 'src/app/shared/VAT';
 import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product';
 
 @Component({
@@ -13,6 +14,9 @@ export class CustomerProductComponent {
   productCategories: any[] = [];
   searchText: string = ''; // Property to store the search text
   originalProducts: Product[] = []; // Property to store the original trailer data
+  VAT: VAT = {
+    vaT_Amount: 0
+  };
 
   selectedSortOption: string = 'NameAZ'; // Default sorting option
   selectedCategory: string = ''; // Default category filter
@@ -27,6 +31,7 @@ export class CustomerProductComponent {
     this.GetProductCategories();
     this.GetProductTypes();
     this.GetProducts();
+    this.GetVAT();
     this.dataService.calculateQuantity();
     this.filterProducts(); // Call the filter function initially
   }
@@ -52,6 +57,16 @@ export class CustomerProductComponent {
         this.products.push(element);
       });
     });
+  }
+
+  GetVAT()
+  {
+    this.dataService.GetVAT().subscribe({
+      next: (response) => {
+        this.VAT = response;
+        console.log(this.VAT)
+      }
+    })
   }
 
   AddItemToCart(event: Event, product: any) {
