@@ -16,17 +16,8 @@ namespace TrackwiseAPI.Models.Entities
         public double Total_Weight { get; set; }
         public string Creator_ID { get; set; }
         public string? Map { get;set; }
-
-        //Foreign key for Client
-        /*
-        public string? Client_ID { get; set; }
-        [ForeignKey("Client_ID")]
-        public Client? Client { get; set; }
-        */
-        //Foreign key for Admin
-/*        public string Admin_ID { get; set; }
-        [ForeignKey("Admin_ID")]
-        public Admin Admin { get; set; }*/
+        public int? DeliveryCount { get; set; }
+        public int CompletedDeliveries { get; set; }
 
         //Foreign key for Job_Type
         public string Job_Type_ID { get; set; }

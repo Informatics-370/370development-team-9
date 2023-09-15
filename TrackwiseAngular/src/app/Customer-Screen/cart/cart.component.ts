@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { VAT } from 'src/app/shared/VAT';
 import { CheckoutRequest, NewCard } from 'src/app/shared/cardPayment';
 import { OrderLines } from 'src/app/shared/orderLines';
 
@@ -22,6 +23,9 @@ interface CartItem {
 export class CartComponent implements OnInit {
 
   products: any = [];
+  VAT: VAT = {
+    vaT_Amount: 0
+  };
   cartItems: any = [];
   total: number = 0;
   isPayment = false;
@@ -46,6 +50,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.CartItems();
+    this.GetVAT();
     this.dataService.revertToLogin();
   }
 
@@ -66,6 +71,16 @@ export class CartComponent implements OnInit {
 
   continueShopping(): void {
     this.router.navigate(['/Customer-Screen/customer-products']);
+  }
+
+  GetVAT()
+  {
+    this.dataService.GetVAT().subscribe({
+      next: (response) => {
+        this.VAT = response;
+        console.log(this.VAT)
+      }
+    })
   }
 
   CartItems() {

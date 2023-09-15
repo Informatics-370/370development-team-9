@@ -35,6 +35,8 @@ namespace TrackwiseAPI.DBContext
         public DbSet<JobStatus> JobsStatus { get; set; }
         public DbSet<JobType> JobTypes { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<Audit> Audits { get; set; }
+        public DbSet<VAT> VAT { get; set; }
 
 
         /// 
@@ -230,13 +232,15 @@ namespace TrackwiseAPI.DBContext
 
             modelBuilder.Entity<JobStatus>().HasData(
                 new JobStatus { Job_Status_ID = "1", Name = "In-operation", Description = "Job in progress" },
-                new JobStatus { Job_Status_ID = "2", Name = "Complete", Description = "Job complete" },
-                new JobStatus { Job_Status_ID = "3", Name = "Cancelled", Description = "Job Cancelled"}
+                new JobStatus { Job_Status_ID = "2", Name = "Job Details Required", Description = "Job Details Required" },
+                new JobStatus { Job_Status_ID = "3", Name = "Cancelled", Description = "Job Cancelled"},
+                new JobStatus { Job_Status_ID = "4", Name = "Job Complete", Description = "Job Complete" }
                 );
 
             modelBuilder.Entity<DeliveryStatus>().HasData(
                 new DeliveryStatus { Delivery_Status_ID = "1", Name = "In-operation", Description = "Transporting in progress" },
-                new DeliveryStatus { Delivery_Status_ID = "2", Name = "Complete", Description = "Transporting complete" }
+                new DeliveryStatus { Delivery_Status_ID = "2", Name = "Complete", Description = "Transporting complete" },
+                new DeliveryStatus { Delivery_Status_ID = "3", Name = "Cancelled", Description = "Transporting cancelled" }
                 );
 
             //job data
@@ -293,22 +297,16 @@ namespace TrackwiseAPI.DBContext
 
 
             modelBuilder.Entity<Driver>().HasData(
-                new Driver { Driver_ID = "1", Email = "Driver1@gmail.com" ,Name = "Driver1", Lastname = "Koen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "2", Email = "Driver2@gmail.com" , Name = "Driver2", Lastname = "Poen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "3", Email = "Driver3@gmail.com" , Name = "Driver3", Lastname = "Soen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "4", Email = "Driver4@gmail.com", Name = "Driver4", Lastname = "Loen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "5", Email = "Driver5@gmail.com", Name = "Driver5", Lastname = "Hoen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "6", Email = "Driver6@gmail.com", Name = "Driver6", Lastname = "Joen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "7", Email = "Driver7@gmail.com", Name = "Driver7", Lastname = "Doen", PhoneNumber = "0761532265", Driver_Status_ID = "1" },
-                new Driver { Driver_ID = "8", Email = "Driver8@gmail.com", Name = "Driver8", Lastname = "Roen", PhoneNumber = "0761532265", Driver_Status_ID = "1" }
+                new Driver { Driver_ID = "1", Email = "Driver1@gmail.com", Name = "Driver1", Lastname = "Koen", PhoneNumber = "0761532265", Driver_Status_ID = "1" }
             );
+            
 
             modelBuilder.Entity<Truck>().HasData(
-                new Truck { TruckID = "1", Truck_License = "GH39QP L", Model = "Mercedes",  Truck_Status_ID = "1" },
-                new Truck { TruckID = "2", Truck_License = "AJ11LL L", Model = "Mercedes",  Truck_Status_ID = "1" },
-                new Truck { TruckID = "3", Truck_License = "LL19AQ L", Model = "Mercedes",  Truck_Status_ID = "1" },
-                new Truck { TruckID = "4", Truck_License = "TT11PP L", Model = "Mercedes", Truck_Status_ID = "1" },
-                new Truck { TruckID = "5", Truck_License = "QW12ER L", Model = "Mercedes", Truck_Status_ID = "1" }
+                new Truck { TruckID = "1", Truck_License = "GH39QP L", Model = "Mercedes",  Truck_Status_ID = "1", Mileage = 12400 },
+                new Truck { TruckID = "2", Truck_License = "AJ11LL L", Model = "Mercedes",  Truck_Status_ID = "1", Mileage = 1489 },
+                new Truck { TruckID = "3", Truck_License = "LL19AQ L", Model = "Mercedes",  Truck_Status_ID = "1", Mileage = 21988 },
+                new Truck { TruckID = "4", Truck_License = "TT11PP L", Model = "Mercedes", Truck_Status_ID = "1", Mileage = 18677 },
+                new Truck { TruckID = "5", Truck_License = "QW12ER L", Model = "Mercedes", Truck_Status_ID = "1", Mileage = 13900 }
             );
 
             modelBuilder.Entity<Trailer>().HasData(
@@ -347,9 +345,15 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Order_ID = "1", Date = DateTime.Now, Status="Ordered", Total = 2897, Customer_ID = "1" },
-                new Order { Order_ID = "2", Date = DateTime.Now, Status = "Ordered", Total = 2997, Customer_ID = "2" },
-                new Order { Order_ID = "3", Date = DateTime.Now, Status = "Ordered", Total = 2998, Customer_ID = "3" }
+                new Order { Order_ID = "1", Date = DateTime.ParseExact("2023-07-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status="Ordered", Total = 2897, Customer_ID = "1" },
+                new Order { Order_ID = "2", Date = DateTime.ParseExact("2023-07-30 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2997, Customer_ID = "2" },
+                new Order { Order_ID = "3", Date = DateTime.ParseExact("2023-07-15 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2998, Customer_ID = "3" },
+                new Order { Order_ID = "4", Date = DateTime.ParseExact("2023-06-28 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 1110, Customer_ID = "3" },
+                new Order { Order_ID = "5", Date = DateTime.ParseExact("2023-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 500, Customer_ID = "3" },
+                new Order { Order_ID = "6", Date = DateTime.ParseExact("2023-06-10 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 10000, Customer_ID = "3" },
+                new Order { Order_ID = "7", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 900, Customer_ID = "3" },
+                new Order { Order_ID = "8", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 5000, Customer_ID = "3" },
+                new Order { Order_ID = "9", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 3333, Customer_ID = "3" }
             );
 
             modelBuilder.Entity<Order_Line>().HasData(
@@ -415,6 +419,14 @@ namespace TrackwiseAPI.DBContext
                 new DriverStatus { Driver_Status_ID = "2", Status = "Unavailable", Description = "Driver is busy with a job" },
                 new DriverStatus { Driver_Status_ID = "3", Status = "Busy", Description = "Driver is unable to do a job" }
             );
+
+            modelBuilder.Entity<VAT>()
+            .HasIndex(v => v.VAT_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<VAT>().HasData(
+                new VAT { VAT_ID = Guid.NewGuid().ToString(), VAT_Amount = 0.15M }
+                );
 
         }
     }

@@ -23,11 +23,10 @@
     <thead>
 
       <tr class="header">
-        <th>Job ID</th>
+        <th>Client</th>
         <th>Start Date</th>
         <th>End Date</th>
         <th>Type</th>
-        <th>Client</th>
         <th>Status</th>
         <th></th>
         <th></th>
@@ -36,34 +35,64 @@
 
     <tbody *ngFor="let job of jobs">
       <tr *ngIf="job.jobStatus.name == 'In-operation'">
-        <td>{{job.job_ID}}</td>
+        <td>{{job.userName}}</td>
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{job.jobType.name}}</td>
-        <td>{{job.userName}}</td>
-        <td>{{job.jobStatus.name}}</td>
+        <td style="color: #004F9E; font-weight: bold;">{{job.jobStatus.name}}</td>
         <td>
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
         <td>
-          <button class="cancel-job-btn" >Cancel</button>
+          <button class="cancel-job-btn" (click)="openConfirmationDialog(job.job_ID)" >Cancel</button>
         </td>
       </tr>
     </tbody>
 
     <tbody *ngFor="let job of jobs">
-      <tr *ngIf="job.jobStatus.name == 'Complete'">
-        <td>{{job.job_ID}}</td>
+      <tr *ngIf="job.jobStatus.name == 'Job Details Required'">
+        <td>{{job.userName}}</td>
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{job.jobType.name}}</td>
-        <td>{{job.userName}}</td>
-        <td>{{job.jobStatus.name}}</td>
+        <td style="color: orange; font-weight: bold;">{{job.jobStatus.name}}</td>
         <td>
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
         <td>
-          <button class="cancel-job-btn" >Cancel</button>
+
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'Job Complete'">
+        <td>{{job.userName}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td style="color: rgb(5, 218, 5); font-weight: bold;">{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
+        </td>
+        <td>
+
+        </td>
+      </tr>
+    </tbody>
+
+    <tbody *ngFor="let job of jobs">
+      <tr *ngIf="job.jobStatus.name == 'Cancelled'">
+        <td>{{job.userName}}</td>
+        <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
+        <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
+        <td>{{job.jobType.name}}</td>
+        <td style="color: red; font-weight: bold;">{{job.jobStatus.name}}</td>
+        <td>
+          <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
+        </td>
+        <td>
+
         </td>
       </tr>
     </tbody>
@@ -89,7 +118,7 @@
         <option value="2">Fuel</option>
       </select>
       <label>Weight: </label>
-      <input style="text-align: center;" class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required>
+      <input style="text-align: center;" class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required min="0" (blur)=" removeNegativeSign()">
     </div>
 
     <div class="form-item-container">

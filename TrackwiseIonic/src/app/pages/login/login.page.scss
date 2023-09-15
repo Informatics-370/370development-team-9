@@ -14,7 +14,7 @@
 }
 
 .logo{
-width: 90%;
+width: 80%;
 height: auto;
 margin-top: 55px;
 }
@@ -60,17 +60,17 @@ margin-top: 55px;
   align-self: flex-start; 
 }
 
-.login-btn {
-  display: block; /* Set display to block */
-  color: white;
-  font-weight: bold;
-  margin: 0 auto; /* Center horizontally */
-  background-color: #117fca;
-  border: 3px solid white;
-  width: 150px;
-  height: 50px;
-  border-radius: 30px;
-}
+// .login-btn {
+//   display: block; /* Set display to block */
+//   color: white;
+//   font-weight: bold;
+//   margin: 0 auto; /* Center horizontally */
+//   background-color: #117fca;
+//   border: 3px solid white;
+//   width: 150px;
+//   height: 50px;
+//   border-radius: 30px;
+// }
 
 
 /* Add this CSS to your global stylesheet or component stylesheet */
@@ -145,4 +145,44 @@ animation: spin 2s linear infinite;
 .error-message{
 color: red;
 font-weight: bold;
+}
+
+ion-input{
+  border: 1px solid black;
+  border-radius: 7px;
+
+  width: 85%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loginbtn{
+  font-size: 130%;
+  font-weight: bold;
+  color: #f2f2f2;
+  width: 150px;
+  height: 55px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 25px;
+  background-color: #004F9E !important;
+  border: 2px solid #004F9E;
+  margin-bottom: 5%;
+}
+
+.forgot{
+  font-size: 120%;
+  font-weight: bold;
+  color: #004F9E;
+  width: 150px;
+  height: 55px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 25px;
+  background-color: white !important;
+  border: 2px solid #004F9E;
+  margin-bottom: 5%;
 }

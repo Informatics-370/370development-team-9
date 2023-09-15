@@ -71,8 +71,15 @@ import { ClientAddJobComponent } from './Client-Screen/client-add-job/client-add
 import { ClientEditJobComponent } from './Client-Screen/client-edit-job/client-edit-job.component';
 import { ClientJobDetailsComponent } from './Client-Screen/client-job-details/client-job-details.component';
 import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profile.component';
+import { DocumentInformationComponent } from './Admin-Screen/jobs/document-information/document-information.component';
 
-
+import { NgChartsModule } from 'ng2-charts';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DatePipe } from '@angular/common';
+import { CancelNotificationComponent } from './ConfirmationNotifications/cancel-notification/cancel-notification.component';
+import { CollectNotificationComponent } from './ConfirmationNotifications/collect-notification/collect-notification.component';
+import { RemoveNotificationComponent } from './ConfirmationNotifications/remove-notification/remove-notification.component';
+import { AuditComponent } from './Admin-Screen/audit/audit.component';
 
 @NgModule({
   declarations: [
@@ -119,12 +126,16 @@ import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profil
     ClientAddJobComponent,
     ClientEditJobComponent,
     ClientJobDetailsComponent,
-    AdminProfileComponent
-
+    AdminProfileComponent,
+    DocumentInformationComponent,
+    CancelNotificationComponent,
+    CollectNotificationComponent,
+    RemoveNotificationComponent,
+    AuditComponent,
   ],
   imports: [
     BrowserModule,
-    MatInputModule ,
+    MatInputModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
@@ -140,8 +151,10 @@ import { AdminProfileComponent } from './Admin-Screen/admin-profile/admin-profil
     MatIconModule,
     MatBadgeModule,
     MatMenuModule,
+    NgChartsModule,
+    MatDatepickerModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

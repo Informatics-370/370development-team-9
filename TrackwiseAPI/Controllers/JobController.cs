@@ -29,24 +29,32 @@ namespace TrackwiseAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IJobRepository _jobRepository;
+        private readonly IDriverRepository _driverRepository;
+        private readonly ITruckRepository _truckRepository;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly TwDbContext _context;
+        private readonly IAuditRepository _auditRepository;
 
         public JobController(
             IJobRepository jobRepository, 
+            IDriverRepository driverRepository,
+            ITruckRepository truckRepository,
             TruckRouteService truckRouteService,
             UserManager<AppUser> userManager,
             IWebHostEnvironment hostingEnvironment,
-            TwDbContext context
-            )
+            TwDbContext context,
+            IAuditRepository auditRepository)
 
         {
             _jobRepository = jobRepository;
+            _driverRepository = driverRepository;
+            _truckRepository = truckRepository;
             _truckRouteService = truckRouteService ?? throw new ArgumentNullException(nameof(truckRouteService));
             _apiKey = "Ah63Z-rLDLN8UftrfVAKYtuQBMSK_EE57L2E7a6NTg5htVdU8gPnn5o7d_Yujc9j"; // Replace this with your actual API key
             _userManager = userManager;
             _hostingEnvironment = hostingEnvironment;
             _context = context;
+            _auditRepository = auditRepository;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -71,7 +79,7 @@ namespace TrackwiseAPI.Controllers
         [Route("GetAllClientJobs")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
 
-        public async Task<IActionResult> GetAllCustomerOrders()
+        public async Task<IActionResult> GetAllClientJobs()
         {
             try
             {
@@ -158,9 +166,196 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("DeliveryDocuments/{delivery_ID}")]
+        public async Task<IActionResult> DeliveryDocuments(string delivery_ID)
+        {
+            try
+            {
+                var results = await _jobRepository.GetDocumentsByDeliveryID(delivery_ID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+        public class UpdateActualWeightRequest
+        {
+            public double actual_Weight { get; set; }
+        }
+
+        [HttpGet]
+        [Route("GetDelivery/{delivery_ID}")]
+        public async Task<IActionResult> GetDeliveryByID(string delivery_ID)
+        {
+            try
+            {
+                var results = await _jobRepository.GetDeliveryByID(delivery_ID);
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpPut("Updateweight/{delivery_ID}")]
+        public async Task<ActionResult<UpdateActualWeightRequest>> UpdateActualWeight(string delivery_ID, UpdateActualWeightRequest request)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+                if (delivery == null)
+                {
+                    return NotFound("Delivery not found");
+                }
+
+                delivery.Delivery_Weight = request.actual_Weight;
+                delivery.WeightCaptured = true;
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                return Ok(new { Message = "Actual weight updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating actual weight");
+            }
+        }
+    
+
+    [HttpPut]
+        [Route("{deliveryId}/status")]
+        public async Task<IActionResult> UpdateDeliveryStatus(string deliveryId)
+        {
+            var delivery = await _context.Deliveries.FirstOrDefaultAsync(d => d.Delivery_ID == deliveryId);
+
+            if (delivery == null)
+            {
+                return NotFound();
+            }
+
+            var deliveryStatusId = "2";
+            var newDeliveryStatus = await _context.DeliveryStatuses.FirstOrDefaultAsync(ds => ds.Delivery_Status_ID == deliveryStatusId);
+            if (newDeliveryStatus == null)
+            {
+                // Return a Bad Request or appropriate response if the DeliveryStatus with ID 2 is not found
+                return BadRequest("Invalid DeliveryStatus ID");
+            }
+            // Update the delivery's DeliveryStatus to the new status
+            delivery.Delivery_Status_ID = newDeliveryStatus.Delivery_Status_ID;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{jobId}/jobstatus")]
+        public async Task<IActionResult> UpdatejobStatus(string jobId)
+        {
+            var job = await _context.Jobs.FirstOrDefaultAsync(d => d.Job_ID == jobId);
+
+            if (job == null)
+            {
+                return NotFound();
+            }
+
+            var jobStatusId = "2";
+            var newJobStatus = await _context.JobsStatus.FirstOrDefaultAsync(ds => ds.Job_Status_ID == jobStatusId);
+            if (newJobStatus == null)
+            {
+                // Return a Bad Request or appropriate response if the DeliveryStatus with ID 2 is not found
+                return BadRequest("Invalid DeliveryStatus ID");
+            }
+            // Update the delivery's DeliveryStatus to the new status
+            job.Job_Status_ID= newJobStatus.Job_Status_ID;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{driverId}/driverstatus")]
+        public async Task<IActionResult> UpdatedriverStatus(string driverId)
+        {
+            var driver = await _context.Drivers.FirstOrDefaultAsync(d => d.Driver_ID == driverId);
+
+            if (driver == null)
+            {
+                return NotFound();
+            }
+
+            var driverStatusId = "1";
+            var newdriverStatus = await _context.DriverStatuses.FirstOrDefaultAsync(ds => ds.Driver_Status_ID == driverStatusId);
+            if (newdriverStatus == null)
+            {
+                // Return a Bad Request or appropriate response if the DeliveryStatus with ID 2 is not found
+                return BadRequest("Invalid DeliveryStatus ID");
+            }
+            // Update the delivery's DeliveryStatus to the new status
+            driver.Driver_Status_ID = newdriverStatus.Driver_Status_ID;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{trailerId}/trailerstatus")]
+        public async Task<IActionResult> UpdatetrailerStatus(string trailerId)
+        {
+            var trailer = await _context.Trailers.FirstOrDefaultAsync(d => d.TrailerID == trailerId);
+
+            if (trailer == null)
+            {
+                return NotFound();
+            }
+
+            var trailerStatusId = "1";
+            var newtrailerStatus = await _context.TrailerStatuses.FirstOrDefaultAsync(ds => ds.Trailer_Status_ID == trailerStatusId);
+            if (newtrailerStatus == null)
+            {
+                // Return a Bad Request or appropriate response if the DeliveryStatus with ID 2 is not found
+                return BadRequest("Invalid DeliveryStatus ID");
+            }
+            // Update the delivery's DeliveryStatus to the new status
+            trailer.Trailer_Status_ID = newtrailerStatus.Trailer_Status_ID;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        [HttpPut]
+        [Route("{truckId}/truckstatus")]
+        public async Task<IActionResult> UpdatetruckStatus(string truckId)
+        {
+            var truck = await _context.Trucks.FirstOrDefaultAsync(d => d.TruckID == truckId);
+
+            if (truck == null)
+            {
+                return NotFound();
+            }
+
+            var truckStatusId = "1";
+            var newtruckStatus = await _context.TruckStatuses.FirstOrDefaultAsync(ds => ds.Truck_Status_ID == truckStatusId);
+            if (newtruckStatus == null)
+            {
+                // Return a Bad Request or appropriate response if the DeliveryStatus with ID 2 is not found
+                return BadRequest("Invalid DeliveryStatus ID");
+            }
+            // Update the delivery's DeliveryStatus to the new status
+            truck.Truck_Status_ID = newtruckStatus.Truck_Status_ID;
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
 
         //GetAvailableDrivers
-        [HttpGet]
+        [HttpPost]
         [Route("GetAvailableDrivers")]
         public async Task<IActionResult> getDriverForJob()
         {
@@ -247,6 +442,9 @@ namespace TrackwiseAPI.Controllers
                 Delivery_Weight = delivery.Delivery_Weight,
                 Driver_ID = driverId,
                 Delivery_Status_ID = delivery.Delivery_Status_ID,
+                TrailerID = delivery.TrailerID,
+                TruckID = delivery.TruckID,
+                
                 Jobs = new JobDTO
                 {
                     Job_ID = delivery.Jobs.Job_ID,
@@ -268,12 +466,16 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Upload documents", CreatedDate = DateTime.Now, User = userEmail };
                 var documents = new DocumentVM
                 {
                     Documents = documentVM.Documents.Select(ol => new DocumentDTO
                     {
                         Document_ID = ol.Document_ID,
                         Image = ol.Image,
+                        DocType = ol.DocType,
                         Delivery_ID = ol.Delivery_ID
                     }).ToList()
                 };
@@ -286,6 +488,7 @@ namespace TrackwiseAPI.Controllers
                     {
                         Document_ID = document_ID,
                         Image = document.Image,
+                        DocType = document.DocType,
                         Delivery_ID = document.Delivery_ID,
                     };
 
@@ -295,6 +498,8 @@ namespace TrackwiseAPI.Controllers
 
                 // Save all changes to the database at once
                 await _jobRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
 
                 return Ok("Documents added successfully");
             }
@@ -304,6 +509,136 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+
+
+        public class UpdateFuel
+        {
+            public double? Total_Fuel { get; set; }
+        }
+
+        //Fuel
+        //[HttpGet]
+        //[Route("GetFuel/{delivery_ID}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
+        //public async Task<IActionResult> GetFuelAsync(string delivery_ID)
+        //{
+        //    try
+        //    {
+        //        var result = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+        //        if (result == null) return NotFound("Job does not exist");
+
+        //        return Ok(result);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(500, "Internal Server Error. Please contact support");
+        //    }
+        //}
+
+
+        [HttpPut]
+        [Route("EditFuel/{delivery_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> EditFuel(string delivery_ID, UpdateFuel request)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+                delivery.TotalFuel = request.Total_Fuel;
+                await _context.SaveChangesAsync();
+
+
+                return Ok(new { Message = "Total fuel updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating fuel");
+            }
+
+        }
+
+
+        public class UpdateMileageFuel
+        {
+            public double? Initial_Mileage { get; set; }
+            public double? Final_Mileage { get; set; }
+            public double? Total_Fuel { get; set; }
+            //public string TruckID { get; set; }
+        }
+
+        //Mileage
+        [HttpGet]
+        [Route("GetAllMileageFuel")]
+        public async Task<IActionResult> GetAllMileageFuel()
+        {
+            try
+            {
+                var results = await _jobRepository.GetAllMileageFuelAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+
+        [HttpGet]
+        [Route("GetMileageFuel/{delivery_ID}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+
+        public async Task<IActionResult> GetMileageAsync(string delivery_ID)
+        {
+            try
+            {
+                var result = await _jobRepository.GetDeliveryByID(delivery_ID);
+
+                if (result == null) return NotFound("Job does not exist");
+
+                return Ok(result);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
+        
+        [HttpPut]
+        [Route("EditMileageFuel/{delivery_ID}")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> EditMileage(string delivery_ID, UpdateMileageFuel request)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+                var truck = await _truckRepository.GetTruckAsync(delivery.TruckID);
+
+                delivery.Initial_Mileage = request.Initial_Mileage;
+                delivery.Final_Mileage = request.Final_Mileage;
+                delivery.MileageCaptured = true;
+
+                truck.Mileage = request.Final_Mileage;
+                await _context.SaveChangesAsync();
+
+
+                return Ok(new { Message = "Actual mileage updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating mileage");
+            }
+
+        }
+
+
         [HttpPost]
         [Route("CreateJob")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin, Client")]
@@ -311,6 +646,9 @@ namespace TrackwiseAPI.Controllers
         {
             // Retrieve the authenticated user's email address
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Create Job", CreatedDate = DateTime.Now, User = userEmail };
+
             var user = await _userManager.FindByEmailAsync(userEmail);
             if (user == null) {return BadRequest("User not found");}
             var userId = user.Id;
@@ -329,6 +667,8 @@ namespace TrackwiseAPI.Controllers
                 Job_Type_ID = jvm.Job_Type_ID,
                 Job_Status_ID = "1",
                 Map ="",
+                DeliveryCount = 0,
+                CompletedDeliveries = 0,
             };
 
             var trailers = await _jobRepository.GetAvailableTrailerWithTypeAsync(job.Job_Type_ID);
@@ -378,7 +718,6 @@ namespace TrackwiseAPI.Controllers
             double jobweight = 0;
             double deliveryweight = 0;
             double remainingweight = 0;
-            double piele = 0;
 
             if (drivers.Length>0 && trucks.Length>0 && trailers.Length>0) 
             {
@@ -400,6 +739,8 @@ namespace TrackwiseAPI.Controllers
                 {
                     deliveries++; //plus delivery vir die laaste 30+ ton
                 }
+
+                job.DeliveryCount = deliveries;
 
                 if (deliveries == 1)
                 {
@@ -439,7 +780,10 @@ namespace TrackwiseAPI.Controllers
                         TruckID = truckid,
                         TrailerID = trailerid,
                         Job_ID = job.Job_ID,
-                        Delivery_Status_ID = "1"
+                        Delivery_Status_ID = "1",
+                        TotalFuel = 0,
+                        WeightCaptured = false,
+                        MileageCaptured = false
                     };
                     using (var transaction = _jobRepository.BeginTransaction()) // Begin the database transaction
                     {
@@ -453,6 +797,8 @@ namespace TrackwiseAPI.Controllers
                             trailer.Trailer_Status_ID = "2";
 
                             await _jobRepository.SaveChangesAsync();
+                            _auditRepository.Add(audit);
+                            await _auditRepository.SaveChangesAsync();
                             transaction.Commit(); // Commit the transaction if everything is successful
                         }
                         catch (Exception)
@@ -495,7 +841,7 @@ namespace TrackwiseAPI.Controllers
                         }
                         var trailerId = trailer.TrailerID;
 
-                        piele = job.Total_Weight;
+                        deliveryweight = job.Total_Weight;
                         var deliveries1 = new List<Delivery>();
                         for (int i = 0; i < deliveries; i++)
                         {
@@ -509,14 +855,17 @@ namespace TrackwiseAPI.Controllers
                                 TruckID = truckId,
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID,
-                                Delivery_Status_ID = "1"
+                                Delivery_Status_ID = "1",
+                                TotalFuel = 0,
+                                WeightCaptured = false,
+                                MileageCaptured = false
                             };
                             deliveries1.Add(deliveryObj);
-                            
-                            piele -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
-                            if((piele < 35) && (piele >= 30))
+
+                            deliveryweight -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
+                            if((deliveryweight < 35) && (deliveryweight >= 30))
                             {
-                                jobweight = piele;
+                                jobweight = deliveryweight;
                             }
                         }
                         using (var transaction = _jobRepository.BeginTransaction())
@@ -534,6 +883,8 @@ namespace TrackwiseAPI.Controllers
                                 trailer.Trailer_Status_ID = "2";
 
                                 // Save changes to the database
+                                _auditRepository.Add(audit);
+                                await _auditRepository.SaveChangesAsync();
                                 await _jobRepository.SaveChangesAsync();
                                 transaction.Commit(); // Commit the transaction if everything is successful
                             }
@@ -556,7 +907,7 @@ namespace TrackwiseAPI.Controllers
                         {
                             return NotFound("Not enough available drivers/trucks/trailers for all deliveries");
                         }
-                        piele = job.Total_Weight;
+                        deliveryweight = job.Total_Weight;
                         List<Delivery> allDeliveries = new List<Delivery>();
                         for (int i = 0; i < deliveries; i++)
                         {
@@ -581,14 +932,17 @@ namespace TrackwiseAPI.Controllers
                                 TruckID = truckId,
                                 TrailerID = trailerId,
                                 Job_ID = job.Job_ID,
-                                Delivery_Status_ID = "1"
+                                Delivery_Status_ID = "1",
+                                TotalFuel = 0,
+                                WeightCaptured = false,
+                                MileageCaptured = false
                             };
 
                             allDeliveries.Add(deliveryObj);
-                            piele -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
-                            if ((piele < 35) && (piele >= 30))
+                            deliveryweight -= jobweight;  //100 - 35 = 65   || 65 - 35 = 30
+                            if ((deliveryweight < 35) && (deliveryweight >= 30))
                             {
-                                jobweight = piele;
+                                jobweight = deliveryweight;
                             }
                         }
 
@@ -617,6 +971,8 @@ namespace TrackwiseAPI.Controllers
                                 if (trailerToUpdate != null) trailerToUpdate.Trailer_Status_ID = "2";
 
                                 // Save changes to the database
+                                _auditRepository.Add(audit);
+                                await _auditRepository.SaveChangesAsync();
                                 await _jobRepository.SaveChangesAsync();
                                 transaction.Commit(); // Commit the transaction if everything is successful
                             }
@@ -646,6 +1002,143 @@ namespace TrackwiseAPI.Controllers
             return Ok("lol");
 
 
+        }
+
+        [HttpPut]
+        [Route("CompleteDelivery/{delivery_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Driver")]
+        public async Task<IActionResult> CompleteDelivery(string delivery_ID)
+        {
+            try
+            {
+                var delivery = await _jobRepository.GetDeliveryByID(delivery_ID);
+                var job = await _jobRepository.GetJobAsync(delivery.Job_ID);
+
+                delivery.Delivery_Status_ID = "2";
+                await _jobRepository.SaveChangesAsync();
+
+                job.CompletedDeliveries += 1;
+
+                // Retrieve the authenticated user's email address
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Driver Delivery Completed", CreatedDate = DateTime.Now, User = userEmail };
+                // Query the customer repository to get the customer ID
+                var user = await _userManager.FindByEmailAsync(userEmail);
+
+                if (user == null)
+                {
+                    return BadRequest("Driver not found");
+                }
+
+                var userId = user.Id;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("Driver ID not found");
+                }
+
+                var driver = await _driverRepository.GetDriverAsync(userId);
+
+                var driverDeliveries = await _jobRepository.GetDriverDeliveriesAsync(userId);
+
+                if (driverDeliveries.Length == 0)
+                {
+                    driver.Driver_Status_ID = "1";
+                    delivery.Truck.Truck_Status_ID = "1";
+                    delivery.Trailer.Trailer_Status_ID = "1";
+                }
+
+                if (job.CompletedDeliveries == job.DeliveryCount)
+                {
+                    job.Job_Status_ID = "2";
+                }
+
+                if (await _jobRepository.SaveChangesAsync())
+                {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    return Ok(delivery);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
+        [HttpPut]
+        [Route("CompleteJob/{Job_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> CompleteJob(string Job_ID)
+        {
+            try
+            {
+                var job = await _jobRepository.GetJobAsync(Job_ID);
+                var capturedCount = 0;
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Job Completed", CreatedDate = DateTime.Now, User = userEmail };
+
+                foreach (var delivery in job.Deliveries)
+                {
+                    if (delivery.MileageCaptured == true && delivery.WeightCaptured == true)
+                    {
+                        capturedCount++;
+                    }
+                }
+
+                if (capturedCount == job.DeliveryCount)
+                {
+                    job.Job_Status_ID = "4";
+                }
+
+                if (await _jobRepository.SaveChangesAsync())
+                {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
+        [HttpPut]
+        [Route("CancelJob/{Job_ID}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> CancelJob(string Job_ID)
+        {
+            try
+            {
+                var job = await _jobRepository.GetJobAsync(Job_ID);
+
+                foreach (var delivery in job.Deliveries)
+                {
+
+                    delivery.Delivery_Status_ID = "3";
+                    var driver = await _driverRepository.GetDriverAsync(delivery.Driver_ID);
+                    driver.Driver_Status_ID = "1";
+                    delivery.Truck.Truck_Status_ID = "1";
+                    delivery.Trailer.Trailer_Status_ID = "1";
+                }
+
+                job.Job_Status_ID = "3";
+
+                if (await _jobRepository.SaveChangesAsync())
+                {
+                    return Ok();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
         }
 
     }

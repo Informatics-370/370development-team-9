@@ -3,10 +3,11 @@
 <mat-toolbar class="search-navbar">
   <div class="navbar-container">
     <div class="search-bar">
-      <input type="text" placeholder="Search for an order">
-      <button aria-label="Search">
-        <i class="material-icons">search</i>
-      </button>
+      <input type="text" placeholder="Search for an order" aria-label="Search"
+      aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+    <button type="button" class="btn btn-outline-primary" (click)="search()">
+      <i class="material-icons">search</i>
+    </button>
     </div>
   </div>
 </mat-toolbar>
@@ -136,7 +137,7 @@
               </table>  
               <br>  
               <div class="collect" *ngFor="let order of orders">
-                <button *ngIf="order.status == 'Ordered'" class="collectBtn" (click)="CollectOrder(order)" >Collect Order</button>
+                <button *ngIf="order.status == 'Ordered'" class="collectBtn" (click)="openConfirmationDialog(order)" >Collect Order</button>
               </div>   
   
             </div>

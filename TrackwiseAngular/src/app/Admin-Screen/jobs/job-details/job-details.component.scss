@@ -214,3 +214,36 @@ td{
     width: 100%;
 }
 
+.view-job-btn{
+    border: 2px solid #117fca;
+    border-radius: 10px;
+    background-color: white;
+    color: #117fca;
+    font-weight: bold;
+    width: 60%;
+    height: 35px;
+  }
+  
+  .view-job-btn:hover{
+    color: white;
+    background-color: #117fca;
+    font-weight: bold;
+  }
+
+  .complete-btn {
+    border: 2px solid forestgreen;
+    border-radius: 5px;
+    background-color: white;
+    color: forestgreen;
+    font-weight: bold;
+    width: 25%;
+    height: 35px;
+    margin-left: auto;
+}
+
+.complete-btn:hover {
+    color: white;
+    background-color: forestgreen;
+    font-weight: bold;
+}
+  

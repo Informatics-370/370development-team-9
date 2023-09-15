@@ -20,9 +20,9 @@
           <div class="form-field">
             <ion-input type="password" formControlName="password" placeholder="Password" required></ion-input>
           </div>
-          <ion-button expand="full" (click)="LoginUser()">Log in</ion-button>
-          <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-          <ion-button class="forgot" (click)="Route()"> Forgot password </ion-button>
+          <button class="loginbtn" (click)="LoginUser()">Log in</button>
+          <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div><br>
+          <button class="forgot" (click)="Route()"> Forgot password </button>
         </form>
       </ion-card>
     </div>

@@ -5,6 +5,9 @@ import { Observable, catchError, map, throwError } from 'rxjs';
 import { Job } from 'src/app/shared/job';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { CancelNotificationComponent } from 'src/app/ConfirmationNotifications/cancel-notification/cancel-notification.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-jobs',
@@ -27,14 +30,16 @@ export class JobsComponent implements OnInit{
     total_Weight: 0,
     creator_ID: '',
     job_Type_ID: '',
-    job_Status_ID:''
+    job_Status_ID: '',
+    jobType: '',
+    jobStatus: ''
   };
 
   showView: boolean = true;
   showAdd: boolean = false;
   minDateTime: string;
   
-  constructor(private dataService: DataService, private router:Router) {
+  constructor(private dataService: DataService, private router:Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.minDateTime = this.getCurrentDateTime();
    }
   
@@ -127,6 +132,29 @@ export class JobsComponent implements OnInit{
 
   }
 
+  openConfirmationDialog(job_ID: string): void {
+    const dialogRef = this.dialog.open(CancelNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { job_ID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.CancelJob(job_ID);
+        this.snackBar.open(` Job Successfully Cancelled`, 'X', {duration: 3000});
+      }
+    });
+  }
+
+  CancelJob(job_ID : string) {
+    this.dataService.CancelJob(job_ID).subscribe({
+      next: (response) => {
+        this.jobs = [];
+        this.GetJobs();
+      }
+    });
+  }
+
   search() {
     if (this.searchText.trim() === '') {
       // If search text is empty, revert back to original admin data
@@ -168,6 +196,12 @@ export class JobsComponent implements OnInit{
     this.dataService.DeleteAdmin(admin_ID).subscribe({
       next: (response) => location.reload()
     })
+  }
+
+  removeNegativeSign() {
+    if (this.createJob.total_Weight < 0) {
+      this.createJob.total_Weight = 0;
+    }
   }
 
   ShowView() {

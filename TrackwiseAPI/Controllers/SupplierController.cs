@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Claims;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.ViewModels;
@@ -15,10 +16,12 @@ namespace TrackwiseAPI.Controllers
     public class SupplierController : ControllerBase
     {
         private readonly ISupplierRepository _supplierRepository;
+        private readonly IAuditRepository _auditRepository;
 
-        public SupplierController(ISupplierRepository supplierRepository)
+        public SupplierController(ISupplierRepository supplierRepository, IAuditRepository auditRepository)
         {
             _supplierRepository = supplierRepository;
+            _auditRepository = auditRepository;
         }
 
         [HttpGet]
@@ -61,10 +64,16 @@ namespace TrackwiseAPI.Controllers
             var supplierId = Guid.NewGuid().ToString();
             var supplier = new Supplier {Supplier_ID = supplierId, Name = supvm.Name, Email = supvm.Email, Contact_Number = supvm.Contact_Number};
 
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Add Supplier", CreatedDate = DateTime.Now, User = userEmail };
+
             try
             {
                 _supplierRepository.Add(supplier);
                 await _supplierRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -79,6 +88,9 @@ namespace TrackwiseAPI.Controllers
         [Route("EditSupplier/{supplierId}")]
         public async Task<ActionResult<SupplierVM>> EditSupplier(string supplierId, SupplierVM supplierModel)
         {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Update Supplier", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 var existingSupplier = await _supplierRepository.GetSupplierAsync(supplierId);
@@ -100,6 +112,8 @@ namespace TrackwiseAPI.Controllers
 
                 if (await _supplierRepository.SaveChangesAsync())
                 {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(existingSupplier);
                 }
             }
@@ -117,13 +131,22 @@ namespace TrackwiseAPI.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Supplier", CreatedDate = DateTime.Now, User = userEmail };
                 var existingSupplier = await _supplierRepository.GetSupplierAsync(supplierId);
 
                 if (existingSupplier == null) return NotFound($"The supplier does not exist");
 
                 _supplierRepository.Delete(existingSupplier);
 
-                if (await _supplierRepository.SaveChangesAsync()) return Ok(existingSupplier);
+                if (await _supplierRepository.SaveChangesAsync())
+                {
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    return Ok(existingSupplier);
+                }
+                    
 
             }
             catch (Exception)

@@ -1,7 +1,6 @@
 <div class="details-container" *ngIf="showDetails==true">
 
     <button class="details-btn-selected" (click)="ShowDetails()">View Details</button>
-    <button class="documents-btn" (click)="ShowDocuments()">Documents</button>
 
     <div class="item-container">
         <h3>Job Details</h3>
@@ -74,12 +73,17 @@
                         <th>Truck</th>
                         <th>Trailer</th>
                         <th>Load (T)</th>
+                        <th></th>
                     </tr>
                     <tr *ngFor=" let jobdeliveries of jobDetails.deliveries">
                         <td>{{jobdeliveries.driver.name + " " + jobdeliveries.driver.lastname}}</td>
                         <td>{{jobdeliveries.truck.truck_License}} </td>
                         <td>{{jobdeliveries.trailer.trailer_License}}</td>
                         <td>{{jobdeliveries.delivery_Weight}}</td>
+                        <td>
+                            <button class="view-job-btn" [routerLink]="'/Admin-Screen/jobs/document-information/' + jobdeliveries.delivery_ID +'/' + jobdeliveries.truck.mileage" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'"> Capture </button>
+                        </td>
+                        
                     </tr>
                 </table>  
             </td> 
@@ -94,6 +98,11 @@
             </td>
         </tr>
     </table>
+    <div *ngFor="let jobDetails of jobs">
+        <div class="item-container" *ngIf="jobDetails.jobStatus.name == 'Job Details Required'">
+            <button class="complete-btn" (click)="CompleteJob(jobDetails)"> Complete Job </button>
+        </div>
+    </div>
 </div>
 
 

@@ -2,6 +2,9 @@ import { Component , OnInit} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService} from 'src/app/services/data.service';
 import { Client } from 'src/app/shared/client';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-clients',
@@ -14,7 +17,7 @@ export class ClientsComponent implements OnInit {
   clients: any[] = []; // Property to store the client data
   originalClients: any[] = []; // Property to store the original client data
   
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
   ngOnInit(): void {
     this.GetClients();
@@ -59,6 +62,20 @@ export class ClientsComponent implements OnInit {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+
+  openConfirmationDialog(client_ID: string): void {
+    const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { client_ID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.DeleteClient(client_ID);
+        this.snackBar.open(` Client Successfully Removed`, 'X', {duration: 3000});
+      }
+    });
   }
 
   DeleteClient(client_ID:string)

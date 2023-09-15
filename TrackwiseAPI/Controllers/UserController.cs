@@ -31,6 +31,7 @@ namespace TrackwiseAPI.Controllers
         private readonly IEmailService _emailService;
         private readonly TwDbContext _context;
         private readonly MailController _mailController;
+        private readonly IAuditRepository _auditRepository;
 
         public UserController(UserManager<AppUser> userManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
@@ -38,7 +39,7 @@ namespace TrackwiseAPI.Controllers
             ICustomerRepository customerRepository, 
             TwDbContext context, 
             IEmailService emailService,
-            MailController mailController)
+            MailController mailController, IAuditRepository auditRepository)
         {
             _userManager = userManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
@@ -47,6 +48,7 @@ namespace TrackwiseAPI.Controllers
             _context = context;
             _emailService = emailService;
             _mailController = mailController;
+            _auditRepository = auditRepository;
         }
 
 
@@ -56,11 +58,15 @@ namespace TrackwiseAPI.Controllers
         {
             var customerId = Guid.NewGuid().ToString();
             var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
-
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 _customerRepository.Add(customer);
                 await _customerRepository.SaveChangesAsync();
+                _auditRepository.Add(audit);
+                await _auditRepository.SaveChangesAsync();
 
                 var user = new AppUser
                 {
@@ -91,6 +97,8 @@ namespace TrackwiseAPI.Controllers
         public async Task<ActionResult> Login(UserVM uvm)
         {
             var user = await _userManager.FindByNameAsync(uvm.emailaddress);
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
 
             if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
             {
@@ -105,6 +113,8 @@ namespace TrackwiseAPI.Controllers
                         Token = token,
                         Role = roles.FirstOrDefault()
                     };
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
                     return Ok(response);
                 }
                 catch (Exception)

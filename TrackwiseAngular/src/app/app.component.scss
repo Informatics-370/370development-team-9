@@ -70,14 +70,25 @@
   border: #f2f2f2 solid 2px;
 }
   
- .side-container {
+//  .side-container {
+//   width: 200px;
+//   margin-top: auto;
+//   max-width: 220px;
+//   background-color: #004F9E;
+//   color: #f2f2f2;
+//   bottom: 0;
+//   height: 100%;
+// }
+
+.side-container {
   width: 200px;
-  margin-top: auto;
-  max-width: 220px;
   background-color: #004F9E;
-  color: #f2f2f2;
- 
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin-top: 64px; /* Adjust this value based on the navbar height */
 }
+
 
 .sidenav-options{
   color: #f2f2f2;

@@ -13,6 +13,7 @@ export interface Order{
 
 export interface OrderLine {
     order_line_ID: string;
+    
     product: {
       product_ID: string;
       product_Name: string;
@@ -20,6 +21,7 @@ export interface OrderLine {
       product_Price: number;
       quantity: number;
       cartQuantity?: number;
+
       productType: {
         product_Type_ID: string;
         name: string;

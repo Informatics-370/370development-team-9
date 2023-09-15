@@ -8,7 +8,7 @@
   </button>
   
     <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="'/Admin-Screen/profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> 
+        <button mat-menu-item [routerLink]="'/Admin-Screen/admin-profile'"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> 
         <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Log Out</button>
     </mat-menu>
 </mat-toolbar>
@@ -29,6 +29,7 @@
     <a mat-list-item [routerLink]="'Admin-Screen/suppliers'"><p class="nav-items">Suppliers</p></a>
     <a mat-list-item [routerLink]="'Admin-Screen/trailers'"><p class="nav-items">Trailers</p></a>
     <a mat-list-item [routerLink]="'Admin-Screen/trucks'"><p class="nav-items">Trucks</p></a>
+    <a mat-list-item [routerLink]="'Admin-Screen/audits'"><p class="nav-items">Audit Logs</p></a>
   </mat-nav-list>
 </mat-sidenav>
 
@@ -51,7 +52,7 @@
       <button mat-button [routerLink]="'/Customer-Screen/customer-products'" *ngIf="!dataService.isClient">Products</button>
       <button mat-button [routerLink]="'/Customer-Screen/about-us'">About Us</button>
       <button mat-button [routerLink]="'/Customer-Screen/customer-orders'" *ngIf="dataService.isCustomer">Orders</button>
-      <button mat-button [routerLink]="'/Customer-Screen/customer-orders'" *ngIf="dataService.isClient">Jobs</button>
+      <button mat-button [routerLink]="'/Client-Screen/client-jobs'" *ngIf="dataService.isClient">Jobs</button>
     </div>
 
     <span class="spacer"></span>
@@ -77,13 +78,13 @@
             <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Sign Out</button>
           </div> -->
 
-          <button mat-menu-item [routerLink]="'/Authentication/register'" *ngIf="dataService.isCustomer == false"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
-            <button mat-menu-item [routerLink]="'/Authentication/login'" *ngIf="dataService.isCustomer == false" ><mat-icon class="menu-icon">person</mat-icon>Log In</button>
+          <button mat-menu-item [routerLink]="'/Authentication/register'" *ngIf="dataService.isLoggedIn == false"><mat-icon class="menu-icon">person_add</mat-icon>Register</button>
+            <button mat-menu-item [routerLink]="'/Authentication/login'" *ngIf="dataService.isLoggedIn == false" ><mat-icon class="menu-icon">person</mat-icon>Log In</button>
             <button mat-menu-item [routerLink]="'/Customer-Screen/profile'" *ngIf="dataService.isCustomer"><mat-icon class="menu-icon">person</mat-icon>View Profile</button> 
-            <button mat-menu-item (click)="dataService.logout()"*ngIf="dataService.isCustomer"><mat-icon class="menu-icon">exit_to_app</mat-icon>Log Out</button>
+            <button mat-menu-item (click)="dataService.logout()"*ngIf="dataService.isCustomer || dataService.isClient "><mat-icon class="menu-icon">exit_to_app</mat-icon>Log Out</button>
         </mat-menu>      
 
-      <button mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>
+      <button *ngIf="dataService.isClient == false" mat-icon-button [routerLink]="'/Customer-Screen/cart'"><mat-icon>shopping_cart</mat-icon>
         <span class="badge">{{this.dataService.itemsInCart}}</span>
       </button>
 

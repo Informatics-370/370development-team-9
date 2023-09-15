@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
 import { DataService } from 'src/app/services/data.service';
+import { VAT } from 'src/app/shared/VAT';
 import { Product } from 'src/app/shared/product';
 
 @Component({
@@ -11,13 +15,17 @@ export class ProductsComponent {
 
 
     products: Product[] = [];
+    VAT: VAT = {
+      vaT_Amount: 0
+    };
     searchText: string = ''; // Property to store the search text
     originalProducts: Product[] = []; // Property to store the original trailer data
   
-    constructor( private dataService: DataService) { }
+    constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
     ngOnInit(): void {
       this.GetProducts();
+      this.GetVAT();
       this.dataService.revertToLogin();
     }
   
@@ -31,6 +39,16 @@ export class ProductsComponent {
           this.products.push(element)
           console.log(element);
         });
+      })
+    }
+
+    GetVAT()
+    {
+      this.dataService.GetVAT().subscribe({
+        next: (response) => {
+          this.VAT = response;
+          console.log(this.VAT)
+        }
       })
     }
   
@@ -68,6 +86,20 @@ export class ProductsComponent {
       if (event.key === 'Enter') {
         this.search();
       }
+    }
+
+    openConfirmationDialog(ProductID: string): void {
+      const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+        width: '300px', // Adjust the width as needed
+        data: { ProductID }
+      });
+    
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.DeleteProduct(ProductID);
+          this.snackBar.open(` Product Successfully Removed`, 'X', {duration: 3000});
+        }
+      });
     }
   
     DeleteProduct(ProductID:string)

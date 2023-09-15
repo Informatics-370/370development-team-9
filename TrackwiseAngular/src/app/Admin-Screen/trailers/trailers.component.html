@@ -41,7 +41,7 @@
             <td>{{trailer.trailerStatus.status}}</td>
             <td>{{trailer.trailerType.name}}</td>
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-trailer', trailer.trailerID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="DeleteTrailer(trailer.trailerID)">Remove</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="openConfirmationDialog(trailer.trailerID)">Remove</button></td>
           </tr>
         </tbody>
       </table>

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
 import { Trailer } from 'src/app/shared/trailer';
+import { MatDialog, MatDialogRef  } from '@angular/material/dialog';
+import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-trailers',
@@ -12,7 +15,7 @@ export class TrailersComponent {
   searchText: string = ''; // Property to store the search text
   originalTrailers: Trailer[] = []; // Property to store the original trailer data
 
-  constructor( private dataService: DataService) { }
+  constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.GetTrailers();
@@ -66,6 +69,20 @@ export class TrailersComponent {
     if (event.key === 'Enter') {
       this.search();
     }
+  }
+
+  openConfirmationDialog(TrailerID: string): void {
+    const dialogRef = this.dialog.open(RemoveNotificationComponent, {
+      width: '300px', // Adjust the width as needed
+      data: { TrailerID }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.DeleteTrailer(TrailerID);
+        this.snackBar.open(` Trailer Successfully Removed`, 'X', {duration: 3000});
+      }
+    });
   }
 
   DeleteTrailer(TrailerID:string)

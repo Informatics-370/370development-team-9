@@ -1,10 +1,208 @@
-<br>
-<div class="row">
-<div class="col-lg-3 main-content"></div>
-<div class="col-lg-7 main-content">
-<div class="container container-fluid">
-      
-      <h2>Done in Iteration6</h2>
+
+ <!-- #####################################################################################################-->
+ <div class="card-container">
+ <div class="viewDetails">
+  <mat-card class="card">
+    <div class="header-content">
+      <h4>Staff Report</h4>
+      <div class="centered">
+        <img class="lol" [src]="'assets/Reports/LTTLogo.jpg'">
+      </div>
     </div>
+    <div class="card-content">
+      <!-- Add your card content here -->
+    </div>
+    <mat-card-footer>
+      <mat-card-actions>
+        <button (click)="generateStaffReport()">Generate Report</button> <!-- Add label for the button -->
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>
+ <!-- #####################################################################################################-->
+
+
+  <div class="viewDetails">
+    <mat-card class="card">
+      <div class="header-content">
+        <h4>Stock Report</h4>
+        <div class="centered">
+          <img class="lol" [src]="'assets/Reports/Stock.jpg'">
+        </div>
+      </div>
+      <div class="card-content">
+        <!-- Add your card content here -->
+      </div>
+      <mat-card-footer>
+        <mat-card-actions>
+          <button (click)="generateStockReport()">Generate Report</button> <!-- Add label for the button -->
+        </mat-card-actions>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+   <!-- #####################################################################################################-->
+
+  <div class="viewDetails">
+    <mat-card class="card">
+      <div class="header-content">
+        <h4>Loads Carried Report</h4>
+        <div class="centered">
+          <img class="lol" [src]="'assets/Reports/LoadsCarried.jpg'">
+        </div>
+      </div>
+
+      <div class="card-content">
+        <!-- Add your card content here -->
+      </div>
+
+      <mat-card-footer>
+        <mat-card-actions>
+          <button (click)="generateLoadsCarriedReport()">Generate Report</button> <!-- Add label for the button -->
+        </mat-card-actions>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+   <!-- #####################################################################################################-->
+
+   <div class="viewDetails">
+    <mat-card class="card">
+      <div class="header-content">
+        <h4>Mileage/Fuel Report</h4>
+        <div class="centered">
+          <img class="lol" [src]="'assets/Reports/Mileage.jpeg'">
+        </div>
+      </div>
+      <div class="card-content">
+        <!-- Add your card content here -->
+      </div>
+      <mat-card-footer>
+        <mat-card-footer>
+          <div class="truck-filter">
+            <label for="TruckDropdown">Select Truck:&nbsp;</label>
+            <select name="TruckDropdown" id="TruckDropdown" [(ngModel)]="selectedTruckId">
+              <option *ngFor="let truck of trucks" [value]="truck.truckID">{{truck.truck_License}}</option>
+            </select>
+          </div>
+          <button (click)="GetCompleteJobs(selectedTruckId)">Generate Report</button>
+        </mat-card-footer>        
+      </mat-card-footer>
+    </mat-card>
+  </div>
+
+ <!-- #####################################################################################################-->
+
+ <div class="viewDetails">
+  <mat-card class="card">
+    <div class="header-content">
+      <h4>Job Detail Report</h4>
+      <div class="centered">
+        <img class="lol" [src]="'assets/Reports/Job.jpg'">
+      </div>
+    </div>
+    <div class="card-content">
+      <!-- Add your card content here -->
+    </div>
+    <mat-card-footer>
+      <mat-card-actions>
+        <button (click)="generateJobdetailReport()">Generate Report</button> <!-- Add label for the button -->
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>
+ <!-- #####################################################################################################-->
+
+  <!--PRODUCT SALES-->
+<!--   <div class="viewDetails">
+    <mat-card class="card">
+      <div class="header-content">
+        <h4>Product Sales Report</h4>
+        <div class="centered">
+          <img [src]="'assets/Reports/SalesOrders.jpg'">
+
+          <h4>Filter by:</h4>
+          <div class="category-filter">
+            <label for="CategoryDropdown">Category:&nbsp;</label>
+            <select name="CategoryDropdown" id="CategoryDropdown">
+      
+              <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-content">
+      </div>
+      <mat-card-footer>
+        <mat-card-actions>
+          <button (click)="generateProductSalesReport()">Generate Prouct Sales Report</button> 
+        </mat-card-actions>
+      </mat-card-footer>
+    </mat-card>
+  </div> -->
+ <!-- #####################################################################################################-->
+
+ <div class="viewDetails">
+  <mat-card class="card">
+    <div class="header-content">
+      <h4>Job List Report</h4>
+      <div class="centered">
+        <img class="lol" [src]="'assets/Reports/Job.jpg'">
+      </div>
+    </div>
+
+
+
+    <mat-card-footer>
+      <mat-card-actions>
+        <button  (click)="generateJobListReport()">Generate Report</button> <!-- Add label for the button -->
+      </mat-card-actions>
+    </mat-card-footer>
+  </mat-card>
+</div>
+
+ <!-- #####################################################################################################-->
+    <div class="viewDetails">
+    <mat-card class="card">
+      <div class="header-content">
+        <h4> Sales Report </h4>
+        <div class="centered">
+          <img class="lol2" [src]="'assets/Reports/ProductSales.jpg'">
+        </div>
+
+      </div>
+      <mat-form-field class="dates">
+        <input matInput [matDatepicker]="startDatepicker" placeholder="Select a Start Date" (dateChange)="onStartDateSelected($event)">
+        <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatepicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="dates">
+        <input matInput [matDatepicker]="endDatepicker" placeholder="Select an End Date" (dateChange)="onEndDateSelected($event)">
+        <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatepicker></mat-datepicker>
+      </mat-form-field>
+    
+      <mat-card-footer>
+        <mat-card-actions>
+          <button (click)="generateSalesReport()">Generate Report</button> <!-- Add label for the button -->
+        </mat-card-actions>
+      </mat-card-footer>
+    </mat-card>
   </div>
 </div>
+
+<div class="chart-wrapper" id="htmlData" style="position: absolute; left: -9999px;">
+  <canvas baseChart
+        [datasets]="[
+        { data: lineChartData[0].data, label: 'Sales', type: 'line' ,borderColor: 'rgba(0, 0, 255, 1)'},
+        { data: lineChartData[1].data, label: 'Average Sales', type: 'line', borderColor: 'rgba(255, 0, 0, 1)', borderDash: [5, 5] }
+      ]"
+      [labels]="lineChartLabels"
+      [options]="lineChartOptions"
+      [legend]="lineChartLegend"
+      [type]="lineChartType"
+      [plugins]="lineChartPlugins">
+  </canvas>
+</div>
+
+
+

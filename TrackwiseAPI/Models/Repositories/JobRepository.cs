@@ -1,4 +1,5 @@
-﻿ using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.DataTransferObjects;
@@ -55,12 +56,12 @@ namespace TrackwiseAPI.Models.Repositories
                 .Include(t => t.Driver)
                 .Include(t => t.Trailer)
                 .Include(t => t.Truck)
-                .Include(t=> t.DeliveryStatus)
+                .Include(t => t.DeliveryStatus)
                 .Include(t => t.Job)
                     .ThenInclude(j => j.JobStatus)
-                .Include(j=>j.Job)
-                    .ThenInclude(j=>j.JobType)
-                .Where(t => t.Driver_ID == driverID && t.Job.Job_Status_ID == "1" && t.Delivery_Status_ID == "1")
+                .Include(j => j.Job)
+                    .ThenInclude(j => j.JobType)
+                .Where(t => t.Driver_ID == driverID && t.Delivery_Status_ID == "1")
                 .ToListAsync();
 
             // Map the entities to DTOs
@@ -69,6 +70,8 @@ namespace TrackwiseAPI.Models.Repositories
                 Delivery_ID = delivery.Delivery_ID,
                 Delivery_Weight = delivery.Delivery_Weight,
                 Driver_ID = delivery.Driver_ID,
+                TrailerID = delivery.TrailerID,
+                TruckID = delivery.TruckID,
                 Delivery_Status_ID = delivery.Delivery_Status_ID,
                 
                 Jobs = new JobDTO
@@ -110,6 +113,24 @@ namespace TrackwiseAPI.Models.Repositories
             return _context.Database.BeginTransaction();
         }
 
+        public async Task<Document[]> GetDocumentsByDeliveryID(string deliveryID)
+        {
+            IQueryable<Document> query = _context.Documents.Where(c => c.Delivery_ID == deliveryID);
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Delivery[]> GetAllMileageFuelAsync()
+        {
+            IQueryable<Delivery> query = _context.Deliveries;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Delivery> GetDeliveryByID(string delivery_ID)
+        {
+            IQueryable<Delivery> query = _context.Deliveries.Where(c => c.Delivery_ID == delivery_ID);
+            return await query.FirstOrDefaultAsync();
+        }
+
         public async Task<Job> GetJobAsync(string Job_ID)
         {
             IQueryable<Job> query = _context.Jobs.Where(j => j.Job_ID == Job_ID)
@@ -123,5 +144,7 @@ namespace TrackwiseAPI.Models.Repositories
                 .Include(t => t.JobType);
             return await query.FirstOrDefaultAsync();
         }
+
+
     }
 }

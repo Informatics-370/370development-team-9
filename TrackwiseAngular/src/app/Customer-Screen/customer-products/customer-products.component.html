@@ -3,7 +3,7 @@
 <mat-toolbar class="search-navbar">
   <div class="navbar-container">
     <div class="search-bar">
-      <input type="text" placeholder="Search for a job" aria-label="Search"
+      <input type="text" placeholder="Search for a product" aria-label="Search"
       aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
     <button type="button" class="btn btn-outline-primary" (click)="search()">
       <i class="material-icons">search</i>
@@ -16,19 +16,19 @@
   <form class="form-container">
     <!-- Radio sort buttons -->
     <h4>Sort by:</h4>
-    <input type="radio" name="radioGroup" id="NameAZ">
+    <input type="radio" name="radioGroup" id="NameAZ" [(ngModel)]="selectedSortOption" value="NameAZ">
     <label for="NameAZ">&nbsp;Name (A-Z)</label><br>
-    <input type="radio" name="radioGroup" id="NameZA">
+    <input type="radio" name="radioGroup" id="NameZA" [(ngModel)]="selectedSortOption" value="NameZA">
     <label for="NameZA">&nbsp;Name (Z-A)</label><br>
-    <input type="radio" name="radioGroup" id="LowHigh">
+    <input type="radio" name="radioGroup" id="LowHigh" [(ngModel)]="selectedSortOption" value="LowHigh">
     <label for="LowHigh">&nbsp;Price (Low - High)</label><br>
-    <input type="radio" name="radioGroup" id="HighLow">
+    <input type="radio" name="radioGroup" id="HighLow" [(ngModel)]="selectedSortOption" value="HighLow">
     <label for="HighLow">&nbsp;Price (High - Low)</label><br><br>
 
     <h4>Filter by:</h4>
     <div class="category-filter">
       <label for="CategoryDropdown">Category:&nbsp;</label>
-      <select name="CategoryDropdown" id="CategoryDropdown">
+      <select name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
 
         <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
       </select>
@@ -36,13 +36,12 @@
 
     <div class="type-filter">
       <label for="TypeDropdown">Type:&nbsp;</label>
-      <select name="TypeDropdown" id="TypeDropdown">
-
+      <select name="TypeDropdown" id="TypeDropdown" [(ngModel)]="selectedType" (change)="onTypeChange()">
         <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
       </select>
     </div><br>
-
-    <button class="resetBtn">Reset All</button>
+    <button class="resetBtn" (click)="filterProducts()">Apply</button> &nbsp;
+    <button class="resetBtn"(click)="resetFilters()">Reset All</button>
   </form>
 </div>
 
@@ -60,7 +59,7 @@
 
           <div class="card-content">
             <h6>{{product.product_Name}}</h6>
-            <div class="price">R {{product.product_Price | number:"1.2-2"}}
+            <div class="price">R {{(product.product_Price + (product.product_Price * VAT.vaT_Amount)) |number:"1.2-2"}}
               <p style="font-weight: lighter;">Available: ({{product.quantity}})</p>
             </div>
           </div>
@@ -88,6 +87,6 @@
     <span class="close" (click)="CloseModal()">&times;</span>
     <h4>{{ selectedProduct.product_Name }}</h4>
     <p>{{ selectedProduct.product_Description }}</p>
-    <p class="price">R {{selectedProduct.product_Price | number:"1.2-2"}}</p>
+    <p class="price">R {{(selectedProduct.product_Price + (selectedProduct.product_Price * VAT.vaT_Amount)) |number:"1.2-2"}}</p>
   </div>
 </div>

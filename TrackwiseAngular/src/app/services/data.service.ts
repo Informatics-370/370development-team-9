@@ -18,6 +18,12 @@ import { RegisterUser } from '../shared/register';
 import { Job } from '../shared/job';
 import { CardPayment, CheckoutRequest, NewCard } from '../shared/cardPayment';
 import { Forgotpass } from '../shared/forgotpass';
+import { Document } from '../shared/document';
+import { Weight } from '../shared/weight';
+import { MileageFuel } from '../shared/mileage_fuel';
+import { Fuel } from '../shared/fuel';
+import { Delivery } from '../shared/delivery';
+import { VAT } from '../shared/VAT';
 
 @Injectable({
   providedIn: 'root'
@@ -256,6 +262,13 @@ export class DataService {
     return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdmin/${admin_ID}`, {headers});
   }
 
+  GetAdminProfile(): Observable<Admin>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Admin>(`${this.apiUrl}Admin/GetAdminProfile`, {headers});
+  }
+
   EditAdmin(admin_ID: string , EditAdminReq: Admin):Observable<Admin>
   {
     let token = sessionStorage.getItem('Token');
@@ -368,13 +381,45 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<Job>(`${this.apiUrl}Job/GetJob/${job_ID}`, {headers} );
   }
+  
+  GetDocuments(document_ID : string): Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<any>(`${this.apiUrl}Job/DeliveryDocuments/${document_ID}`, {headers} );
+  }
 
+  UpdateActualWeight(delivery_ID: string, request:Weight): Observable<any> {
+    return this.httpClient.put<any>(`${this.apiUrl}Job/Updateweight/${delivery_ID}`, request);
+  }
+  
   CreateJob(AddJob: Job): Observable<Job>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.post<Job>(`${this.apiUrl}Job/CreateJob/`, AddJob, {headers})
     .pipe(map(result => result))
+  }
+
+  // GetAllMileageFuel(): Observable<any>{
+  //   let token = sessionStorage.getItem('Token');
+  //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.httpClient.get(`${this.apiUrl}Job/GetAllMileageFuel`, {headers})
+  //   .pipe(map(result => result))
+  // }
+
+
+  GetMileageFuel(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Job/GetMileage`, {headers})
+    .pipe(map(result => result))
+  }
+
+  EditMileageFuel(delivery_ID: string, request:MileageFuel): Observable<any>
+  {
+    return this.httpClient.put<any>(`${this.apiUrl}Job/EditMileageFuel/${delivery_ID}`, request);
+
   }
 
   /*PASSWORD */
@@ -433,6 +478,19 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get(`${this.apiUrl}Product/GetProductCategory`,{headers})
     .pipe(map(result => result))
+  }
+
+  /*VAT Section*/
+  GetVAT(): Observable<VAT>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<VAT>(`${this.apiUrl}VAT/GetVAT`, {headers});
+  }
+  UpdateVAT():Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT`, {}, {headers});
   }
 
   /*Customer Section*/
@@ -540,6 +598,91 @@ export class DataService {
       }
 
     return this.itemsInCart;
+  }
+
+  GetDelivery(delivery_ID: string): Observable<Delivery>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Delivery>(`${this.apiUrl}Job/GetDelivery/${delivery_ID}`, {headers});
+  }
+
+
+  /*Reports Section */
+  GetLoadsCarried(): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetLoadsCarried`, {headers})
+    .pipe(map(result => result))
+  }
+
+  GetJobList(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetJobListing`)
+    .pipe(map(result => result))
+  }
+
+  GetCompleteJobs(truckID:string): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetCompleteJobs/${truckID}`, {headers})
+    .pipe(map(result => result))
+  }
+
+  GetAllAdmins(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetAdmins` )
+    .pipe(map(result => result))
+  }
+
+  GetAllDrivers(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetDrivers`)
+    .pipe(map(result => result))
+  }
+
+  GetJobDetail(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Report/GetJobDetail`)
+    .pipe(map(result => result))
+  }
+
+
+  GetAudits(): Observable<any>{
+    return this.httpClient.get(`${this.apiUrl}Audit/GetAllAudit`)
+    .pipe(map(result => result))
+  }
+
+  CompleteJob(job_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CompleteJob/${job_ID}`, {}, {headers});
+  }
+
+  CancelJob(job_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/CancelJob/${job_ID}`, {}, {headers});
+  }
+
+  // GetAllMileageFuel(): Observable<any>{
+  //   let token = sessionStorage.getItem('Token');
+  //   let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.httpClient.get(`${this.apiUrl}Report/GetAllMileageFuel`, {headers})
+  //   .pipe(map(result => result))
+  // }
+
+  GetAllMileageFuel(): Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}Report/GetAllMileageFuel`)
+      .pipe(map(result => result));
+  }
+
+  EditFuel(delivery_ID: string, request:Fuel): Observable<any> {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.httpClient.put<any>(`${this.apiUrl}Job/EditFuel/${delivery_ID}`, request, {headers});
+  }
+  
+  GetTotalSales():Observable<any> {
+    return this.httpClient.get(`${this.apiUrl}Report/GetTotalSales`)
   }
 
 }

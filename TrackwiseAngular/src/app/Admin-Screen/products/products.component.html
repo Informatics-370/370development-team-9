@@ -24,6 +24,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Price</th>
+            <th>Price incl. VAT</th>
             <th>Quantity</th>
             <th>Category</th>
             <th>Type</th>
@@ -39,6 +40,7 @@
             <td style="font-weight: bold;">{{product.product_Name}}</td>
             <td>{{product.product_Description}}</td>
             <td class="price">R {{product.product_Price |number:"1.2-2"}}</td>
+            <td >R {{(product.product_Price + (product.product_Price * VAT.vaT_Amount)) |number:"1.2-2"}}</td>
             <td>{{product.quantity}}</td>
             <td>{{product.product_Category.name}}</td>
             <td>{{product.product_Type.name}}</td>

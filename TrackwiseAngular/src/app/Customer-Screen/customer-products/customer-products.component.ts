@@ -1,67 +1,42 @@
 import { Component } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { VAT } from 'src/app/shared/VAT';
 import { Product, ProductCategories, ProductTypes } from 'src/app/shared/product';
-
 
 @Component({
   selector: 'app-customer-products',
   templateUrl: './customer-products.component.html',
   styleUrls: ['./customer-products.component.scss'],
-  
 })
 export class CustomerProductComponent {
-  productTypes: any[] = []; 
-  productCategories: any[] = []; 
+  productTypes: any[] = [];
+  productCategories: any[] = [];
   searchText: string = ''; // Property to store the search text
   originalProducts: Product[] = []; // Property to store the original trailer data
-
-  GetProductType: ProductTypes =
-  {
-    product_Type_ID:"",
-    name:"",
-    description:""
+  VAT: VAT = {
+    vaT_Amount: 0
   };
 
-  GetProductCategory: ProductCategories =
-  {
-    product_Category_ID:"",
-    name:"",
-    description:""
-  };
+  selectedSortOption: string = 'NameAZ'; // Default sorting option
+  selectedCategory: string = ''; // Default category filter
+  selectedType: string = ''; // Default type filter
 
-  // cardFlipped=false;
   showModal: boolean = false;
   selectedProduct: Product | null = null;
 
-  constructor(private dataService: DataService, private router : Router) {}
+  constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
     this.GetProductCategories();
     this.GetProductTypes();
     this.GetProducts();
+    this.GetVAT();
     this.dataService.calculateQuantity();
+    this.filterProducts(); // Call the filter function initially
   }
 
- products : Product[] = [];
-
-GetAllProducts() {
-  this.products=JSON.parse(localStorage.getItem('product')!);
-  }
-
-  initializeVisibleQuantities() {
-    let AddCartItem = JSON.parse(sessionStorage.getItem("cartItem") || '[]');
-
-    this.products.forEach((product) => {
-      let CartItem = AddCartItem.find((element: { product_ID: any; }) => element.product_ID == product.product_ID);
-      if(CartItem){
-        product.quantity = CartItem.quantity - CartItem.cartQuantity;
-      }
-
-    });
-  }
+  products: Product[] = [];
 
   GetProducts() {
     this.dataService.GetProducts().subscribe((result) => {
@@ -75,15 +50,24 @@ GetAllProducts() {
           product.quantity = CartItem.quantity - CartItem.cartQuantity;
         }
       });
-      this.originalProducts = [...productList]
+      this.originalProducts = [...productList];
+
       // Push the products into the products array after processing
       productList.forEach((element) => {
         this.products.push(element);
-        console.log(element);
       });
     });
   }
-  
+
+  GetVAT()
+  {
+    this.dataService.GetVAT().subscribe({
+      next: (response) => {
+        this.VAT = response;
+        console.log(this.VAT)
+      }
+    })
+  }
 
   AddItemToCart(event: Event, product: any) {
     
@@ -142,27 +126,24 @@ GetAllProducts() {
   }
 
   GetProductTypes() {
-    this.dataService.GetProductTypes().subscribe(result => {
-      this.productTypes = result; // Assign the retrieved product types directly to the "productTypes" array
-      console.log(this.productTypes);
+    this.dataService.GetProductTypes().subscribe((result) => {
+      this.productTypes = result;
     });
   }
-    
-    GetProductCategories() {
-      this.dataService.GetProductCategories().subscribe(result => {
-        this.productCategories = result; // Assign the retrieved product types directly to the "productTypes" array
-        console.log(this.productCategories);
-      });
-    }
 
+  GetProductCategories() {
+    this.dataService.GetProductCategories().subscribe((result) => {
+      this.productCategories = result;
+    });
+  }
 
   OpenModal(product: Product) {
-    this.selectedProduct = product; // Store the selected product
+    this.selectedProduct = product;
     this.showModal = true;
   }
 
   CloseModal() {
-    this.selectedProduct = null; // Clear the selected product when closing the modal
+    this.selectedProduct = null;
     this.showModal = false;
   }
 
@@ -173,19 +154,19 @@ GetAllProducts() {
     } else {
       const searchTextLower = this.searchText.toLowerCase();
 
-      // Filter the trailers based on the search text
-      const filteredProducts = this.originalProducts.filter(product => {
+      // Filter the products based on the search text
+      const filteredProducts = this.originalProducts.filter((product) => {
         const name = product.product_Name.toLowerCase();
         const description = product.product_Description.toLowerCase();
         const price = product.product_Price;
         const category = product.product_Category.name.toLowerCase();
         const type = product.product_Type.name.toLowerCase();
-        
+
         return (
-          name.includes(searchTextLower)||
-          price.toString().includes(searchTextLower)||
-          description.includes(searchTextLower) || 
-          category.includes(searchTextLower)||
+          name.includes(searchTextLower) ||
+          price.toString().includes(searchTextLower) ||
+          description.includes(searchTextLower) ||
+          category.includes(searchTextLower) ||
           type.includes(searchTextLower)
         );
       });
@@ -200,10 +181,51 @@ GetAllProducts() {
     }
   }
 
-  // flipCard(product: Product): void {
-  //   product.this.cardFlipped = !product.cardFlipped;
-  // }
 
- }
+  filterProducts() {
+    let filteredProducts = [...this.originalProducts];
 
- 
+    // Apply sorting
+    if (this.selectedSortOption === 'NameAZ') {
+      filteredProducts.sort((a, b) => a.product_Name.localeCompare(b.product_Name));
+    } else if (this.selectedSortOption === 'NameZA') {
+      filteredProducts.sort((a, b) => b.product_Name.localeCompare(a.product_Name));
+    } else if (this.selectedSortOption === 'LowHigh') {
+      filteredProducts.sort((a, b) => a.product_Price - b.product_Price);
+    } else if (this.selectedSortOption === 'HighLow') {
+      filteredProducts.sort((a, b) => b.product_Price - a.product_Price);
+    }
+
+    // Apply category filter
+    if (this.selectedCategory) {
+      filteredProducts = filteredProducts.filter((product) => product.product_Category.product_Category_ID === this.selectedCategory);
+    }
+
+    // Apply type filter
+    if (this.selectedType) {
+      filteredProducts = filteredProducts.filter((product) => product.product_Type.product_Type_ID === this.selectedType);
+    }
+
+    this.products = filteredProducts;
+  }
+
+  resetFilters() {
+    this.selectedSortOption = '';
+    this.selectedCategory = '';
+    this.selectedType = '';
+    this.filterProducts();
+  }
+  
+  // Add the following functions to respond to filter/sort changes
+  onSortOptionChange() {
+    this.filterProducts();
+  }
+
+  onCategoryChange() {
+    this.filterProducts();
+  }
+
+  onTypeChange() {
+    this.filterProducts();
+  }
+}

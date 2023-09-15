@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 2
+      Documents
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +9,48 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
+      <ion-title size="large">Documents</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+  <h1>Weight</h1>
+  <table>
+      <tr  *ngFor="let row of weightRows; let i = index">
+        <td>
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files,'Weight')">
+        </td>
+      </tr>
+      <tr>
+        <ion-icon name="add-circle-outline" (click)="addWeightRow()"></ion-icon>
+      </tr>
+  </table>
+  <br>
+
+  <h1>Milage</h1>
+  <table>
+      <tr  *ngFor="let row of milageRows; let i = index">
+        <td>
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files, 'Mileage')">
+        </td>
+      </tr>
+      <tr>
+        <ion-icon name="add-circle-outline" (click)="addMileageRow()"></ion-icon>
+      </tr>
+  </table>
+  <br>
+
+  <h1>Fuel</h1>
+  <table>
+      <tr  *ngFor="let row of fuelRows; let i = index">
+        <td>
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files, 'Fuel')">
+        </td>
+      </tr>
+      <tr>
+        <ion-icon name="add-circle-outline" (click)="addFuelRow()"></ion-icon>
+      </tr>
+  </table>
+  <ion-button (click)="uploadSelectedFiles()">
+    Upload files
+  </ion-button>
 </ion-content>

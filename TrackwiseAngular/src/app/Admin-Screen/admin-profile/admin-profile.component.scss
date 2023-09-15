@@ -1,0 +1,109 @@
+/* user-card.component.css */
+.user-card {
+    width: 60%;
+    margin: 20px auto;
+    margin-top: 100px; /* Add top margin here */
+    background-color: rgb(223, 223, 223);
+  }
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: 35% auto; /* Two columns: 100px for profile photo and remaining space for user info */
+    grid-column-gap: 20px; /* Add some spacing between columns */
+    background-color: white;
+    margin-left: 15px;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  
+  .profile-photo {
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Add this to user-card.component.css */
+/* Add this to user-card.component.css */
+
+.edit-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px; /* Add some spacing between the button and the form */
+    background-color: white;
+    margin-left: 15PX;
+    margin-right: 15PX;
+    margin-bottom: 15PX;
+    border-radius: 5PX;
+    border: 2px solid #004F9E;
+    justify-content: space-between;
+  }
+  
+  .mat-form-field {
+    margin-bottom: 16px;
+    margin-top: 150px;
+  }
+  
+//   button[mat-button] {
+//     align-self: flex-end;
+//   }
+  
+  .EditProfileBtn, .EditPaymentInfoBtn{
+    background-color: white;
+    margin-left: 8px;
+    margin-right: 8px;
+    width: 100%;
+  }
+
+  .EditProfileBtn:hover, .EditPaymentInfoBtn:hover{
+    background-color: white;
+    // margin-left: 8px;
+    // margin-right: 8px;
+    // width: 100%; 
+    border: 2px solid #004F9E;
+    // #004F9E
+  }
+
+  .SaveBtn{
+    border: 2px solid #004F9E;
+    border-left-color: #004F9E;
+    border-top-color: #004F9E;
+    border-bottom-color: white;
+    border-right: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;
+    background-color: white;
+    color: #004F9E;
+    font-weight: bold;
+    width: 140px;
+    align-self: flex-end;
+  }
+
+  .SaveBtn:hover{
+  
+    border: 2px solid #004F9E;
+    // border-radius: 5px;
+    background-color: #004F9E;
+    color: white;
+    font-weight: bold;
+  }
+
