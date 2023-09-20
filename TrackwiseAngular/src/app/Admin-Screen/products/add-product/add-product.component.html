@@ -25,18 +25,16 @@
                    name="price" [(ngModel)]="AddProductRequest.product_Price" min="0" (blur)="removeNegativeSign()">
           </div>
 
-        <div class="mb-3">
-          <label for="category" class="form-label">Category</label>
-          <select class="form-select" name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="AddProductRequest.product_Category.product_Category_ID">
-
-            <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
-          </select>
-      </div>
+          <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="AddProductRequest.product_Category.product_Category_ID" >
+              <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
+            </select>
+          </div>
 
       <div class="mb-3">
         <label for="type" class="form-label">Type</label>
-        <select class="form-select" name="CategoryDropdown" id="TypeDropdown" [(ngModel)]="AddProductRequest.product_Type.product_Type_ID">
-
+        <select class="form-select" name="CategoryDropdown" id="TypeDropdown" [(ngModel)]="AddProductRequest.product_Type.product_Type_ID" (change)="onTypeChange($event)">
           <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
         </select>
       </div>

@@ -7,7 +7,7 @@ import { Trailer } from '../shared/trailer';
 import { Admin } from '../shared/admin';
 import { Client } from '../shared/client';
 import { Supplier } from '../shared/supplier';
-import { Product } from '../shared/product';
+import { Product, ProductCategories } from '../shared/product';
 import { LoginUser } from '../shared/login-user';
 import { Customer } from '../shared/customer';
 import { User } from '../shared/user';
@@ -24,6 +24,7 @@ import { MileageFuel } from '../shared/mileage_fuel';
 import { Fuel } from '../shared/fuel';
 import { Delivery } from '../shared/delivery';
 import { VAT } from '../shared/VAT';
+import { ProductType } from '../shared/productType';
 
 @Injectable({
   providedIn: 'root'
@@ -469,15 +470,25 @@ export class DataService {
   GetProductTypes(): Observable<any>{
     let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.get(`${this.apiUrl}Product/GetProductType`,{headers})
+    return this.httpClient.get<ProductType>(`${this.apiUrl}Product/GetProductType`,{headers})
     .pipe(map(result => result))
   }
 
   GetProductCategories(): Observable<any>{
     let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.get(`${this.apiUrl}Product/GetProductCategory`,{headers})
+    return this.httpClient.get<ProductCategories>(`${this.apiUrl}Product/GetProductCategory`,{headers})
     .pipe(map(result => result))
+  }
+
+  GetSpesificProductType(typeID: string): Observable<any>
+  {
+    return this.httpClient.get<any>(`${this.apiUrl}Product/GetSpesificProductType/${typeID}`);
+  }
+
+  GetSpesificProductCategory(categoryID: string): Observable<any>
+  {
+    return this.httpClient.get<any>(`${this.apiUrl}Product/GetSpesificProductCategory/${categoryID}`);
   }
 
   /*VAT Section*/

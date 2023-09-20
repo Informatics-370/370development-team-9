@@ -20,6 +20,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductTypeCategories> ProductTypeCategories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Trailer> Trailers { get; set; }
         public DbSet<TrailerStatus> TrailerStatuses { get; set; }
@@ -81,6 +82,21 @@ namespace TrackwiseAPI.DBContext
                 .HasOne(p => p.ProductCategory)
                 .WithMany(pt => pt.Products)
                 .HasForeignKey(p => p.Product_Category_ID);
+
+            //ProductCategory has a many-many relationship with ProductType
+            modelBuilder.Entity<ProductTypeCategories>()
+                .HasKey(p => new { p.Product_Category_ID, p.Product_Type_ID });
+
+            modelBuilder.Entity<ProductTypeCategories>()
+                .HasOne(p => p.ProductCategory)
+                .WithMany(o => o.ProductTypeCategories)
+                .HasForeignKey(ol => ol.Product_Category_ID);
+
+            modelBuilder.Entity<ProductTypeCategories>()
+                .HasOne(ol => ol.ProductType)
+                .WithMany(p => p.ProductTypeCategories)
+                .HasForeignKey(ol => ol.Product_Type_ID);
+
 
             //Product has a many-many relationship with Order_Line
             modelBuilder.Entity<Order_Line>()
@@ -331,6 +347,30 @@ namespace TrackwiseAPI.DBContext
                 new ProductCategory { Product_Category_ID = "6", Name = "Brake", Description = "products for brakes"},
                 new ProductCategory { Product_Category_ID = "7", Name = "Wheel", Description = "products for wheels"},
                 new ProductCategory { Product_Category_ID = "8", Name = "Consumables", Description = "bolts,nuts ect.." }
+            );
+
+            modelBuilder.Entity<ProductTypeCategories>().HasData(
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "1"},
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "2" },
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "3" },
+               new ProductTypeCategories { Product_Type_ID = "2", Product_Category_ID = "3" },
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "4" },
+               new ProductTypeCategories { Product_Type_ID = "2", Product_Category_ID = "4" },
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "5" },
+               new ProductTypeCategories { Product_Type_ID = "2", Product_Category_ID = "5" },
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "6" },
+               new ProductTypeCategories { Product_Type_ID = "2", Product_Category_ID = "6" },
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "7" },
+               new ProductTypeCategories { Product_Type_ID = "2", Product_Category_ID = "7" },
+
+               new ProductTypeCategories { Product_Type_ID = "1", Product_Category_ID = "8" },
+               new ProductTypeCategories { Product_Type_ID = "2", Product_Category_ID = "8" }
             );
 
             modelBuilder.Entity<Product>().HasData(

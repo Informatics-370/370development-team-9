@@ -256,6 +256,64 @@ namespace TrackwiseAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetSpesificProductType/{product_Type_ID}")]
+        public async Task<IActionResult> GetSpesificProductTypeAsync(string product_Type_ID)
+        {
+            try
+            {
+                var result = await _productRepository.GetSpesificProductTypeAsync(product_Type_ID);
+
+                var productType = result.Select(type => new ProductSpesificTypeDTO
+                {
+                    Product_Type_ID = type.Product_Type_ID,
+                    Name = type.ProductType.Name,
+                    Description = type.ProductType.Description,
+                    Product_Category = new ProductSpesificCategoryDTO
+                    {
+                        Product_Category_ID = type.ProductCategory.Product_Category_ID,
+                        Name = type.ProductCategory.Name,
+                        Description = type.ProductCategory.Description
+                    }
+                }).ToList();
+
+                return Ok(productType);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetSpesificProductCategory/{product_Category_ID}")]
+        public async Task<IActionResult> GetSpesificProductCatgegoryAsync(string product_Category_ID)
+        {
+            try
+            {
+                var result = await _productRepository.GetSpesificProductCategoryAsync(product_Category_ID);
+
+                var productCategory = result.Select(type => new ProductSpesificCategoryDTO
+                {
+                    Product_Category_ID = type.Product_Category_ID,
+                    Name = type.ProductCategory.Name,
+                    Description = type.ProductCategory.Description,
+                    Product_Type = new ProductSpesificTypeDTO
+                    {
+                        Product_Type_ID = type.ProductType.Product_Type_ID,
+                        Name = type.ProductType.Name,
+                        Description = type.ProductType.Description
+                    }
+                }).ToList();
+
+                return Ok(productCategory);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support");
+            }
+        }
+
     }
 }
 
