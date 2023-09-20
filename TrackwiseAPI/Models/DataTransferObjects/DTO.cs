@@ -62,6 +62,23 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Name { get; set; }
         public string Description { get; set; }
     }
+
+    public class ProductSpesificTypeDTO
+    {
+        public string Product_Type_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ProductSpesificCategoryDTO Product_Category { get; set; }
+    }
+
+    public class ProductSpesificCategoryDTO
+    {
+        public string Product_Category_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ProductSpesificTypeDTO Product_Type { get; set; }
+    }
+
     public class DeliveryDTO
     {
         public string Delivery_ID { get; set; }

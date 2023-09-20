@@ -15,5 +15,7 @@ namespace TrackwiseAPI.Models.Interfaces
         //Categories and type
         Task<ProductCategory[]> GetProductCategoryAsync();
         Task<ProductType[]> GetProductTypeAsync();
+        Task<ProductTypeCategories[]> GetSpesificProductTypeAsync(string typeID);
+        Task<ProductTypeCategories[]> GetSpesificProductCategoryAsync(string categoryID);
     }
 }

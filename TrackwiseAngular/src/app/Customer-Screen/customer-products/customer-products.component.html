@@ -36,7 +36,7 @@
 
     <div class="type-filter">
       <label for="TypeDropdown">Type:&nbsp;</label>
-      <select name="TypeDropdown" id="TypeDropdown" [(ngModel)]="selectedType" (change)="onTypeChange()">
+      <select name="TypeDropdown" id="TypeDropdown" [(ngModel)]="selectedType" (change)="onTypeChange($event)">
         <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
       </select>
     </div><br>

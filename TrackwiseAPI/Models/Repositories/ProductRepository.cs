@@ -48,6 +48,24 @@ namespace TrackwiseAPI.Models.Repositories
             return await query.ToArrayAsync();
         }
 
+        public async Task<ProductTypeCategories[]> GetSpesificProductTypeAsync(string typeID)
+        {
+            IQueryable<ProductTypeCategories> query = _context.ProductTypeCategories
+                .Where(c => c.Product_Type_ID == typeID)
+                .Include(o => o.ProductType)
+                .Include(o => o.ProductCategory);
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<ProductTypeCategories[]> GetSpesificProductCategoryAsync(string categoryID)
+        {
+            IQueryable<ProductTypeCategories> query = _context.ProductTypeCategories
+                .Where(c => c.Product_Category_ID == categoryID)
+                .Include(o => o.ProductCategory)
+                .Include(o => o.ProductType);
+            return await query.ToArrayAsync();
+        }
+
         public void Update(Product product)
         {
             _context.Products.Update(product);
