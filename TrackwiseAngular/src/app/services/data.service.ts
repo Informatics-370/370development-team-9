@@ -460,6 +460,20 @@ export class DataService {
       return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq, {headers});
   }
 
+  UnlistPorduct(product_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Product/UnlistProduct/${product_ID}`, {} , {headers});
+  }
+
+  RelistPorduct(product_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Product/RelistProduct/${product_ID}`, {} , {headers});
+  }
+
   DeleteProduct(product_ID: string):Observable<Product>
   {
     let token = sessionStorage.getItem('Token');

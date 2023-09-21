@@ -26,18 +26,19 @@
     <label for="HighLow">&nbsp;Price (High - Low)</label><br><br>
 
     <h4>Filter by:</h4>
-    <div class="category-filter">
-      <label for="CategoryDropdown">Category:&nbsp;</label>
-      <select name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
-
-        <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
-      </select>
-    </div>
 
     <div class="type-filter">
       <label for="TypeDropdown">Type:&nbsp;</label>
       <select name="TypeDropdown" id="TypeDropdown" [(ngModel)]="selectedType" (change)="onTypeChange($event)">
         <option *ngFor="let prodType of productTypes" [value]="prodType.product_Type_ID">{{prodType.name}}</option>
+      </select>
+    </div>
+    
+    <div class="category-filter">
+      <label for="CategoryDropdown">Category:&nbsp;</label>
+      <select name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+
+        <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
       </select>
     </div><br>
     <button class="resetBtn" (click)="filterProducts()">Apply</button> &nbsp;
@@ -48,7 +49,7 @@
 <div class="main-content">
   <div class="card-container">
     <div class="viewDetails" *ngFor="let product of products" (click)="OpenModal(product)">
-      <mat-card class="card">
+      <mat-card class="card" *ngIf="product.listStatus == true">
         <div class="front">
           <div class="header-content">
             <div class="centered">
