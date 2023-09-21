@@ -18,6 +18,7 @@
       <br>
   
       <!-- Table -->
+      <h3>Listed Products</h3>
       <table class="table ">
         <thead id="header">
           <tr>
@@ -32,11 +33,11 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody *ngFor="let product of products">
           <tr *ngIf="products.length === 0">
             <td colspan="5">No results were found.</td>
           </tr>
-          <tr *ngFor="let product of products">
+          <tr *ngIf="product.listStatus == true">
             <td style="font-weight: bold;">{{product.product_Name}}</td>
             <td>{{product.product_Description}}</td>
             <td class="price">R {{product.product_Price |number:"1.2-2"}}</td>
@@ -46,7 +47,44 @@
             <td>{{product.product_Type.name}}</td>
        
             <td><button type="button" class="btn edit-btn" [routerLink]="['edit-product', product.product_ID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="DeleteProduct(product.product_ID)">Remove</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="UnlistProduct(product.product_ID)">Unlist</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <br>
+  
+      <!-- Table -->
+      <h3>Unlisted Products</h3>
+      <table class="table ">
+        <thead id="header">
+          <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Price incl. VAT</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Type</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody *ngFor="let product of products">
+          <tr *ngIf="products.length === 0">
+            <td colspan="5">No results were found.</td>
+          </tr>
+          <tr *ngIf="product.listStatus == false">
+            <td style="font-weight: bold;">{{product.product_Name}}</td>
+            <td>{{product.product_Description}}</td>
+            <td class="price">R {{product.product_Price |number:"1.2-2"}}</td>
+            <td >R {{(product.product_Price + (product.product_Price * VAT.vaT_Amount)) |number:"1.2-2"}}</td>
+            <td>{{product.quantity}}</td>
+            <td>{{product.product_Category.name}}</td>
+            <td>{{product.product_Type.name}}</td>
+       
+            <td><button type="button" class="btn edit-btn" [routerLink]="['edit-product', product.product_ID]">Edit</button></td>
+            <td><button type="button" class="btn remove-btn" (click)="RelistProduct(product.product_ID)">Relist</button></td>
           </tr>
         </tbody>
       </table>

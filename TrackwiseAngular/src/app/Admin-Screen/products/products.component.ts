@@ -109,5 +109,25 @@ export class ProductsComponent {
       })
     }
 
+    UnlistProduct(ProductID:string)
+    {
+      this.dataService.UnlistPorduct(ProductID).subscribe({
+        next: (response) => {
+          this.products = [];
+          this.GetProducts();
+        }
+      })
+    }
+
+    RelistProduct(ProductID:string)
+    {
+      this.dataService.RelistPorduct(ProductID).subscribe({
+        next: (response) => {
+          this.products = [];
+          this.GetProducts();
+        }
+      })
+    }
+
 
 }

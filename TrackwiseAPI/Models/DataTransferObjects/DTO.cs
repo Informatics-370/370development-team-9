@@ -44,6 +44,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Product_Description { get; set; }
         public double Product_Price { get; set; }
         public int Quantity { get; set; }
+        public bool? ListStatus { get; set; }
         public string? Image { get; set; }
         public ProductTypeDTO Product_Type { get; set; }
         public ProductCategoryDTO Product_Category { get; set; }

@@ -38,6 +38,7 @@ namespace TrackwiseAPI.Controllers
                     Product_Description = p.Product_Description,
                     Product_Price = p.Product_Price,
                     Quantity = p.Quantity,
+                    ListStatus = p.ListStatus,
                     Image = p.Image,
                     Product_Category = new ProductCategoryDTO
                     {
@@ -81,6 +82,7 @@ namespace TrackwiseAPI.Controllers
                     Product_Description = product.Product_Description,
                     Product_Price = product.Product_Price,
                     Quantity = product.Quantity,
+                    ListStatus = product.ListStatus,
                     Image = product.Image,
                     Product_Category = new ProductCategoryDTO
                     {
@@ -123,6 +125,7 @@ namespace TrackwiseAPI.Controllers
                 Product_Description = product.Product_Description,
                 Product_Price = product.Product_Price,
                 Quantity = product.Quantity,
+                ListStatus = true,
                 Image = product.Image,
                 Product_Category_ID = product.Product_Category.Product_Category_ID,
                 Product_Type_ID = product.Product_Type.Product_Type_ID
@@ -194,6 +197,58 @@ namespace TrackwiseAPI.Controllers
             return BadRequest("Your request is invalid.");
         }
 
+        [HttpPut]
+        [Route("UnlistProduct/{productId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> UnlistProduct(string productId)
+        {
+            try
+            {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Unlist Product", CreatedDate = DateTime.Now, User = userEmail };
+                var product = await _productRepository.GetProductAsync(productId);
+
+                product.ListStatus = false;
+
+                if (await _productRepository.SaveChangesAsync())
+                {
+                    return Ok(product);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
+        [HttpPut]
+        [Route("RelistProduct/{productId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> RelistProduct(string productId)
+        {
+            try
+            {
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Relist Product", CreatedDate = DateTime.Now, User = userEmail };
+                var product = await _productRepository.GetProductAsync(productId);
+
+                product.ListStatus = true;
+
+                if (await _productRepository.SaveChangesAsync())
+                {
+                    return Ok(product);
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+            return BadRequest("Your request is invalid.");
+        }
+
 
         [HttpDelete]
         [Route("DeleteProduct/{productId}")]
@@ -204,7 +259,7 @@ namespace TrackwiseAPI.Controllers
             {
                 var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
                 var auditId = Guid.NewGuid().ToString();
-                var audit = new Audit { Audit_ID = auditId, Action = "Delete Trailer", CreatedDate = DateTime.Now, User = userEmail };
+                var audit = new Audit { Audit_ID = auditId, Action = "Delete Product", CreatedDate = DateTime.Now, User = userEmail };
                 var existingProduct = await _productRepository.GetProductAsync(productId);
 
                 if (existingProduct == null) return NotFound($"The product does not exist");
