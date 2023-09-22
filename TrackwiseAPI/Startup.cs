@@ -91,9 +91,9 @@ public class Startup
         .AddDefaultTokenProviders();
 
         //Add Config for Required Email
-        /*        services.Configure<IdentityOptions>(
-                    opts => opts.SignIn.RequireConfirmedEmail = true
-                    );*/
+        services.Configure<IdentityOptions>(
+            opts => opts.SignIn.RequireConfirmedEmail = true
+            );
 
         // Configure the token expiration time for Two-Factor Authentication codes
         services.Configure<DataProtectionTokenProviderOptions>(o =>
@@ -188,6 +188,8 @@ public class Startup
                     user.Id = adminId;
                     user.UserName = email;
                     user.Email = email;
+                    user.EmailConfirmed = true;
+                    user.TwoFactorEnabled = true;
 
                     await userManager.CreateAsync(user, password);
 
@@ -222,6 +224,7 @@ public class Startup
                     user.Id = customerId;
                     user.UserName = email;
                     user.Email = email;
+                    user.EmailConfirmed = true;
 
                     await userManager.CreateAsync(user, password);
 
