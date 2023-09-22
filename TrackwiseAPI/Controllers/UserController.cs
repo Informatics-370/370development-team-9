@@ -17,6 +17,7 @@ using System.Web;
 using TrackwiseAPI.Models.Password;
 using System.Security.Cryptography;
 using TrackwiseAPI.Models.Email;
+using Azure;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -25,6 +26,7 @@ namespace TrackwiseAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly ICustomerRepository _customerRepository;
@@ -33,7 +35,8 @@ namespace TrackwiseAPI.Controllers
         private readonly MailController _mailController;
         private readonly IAuditRepository _auditRepository;
 
-        public UserController(UserManager<AppUser> userManager,
+        public UserController(UserManager<AppUser> userManager, 
+            SignInManager<AppUser> signInManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             ICustomerRepository customerRepository, 
@@ -42,6 +45,7 @@ namespace TrackwiseAPI.Controllers
             MailController mailController, IAuditRepository auditRepository)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _customerRepository = customerRepository;
@@ -90,43 +94,137 @@ namespace TrackwiseAPI.Controllers
 
         }
 
-
-
-        [HttpPost]
-        [Route("Login")]
-        public async Task<ActionResult> Login(UserVM uvm)
+        [HttpGet]
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
-            var user = await _userManager.FindByNameAsync(uvm.emailaddress);
-            var auditId = Guid.NewGuid().ToString();
-            var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
             {
-                try
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
                 {
-                    var token = await GenerateJWTToken(user); // Generate the JWT token
-
-                    var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
-
-                    var response = new
-                    {
-                        Token = token,
-                        Role = roles.FirstOrDefault()
-                    };
-                    _auditRepository.Add(audit);
-                    await _auditRepository.SaveChangesAsync();
-                    return Ok(response);
-                }
-                catch (Exception)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    return StatusCode(StatusCodes.Status200OK);
                 }
             }
-            else
-            {
-                return NotFound("User does not exist or invalid credentials");
-            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
+        //665574
+
+
+            [HttpPost]
+            [Route("Login")]
+            public async Task<ActionResult> Login(UserVM uvm)
+            {
+                var user = await _userManager.FindByNameAsync(uvm.emailaddress);
+                var auditId = Guid.NewGuid().ToString();
+          
+                var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
+
+                if (user.TwoFactorEnabled)
+                {
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.PasswordSignInAsync(user, uvm.password, false, true);
+                    var twoFtoken = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+
+                    var twoFactorMail = new TwoFactor
+                    {
+                        Email = user.Email,
+                        Name = user.UserName,
+                        twoFactorOTP = twoFtoken
+                    };
+
+                    var mail = await _mailController.TwoFactorEmail(twoFactorMail);
+
+                    //email OTP
+                    /*var message = new Message(new string[] { user.Email! }, "OTP Confrimation", twoFtoken);
+                    _emailService.SendEmail(message);*/
+
+                    return StatusCode(StatusCodes.Status200OK);
+                }
+
+                if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
+                {
+                    try
+                    {
+                        var token = await GenerateJWTToken(user); // Generate the JWT token
+
+                        var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
+
+                        var response = new
+                        {
+                            Token = token,
+                            Role = roles.FirstOrDefault()
+                        };
+                        _auditRepository.Add(audit);
+                        await _auditRepository.SaveChangesAsync();
+                        return Ok(response);
+                    }
+                    catch (Exception)
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    }
+                }
+                else
+                {
+                    return NotFound("User does not exist or invalid credentials");
+                }
+            }
+
+            [HttpPost]
+            [Route("login-2FA")]
+            public async Task<IActionResult> LoginWithOTP(string code, string username)
+            {
+                var user = await _userManager.FindByNameAsync(username);
+                var signInResult = await _signInManager.TwoFactorSignInAsync("Email", code, false, false);
+
+                if (signInResult.Succeeded)
+                {
+                    if (user != null)
+                    {
+                        try
+                        {
+                            var token = await GenerateJWTToken(user); // Generate the JWT token
+                            var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
+
+                            var response = new
+                            {
+                                Token = token,
+                                Role = roles.FirstOrDefault()
+                            };
+
+                            return Ok(response);
+                        }
+                        catch (Exception)
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                        }
+                    }
+                    else
+                    {
+                        return NotFound("User does not exist or invalid credentials");
+                    }
+                }
+                else
+                {
+                    if (signInResult.IsLockedOut)
+                    {
+                        // Handle account lockout
+                        return BadRequest("Account is locked out. Please try again later.");
+                    }
+                    else if (signInResult.IsNotAllowed)
+                    {
+                        // Handle cases where two-factor authentication is not allowed
+                        return BadRequest("Two-factor authentication is not enabled for this user.");
+                    }
+                    else
+                    {
+                        // Handle other failures (e.g., invalid code)
+                        return BadRequest("Invalid two-factor authentication code.");
+                    }
+                }
+            }
+
         /*
         [HttpPost("forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)

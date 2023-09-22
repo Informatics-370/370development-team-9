@@ -90,6 +90,17 @@ public class Startup
         .AddEntityFrameworkStores<TwDbContext>()
         .AddDefaultTokenProviders();
 
+        //Add Config for Required Email
+        /*        services.Configure<IdentityOptions>(
+                    opts => opts.SignIn.RequireConfirmedEmail = true
+                    );*/
+
+        // Configure the token expiration time for Two-Factor Authentication codes
+        services.Configure<DataProtectionTokenProviderOptions>(o =>
+        {
+            o.TokenLifespan = TimeSpan.FromMinutes(5); // Set the token expiration time to 5 minutes
+        });
+
         services.AddAuthentication()
             .AddCookie()
             .AddJwtBearer(options =>
