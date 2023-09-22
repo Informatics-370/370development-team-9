@@ -5,11 +5,11 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-confirm-email',
+  templateUrl: './confirm-email.component.html',
+  styleUrls: ['./confirm-email.component.scss']
 })
-export class LoginComponent {
+export class ConfirmEmailComponent {
   loginFormGroup: FormGroup = this.fb.group({
     emailaddress: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
@@ -30,13 +30,6 @@ export class LoginComponent {
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
         (result) => {
           // Handle successful login
-          if(result.token.value.token == "" && result.role == "Admin")
-          {
-            this.router.navigateByUrl('Authentication/two-factor-auth');
-            const user = result.token.value.user;
-            localStorage.setItem('User', JSON.stringify(user));
-            localStorage.setItem('Role', JSON.stringify(result.role));
-          } else{
           sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
           sessionStorage.setItem('Token', result.token.value.token);
           const role = result.role;
@@ -52,8 +45,6 @@ export class LoginComponent {
           } else {
             this.router.navigateByUrl('Customer-Screen/customer-products');
           }
-          }
-
         },
         (error) => {
           // Handle login error
@@ -67,5 +58,4 @@ export class LoginComponent {
       );
     }
   }
-  
 }

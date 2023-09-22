@@ -25,6 +25,8 @@ import { Fuel } from '../shared/fuel';
 import { Delivery } from '../shared/delivery';
 import { VAT } from '../shared/VAT';
 import { ProductType } from '../shared/productType';
+import { TwoFactor } from '../shared/twoFactor';
+import { ConfirmEmail } from '../shared/confirmEmail';
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +83,14 @@ export class DataService {
 
   Register( registerUser: RegisterUser ) {
     return this.httpClient.post(`${this.apiUrl}User/Register`, registerUser);
+  }
+
+  ConfirmTwoFactor(twoFactor: TwoFactor){
+    return this.httpClient.post<TwoFactor>(`${this.apiUrl}User/login-2FA`, twoFactor, this.httpOptions)
+  }
+
+  ConfirmEmail(confirmEmail: ConfirmEmail){
+    return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail, this.httpOptions)
   }
 
   /* Logout */

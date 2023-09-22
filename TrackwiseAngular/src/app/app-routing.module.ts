@@ -39,6 +39,8 @@ import { AddProductComponent } from './Admin-Screen/products/add-product/add-pro
 import { EditProductComponent } from './Admin-Screen/products/edit-product/edit-product.component';
 import { LoginComponent } from './Authentication/login/login.component';
 import { RegisterComponent } from './Authentication/register/register.component';
+import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-factor-auth.component';
+import { ConfirmEmailComponent } from './Authentication/confirm-email/confirm-email.component';
 
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
@@ -71,6 +73,8 @@ import { AuditComponent } from './Admin-Screen/audit/audit.component';
 const routes: Routes = [
   { path: 'Authentication/login', component: LoginComponent },
   { path: 'Authentication/register', component: RegisterComponent },
+  { path: 'Authentication/two-factor-auth', component: TwoFactorAuthComponent },
+  { path: 'Authentication/confirm-email', component: ConfirmEmailComponent },
 
   {path: 'Admin-Screen/audits', component:AuditComponent, canActivate:[AdminGuard]},
   { path: 'Admin-Screen/admin-home', component: AdminHomeComponent, canActivate: [AdminGuard] },

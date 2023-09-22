@@ -18,6 +18,8 @@ using TrackwiseAPI.Models.Password;
 using System.Security.Cryptography;
 using TrackwiseAPI.Models.Email;
 using Azure;
+using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -114,12 +116,12 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM confirmEmailVM)
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(confirmEmailVM.Email);
             if (user != null)
             {
-                var result = await _userManager.ConfirmEmailAsync(user, token);
+                var result = await _userManager.ConfirmEmailAsync(user, confirmEmailVM.Token);
                 if (result.Succeeded)
                 {
                     return StatusCode(StatusCodes.Status200OK);
@@ -151,13 +153,21 @@ namespace TrackwiseAPI.Controllers
                         twoFactorOTP = twoFtoken
                     };
 
-                    var mail = await _mailController.TwoFactorEmail(twoFactorMail);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var response = new
+                {
+                    Token = new { value = new { token = "", user = user.UserName } },
+                    Role = roles.FirstOrDefault()
+                };
+
+                var mail = await _mailController.TwoFactorEmail(twoFactorMail);
 
                     //email OTP
                     /*var message = new Message(new string[] { user.Email! }, "OTP Confrimation", twoFtoken);
                     _emailService.SendEmail(message);*/
 
-                    return StatusCode(StatusCodes.Status200OK);
+                    return Ok(response);
                 }
 
                 if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
@@ -190,10 +200,10 @@ namespace TrackwiseAPI.Controllers
 
             [HttpPost]
             [Route("login-2FA")]
-            public async Task<IActionResult> LoginWithOTP(string code, string username)
+            public async Task<IActionResult> LoginWithOTP(TwoFactorVM twoFactorVM)
             {
-                var user = await _userManager.FindByNameAsync(username);
-                var signInResult = await _signInManager.TwoFactorSignInAsync("Email", code, false, false);
+                var user = await _userManager.FindByNameAsync(twoFactorVM.Username);
+                var signInResult = await _signInManager.TwoFactorSignInAsync("Email", twoFactorVM.Code, false, false);
 
                 if (signInResult.Succeeded)
                 {

@@ -1,0 +1,22 @@
+<br>2factorpage
+<br>
+<br>
+
+<div class="container">
+  <div class="login-wrapper">
+    <mat-card class="box" *ngIf="!isLoading">
+
+      <img class="logo" src="/assets/LTTLogo.jpg">
+
+      <form class="login-form" [formGroup]="twoFactorFormGroup">
+        <div class="form-field">
+          <!-- <label class="form-label">Password</label> -->
+          <input class="form-input" type="text" placeholder="OTP" formControlName="code" required>
+        </div>
+        <button class="login-btn" (click)="TwoFactorAuth()">Submit</button><br>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </form>
+    </mat-card>
+    <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>
+  </div>
+</div>
