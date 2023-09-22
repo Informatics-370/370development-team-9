@@ -202,5 +202,29 @@ namespace TrackwiseAPI.Models.Email
             }
         }
 
+        [HttpPost]
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmail confirmEmail)
+        {
+
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { confirmEmail.Email },
+                "Confirm Email",
+                _mail.GetEmailTemplate("ConfirmMail", confirmEmail));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
     }
 }

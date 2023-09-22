@@ -62,14 +62,11 @@ namespace TrackwiseAPI.Controllers
         {
             var customerId = Guid.NewGuid().ToString();
             var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
-            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var auditId = Guid.NewGuid().ToString();
-            var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 _customerRepository.Add(customer);
                 await _customerRepository.SaveChangesAsync();
-                _auditRepository.Add(audit);
+                //_auditRepository.Add(audit);
                 await _auditRepository.SaveChangesAsync();
 
                 var user = new AppUser
@@ -81,6 +78,27 @@ namespace TrackwiseAPI.Controllers
                 var result = await _userManager.CreateAsync(user, cvm.Password);
 
                 await _userManager.AddToRoleAsync(user, "Customer");
+
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
+                _auditRepository.Add(audit);
+
+                //Add Token to Verify the email....
+                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var confirmationMail = new ConfirmEmail
+                {
+                    Email = user.Email,
+                    Name = user.UserName,
+                    ConfirmationLink = confirmationLink
+                };
+
+                var mail = await _mailController.ConfirmEmail(confirmationMail);
+
+                /*var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+                _emailService.SendEmail(message);*/
 
                 if (result.Errors.Count() > 0) 
                     return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
@@ -109,7 +127,6 @@ namespace TrackwiseAPI.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-        //665574
 
 
             [HttpPost]
