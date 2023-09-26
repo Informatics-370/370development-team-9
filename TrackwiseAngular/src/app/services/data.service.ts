@@ -78,19 +78,27 @@ export class DataService {
 
   /*LOGIN*/
   LoginUser(loginUser: LoginUser){
+    console.log(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
     return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
+
 
   Register( registerUser: RegisterUser ) {
     return this.httpClient.post(`${this.apiUrl}User/Register`, registerUser);
   }
 
-  ConfirmTwoFactor(twoFactor: TwoFactor){
-    return this.httpClient.post<TwoFactor>(`${this.apiUrl}User/login-2FA`, twoFactor, this.httpOptions)
+  // ConfirmTwoFactor(twoFactor: TwoFactor): Observable<TwoFactor>{
+  //   console.log(`${this.apiUrl}User/login-2FA`, twoFactor)
+  //   return this.httpClient.post<TwoFactor>(`${this.apiUrl}User/login-2FA`, twoFactor)
+  // }
+
+  ConfirmTwoFactor(twoFactor: TwoFactor): Observable<User>{
+    console.log(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
+    return this.httpClient.post<User>(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
   }
 
-  ConfirmEmail(confirmEmail: ConfirmEmail){
-    return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail, this.httpOptions)
+  ConfirmEmail(confirmEmail: ConfirmEmail): Observable<ConfirmEmail>{
+    return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail)
   }
 
   /* Logout */

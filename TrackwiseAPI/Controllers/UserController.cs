@@ -144,14 +144,28 @@ namespace TrackwiseAPI.Controllers
                 {
                     await _signInManager.SignOutAsync();
                     await _signInManager.PasswordSignInAsync(user, uvm.password, false, true);
-                    var twoFtoken = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+                /*                    var twoFtoken = await GenerateOTPFor2StepVerification(user);
 
-                    var twoFactorMail = new TwoFactor
-                    {
-                        Email = user.Email,
-                        Name = user.UserName,
-                        twoFactorOTP = twoFtoken
-                    };
+                                    var twoFactorMail = new TwoFactor
+                                    {
+                                        Email = user.Email,
+                                        Name = user.UserName,
+                                        twoFactorOTP = twoFtoken
+                                    };
+
+                                var roles = await _userManager.GetRolesAsync(user);
+
+                                var response = new
+                                {
+                                    Token = new { value = new { token = "", user = user.UserName } },
+                                    Role = roles.FirstOrDefault()
+                                };
+
+                                await _mailController.TwoFactorEmail(twoFactorMail);*/
+
+                //email OTP
+                /*var message = new Message(new string[] { user.Email! }, "OTP Confrimation", twoFtoken);
+                _emailService.SendEmail(message);*/
 
                 var roles = await _userManager.GetRolesAsync(user);
 
@@ -161,13 +175,9 @@ namespace TrackwiseAPI.Controllers
                     Role = roles.FirstOrDefault()
                 };
 
-                var mail = await _mailController.TwoFactorEmail(twoFactorMail);
+                await GenerateOTPFor2StepVerification(user);
 
-                    //email OTP
-                    /*var message = new Message(new string[] { user.Email! }, "OTP Confrimation", twoFtoken);
-                    _emailService.SendEmail(message);*/
-
-                    return Ok(response);
+                return Ok(response);
                 }
 
                 if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
@@ -198,12 +208,70 @@ namespace TrackwiseAPI.Controllers
                 }
             }
 
-            [HttpPost]
+        private async Task<IActionResult> GenerateOTPFor2StepVerification(AppUser user)
+        {
+            var providers = await _userManager.GetValidTwoFactorProvidersAsync(user);
+            if (!providers.Contains("Email"))
+            {
+                return Unauthorized();
+            }
+
+            var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+            var twoFactorMail = new TwoFactor
+            {
+                Email = user.Email,
+                Name = user.UserName,
+                twoFactorOTP = token
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var response = new
+            {
+                Token = new { value = new { token = "", user = user.UserName } },
+                Role = roles.FirstOrDefault()
+            };
+
+            await _mailController.TwoFactorEmail(twoFactorMail);
+
+            return Ok();
+        }
+
+        [HttpPost("TwoStepVerification")]
+        public async Task<IActionResult> TwoStepVerification(TwoFactorVM twoFactorDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var user = await _userManager.FindByEmailAsync(twoFactorDto.Username);
+            if (user is null)
+                return BadRequest("Invalid Request");
+
+            var validVerification = await _userManager.VerifyTwoFactorTokenAsync(user, "Email", twoFactorDto.Code);
+            if (!validVerification)
+                return BadRequest("Invalid Token Verification");
+
+            var token = await GenerateJWTToken(user);
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var response = new
+            {
+                Token = token,
+                Role = roles.FirstOrDefault()
+            };
+
+            return Ok(response);
+        }
+
+
+        [HttpPost]
             [Route("login-2FA")]
             public async Task<IActionResult> LoginWithOTP(TwoFactorVM twoFactorVM)
             {
                 var user = await _userManager.FindByNameAsync(twoFactorVM.Username);
-                var signInResult = await _signInManager.TwoFactorSignInAsync("Email", twoFactorVM.Code, false, false);
+            var user1 = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+                var signInResult = await _signInManager.TwoFactorSignInAsync("Email", twoFactorVM.Code, isPersistent: false, rememberClient: false);
 
                 if (signInResult.Succeeded)
                 {

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { TwoFactor } from 'src/app/shared/twoFactor';
 
 @Component({
   selector: 'app-two-factor-auth',
@@ -16,6 +17,12 @@ export class TwoFactorAuthComponent {
     code: ['', Validators.required],
   })
 
+  adminDetails: TwoFactor =
+  {
+    code: '',
+    username: ''
+  };
+
   isLoading:boolean = false
   errorMessage: string = '';
 
@@ -24,35 +31,40 @@ export class TwoFactorAuthComponent {
   ngOnInit(): void {
   }
 
-  async TwoFactorAuth() {
+  TwoFactorAuth() {
     const role = JSON.parse(localStorage.getItem("Role")!);
-      await this.dataService.ConfirmTwoFactor(this.twoFactorFormGroup.value).subscribe(
-        (result) => {
-          sessionStorage.setItem('User', JSON.stringify(result.username));
-          sessionStorage.setItem('Token', JSON.stringify(result.token));
-          sessionStorage.setItem('Role', JSON.stringify(role));
-          this.twoFactorFormGroup.reset();
-          localStorage.removeItem("User")
-          localStorage.removeItem('Role');
-
-          if (role == "Admin") {
-            this.router.navigateByUrl('Admin-Screen/admin-home');
-          } else if (role == "Client") {
-            this.router.navigateByUrl('Client-Screen/client-jobs');
-          } else {
-            this.router.navigateByUrl('Customer-Screen/customer-products');
-          }
-        },
-        (error) => {
-          // Handle login error
-          if (error.status === 404) {
-            this.errorMessage = 'Invalid OTP';
-          } else {
-            this.errorMessage = 'An error occurred. Please try again later.';
-          }
-          this.isLoading = false; // Stop loading spinner
+  
+    // Create an observable for the ConfirmTwoFactor call
+    const confirmTwoFactor$ = this.dataService.ConfirmTwoFactor(this.twoFactorFormGroup.value);
+  
+    // Subscribe to the observable
+    confirmTwoFactor$.subscribe(
+      (result) => {
+        sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
+        sessionStorage.setItem('Token', result.token.value.token);
+        sessionStorage.setItem('Role', JSON.stringify(role));
+        this.twoFactorFormGroup.reset();
+        localStorage.removeItem("User");
+        localStorage.removeItem('Role');
+  
+        if (role == "Admin") {
+          this.router.navigateByUrl('Admin-Screen/admin-home');
+        } else if (role == "Client") {
+          this.router.navigateByUrl('Client-Screen/client-jobs');
+        } else {
+          this.router.navigateByUrl('Customer-Screen/customer-products');
         }
-      );
-    
+      },
+      (error) => {
+        // Handle login error
+        if (error.status === 404) {
+          this.errorMessage = 'Invalid OTP';
+        } else {
+          this.errorMessage = 'An error occurred. Please try again later.';
+        }
+        this.isLoading = false; // Stop loading spinner
+      }
+    );
   }
+  
 }
