@@ -144,28 +144,6 @@ namespace TrackwiseAPI.Controllers
                 {
                     await _signInManager.SignOutAsync();
                     await _signInManager.PasswordSignInAsync(user, uvm.password, false, true);
-                /*                    var twoFtoken = await GenerateOTPFor2StepVerification(user);
-
-                                    var twoFactorMail = new TwoFactor
-                                    {
-                                        Email = user.Email,
-                                        Name = user.UserName,
-                                        twoFactorOTP = twoFtoken
-                                    };
-
-                                var roles = await _userManager.GetRolesAsync(user);
-
-                                var response = new
-                                {
-                                    Token = new { value = new { token = "", user = user.UserName } },
-                                    Role = roles.FirstOrDefault()
-                                };
-
-                                await _mailController.TwoFactorEmail(twoFactorMail);*/
-
-                //email OTP
-                /*var message = new Message(new string[] { user.Email! }, "OTP Confrimation", twoFtoken);
-                _emailService.SendEmail(message);*/
 
                 var roles = await _userManager.GetRolesAsync(user);
 
@@ -264,61 +242,6 @@ namespace TrackwiseAPI.Controllers
             return Ok(response);
         }
 
-
-        [HttpPost]
-            [Route("login-2FA")]
-            public async Task<IActionResult> LoginWithOTP(TwoFactorVM twoFactorVM)
-            {
-                var user = await _userManager.FindByNameAsync(twoFactorVM.Username);
-            var user1 = await _signInManager.GetTwoFactorAuthenticationUserAsync();
-                var signInResult = await _signInManager.TwoFactorSignInAsync("Email", twoFactorVM.Code, isPersistent: false, rememberClient: false);
-
-                if (signInResult.Succeeded)
-                {
-                    if (user != null)
-                    {
-                        try
-                        {
-                            var token = await GenerateJWTToken(user); // Generate the JWT token
-                            var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
-
-                            var response = new
-                            {
-                                Token = token,
-                                Role = roles.FirstOrDefault()
-                            };
-
-                            return Ok(response);
-                        }
-                        catch (Exception)
-                        {
-                            return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-                        }
-                    }
-                    else
-                    {
-                        return NotFound("User does not exist or invalid credentials");
-                    }
-                }
-                else
-                {
-                    if (signInResult.IsLockedOut)
-                    {
-                        // Handle account lockout
-                        return BadRequest("Account is locked out. Please try again later.");
-                    }
-                    else if (signInResult.IsNotAllowed)
-                    {
-                        // Handle cases where two-factor authentication is not allowed
-                        return BadRequest("Two-factor authentication is not enabled for this user.");
-                    }
-                    else
-                    {
-                        // Handle other failures (e.g., invalid code)
-                        return BadRequest("Invalid two-factor authentication code.");
-                    }
-                }
-            }
 
         /*
         [HttpPost("forgot-password/{email}")]
