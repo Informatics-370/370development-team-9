@@ -29,8 +29,13 @@ export class LoginComponent {
   
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
         (result) => {
+          console.log(result)
           // Handle successful login
-          if(result.token.value.token == "" && result.role == "Admin")
+          if(result.isEmailConfirmed == false){
+            this.isLoading = false;
+            this.errorMessage = 'Please confirm your email address.';
+          }
+          else if(result.isTwoFactor == true)
           {
             this.router.navigateByUrl('Authentication/two-factor-auth');
             const user = result.token.value.user;

@@ -5,5 +5,7 @@ export interface User {
             user:string;
         }
     };
-    role?: string
+    role?: string,
+    isTwoFactor?: boolean,
+    isEmailConfirmed?: boolean
 }

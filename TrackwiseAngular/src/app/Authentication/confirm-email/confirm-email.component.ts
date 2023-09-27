@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { ConfirmEmail } from 'src/app/shared/confirmEmail';
 
 @Component({
   selector: 'app-confirm-email',
@@ -10,52 +11,34 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./confirm-email.component.scss']
 })
 export class ConfirmEmailComponent {
-  loginFormGroup: FormGroup = this.fb.group({
-    emailaddress: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-  })
+
+  confirmDetails: ConfirmEmail =
+  {
+    token: '',
+    email: ''
+  };
 
   isLoading:boolean = false
   errorMessage: string = '';
 
-  constructor(private router: Router, private dataService: DataService, private fb: FormBuilder, private snackBar: MatSnackBar) { }
+  constructor(private router: Router, private dataService: DataService, private fb: FormBuilder, private snackBar: MatSnackBar, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe({
+      next: (params) => {
+        this.confirmDetails.token = params['token'].replace('%2F', '/');
+        this.confirmDetails.email = params['email'];
+        console.log(params);
+        this.dataService.ConfirmEmail(this.confirmDetails).subscribe({
+          next: (response) => {
+            // Handle the confirmation
+          }
+        });
+      }
+    });
   }
 
-  async LoginUser() {
-    if (this.loginFormGroup.valid) {
-      this.isLoading = true;
-  
-      await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
-        (result) => {
-          // Handle successful login
-          sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
-          sessionStorage.setItem('Token', result.token.value.token);
-          const role = result.role;
-          sessionStorage.setItem('Role', JSON.stringify(role));
-          this.loginFormGroup.reset();
-  
-          if (role == "Admin") {
-            this.router.navigateByUrl('Admin-Screen/admin-home');
-          } else if (role == "Customer") {
-            this.router.navigateByUrl('Customer-Screen/customer-products');
-          } else if (role == "Client") {
-            this.router.navigateByUrl('Client-Screen/client-jobs');
-          } else {
-            this.router.navigateByUrl('Customer-Screen/customer-products');
-          }
-        },
-        (error) => {
-          // Handle login error
-          if (error.status === 404) {
-            this.errorMessage = 'Incorrect email or password. Please try again.';
-          } else {
-            this.errorMessage = 'An error occurred. Please try again later.';
-          }
-          this.isLoading = false; // Stop loading spinner
-        }
-      );
-    }
+  RedirectToLogin(){
+    this.dataService.revertToLogin();
   }
 }

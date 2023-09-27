@@ -8,20 +8,12 @@
 
       <img class="logo" src="/assets/LTTLogo.jpg">
 
-      <form class="login-form" [formGroup]="loginFormGroup">
+      <form class="login-form">
         <div class="form-field">
-          <!-- <label class="form-label">Username</label> -->
-          <input class="form-input" type="text" placeholder="Email address" formControlName="emailaddress" required
-            pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}">
+            <label class="form-label">Your email has been confirmed!</label> 
         </div>
-        <div class="form-field">
-          <!-- <label class="form-label">Password</label> -->
-          <input class="form-input" type="password" placeholder="Password" formControlName="password" required>
-        </div>
-        <button class="login-btn" (click)="LoginUser()">Log in</button><br>
+        <button class="login-btn" (click)="RedirectToLogin()">Log In</button><br>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <div class="register-section">Don't have an account? Register <a [routerLink]="['/Authentication/register']">here.</a></div>
-        <div class="register-section">Forgot password <a [routerLink]="['/password/forgotpassword']">here.</a></div>
       </form>
     </mat-card>
     <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>

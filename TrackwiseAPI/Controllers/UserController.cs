@@ -88,12 +88,14 @@ namespace TrackwiseAPI.Controllers
 
                 //Add Token to Verify the email....
                 var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = confirmationLink.Replace("/", "%2F");
 
                 var confirmationMail = new ConfirmEmail
                 {
                     Email = user.Email,
                     Name = user.UserName,
-                    ConfirmationLink = confirmationLink
+
+                    ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
                 };
 
                 var mail = await _mailController.ConfirmEmail(confirmationMail);
@@ -114,7 +116,7 @@ namespace TrackwiseAPI.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM confirmEmailVM)
         {
@@ -136,11 +138,41 @@ namespace TrackwiseAPI.Controllers
             public async Task<ActionResult> Login(UserVM uvm)
             {
                 var user = await _userManager.FindByNameAsync(uvm.emailaddress);
-                var auditId = Guid.NewGuid().ToString();
-          
-                var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
+            if(user == null)
+            {
+                return NotFound("User does not exist or invalid credentials");
+            }
 
-                if (user.TwoFactorEnabled)
+            if (user.EmailConfirmed == false)
+            {
+                //Add Token to Verify the email....
+                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = confirmationLink.Replace("/", "%2F");
+
+                var confirmationMail = new ConfirmEmail
+                {
+                    Email = user.Email,
+                    Name = user.UserName,
+
+                    ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                };
+
+                var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
+
+                var response = new
+                {
+                    Token = "",
+                    Role = roles.FirstOrDefault(),
+                    isTwoFactor = user.TwoFactorEnabled,
+                    isEmailConfirmed = user.EmailConfirmed
+                };
+
+                await _mailController.ConfirmEmail(confirmationMail);
+
+                return Ok(response);
+            }
+
+            if (user.TwoFactorEnabled)
                 {
                     await _signInManager.SignOutAsync();
                     await _signInManager.PasswordSignInAsync(user, uvm.password, false, true);
@@ -150,7 +182,9 @@ namespace TrackwiseAPI.Controllers
                 var response = new
                 {
                     Token = new { value = new { token = "", user = user.UserName } },
-                    Role = roles.FirstOrDefault()
+                    Role = roles.FirstOrDefault(),
+                    isTwoFactor = user.TwoFactorEnabled,
+                    isEmailConfirmed = user.EmailConfirmed
                 };
 
                 await GenerateOTPFor2StepVerification(user);
@@ -162,14 +196,20 @@ namespace TrackwiseAPI.Controllers
                 {
                     try
                     {
-                        var token = await GenerateJWTToken(user); // Generate the JWT token
+                    var auditId = Guid.NewGuid().ToString();
+
+                    var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
+
+                    var token = await GenerateJWTToken(user); // Generate the JWT token
 
                         var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
 
                         var response = new
                         {
                             Token = token,
-                            Role = roles.FirstOrDefault()
+                            Role = roles.FirstOrDefault(),
+                            isTwoFactor = user.TwoFactorEnabled,
+                            isEmailConfirmed = user.EmailConfirmed
                         };
                         _auditRepository.Add(audit);
                         await _auditRepository.SaveChangesAsync();
@@ -228,6 +268,11 @@ namespace TrackwiseAPI.Controllers
             var validVerification = await _userManager.VerifyTwoFactorTokenAsync(user, "Email", twoFactorDto.Code);
             if (!validVerification)
                 return BadRequest("Invalid Token Verification");
+
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
+            _auditRepository.Add(audit);
+            await _auditRepository.SaveChangesAsync();
 
             var token = await GenerateJWTToken(user);
 

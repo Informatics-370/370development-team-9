@@ -74,7 +74,7 @@ const routes: Routes = [
   { path: 'Authentication/login', component: LoginComponent },
   { path: 'Authentication/register', component: RegisterComponent },
   { path: 'Authentication/two-factor-auth', component: TwoFactorAuthComponent },
-  { path: 'Authentication/confirm-email', component: ConfirmEmailComponent },
+  { path: 'Authentication/confirm-email/:token/:email', component: ConfirmEmailComponent },
 
   {path: 'Admin-Screen/audits', component:AuditComponent, canActivate:[AdminGuard]},
   { path: 'Admin-Screen/admin-home', component: AdminHomeComponent, canActivate: [AdminGuard] },
