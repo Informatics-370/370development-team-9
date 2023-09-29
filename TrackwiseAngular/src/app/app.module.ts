@@ -82,6 +82,7 @@ import { RemoveNotificationComponent } from './ConfirmationNotifications/remove-
 import { AuditComponent } from './Admin-Screen/audit/audit.component';
 import { ConfirmEmailComponent } from './Authentication/confirm-email/confirm-email.component';
 import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-factor-auth.component';
+import { BusinessRulesComponent } from './Admin-Screen/business-rules/business-rules.component';
 
 @NgModule({
   declarations: [
@@ -136,6 +137,7 @@ import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-fac
     AuditComponent,
     ConfirmEmailComponent,
     TwoFactorAuthComponent,
+    BusinessRulesComponent,
   ],
   imports: [
     BrowserModule,

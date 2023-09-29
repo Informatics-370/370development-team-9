@@ -529,11 +529,11 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<VAT>(`${this.apiUrl}VAT/GetVAT`, {headers});
   }
-  UpdateVAT():Observable<any>
+  UpdateVAT(updatedVAT: number):Observable<any>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT`, {}, {headers});
+    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT/${updatedVAT}`, {}, {headers});
   }
 
   /*Customer Section*/

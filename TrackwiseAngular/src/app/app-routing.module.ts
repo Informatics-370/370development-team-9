@@ -66,6 +66,7 @@ import { AdminGuard } from './Authentication/guards/adminGuard';
 import { CustomerGuard } from './Authentication/guards/customerGuard';
 import { ClientGuard } from './Authentication/guards/clientGuard';
 import { AuditComponent } from './Admin-Screen/audit/audit.component';
+import { BusinessRulesComponent } from './Admin-Screen/business-rules/business-rules.component';
 
 
 
@@ -76,9 +77,11 @@ const routes: Routes = [
   { path: 'Authentication/two-factor-auth', component: TwoFactorAuthComponent },
   { path: 'Authentication/confirm-email/:token/:email', component: ConfirmEmailComponent },
 
-  {path: 'Admin-Screen/audits', component:AuditComponent, canActivate:[AdminGuard]},
+  { path: 'Admin-Screen/audits', component:AuditComponent, canActivate:[AdminGuard]},
   { path: 'Admin-Screen/admin-home', component: AdminHomeComponent, canActivate: [AdminGuard] },
   { path: 'Admin-Screen/admin-profile', component: AdminProfileComponent, canActivate: [AdminGuard] },
+
+  { path: 'Admin-Screen/business-rules', component:BusinessRulesComponent, canActivate:[AdminGuard]},
 
   { path: 'Admin-Screen/customers', component: CustomersComponent, canActivate: [AdminGuard] },
 
@@ -114,15 +117,15 @@ const routes: Routes = [
   { path: 'Admin-Screen/products/add-product', component: AddProductComponent, canActivate: [AdminGuard] },
   { path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent, canActivate: [AdminGuard] },
 
-  {path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
+  { path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
 
   //Job components
-  {path: 'Admin-Screen/jobs', component: JobsComponent, canActivate:[AdminGuard]},
-  {path: 'Admin-Screen/jobs/document-information/:delivery_ID/:mileage', component: DocumentInformationComponent, canActivate:[AdminGuard]},
+  { path: 'Admin-Screen/jobs', component: JobsComponent, canActivate:[AdminGuard]},
+  { path: 'Admin-Screen/jobs/document-information/:delivery_ID/:mileage', component: DocumentInformationComponent, canActivate:[AdminGuard]},
 
-  {path: 'password/forgotpassword', component: ForgotpasswordComponent},
-  {path: 'Admin-Screen/jobs/job-details/:job_ID/:userName', component: JobDetailsComponent, canActivate: [AdminGuard]},
-  {path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent, canActivate: [AdminGuard]},
+  { path: 'password/forgotpassword', component: ForgotpasswordComponent},
+  { path: 'Admin-Screen/jobs/job-details/:job_ID/:userName', component: JobDetailsComponent, canActivate: [AdminGuard]},
+  { path: 'Admin-Screen/jobs/edit-job', component:EditJobComponent, canActivate: [AdminGuard]},
 
 
   //Customer components--------------------------------------------------
@@ -134,10 +137,10 @@ const routes: Routes = [
   { path: 'Customer-Screen/customer-home', component: CustomerHomeComponent },
 
   // Client components-------------------------------------------------
-  {path: 'Client-Screen/client-jobs', component: ClientJobsComponent, canActivate: [ClientGuard]},
-  {path: 'Client-Screen/client-add-jobs', component: ClientAddJobComponent, canActivate: [ClientGuard]},
-  {path: 'Client-Screen/client-edit-jobs', component: ClientEditJobComponent, canActivate: [ClientGuard]},
-  {path: 'Client-Screen/client-job-details/:job_ID/:userName', component: ClientJobDetailsComponent, canActivate: [ClientGuard]},
+  { path: 'Client-Screen/client-jobs', component: ClientJobsComponent, canActivate: [ClientGuard]},
+  { path: 'Client-Screen/client-add-jobs', component: ClientAddJobComponent, canActivate: [ClientGuard]},
+  { path: 'Client-Screen/client-edit-jobs', component: ClientEditJobComponent, canActivate: [ClientGuard]},
+  { path: 'Client-Screen/client-job-details/:job_ID/:userName', component: ClientJobDetailsComponent, canActivate: [ClientGuard]},
 
 
 ];

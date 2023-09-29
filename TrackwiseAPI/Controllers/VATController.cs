@@ -48,9 +48,9 @@ namespace TrackwiseAPI.Controllers
         }
 
         [HttpPut]
-        [Route("UpdateVAT")]
+        [Route("UpdateVAT/{updatedVAT}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> UpdateVAT(decimal vat)
+        public async Task<IActionResult> UpdateVAT(decimal updatedVAT)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace TrackwiseAPI.Controllers
                     return NotFound(); // Handle VAT record not found scenario
                 }
 
-                VAT.VAT_Amount = vat;
+                VAT.VAT_Amount = updatedVAT;
 
                 _VATRepository.Update(VAT);
 
