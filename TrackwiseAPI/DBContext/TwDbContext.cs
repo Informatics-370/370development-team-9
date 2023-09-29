@@ -38,6 +38,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Document> Documents { get; set; }
         public DbSet<Audit> Audits { get; set; }
         public DbSet<VAT> VAT { get; set; }
+        public DbSet<JobRule> Rule { get; set; }
 
 
         /// 
@@ -472,6 +473,13 @@ namespace TrackwiseAPI.DBContext
                 new VAT { VAT_ID = Guid.NewGuid().ToString(), VAT_Amount = 0.15M }
                 );
 
+            modelBuilder.Entity<JobRule>()
+            .HasIndex(v => v.Rule_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<JobRule>().HasData(
+                new JobRule { Rule_ID = Guid.NewGuid().ToString(), Break = 4.00, Rest = 0.5, MaxHrs = 14 }
+                );
         }
     }
 }

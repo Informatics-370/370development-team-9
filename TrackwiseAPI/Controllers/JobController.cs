@@ -37,6 +37,8 @@ namespace TrackwiseAPI.Controllers
         private readonly TwDbContext _context;
         private readonly IAuditRepository _auditRepository;
         private readonly MailController _mailController;
+        private readonly IJobRuleRepository _jobRuleRepository;
+        private readonly JobRuleController _jobRuleController;
 
         public JobController(
             IJobRepository jobRepository, 
@@ -47,7 +49,9 @@ namespace TrackwiseAPI.Controllers
             IWebHostEnvironment hostingEnvironment,
             TwDbContext context,
             IAuditRepository auditRepository,
-            MailController mailController)
+            MailController mailController,
+            IJobRuleRepository jobRuleRepository,
+            JobRuleController jobRuleController)
 
         {
             _jobRepository = jobRepository;
@@ -60,6 +64,8 @@ namespace TrackwiseAPI.Controllers
             _context = context;
             _auditRepository = auditRepository;
             _mailController = mailController;
+            _jobRuleRepository = jobRuleRepository;
+            _jobRuleController = jobRuleController;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -695,10 +701,9 @@ namespace TrackwiseAPI.Controllers
                 durationInHrs = truckRouteInfo.Duration;
             }
 
-             
 
 
-            // durationInHrs = 19;
+            
             double breakInterval = 4.0;
             double restDuration = 0.5;
             double maxHrsPerDay = 14.0;

@@ -29,6 +29,96 @@
       </div>
       </div>
     </div>
+
+    <div class="block-seciton">
+      <mat-card-actions>
+        <button class="EditProfileBtn section-heading" mat-button (click)="toggleEditForm()">
+          <div class="button-content">
+            <h3>Job</h3>
+            <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
+              keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
+            </mat-icon>
+          </div>
+        </button>
+
+        <mat-card-actions>
+          <button class="EditProfileBtn section-heading" mat-button (click)="toggleEditForm()">
+            <div class="button-content">
+              <h3>Break Interval</h3>
+              <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
+                keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
+              </mat-icon>
+            </div>
+          </button>
+        </mat-card-actions>
+        <div class="edit-form" *ngIf="showEditForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Current break interval</label>
+            <input type="email" class="form-control" id="email" name="email"  placeholder="{{CurrentRule.break}}Hours" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="quantity" class="form-label">New Break Interval (Hrs)</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="NewRule.break" min="0" max="100" (blur)="removeNegativeSign()">
+          </div>
+
+          <div class="item-container">
+            <button class="complete-btn" (click)="UpdateBreak()"> Save </button>
+        </div>
+        </div>
+
+        <mat-card-actions>
+          <button class="EditProfileBtn section-heading" mat-button (click)="toggleEditForm()">
+            <div class="button-content">
+              <h3>Rest period</h3>
+              <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
+                keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
+              </mat-icon>
+            </div>
+          </button>
+        </mat-card-actions>
+        <div class="edit-form" *ngIf="showEditForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Current rest period</label>
+          <input type="email" class="form-control" id="email" name="email"  placeholder="{{CurrentRule.rest}}Hours" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="quantity" class="form-label">New Rest Period (Hrs)</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="NewRule.rest" min="0" max="100" (blur)="removeNegativeSign()">
+        </div>
+
+        <div class="item-container">
+          <button class="complete-btn" (click)="UpdateRest()"> Save </button>
+      </div>
+        </div>
+
+        <mat-card-actions>
+          <button class="EditProfileBtn section-heading" mat-button (click)="toggleEditForm()">
+            <div class="button-content">
+              <h3>Drive Hours</h3>
+              <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
+                keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
+              </mat-icon>
+            </div>
+          </button>
+        </mat-card-actions>
+        <div class="edit-form" *ngIf="showEditForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Current max drive hours per day</label>
+          <input type="email" class="form-control" id="email" name="email"  placeholder="{{CurrentRule.maxHrs}}Hours" disabled>
+        </div>
+        <div class="mb-3">
+          <label for="quantity" class="form-label">New Max Drive Per Day (Hrs)</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="NewRule.maxHrs" min="0" max="100" (blur)="removeNegativeSign()">
+        </div>
+
+        <div class="item-container">
+          <button class="complete-btn" (click)="UpdateMax()"> Save </button>
+      </div>
+      </div>
+      </mat-card-actions>
+      
+    </div>
+    
   </div>
 
 </div>

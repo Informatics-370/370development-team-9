@@ -133,6 +133,7 @@ public class Startup
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IReportRepository, ReportRepository>();
         services.AddScoped<IVATRepository, VATRepository>();
+        services.AddScoped<IJobRuleRepository, JobRuleRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -189,7 +190,7 @@ public class Startup
                     user.UserName = email;
                     user.Email = email;
                     user.EmailConfirmed = true;
-                    user.TwoFactorEnabled = true;
+                    user.TwoFactorEnabled = false;
 
                     await userManager.CreateAsync(user, password);
 

@@ -535,6 +535,14 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT/${updatedVAT}`, {}, {headers});
   }
+  GetBreak(): Observable<VAT>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<VAT>(`${this.apiUrl}VAT/GetVAT`, {headers});
+  }
+
+
+
 
   /*Customer Section*/
   GetCustomers(): Observable<any>{

@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { JobRule } from 'src/app/shared/JobRule';
 import { VAT } from 'src/app/shared/VAT';
 
 @Component({
@@ -18,6 +19,17 @@ export class BusinessRulesComponent {
   NewVAT: VAT = {
     vaT_Amount: 0
   };
+
+  CurrentRule: JobRule = {
+    break: 0,
+    rest: 0,
+    maxHrs: 0
+  };
+  NewRule: JobRule = {
+    break: 0,
+    rest: 0,
+    maxHrs: 0
+  };
   
   showEditForm: boolean = false;
 
@@ -25,6 +37,7 @@ export class BusinessRulesComponent {
   
     ngOnInit(): void {
       this.GetVAT();
+      
     }
   
   toggleEditForm() {
@@ -52,7 +65,42 @@ export class BusinessRulesComponent {
   
     })
   }
+  UpdateBreak()
+  {
+    this.dataService.UpdateVAT(this.NewVAT.vaT_Amount/100).subscribe({
+      next: (vat) => 
+      {
+        this.GetVAT()
+        this.NewVAT.vaT_Amount = 0
+        this.snackBar.open(`VAT successfully updated`, 'X', {duration: 3000})
+      }
   
+    })
+  }
+  UpdateRest()
+  {
+    this.dataService.UpdateVAT(this.NewVAT.vaT_Amount/100).subscribe({
+      next: (vat) => 
+      {
+        this.GetVAT()
+        this.NewVAT.vaT_Amount = 0
+        this.snackBar.open(`VAT successfully updated`, 'X', {duration: 3000})
+      }
+  
+    })
+  }
+  UpdateMax()
+  {
+    this.dataService.UpdateVAT(this.NewVAT.vaT_Amount/100).subscribe({
+      next: (vat) => 
+      {
+        this.GetVAT()
+        this.NewVAT.vaT_Amount = 0
+        this.snackBar.open(`VAT successfully updated`, 'X', {duration: 3000})
+      }
+  
+    })
+  }
 
 
 
