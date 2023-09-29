@@ -13,7 +13,13 @@
           <!-- <label class="form-label">Password</label> -->
           <input class="form-input" type="text" placeholder="OTP" formControlName="code" required>
         </div>
+        <span>
+          <div>
+            <p>Time remaining: {{ formatTime(remainingTime) }}</p>
+          </div>
+      </span>
         <button class="login-btn" (click)="TwoFactorAuth()">Submit</button><br>
+        <button class="login-btn" (click)="ResendTwoFactor()">Resend OTP</button><br>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
       </form>
     </mat-card>
