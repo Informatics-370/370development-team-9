@@ -97,6 +97,10 @@ export class DataService {
     return this.httpClient.post<User>(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
   }
 
+  ResendTwoFactor(username:string): Observable<any>{
+    return this.httpClient.post<any>(`${this.apiUrl}User/ResendTwoFactor/${username}`, {})
+  }
+
   ConfirmEmail(confirmEmail: ConfirmEmail): Observable<ConfirmEmail>{
     return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail)
   }

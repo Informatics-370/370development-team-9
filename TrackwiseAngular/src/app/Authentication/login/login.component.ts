@@ -39,8 +39,8 @@ export class LoginComponent {
           {
             this.router.navigateByUrl('Authentication/two-factor-auth');
             const user = result.token.value.user;
-            localStorage.setItem('User', JSON.stringify(user));
-            localStorage.setItem('Role', JSON.stringify(result.role));
+            sessionStorage.setItem('User', JSON.stringify(user));
+            sessionStorage.setItem('OTPtime', JSON.stringify(result.expireOTPtime));
           } else{
           sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
           sessionStorage.setItem('Token', result.token.value.token);

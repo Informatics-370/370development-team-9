@@ -189,7 +189,7 @@ public class Startup
                     user.UserName = email;
                     user.Email = email;
                     user.EmailConfirmed = true;
-                    user.TwoFactorEnabled = true;
+                    user.TwoFactorEnabled = false;
 
                     await userManager.CreateAsync(user, password);
 

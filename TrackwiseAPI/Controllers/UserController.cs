@@ -179,15 +179,20 @@ namespace TrackwiseAPI.Controllers
 
                 var roles = await _userManager.GetRolesAsync(user);
 
+                await GenerateOTPFor2StepVerification(user);
+
+                // Calculate token expiration time
+                var tokenCreationTime = DateTime.UtcNow;
+                var tokenExpirationTime = tokenCreationTime.AddMinutes(5);
+
                 var response = new
                 {
                     Token = new { value = new { token = "", user = user.UserName } },
                     Role = roles.FirstOrDefault(),
                     isTwoFactor = user.TwoFactorEnabled,
-                    isEmailConfirmed = user.EmailConfirmed
+                    isEmailConfirmed = user.EmailConfirmed,
+                    expireOTPtime = tokenExpirationTime
                 };
-
-                await GenerateOTPFor2StepVerification(user);
 
                 return Ok(response);
                 }
@@ -285,6 +290,45 @@ namespace TrackwiseAPI.Controllers
             };
 
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("ResendTwoFactor/{username}")]
+        public async Task<IActionResult> ResendTwoFactor(string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return NotFound("User does not exist or invalid credentials");
+            }
+
+
+            if (user.TwoFactorEnabled)
+            {
+
+                var roles = await _userManager.GetRolesAsync(user);
+
+                await GenerateOTPFor2StepVerification(user);
+
+                // Calculate token expiration time
+                var tokenCreationTime = DateTime.UtcNow;
+                var tokenExpirationTime = tokenCreationTime.AddMinutes(5);
+
+                var response = new
+                {
+                    Token = new { value = new { token = "", user = user.UserName } },
+                    Role = roles.FirstOrDefault(),
+                    isTwoFactor = user.TwoFactorEnabled,
+                    isEmailConfirmed = user.EmailConfirmed,
+                    expireOTPtime = tokenExpirationTime
+                };
+
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound("User does not exist or invalid credentials");
+            }
         }
 
 

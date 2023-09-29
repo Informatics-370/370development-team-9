@@ -48,7 +48,7 @@ export class ReportsComponent implements OnInit {
   mileageFuel : any[] = [];
   truckData: TruckData[] = [];
   pdfSrc: string | null = null;
-  trucks: any[] = [];
+  trucks: Truck[] = [];
   selectedTruckId: any;
 
   completedJobs: CompletedJob[] = [];
@@ -131,14 +131,17 @@ export class ReportsComponent implements OnInit {
     });
   }
 
-  GetCompleteJobs(truckid:string){
-    this.dataService.GetCompleteJobs(truckid).subscribe((result) => {
-        this.completedJobs = result;
-        console.log(this.completedJobs);
-        console.log("yes");
-        this.getMilageData(truckid)
-  })
-}
+  async GetCompleteJobs(truckid: string) {
+    try {
+      const result = await this.dataService.GetCompleteJobs(truckid).toPromise();
+      this.completedJobs = result;
+      // Now, this.completedJobs contains the fetched data
+      // You can proceed with further processing if needed
+    } catch (error) {
+      console.error('Error in GetCompleteJobs:', error);
+      // Handle the error as needed
+    }
+  }
 
   GetJobs() {
     this.dataService.GetJobs().subscribe((result) => {
@@ -461,72 +464,69 @@ jobsdata: JobDetailDTO[]=[];
   truckID:string=''
   kilosDriven:number = 0
   fuelInput:number = 0
+  allTruckData: KiloLitres[] = [];
   
-  getMilageData(truck_ID: string) {
-    this.kilolitres = [];
-    let totalKilosDriven = 0;
-    let totalFuelInput = 0;
+  async getMilageData() {
+    // Initialize the array to hold all truck data
+    this.allTruckData = [];
   
-    const observables = this.completedJobs.map((element) => {
+    // Loop through all trucks to fetch data
+    for (const truck of this.trucks) {
+      console.log(truck);
+  
+      // Use await to wait for data retrieval to complete
+      await this.GetCompleteJobs(truck.truckID);
+  
+      // Initialize fields with default values (0)
       let job_ID = '';
-      let truckID = '';
+      let truckID = truck.truckID; // Use the current truck's ID
       let kilosDriven = 0;
       let fuelInput = 0;
   
-      element.deliveries.forEach((del) => {
-        if (del.truckID === truck_ID) {
-          kilosDriven += del.final_Mileage - del.initial_Mileage;
-          fuelInput += del.totalFuel;
-          job_ID = del.job_ID;
-          truckID = del.truckID;
-        }
-      });
+      // Check if there are completed jobs for the current truck
+      if (this.completedJobs.length > 0) {
+        // Process completed jobs for the current truck
+        this.completedJobs.forEach((element) => {
+          if (element.deliveries) {
+            element.deliveries.forEach((del) => {
+              if (del.truckID === truck.truckID) {
+                kilosDriven += del.final_Mileage - del.initial_Mileage;
+                fuelInput += del.totalFuel;
+                job_ID = del.job_ID;
+              }
+            });
+          }
+        });
+      }
   
-      return this.dataService.GetTruck(truck_ID).pipe(
-        map((result) => {
-          return {
-            job_ID,
-            truckDetails: result,
-            kilosDriven,
-            fuelInput,
-          };
-        })
-      );
-    });
+      // Fetch truck details
+      const truckDetails = await this.dataService.GetTruck(truck.truckID).toPromise();
   
-    forkJoin(observables).subscribe((results) => {
-      results.forEach((result) => {
-        const { job_ID, truckDetails, kilosDriven, fuelInput } = result;
+      // Create a new KiloLitres object
+      const kiloLitresEntry: KiloLitres = {
+        truck_License: truckDetails?.truck_License ?? 'N/A',
+        job_ID,
+        kilosDriven,
+        fuelInput,
+      };
   
-        // Create a new KiloLitres object
-        const kiloLitresEntry: KiloLitres = {
-          truck_License: truckDetails.truck_License,
-          job_ID,
-          kilosDriven,
-          fuelInput,
-        };
+      // Push the KiloLitres object into the allTruckData array
+      this.allTruckData.push(kiloLitresEntry);
   
-        // Increment subtotals
-        totalKilosDriven += kilosDriven;
-        totalFuelInput += fuelInput;
-  
-        // Push the KiloLitres object into the kilolitres array
-        this.kilolitres.push(kiloLitresEntry);
-      });
-  
-      // Now that all data is fetched, you can generate the PDF
-      this.generateMileageFuelReport();
-    });
+      // Check if it's the last truck before generating the report
+      if (this.allTruckData.length === this.trucks.length) {
+        // All data for all trucks has been collected, generate the report
+        this.generateMileageFuelReport();
+      }
+    }
   }
-  
-  
   
   generateMileageFuelReport() {
     const doc = new jsPDF();
-    // Image
     const img = new Image();
     img.src = "assets/LTTLogo.jpg";
     doc.addImage(img, 'JPG', 10, 5, 50, 30);
+  
     // Text
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
@@ -541,25 +541,48 @@ jobsdata: JobDetailDTO[]=[];
   
     // Table and table data
     const header = ['Truck Registration', 'Job ID', 'Kilometres Driven', 'Amount refueled'];
-    const tableData = this.kilolitres.map(result => [
-      result.truck_License,
-      result.job_ID,
-      result.kilosDriven + " km",
-      result.fuelInput + "l",
-    ]);
-  
-    // Calculate subtotals
+    let tableData = [];
+    let subtotalKilosDriven = 0;
+    let subtotalFuelInput = 0;
     let totalKilosDriven = 0;
     let totalFuelInput = 0;
-    this.kilolitres.forEach((result) => {
+    
+  
+    // Iterate through each truck in allTruckData
+    this.allTruckData.forEach((result) => {
+      const row = [
+        result.truck_License,
+        result.job_ID,
+        result.kilosDriven + " km",
+        result.fuelInput + "l",
+      ];
+
+      // Calculate subtotals for each truck
+      subtotalKilosDriven = result.kilosDriven;
+      subtotalFuelInput = result.fuelInput;      
+  
+      
+      // Calculate subtotals for each truck
       totalKilosDriven += result.kilosDriven;
       totalFuelInput += result.fuelInput;
+  
+      tableData.push(row);
+  
+      // Add a row for subtotals after each truck
+      tableData.push([
+        '',
+        'Subtotals',
+        subtotalKilosDriven + ' km',
+        subtotalFuelInput + 'l',
+      ]);
+      tableData.push(['', '', '', '']);
+      
     });
   
-    // Add subtotals row
+    // Add a row for the total of all trucks at the end
     tableData.push([
-      'Subtotals',
       '',
+      'Total',
       totalKilosDriven + ' km',
       totalFuelInput + 'l',
     ]);
@@ -584,6 +607,7 @@ jobsdata: JobDetailDTO[]=[];
       console.error('Failed to open PDF preview window.');
     }
   }
+  
   
 
   // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------

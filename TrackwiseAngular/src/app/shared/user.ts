@@ -8,4 +8,5 @@ export interface User {
     role?: string,
     isTwoFactor?: boolean,
     isEmailConfirmed?: boolean
+    expireOTPtime?: Date;
 }
