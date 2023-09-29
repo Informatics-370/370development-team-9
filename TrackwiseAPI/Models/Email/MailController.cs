@@ -182,6 +182,54 @@ namespace TrackwiseAPI.Models.Email
         }
 
 
+        [HttpPost]
+        [Route("TwoFactorEmail")]
+        public async Task<IActionResult> TwoFactorEmail(TwoFactor twoFactor)
+        {
+
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { twoFactor.Email },
+                "Two Factor Authenticaiton",
+                _mail.GetEmailTemplate("TwoFactorMail", twoFactor));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
+        [HttpPost]
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmail confirmEmail)
+        {
+
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { confirmEmail.Email },
+                "Confirm Email",
+                _mail.GetEmailTemplate("ConfirmMail", confirmEmail));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+         }
+
          [HttpPost("Message")]
         public async Task<IActionResult> SendMessage([FromBody] MessageModel messageModel)
         {
@@ -207,6 +255,7 @@ namespace TrackwiseAPI.Models.Email
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Message could not be sent.");
+
             }
         }
 

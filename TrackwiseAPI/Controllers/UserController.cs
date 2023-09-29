@@ -17,6 +17,9 @@ using System.Web;
 using TrackwiseAPI.Models.Password;
 using System.Security.Cryptography;
 using TrackwiseAPI.Models.Email;
+using Azure;
+using Newtonsoft.Json.Linq;
+using System.Data;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -25,6 +28,7 @@ namespace TrackwiseAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly IUserClaimsPrincipalFactory<AppUser> _claimsPrincipalFactory;
         private readonly IConfiguration _configuration;
         private readonly ICustomerRepository _customerRepository;
@@ -33,7 +37,8 @@ namespace TrackwiseAPI.Controllers
         private readonly MailController _mailController;
         private readonly IAuditRepository _auditRepository;
 
-        public UserController(UserManager<AppUser> userManager,
+        public UserController(UserManager<AppUser> userManager, 
+            SignInManager<AppUser> signInManager,
             IUserClaimsPrincipalFactory<AppUser> claimsPrincipalFactory,
             IConfiguration configuration,
             ICustomerRepository customerRepository, 
@@ -42,6 +47,7 @@ namespace TrackwiseAPI.Controllers
             MailController mailController, IAuditRepository auditRepository)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _claimsPrincipalFactory = claimsPrincipalFactory;
             _configuration = configuration;
             _customerRepository = customerRepository;
@@ -58,14 +64,11 @@ namespace TrackwiseAPI.Controllers
         {
             var customerId = Guid.NewGuid().ToString();
             var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
-            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var auditId = Guid.NewGuid().ToString();
-            var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
             try
             {
                 _customerRepository.Add(customer);
                 await _customerRepository.SaveChangesAsync();
-                _auditRepository.Add(audit);
+                //_auditRepository.Add(audit);
                 await _auditRepository.SaveChangesAsync();
 
                 var user = new AppUser
@@ -77,6 +80,29 @@ namespace TrackwiseAPI.Controllers
                 var result = await _userManager.CreateAsync(user, cvm.Password);
 
                 await _userManager.AddToRoleAsync(user, "Customer");
+
+                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                var auditId = Guid.NewGuid().ToString();
+                var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
+                _auditRepository.Add(audit);
+
+                //Add Token to Verify the email....
+                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = confirmationLink.Replace("/", "%2F");
+
+                var confirmationMail = new ConfirmEmail
+                {
+                    Email = user.Email,
+                    Name = user.UserName,
+
+                    ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                };
+
+                var mail = await _mailController.ConfirmEmail(confirmationMail);
+
+                /*var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+                _emailService.SendEmail(message);*/
 
                 if (result.Errors.Count() > 0) 
                     return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
@@ -90,43 +116,178 @@ namespace TrackwiseAPI.Controllers
 
         }
 
-
-
         [HttpPost]
-        [Route("Login")]
-        public async Task<ActionResult> Login(UserVM uvm)
+        [Route("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(ConfirmEmailVM confirmEmailVM)
         {
-            var user = await _userManager.FindByNameAsync(uvm.emailaddress);
-            var auditId = Guid.NewGuid().ToString();
-            var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
-
-            if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
+            var user = await _userManager.FindByEmailAsync(confirmEmailVM.Email);
+            if (user != null)
             {
-                try
+                var result = await _userManager.ConfirmEmailAsync(user, confirmEmailVM.Token);
+                if (result.Succeeded)
                 {
-                    var token = await GenerateJWTToken(user); // Generate the JWT token
-
-                    var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
-
-                    var response = new
-                    {
-                        Token = token,
-                        Role = roles.FirstOrDefault()
-                    };
-                    _auditRepository.Add(audit);
-                    await _auditRepository.SaveChangesAsync();
-                    return Ok(response);
-                }
-                catch (Exception)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    return StatusCode(StatusCodes.Status200OK);
                 }
             }
-            else
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+
+
+            [HttpPost]
+            [Route("Login")]
+            public async Task<ActionResult> Login(UserVM uvm)
+            {
+                var user = await _userManager.FindByNameAsync(uvm.emailaddress);
+            if(user == null)
             {
                 return NotFound("User does not exist or invalid credentials");
             }
+
+            if (user.EmailConfirmed == false)
+            {
+                //Add Token to Verify the email....
+                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var encodedToken = confirmationLink.Replace("/", "%2F");
+
+                var confirmationMail = new ConfirmEmail
+                {
+                    Email = user.Email,
+                    Name = user.UserName,
+
+                    ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                };
+
+                var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
+
+                var response = new
+                {
+                    Token = "",
+                    Role = roles.FirstOrDefault(),
+                    isTwoFactor = user.TwoFactorEnabled,
+                    isEmailConfirmed = user.EmailConfirmed
+                };
+
+                await _mailController.ConfirmEmail(confirmationMail);
+
+                return Ok(response);
+            }
+
+            if (user.TwoFactorEnabled)
+                {
+                    await _signInManager.SignOutAsync();
+                    await _signInManager.PasswordSignInAsync(user, uvm.password, false, true);
+
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var response = new
+                {
+                    Token = new { value = new { token = "", user = user.UserName } },
+                    Role = roles.FirstOrDefault(),
+                    isTwoFactor = user.TwoFactorEnabled,
+                    isEmailConfirmed = user.EmailConfirmed
+                };
+
+                await GenerateOTPFor2StepVerification(user);
+
+                return Ok(response);
+                }
+
+                if (user != null && await _userManager.CheckPasswordAsync(user, uvm.password))
+                {
+                    try
+                    {
+                    var auditId = Guid.NewGuid().ToString();
+
+                    var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
+
+                    var token = await GenerateJWTToken(user); // Generate the JWT token
+
+                        var roles = await _userManager.GetRolesAsync(user); // Get the roles associated with the user
+
+                        var response = new
+                        {
+                            Token = token,
+                            Role = roles.FirstOrDefault(),
+                            isTwoFactor = user.TwoFactorEnabled,
+                            isEmailConfirmed = user.EmailConfirmed
+                        };
+                        _auditRepository.Add(audit);
+                        await _auditRepository.SaveChangesAsync();
+                        return Ok(response);
+                    }
+                    catch (Exception)
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    }
+                }
+                else
+                {
+                    return NotFound("User does not exist or invalid credentials");
+                }
+            }
+
+        private async Task<IActionResult> GenerateOTPFor2StepVerification(AppUser user)
+        {
+            var providers = await _userManager.GetValidTwoFactorProvidersAsync(user);
+            if (!providers.Contains("Email"))
+            {
+                return Unauthorized();
+            }
+
+            var token = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
+            var twoFactorMail = new TwoFactor
+            {
+                Email = user.Email,
+                Name = user.UserName,
+                twoFactorOTP = token
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var response = new
+            {
+                Token = new { value = new { token = "", user = user.UserName } },
+                Role = roles.FirstOrDefault()
+            };
+
+            await _mailController.TwoFactorEmail(twoFactorMail);
+
+            return Ok();
         }
+
+        [HttpPost("TwoStepVerification")]
+        public async Task<IActionResult> TwoStepVerification(TwoFactorVM twoFactorDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var user = await _userManager.FindByEmailAsync(twoFactorDto.Username);
+            if (user is null)
+                return BadRequest("Invalid Request");
+
+            var validVerification = await _userManager.VerifyTwoFactorTokenAsync(user, "Email", twoFactorDto.Code);
+            if (!validVerification)
+                return BadRequest("Invalid Token Verification");
+
+            var auditId = Guid.NewGuid().ToString();
+            var audit = new Audit { Audit_ID = auditId, Action = "Login", CreatedDate = DateTime.Now, User = user.Email };
+            _auditRepository.Add(audit);
+            await _auditRepository.SaveChangesAsync();
+
+            var token = await GenerateJWTToken(user);
+
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var response = new
+            {
+                Token = token,
+                Role = roles.FirstOrDefault()
+            };
+
+            return Ok(response);
+        }
+
+
         /*
         [HttpPost("forgot-password/{email}")]
         public async Task<IActionResult> ForgotPassword(string email)

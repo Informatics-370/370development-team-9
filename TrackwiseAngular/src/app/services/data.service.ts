@@ -25,6 +25,8 @@ import { Fuel } from '../shared/fuel';
 import { Delivery } from '../shared/delivery';
 import { VAT } from '../shared/VAT';
 import { ProductType } from '../shared/productType';
+import { TwoFactor } from '../shared/twoFactor';
+import { ConfirmEmail } from '../shared/confirmEmail';
 
 @Injectable({
   providedIn: 'root'
@@ -76,11 +78,27 @@ export class DataService {
 
   /*LOGIN*/
   LoginUser(loginUser: LoginUser){
+    console.log(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
     return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
 
+
   Register( registerUser: RegisterUser ) {
     return this.httpClient.post(`${this.apiUrl}User/Register`, registerUser);
+  }
+
+  // ConfirmTwoFactor(twoFactor: TwoFactor): Observable<TwoFactor>{
+  //   console.log(`${this.apiUrl}User/login-2FA`, twoFactor)
+  //   return this.httpClient.post<TwoFactor>(`${this.apiUrl}User/login-2FA`, twoFactor)
+  // }
+
+  ConfirmTwoFactor(twoFactor: TwoFactor): Observable<User>{
+    console.log(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
+    return this.httpClient.post<User>(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
+  }
+
+  ConfirmEmail(confirmEmail: ConfirmEmail): Observable<ConfirmEmail>{
+    return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail)
   }
 
   /* Logout */
@@ -511,11 +529,11 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.get<VAT>(`${this.apiUrl}VAT/GetVAT`, {headers});
   }
-  UpdateVAT():Observable<any>
+  UpdateVAT(updatedVAT: number):Observable<any>
   {
     let token = sessionStorage.getItem('Token');
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT`, {}, {headers});
+    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT/${updatedVAT}`, {}, {headers});
   }
 
   /*Customer Section*/

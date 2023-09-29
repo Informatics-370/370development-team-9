@@ -1,0 +1,34 @@
+<h2>Business Rules</h2>
+<div class="mat-elevation-z8">
+  <div class="wrapper">
+    <div class="block-seciton">
+      <mat-card-actions>
+        <button class="EditProfileBtn section-heading" mat-button (click)="toggleEditForm()">
+          <div class="button-content">
+            <h3>VAT</h3>
+            <mat-icon [ngClass]="{'arrow-up': showEditForm, 'arrow-down': !showEditForm}">
+              keyboard_arrow_{{ showEditForm ? 'up' : 'down' }}
+            </mat-icon>
+          </div>
+        </button>
+      </mat-card-actions>
+
+      <div class="edit-form" *ngIf="showEditForm">
+        <div class="mb-3">
+          <label for="email" class="form-label">Current VAT</label>
+          <input type="email" class="form-control" id="email" name="email"  placeholder="{{CurrentVAT.vaT_Amount * 100 | number:'1.0-0'}}%" disabled>
+        </div>
+
+        <div class="mb-3">
+          <label for="quantity" class="form-label">New VAT Amount (%)</label>
+          <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="NewVAT.vaT_Amount" min="0" max="100" (blur)="removeNegativeSign()">
+        </div>
+
+        <div class="item-container">
+          <button class="complete-btn" (click)="UpdateVAT()"> Save </button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+</div>

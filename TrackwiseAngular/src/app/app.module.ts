@@ -80,6 +80,9 @@ import { CancelNotificationComponent } from './ConfirmationNotifications/cancel-
 import { CollectNotificationComponent } from './ConfirmationNotifications/collect-notification/collect-notification.component';
 import { RemoveNotificationComponent } from './ConfirmationNotifications/remove-notification/remove-notification.component';
 import { AuditComponent } from './Admin-Screen/audit/audit.component';
+import { ConfirmEmailComponent } from './Authentication/confirm-email/confirm-email.component';
+import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-factor-auth.component';
+import { BusinessRulesComponent } from './Admin-Screen/business-rules/business-rules.component';
 
 @NgModule({
   declarations: [
@@ -132,6 +135,9 @@ import { AuditComponent } from './Admin-Screen/audit/audit.component';
     CollectNotificationComponent,
     RemoveNotificationComponent,
     AuditComponent,
+    ConfirmEmailComponent,
+    TwoFactorAuthComponent,
+    BusinessRulesComponent,
   ],
   imports: [
     BrowserModule,
