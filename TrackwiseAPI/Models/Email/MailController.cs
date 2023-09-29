@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace TrackwiseAPI.Models.Email
 {
@@ -178,6 +181,7 @@ namespace TrackwiseAPI.Models.Email
             }
         }
 
+
         [HttpPost]
         [Route("TwoFactorEmail")]
         public async Task<IActionResult> TwoFactorEmail(TwoFactor twoFactor)
@@ -224,7 +228,41 @@ namespace TrackwiseAPI.Models.Email
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
             }
+         }
+
+         [HttpPost("Message")]
+        public async Task<IActionResult> SendMessage([FromBody] MessageModel messageModel)
+        {
+            if (messageModel == null)
+            {
+                return BadRequest("Message data is required.");
+            }
+
+            try
+            {
+                const string accountSid = "ACe2eb156857d631237dba578bdba5d2c8";
+                const string authToken = "642e2096998516038a0be6f9aea1809e";
+                TwilioClient.Init(accountSid, authToken);
+
+                var message = MessageResource.Create(
+                    body: messageModel.Body,
+                    from: new PhoneNumber("+12568587636"), // Twilio phone number
+                    to: new PhoneNumber(messageModel.ToPhoneNumber)
+                );
+
+                return Ok($"Message SID: {message.Sid}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Message could not be sent.");
+
+            }
         }
 
     }
+}
+public class MessageModel
+{
+    public string ToPhoneNumber { get; set; }
+    public string Body { get; set; }
 }
