@@ -12,10 +12,12 @@ using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.ConstrainedExecution;
+using System.Runtime.Intrinsics.X86;
 using System.Security.Claims;
 using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.BingMapsAPI;
 using TrackwiseAPI.Models.DataTransferObjects;
+using TrackwiseAPI.Models.Email;
 using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
@@ -34,6 +36,7 @@ namespace TrackwiseAPI.Controllers
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly TwDbContext _context;
         private readonly IAuditRepository _auditRepository;
+        private readonly MailController _mailController;
 
         public JobController(
             IJobRepository jobRepository, 
@@ -43,7 +46,8 @@ namespace TrackwiseAPI.Controllers
             UserManager<AppUser> userManager,
             IWebHostEnvironment hostingEnvironment,
             TwDbContext context,
-            IAuditRepository auditRepository)
+            IAuditRepository auditRepository,
+            MailController mailController)
 
         {
             _jobRepository = jobRepository;
@@ -55,6 +59,7 @@ namespace TrackwiseAPI.Controllers
             _hostingEnvironment = hostingEnvironment;
             _context = context;
             _auditRepository = auditRepository;
+            _mailController = mailController;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -785,6 +790,9 @@ namespace TrackwiseAPI.Controllers
                         WeightCaptured = false,
                         MileageCaptured = false
                     };
+                    var number = driver.PhoneNumber;
+                    var newnumber = "+27" + number.Substring(1);
+                    var mailContent = new MessageModel { Body = "You have a new Job with one delivery. View more details on your driver app",ToPhoneNumber = newnumber };
                     using (var transaction = _jobRepository.BeginTransaction()) // Begin the database transaction
                     {
                         try
@@ -795,10 +803,11 @@ namespace TrackwiseAPI.Controllers
                             driver.Driver_Status_ID = "2";
                             truck.Truck_Status_ID = "2";
                             trailer.Trailer_Status_ID = "2";
-
+                            var mail = await _mailController.SendMessage(mailContent);
                             await _jobRepository.SaveChangesAsync();
                             _auditRepository.Add(audit);
                             await _auditRepository.SaveChangesAsync();
+                           
                             transaction.Commit(); // Commit the transaction if everything is successful
                         }
                         catch (Exception)
@@ -887,6 +896,15 @@ namespace TrackwiseAPI.Controllers
                                 await _auditRepository.SaveChangesAsync();
                                 await _jobRepository.SaveChangesAsync();
                                 transaction.Commit(); // Commit the transaction if everything is successful
+                                                      // Send a message to the driver
+                                var number = driver.PhoneNumber;
+                                var newnumber = "+27" + number.Substring(1);
+                                var mailContent = new MessageModel
+                                {
+                                    Body = $"You have a new Job with {deliveries1.Count} deliveries.",
+                                    ToPhoneNumber = newnumber
+                                };
+                                var mail = await _mailController.SendMessage(mailContent);
                             }
                             catch (Exception ex)
                             {
@@ -975,6 +993,7 @@ namespace TrackwiseAPI.Controllers
                                 await _auditRepository.SaveChangesAsync();
                                 await _jobRepository.SaveChangesAsync();
                                 transaction.Commit(); // Commit the transaction if everything is successful
+
                             }
                             catch (Exception ex)
                             {
