@@ -39,6 +39,7 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Audit> Audits { get; set; }
         public DbSet<VAT> VAT { get; set; }
         public DbSet<JobRule> Rule { get; set; }
+        public DbSet<BreakInterval> breakIntervals { get; set; }
 
 
         /// 
@@ -479,6 +480,14 @@ namespace TrackwiseAPI.DBContext
 
             modelBuilder.Entity<JobRule>().HasData(
                 new JobRule { Rule_ID = Guid.NewGuid().ToString(), Break = 4.00, Rest = 0.5, MaxHrs = 14 }
+                );
+
+            modelBuilder.Entity<BreakInterval>()
+            .HasIndex(v => v.Break_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<BreakInterval>().HasData(
+                new BreakInterval { Break_ID = Guid.NewGuid().ToString(), Break_Amount = 4.00 }
                 );
         }
     }

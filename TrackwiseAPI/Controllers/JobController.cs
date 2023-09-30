@@ -22,6 +22,8 @@ using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
+using TrackwiseAPI.Controllers;
+
 namespace TrackwiseAPI.Controllers
 {
 
@@ -39,6 +41,7 @@ namespace TrackwiseAPI.Controllers
         private readonly MailController _mailController;
         private readonly IJobRuleRepository _jobRuleRepository;
         private readonly JobRuleController _jobRuleController;
+        private readonly IBreakIntervalRepository _BreakIntervalRepository;
 
         public JobController(
             IJobRepository jobRepository, 
@@ -51,7 +54,8 @@ namespace TrackwiseAPI.Controllers
             IAuditRepository auditRepository,
             MailController mailController,
             IJobRuleRepository jobRuleRepository,
-            JobRuleController jobRuleController)
+            JobRuleController jobRuleController,
+            IBreakIntervalRepository breakIntervalRepository)
 
         {
             _jobRepository = jobRepository;
@@ -66,6 +70,7 @@ namespace TrackwiseAPI.Controllers
             _mailController = mailController;
             _jobRuleRepository = jobRuleRepository;
             _jobRuleController = jobRuleController;
+            _BreakIntervalRepository = breakIntervalRepository;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -703,8 +708,11 @@ namespace TrackwiseAPI.Controllers
 
 
 
+            // durationInHrs = 19;
             
-            double breakInterval = 4.0;
+            var result = await _BreakIntervalRepository.GetBreakAsync();
+            double breakInterval = result.Break_Amount;
+
             double restDuration = 0.5;
             double maxHrsPerDay = 14.0;
 
@@ -1163,6 +1171,50 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
             return BadRequest("Your request is invalid.");
+        }
+
+        [HttpGet]
+        [Route("GetBreakInterval")]
+        public async Task<IActionResult> GetBreak()
+        {
+            try
+            {
+                var results = await _BreakIntervalRepository.GetBreakAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateBreakInterval/{updatedBreak}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> UpdateVAT(double updatedVAT)
+        {
+            try
+            {
+                var VAT = await _BreakIntervalRepository.GetBreakAsync();
+                if (VAT == null)
+                {
+                    return NotFound(); // Handle VAT record not found scenario
+                }
+
+                VAT.Break_Amount = updatedVAT;
+
+                _BreakIntervalRepository.Update(VAT);
+
+                await _BreakIntervalRepository.SaveChangesAsync();
+                return Ok(VAT);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging
+                Console.WriteLine(ex);
+
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
         }
 
     }

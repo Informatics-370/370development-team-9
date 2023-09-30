@@ -6,6 +6,8 @@ using TrackwiseAPI.DBContext;
 using TrackwiseAPI.Models.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using TrackwiseAPI.Models.Repositories;
+using System.Web.Http.Results;
+using TrackwiseAPI.Controllers;
 
 
 namespace TrackwiseAPI.Controllers
@@ -34,16 +36,17 @@ namespace TrackwiseAPI.Controllers
 
         [HttpGet]
         [Route("Getbreak")]
-        public async Task<IActionResult> GetRule()
+        public async Task<double> GetBreak()
         {
             try
             {
                 var results = await _jobRuleRepository.GetRuleAsync();
-                return Ok(results);
+                double breakValue = results.Break; 
+                return breakValue;
             }
             catch (Exception)
             {
-                return StatusCode(500, "Internal Server Error. Please contact support.");
+                throw;
             }
         }
         public class BreakVM
