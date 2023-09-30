@@ -20,14 +20,14 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/tabs/tab1',
+        redirectTo: '/tabs/tabs/tab3',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/tabs/tab1',
+    redirectTo: '/tabs/tabs/tab3',
     pathMatch: 'full',
   },
 ];

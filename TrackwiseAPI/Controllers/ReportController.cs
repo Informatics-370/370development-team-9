@@ -206,6 +206,11 @@ namespace TrackwiseAPI.Controllers
                     double delweight = 0;
                     var trip = 0;
 
+
+
+
+
+
                     var registration = truck.Truck_License;
                     var truckid = truck.TruckID;
                     foreach (var del in deliveries)
