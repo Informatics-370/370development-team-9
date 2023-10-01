@@ -36,6 +36,7 @@ export class ProfileComponent {
   expirationDate: string = "";
   cvv: string = "";
   showPaymentInfoForm:boolean = false;
+  showHelpModal: boolean = false;
 
   GetCustomerProfile(){
     this.dataService.GetCustomerProfile().subscribe((result) => {
@@ -72,5 +73,15 @@ export class ProfileComponent {
 
     // Once the changes are saved, hide the form again.
     this.showEditForm = false;
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

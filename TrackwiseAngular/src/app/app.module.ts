@@ -84,6 +84,8 @@ import { ConfirmEmailComponent } from './Authentication/confirm-email/confirm-em
 import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-factor-auth.component';
 import { BusinessRulesComponent } from './Admin-Screen/business-rules/business-rules.component';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -159,6 +161,7 @@ import { BusinessRulesComponent } from './Admin-Screen/business-rules/business-r
     MatMenuModule,
     NgChartsModule,
     MatDatepickerModule,
+    FlexLayoutModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

@@ -31,6 +31,8 @@ export class CustomerProductComponent {
   showModal: boolean = false;
   selectedProduct: Product | null = null;
 
+  showHelpModal: boolean = false;
+
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
@@ -241,6 +243,18 @@ export class CustomerProductComponent {
   
     this.GetFilteredTypes(selectedTypeId);
   }
+
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
   
   async GetFilteredTypes(typeID: string) {
     try {
@@ -304,5 +318,5 @@ export class CustomerProductComponent {
   //     console.error("Error fetching filtered types:", error);
   //   }
   // }
-  
+
 }

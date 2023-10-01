@@ -30,6 +30,8 @@ export class CustomerOrdersComponent {
 
   orders : Order[] = [];
 
+  showHelpModal: boolean = false;
+
   GetCustomerOrders() {
     this.dataService.GetCustomerOrders().subscribe(result => {
       let custOrderslist: any[] = result;
@@ -124,6 +126,16 @@ export class CustomerOrdersComponent {
   // flipCard(product: Product): void {
   //   product.this.cardFlipped = !product.cardFlipped;
   // }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
 
  }
 
