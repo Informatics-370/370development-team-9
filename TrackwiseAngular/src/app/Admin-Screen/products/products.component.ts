@@ -136,16 +136,20 @@ export class ProductsComponent {
       this.selectedFile = event.target.files[0];
     }
   
-    uploadFile() {
+    async uploadFile() {
       if (this.selectedFile) {
         this.dataService.uploadCsv(this.selectedFile)
           .subscribe(
             (response) => {
+              this.products = [];
+              this.GetProducts();
               console.log('Response:', response);
               // Handle success (e.g., show a success message)
               this.snackBar.open(` Product Successfully Added`, 'X', {duration: 3000});
             },
             (error) => {
+              this.products = [];
+              this.GetProducts();
               this.snackBar.open(` Product Successfully Added`, 'X', {duration: 3000});
             }
           );

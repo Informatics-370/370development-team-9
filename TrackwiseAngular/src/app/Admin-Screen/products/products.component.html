@@ -18,8 +18,8 @@
         <br>
         <div class="import">
           <h2>CSV Product Import</h2>
-          <input type="file" (change)="onFileSelected($event)">
-          <button class="btn create-btn" (click)="uploadFile()">Upload CSV</button>
+          <input type="file" (change)="onFileSelected($event)" accept=".csv">
+          <button (click)="uploadFile()">Upload CSV</button>
         </div>
       </div>
       <br>
