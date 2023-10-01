@@ -14,6 +14,8 @@
   </ion-header>
 
   <h1>Weight</h1>
+  <!-- <img src="{{photo}}"> -->
+
   <table>
       <tr  *ngFor="let row of weightRows; let i = index">
         <td>
@@ -23,10 +25,15 @@
       <tr>
         <ion-icon name="add-circle-outline" (click)="addWeightRow()"></ion-icon>
       </tr>
+      <ion-fab  horizontal="end">
+        <ion-fab-button (click)="takeWeightPicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
   </table>
-  <br>
+  <br><br><br>
 
-  <h1>Milage</h1>
+  <h1>Mileage</h1>
   <table>
       <tr  *ngFor="let row of milageRows; let i = index">
         <td>
@@ -36,8 +43,13 @@
       <tr>
         <ion-icon name="add-circle-outline" (click)="addMileageRow()"></ion-icon>
       </tr>
+      <ion-fab  horizontal="end">
+        <ion-fab-button (click)="takeMileagePicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
   </table>
-  <br>
+  <br><br><br>
 
   <h1>Fuel</h1>
   <table>
@@ -49,7 +61,13 @@
       <tr>
         <ion-icon name="add-circle-outline" (click)="addFuelRow()"></ion-icon>
       </tr>
+      <ion-fab  horizontal="end">
+        <ion-fab-button (click)="takeFuelPicture()">
+          <ion-icon name="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
   </table>
+  <br><br><br>
   <ion-button (click)="uploadSelectedFiles()">
     Upload files
   </ion-button>

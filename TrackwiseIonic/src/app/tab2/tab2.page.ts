@@ -8,6 +8,8 @@ import { Delivery } from '../shared/Delivery';
 import { DataserviceService } from '../services/dataservice.service';
 import { HttpClient,HttpClientModule } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource} from '@capacitor/camera';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 interface Files extends File {
   docType:string
@@ -27,6 +29,9 @@ export class Tab2Page{
   milageRows: any[] = [];
   fuelRows: any[] = [];
   selectedFiles: Files[] = [];
+  selectedPhotos: addDocument['documents'] = [];
+
+  photo: any;
   
 
   docrequest: addDocument =
@@ -34,7 +39,7 @@ export class Tab2Page{
       documents: []
   };
 
-  constructor(private route: ActivatedRoute, private dataService : DataserviceService, private http: HttpClient, private router: Router) {  }
+  constructor(private route: ActivatedRoute, private dataService : DataserviceService, private http: HttpClient, private router: Router, private sanitizer: DomSanitizer ) {  }
 
   addWeightRow() {
     this.weightRows.push({ showUploadOptions: true });
@@ -68,10 +73,36 @@ export class Tab2Page{
   }
 
   addToSelectedFiles(files: any, docType:string) {
+    console.log(files)
     let fileToUpload = <Files>files[0];
     fileToUpload.docType = docType;
     this.selectedFiles.push(fileToUpload);
-    //console.log(fileToUpload)
+    console.log(fileToUpload)
+  }
+
+  addSelectedPhotos(imageurl: string, docType:string) {
+    this.route.params.subscribe({
+      next: (params) => {
+        let deliveryID = params['delivery_ID'];
+    const document: {
+      document_ID: string;
+      image: string;
+      delivery_ID: string;
+      docType:string;
+    } = {
+      document_ID: '', // Set appropriate document_ID if needed
+      image: imageurl,
+      delivery_ID: deliveryID, // Set the delivery_ID that corresponds to the delivery you want to associate this document with
+      docType: docType,
+    };
+    this.docrequest.documents.push(document);
+    console.log(document)
+  }
+  })
+  }
+
+  uploadPhotoDoc(){
+
   }
 
   async uploadSelectedFiles() {
@@ -85,38 +116,45 @@ export class Tab2Page{
     this.router.navigate(['/tabs/tabs/tab1']);
   }
 
-  // Complete(deliveryId: string, delivery:any) {
-  //   this.AddDoc();
-  //   this.dataService.updateDeliveryStatus(deliveryId).subscribe(
-  //     () => {
-  //       // Find the index of the delivery with the given deliveryId in the array
-  //       const index = this.deliveries.findIndex((d) => d.delivery_ID === deliveryId);
-  //       console.log(index);
-  //       if (index != -1) {
-  //         if(this.deliveries.length == 1){
-  //           this.dataService.updateJobStatus(delivery.jobs.job_ID);
-  //           console.log(delivery.job_ID);
-  //           this.dataService.updateDriverStatus(delivery.driver_ID);
-  //           this.dataService.updateTrailerStatus(delivery.trailerID);
-  //           this.dataService.updateTruckStatus(delivery.truckID);
-  //         }
-  //         // Update the Delivery_Status_ID of the found delivery to '2'
-  //         this.deliveries[index].delivery_Status_ID = '2';
-  //         this.deliveries[index].job_Status_ID = "2";
-  //         this.deliveries = [];
-  //         this.GetDriverDeliveries();
-  //         console.log('Delivery status updated successfully.');
-  //       } else {
-  //         // Handle the case where the delivery with the given ID was not found in the array
-  //         console.error('Delivery not found with ID:', deliveryId);
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error('Error updating delivery status:', error);
-  //       // Handle error (e.g., show an error message)
-  //     }
-  //   );
-  // }
+  async takeWeightPicture(){
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+
+    this.photo = image.dataUrl;
+    console.log(this.photo)
+
+    this.addSelectedPhotos(this.photo, "Weight")
+  }
+
+  async takeMileagePicture(){
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+
+    this.photo = image.dataUrl;
+
+    this.addSelectedPhotos(this.photo, "Mileage")
+  }
+
+  async takeFuelPicture(){
+    const image = await Camera.getPhoto({
+      quality: 100,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+      source: CameraSource.Camera
+    });
+
+    this.photo = image.dataUrl;
+
+    this.addSelectedPhotos(this.photo, "Fuel")
+  }
   
   formData = new FormData();
   fileNameUploaded = '';
