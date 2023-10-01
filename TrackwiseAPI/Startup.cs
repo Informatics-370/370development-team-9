@@ -133,6 +133,9 @@ public class Startup
         services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IReportRepository, ReportRepository>();
         services.AddScoped<IVATRepository, VATRepository>();
+        services.AddScoped<IBreakIntervalRepository, BreakIntervalRepository>();
+        services.AddScoped<IRestPeriodRepository, RestPeriodRepository>();
+        services.AddScoped<IHrsRepository, HrsRepository>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

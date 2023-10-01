@@ -114,8 +114,7 @@
     <div class="form-item-container">
       <label>Type:</label>
       <select class="dropdown" name="jobType" [(ngModel)]="createJob.job_Type_ID" required>
-        <option value="1">Coal</option>
-        <option value="2">Fuel</option>
+        <option value="1" selected>Coal</option>
       </select>
       <label>Weight: </label>
       <input style="text-align: center;" class="weight" type="number" name="totalWeight" placeholder=" Weight (T)" [(ngModel)]="createJob.total_Weight" required min="0" (blur)=" removeNegativeSign()">

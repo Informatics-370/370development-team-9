@@ -38,6 +38,10 @@ namespace TrackwiseAPI.DBContext
         public DbSet<Document> Documents { get; set; }
         public DbSet<Audit> Audits { get; set; }
         public DbSet<VAT> VAT { get; set; }
+        public DbSet<JobRule> Rule { get; set; }
+        public DbSet<BreakInterval> breakIntervals { get; set; }
+        public DbSet<RestPeriod> RestPeriods { get; set; }
+        public DbSet<MaxHrs> MaxHrs { get; set; }
 
 
         /// 
@@ -472,6 +476,37 @@ namespace TrackwiseAPI.DBContext
                 new VAT { VAT_ID = Guid.NewGuid().ToString(), VAT_Amount = 0.15M }
                 );
 
+            modelBuilder.Entity<JobRule>()
+            .HasIndex(v => v.Rule_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<JobRule>().HasData(
+                new JobRule { Rule_ID = Guid.NewGuid().ToString(), Break = 4.00, Rest = 0.5, MaxHrs = 14 }
+                );
+
+            modelBuilder.Entity<BreakInterval>()
+            .HasIndex(v => v.Break_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<BreakInterval>().HasData(
+                new BreakInterval { Break_ID = Guid.NewGuid().ToString(), Break_Amount = 4.00 }
+                );
+
+            modelBuilder.Entity<RestPeriod>()
+            .HasIndex(v => v.Rest_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<RestPeriod>().HasData(
+                new RestPeriod { Rest_ID = Guid.NewGuid().ToString(), Rest_Amount = 0.5 }
+                );
+
+            modelBuilder.Entity<MaxHrs>()
+            .HasIndex(v => v.Hrs_ID)
+            .IsUnique();
+
+            modelBuilder.Entity<MaxHrs>().HasData(
+                new MaxHrs { Hrs_ID = Guid.NewGuid().ToString(), Hrs_Amount= 0.5 }
+                );
         }
     }
 }

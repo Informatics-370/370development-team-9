@@ -22,6 +22,8 @@ using TrackwiseAPI.Models.Entities;
 using TrackwiseAPI.Models.Interfaces;
 using TrackwiseAPI.Models.Repositories;
 using TrackwiseAPI.Models.ViewModels;
+using TrackwiseAPI.Controllers;
+
 namespace TrackwiseAPI.Controllers
 {
 
@@ -37,6 +39,9 @@ namespace TrackwiseAPI.Controllers
         private readonly TwDbContext _context;
         private readonly IAuditRepository _auditRepository;
         private readonly MailController _mailController;
+        private readonly IBreakIntervalRepository _BreakIntervalRepository;
+        private readonly IRestPeriodRepository _restPeriodRepository;
+        private readonly IHrsRepository _hrsRepository;
 
         public JobController(
             IJobRepository jobRepository, 
@@ -47,7 +52,10 @@ namespace TrackwiseAPI.Controllers
             IWebHostEnvironment hostingEnvironment,
             TwDbContext context,
             IAuditRepository auditRepository,
-            MailController mailController)
+            MailController mailController,
+            IBreakIntervalRepository breakIntervalRepository,
+            IRestPeriodRepository restPeriodRepository,
+            IHrsRepository hrsRepository)
 
         {
             _jobRepository = jobRepository;
@@ -60,6 +68,9 @@ namespace TrackwiseAPI.Controllers
             _context = context;
             _auditRepository = auditRepository;
             _mailController = mailController;
+            _BreakIntervalRepository = breakIntervalRepository;
+            _restPeriodRepository = restPeriodRepository;
+            _hrsRepository = hrsRepository;
         }
 
         private readonly TruckRouteService _truckRouteService;
@@ -695,13 +706,19 @@ namespace TrackwiseAPI.Controllers
                 durationInHrs = truckRouteInfo.Duration;
             }
 
-             
 
 
             // durationInHrs = 19;
-            double breakInterval = 4.0;
-            double restDuration = 0.5;
-            double maxHrsPerDay = 14.0;
+            
+            var result = await _BreakIntervalRepository.GetBreakAsync();
+            double breakInterval = result.Break_Amount;
+
+            var result2 = await _restPeriodRepository.GetRestAsync();
+            double restDuration = result2.Rest_Amount;
+
+            var result3 = await _hrsRepository.GetHrsAsync();
+            double maxHrsPerDay = result3.Hrs_Amount;
+
 
             double numBreaks = Math.Floor(durationInHrs / breakInterval); //4
             double totalRestTime = numBreaks * restDuration; //2
@@ -1158,6 +1175,138 @@ namespace TrackwiseAPI.Controllers
                 return StatusCode(500, "Internal Server Error. Please contact support.");
             }
             return BadRequest("Your request is invalid.");
+        }
+
+        [HttpGet]
+        [Route("GetBreakInterval")]
+        public async Task<IActionResult> GetBreak()
+        {
+            try
+            {
+                var results = await _BreakIntervalRepository.GetBreakAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateBreakInterval/{updatedBreak}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> UpdateVAT(double updatedBreak)
+        {
+            try
+            {
+                var VAT = await _BreakIntervalRepository.GetBreakAsync();
+                if (VAT == null)
+                {
+                    return NotFound(); // Handle VAT record not found scenario
+                }
+
+                VAT.Break_Amount = updatedBreak;
+
+                _BreakIntervalRepository.Update(VAT);
+
+                await _BreakIntervalRepository.SaveChangesAsync();
+                return Ok(VAT);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging
+                Console.WriteLine(ex);
+
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetRestperiod")]
+        public async Task<IActionResult> GetRest()
+        {
+            try
+            {
+                var results = await _restPeriodRepository.GetRestAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateRestPeriod/{updatedRest}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> UpdateRest(double updatedRest)
+        {
+            try
+            {
+                var VAT = await _restPeriodRepository.GetRestAsync();
+                if (VAT == null)
+                {
+                    return NotFound(); // Handle VAT record not found scenario
+                }
+
+                VAT.Rest_Amount = updatedRest;
+
+                _restPeriodRepository.Update(VAT);
+
+                await _restPeriodRepository.SaveChangesAsync();
+                return Ok(VAT);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging
+                Console.WriteLine(ex);
+
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpGet]
+        [Route("GetMaxHrs")]
+        public async Task<IActionResult> GetHrs()
+        {
+            try
+            {
+                var results = await _hrsRepository.GetHrsAsync();
+                return Ok(results);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateMaxHrs/{updatedHrs}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> UpdateHrs(double updatedHrs)
+        {
+            try
+            {
+                var VAT = await _hrsRepository.GetHrsAsync();
+                if (VAT == null)
+                {
+                    return NotFound(); // Handle VAT record not found scenario
+                }
+
+                VAT.Hrs_Amount = updatedHrs;
+
+                _hrsRepository.Update(VAT);
+
+                await _hrsRepository.SaveChangesAsync();
+                return Ok(VAT);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging
+                Console.WriteLine(ex);
+
+                return StatusCode(500, "Internal Server Error. Please contact support.");
+            }
         }
 
     }

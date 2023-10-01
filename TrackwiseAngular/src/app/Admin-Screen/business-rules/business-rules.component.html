@@ -29,6 +29,94 @@
       </div>
       </div>
     </div>
-  </div>
 
+    <div class="block-seciton">
+        <mat-card-actions>
+          <button class="EditProfileBtn section-heading" mat-button (click)="toggleBreakForm()">
+            <div class="button-content">
+              <h3>Break Interval</h3>
+              <mat-icon [ngClass]="{'arrow-up': showBreakForm, 'arrow-down': !showBreakForm}">
+                keyboard_arrow_{{ showBreakForm ? 'up' : 'down' }}
+              </mat-icon>
+            </div>
+          </button>
+        </mat-card-actions>
+
+        <div class="edit-form" *ngIf="showBreakForm">
+          <div class="mb-3">
+            <label for="break" class="form-label">Current break interval</label>
+            <input type="break" class="form-control" id="break" name="break"  placeholder="{{CurrentBreak.break_Amount}}Hours" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label for="break_Amount" class="form-label">New Break Interval (Hrs)</label>
+            <input type="number" class="form-control" id="break_Amount" name="break_Amount" [(ngModel)]="NewBreak.break_Amount" min="0" max="24" (blur)="removeNegativeSign()">
+          </div>
+
+          <div class="item-container">
+            <button class="complete-btn" (click)="UpdateBreak()"> Save </button>
+          </div>
+        </div>
+    </div>
+
+    <div class="block-seciton">  
+        <mat-card-actions>
+          <button class="EditProfileBtn section-heading" mat-button (click)="toggleRestForm()">
+            <div class="button-content">
+              <h3>Rest period</h3>
+              <mat-icon [ngClass]="{'arrow-up': showRestForm, 'arrow-down': !showRestForm}">
+                keyboard_arrow_{{ showRestForm ? 'up' : 'down' }}
+              </mat-icon>
+            </div>
+          </button>
+        </mat-card-actions>
+
+        <div class="edit-form" *ngIf="showRestForm">
+          <div class="mb-3">
+            <label for="email" class="form-label">Current rest period</label>
+            <input type="email" class="form-control" id="email" name="email"  placeholder="{{CurrentRest.rest_Amount}}Hours" disabled>
+          </div>
+          
+          <div class="mb-3">
+            <label for="quantity" class="form-label">New Rest Period (Hrs)</label>
+            <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="NewRest.rest_Amount" min="0" max="100" (blur)="removeNegativeSign()">
+          </div>
+
+          <div class="item-container">
+            <button class="complete-btn" (click)="UpdateRest()"> Save </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-seciton">  
+          <mat-card-actions>
+            <button class="EditProfileBtn section-heading" mat-button (click)="toggleHrsForm()">
+              <div class="button-content">
+                <h3>Drive Hours</h3>
+                <mat-icon [ngClass]="{'arrow-up': showHrsForm, 'arrow-down': !showHrsForm}">
+                  keyboard_arrow_{{ showHrsForm ? 'up' : 'down' }}
+                </mat-icon>
+              </div>
+            </button>
+          </mat-card-actions>
+
+          <div class="edit-form" *ngIf="showHrsForm">
+            <div class="mb-3">
+              <label for="email" class="form-label">Current max drive hours per day</label>
+              <input type="email" class="form-control" id="email" name="email"  placeholder="{{CurrentHrs.hrs_Amount}}Hours" disabled>
+            </div>
+
+            <div class="mb-3">
+              <label for="quantity" class="form-label">New Max Drive Per Day (Hrs)</label>
+              <input type="number" class="form-control" id="quantity" name="quantity" [(ngModel)]="NewHrs.hrs_Amount" min="0" max="100" (blur)="removeNegativeSign()">
+            </div>
+
+            <div class="item-container">
+              <button class="complete-btn" (click)="UpdateMax()"> Save </button>
+          </div>
+        </div>
+    </div>
+    
+  </div>
 </div>
+ 

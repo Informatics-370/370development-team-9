@@ -27,6 +27,9 @@ import { VAT } from '../shared/VAT';
 import { ProductType } from '../shared/productType';
 import { TwoFactor } from '../shared/twoFactor';
 import { ConfirmEmail } from '../shared/confirmEmail';
+import { BreakInterval } from '../shared/BreakInterval';
+import { Rest } from '../shared/Rest';
+import { MaxHrs } from '../shared/MaxHrs';
 
 @Injectable({
   providedIn: 'root'
@@ -452,6 +455,13 @@ export class DataService {
   }
 
   /*Product Section */
+  uploadCsv(file: File): Observable<any> {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post(`${this.apiUrl}Product/UploadProducts`, formData, {headers});
+  }
 
   GetProducts(): Observable<any>{
     let token = sessionStorage.getItem('Token');
@@ -539,6 +549,41 @@ export class DataService {
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT/${updatedVAT}`, {}, {headers});
   }
+  GetBreak(): Observable<BreakInterval>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<BreakInterval>(`${this.apiUrl}Job/GetBreakInterval`, {headers});
+  }
+  UpdateBreak(updatedBreak: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/UpdateBreakInterval/${updatedBreak}`, {}, {headers});
+  }
+  GetRest(): Observable<Rest>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Rest>(`${this.apiUrl}Job/GetRestperiod`, {headers});
+  }
+  UpdateRest(updatedRest: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/UpdateRestPeriod/${updatedRest}`, {}, {headers});
+  }
+  GetMax(): Observable<MaxHrs>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<MaxHrs>(`${this.apiUrl}Job/GetMaxHrs`, {headers});
+  }
+  UpdateMax(updatedMax: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/UpdateMaxHrs/${updatedMax}`, {}, {headers});
+  }
+
+
 
   /*Customer Section*/
   GetCustomers(): Observable<any>{

@@ -23,6 +23,16 @@ namespace TrackwiseAPI.Models.Repositories
         {
             _context.Remove(entity);
         }
+        public ProductCategory FindByName(string categoryID)
+        {
+            // Assuming you have a ProductCategories DbSet in your DbContext
+            return _context.ProductCategories.FirstOrDefault(pc => pc.Product_Category_ID == categoryID);
+        }
+        public ProductType FindTypeByName(string TypeID)
+        {
+            // Assuming you have a ProductCategories DbSet in your DbContext
+            return _context.ProductTypes.FirstOrDefault(pc => pc.Product_Type_ID == TypeID);
+        }
 
         public async Task<Product[]> GetAllProductsAsync()
         {

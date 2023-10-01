@@ -8,7 +8,8 @@ namespace TrackwiseAPI.Models.Interfaces
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveChangesAsync();
         void Update(Product product);
-
+        ProductCategory FindByName(string categoryID);
+        ProductType FindTypeByName(string TypeID);
         //Supplier
         Task<Product[]> GetAllProductsAsync();
         Task<Product> GetProductAsync(string productId);

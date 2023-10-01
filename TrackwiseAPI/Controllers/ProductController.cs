@@ -9,6 +9,13 @@ using Microsoft.AspNetCore.Authorization;
 using System.Data;
 using TrackwiseAPI.Models.DataTransferObjects;
 using System.Security.Claims;
+using System.Formats.Asn1;
+using System.Globalization;
+using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
+using static System.Net.Mime.MediaTypeNames;
+
 
 namespace TrackwiseAPI.Controllers
 {
@@ -147,6 +154,120 @@ namespace TrackwiseAPI.Controllers
             return Ok(product);
         }
 
+        [HttpPost]
+        [Route("UploadProducts")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> UploadProducts(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Invalid file.");
+            }
+
+            // Read and parse the CSV file content here
+            using (var streamReader = new StreamReader(file.OpenReadStream()))
+            using (var csvReader = new CsvReader(streamReader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+            {
+                var products = csvReader.GetRecords<ProductCsvModel>().ToList();
+
+                // Process each product and add it to the database
+                foreach (var product in products)
+                {
+                    var productId = Guid.NewGuid().ToString();
+                    var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                    var auditId = Guid.NewGuid().ToString();
+                    var audit = new Audit { Audit_ID = auditId, Action = "Add Product", CreatedDate = DateTime.Now, User = userEmail };
+
+                    var productCategory = _productRepository.FindByName(product.Product_Category_ID);
+                    if (productCategory == null)
+                    {
+                        // Handle the case where the category is not found
+                        return BadRequest($"Category not found: {product.Product_Category_ID}");
+                    }
+
+                    var productType = _productRepository.FindTypeByName(product.Product_Type_ID);
+                    if (productType == null)
+                    {
+                        // Handle the case where the category is not found
+                        return BadRequest($"Type not found: {product.Product_Type_ID}");
+                    }
+
+                    var newProduct = new Product
+                    {
+                        Product_ID = productId,
+                        Product_Name = product.Product_Name,
+                        Product_Description = product.Product_Description,
+                        Product_Price = product.Product_Price,
+                        Quantity = product.Quantity,
+                        ListStatus = product.ListStatus,
+                        Image = product.Image,
+                        Product_Category_ID = productCategory.Product_Category_ID,
+                        Product_Type_ID = productType.Product_Type_ID
+                        // Map other properties as needed
+                    };
+
+                    try
+                    {
+                        _productRepository.Add(newProduct);
+                        await _productRepository.SaveChangesAsync();
+                        _auditRepository.Add(audit);
+                        await _auditRepository.SaveChangesAsync();
+                    }
+                    catch (Exception)
+                    {
+                        // Handle exceptions appropriately
+                        return BadRequest("Invalid transaction");
+                    }
+                }
+            }
+
+            return Ok("Products uploaded successfully");
+        }
+
+        public class ProductCsvModel
+        {
+            [Name("product_name")]
+            public string Product_Name { get; set; }
+
+            [Name("product_description")]
+            public string Product_Description { get; set; }
+
+            [Name("product_price")]
+            public double Product_Price { get; set; }
+
+            [Name("quantity")]
+            public int Quantity { get; set; }
+
+            [Name("list_status")]
+            [Optional]
+            public bool ListStatus { get; set; }
+
+            [Name("image")]
+            [Optional]
+            public string? Image { get; set; }
+            [Name("product_category_id")]
+            public string Product_Category_ID { get; set; }
+            [Name("product_type_id")]
+            public string Product_Type_ID { get; set; }
+        }
+
+        [HttpGet]
+        [Route("Getcsv")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> GetProductsCsv()
+        {
+
+            var csvPath = Path.Combine(Environment.CurrentDirectory, $"products-{DateTime.Now.ToFileTime()}.csv");
+            using (var streamWriter = new StreamWriter(csvPath))
+            {
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                {
+                    var products = await _productRepository.GetAllProductsAsync();
+                    csvWriter.WriteRecords(products);
+                }
+            }
+            return Ok("Addded");
+        }
 
         [HttpPut]
         [Route("EditProduct/{productId}")]
