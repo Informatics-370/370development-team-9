@@ -28,6 +28,7 @@ namespace TrackwiseAPI.Controllers
         private readonly IClientRepository _clientRepository;
         private readonly MailController _mailController;
         private readonly IAuditRepository _auditRepository;
+        private readonly UserController _userController;
 
         public ClientController(
             UserManager<AppUser> userManager,
@@ -96,49 +97,60 @@ namespace TrackwiseAPI.Controllers
             var client = new Client { Client_ID = clientId, Name = cvm.Name, PhoneNumber = cvm.PhoneNumber, Email = cvm.Email };
             var newclientmail = new NewClientMail { Email = client.Email , Name = client.Name, PhoneNumber = client.PhoneNumber, Password = cvm.Password };
             var existingadmin = await _userManager.FindByNameAsync(cvm.Email);
-            if (existingadmin != null) return BadRequest("User already exists");
-            try
+            if (existingadmin == null)
             {
-                _clientRepository.Add(client);
-                await _clientRepository.SaveChangesAsync();
-                _auditRepository.Add(audit);
-                await _auditRepository.SaveChangesAsync();
-                var user = new AppUser
+                try
                 {
-                    Id = clientId,
-                    UserName = cvm.Email,
-                    Email = cvm.Email
-                };
+                    _clientRepository.Add(client);
+                    await _clientRepository.SaveChangesAsync();
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    var user = new AppUser
+                    {
+                        Id = clientId,
+                        UserName = cvm.Email,
+                        Email = cvm.Email,
+                        TwoFactorEnabled = true
+                    };
 
-                var result = await _userManager.CreateAsync(user, cvm.Password);
-                var mail = await _mailController.SendClientEmail(newclientmail);
+                    var result = await _userManager.CreateAsync(user, cvm.Password);
+                    var mail = await _mailController.SendClientEmail(newclientmail);
 
-                //Add Token to Verify the email....
-                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //Add Token to Verify the email....
+                    var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var encodedToken = confirmationLink.Replace("/", "%2F");
 
-                var confirmationMail = new ConfirmEmail
+                    var confirmationMail = new ConfirmEmail
+                    {
+                        Email = user.Email,
+                        Name = user.UserName,
+
+                        ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                    };
+
+                    await _mailController.ConfirmEmail(confirmationMail);
+
+                    await _userManager.AddToRoleAsync(user, "Client");
+
+                    if (result.Errors.Count() > 0)
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+
+                }
+                catch (Exception)
                 {
-                    Email = user.Email,
-                    Name = user.UserName,
-                    ConfirmationLink = confirmationLink
-                };
+                    return BadRequest("Invalid transaction");
+                }
 
-                var CconfirmMail = await _mailController.ConfirmEmail(confirmationMail);
+                return Ok(client);
 
-
-                await _userManager.AddToRoleAsync(user, "Client");
-
-                if (result.Errors.Count() > 0)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-
-            }
-            catch (Exception)
+            } else
             {
-                return BadRequest("Invalid transaction");
+                return BadRequest("User already exists");
             }
-
-            return Ok(client);
+               
+           
         }
+
 
         //update client
         [HttpPut]

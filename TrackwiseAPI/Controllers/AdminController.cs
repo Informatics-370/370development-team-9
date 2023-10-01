@@ -94,49 +94,60 @@ namespace TrackwiseAPI.Controllers
             var adminId = Guid.NewGuid().ToString();
             var admin = new Admin { Admin_ID = adminId, Name = avm.Name, Lastname = avm.Lastname, Email = avm.Email };
             var existingadmin = await _userManager.FindByNameAsync(avm.Email);
-            if (existingadmin != null) return BadRequest("User already exists");
-
-            var newadminmail = new NewAdminMail { Email = admin.Email, Name = admin.Name, Password = avm.Password };
-            try
+            if (existingadmin == null)
             {
-                _adminRepository.Add(admin);
-                await _adminRepository.SaveChangesAsync();
-                _auditRepository.Add(audit);
-                await _auditRepository.SaveChangesAsync();
-                var user = new AppUser
+                var newadminmail = new NewAdminMail { Email = admin.Email, Name = admin.Name, Password = avm.Password };
+                try
                 {
-                    Id = adminId,
-                    UserName = avm.Email,
-                    Email = avm.Email
-                };
+                    _adminRepository.Add(admin);
+                    await _adminRepository.SaveChangesAsync();
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
+                    var user = new AppUser
+                    {
+                        Id = adminId,
+                        UserName = avm.Email,
+                        Email = avm.Email,
+                        TwoFactorEnabled = true
+                    };
 
-                var result = await _userManager.CreateAsync(user, avm.Password);
-                var mail = await _mailController.SendAdminEmail(newadminmail);
+                    var result = await _userManager.CreateAsync(user, avm.Password);
+                    var mail = await _mailController.SendAdminEmail(newadminmail);
 
-                //Add Token to Verify the email....
-                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //Add Token to Verify the email....
+                    var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var encodedToken = confirmationLink.Replace("/", "%2F");
 
-                var confirmationMail = new ConfirmEmail
+                    var confirmationMail = new ConfirmEmail
+                    {
+                        Email = user.Email,
+                        Name = user.UserName,
+
+                        ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                    };
+
+                    await _mailController.ConfirmEmail(confirmationMail);
+
+                    await _userManager.AddToRoleAsync(user, "Admin");
+
+                    if (result.Errors.Count() > 0)
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+
+                }
+                catch (Exception)
                 {
-                    Email = user.Email,
-                    Name = user.UserName,
-                    ConfirmationLink = confirmationLink
-                };
+                    return BadRequest("Invalid transaction");
+                }
 
-                var confirmMail = await _mailController.ConfirmEmail(confirmationMail);
+                return Ok(admin);
 
-                await _userManager.AddToRoleAsync(user, "Admin");
-
-                if (result.Errors.Count() > 0)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-
-            }
-            catch (Exception)
+            } else
             {
-                return BadRequest("Invalid transaction");
+                return BadRequest("User already exists");
             }
+               
 
-            return Ok(admin);
+
         }
 
         [HttpGet]

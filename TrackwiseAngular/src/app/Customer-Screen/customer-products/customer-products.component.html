@@ -54,8 +54,9 @@
   <button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 
   <div class="card-container">
-    <div class="viewDetails" *ngFor="let product of products" (click)="OpenModal(product)">
-      <mat-card class="card" *ngIf="product.listStatus == true">
+    <ng-container *ngFor="let product of products">
+      <div class="viewDetails" *ngIf="product.listStatus" (click)="OpenModal(product)">
+        <mat-card class="card">
         <div class="front">
           <div class="header-content">
             <div class="centered">
@@ -86,6 +87,7 @@
         </div>
       </mat-card>
     </div>
+  </ng-container>
   </div>
 </div>
 

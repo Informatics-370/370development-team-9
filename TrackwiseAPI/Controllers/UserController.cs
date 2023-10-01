@@ -64,55 +64,65 @@ namespace TrackwiseAPI.Controllers
         {
             var customerId = Guid.NewGuid().ToString();
             var customer = new Customer { Customer_ID = customerId, Name = cvm.Name, LastName = cvm.LastName, Email = cvm.Email };
-            try
+
+            var existingcustomer = await _userManager.FindByNameAsync(cvm.Email);
+            if (existingcustomer == null)
             {
-                _customerRepository.Add(customer);
-                await _customerRepository.SaveChangesAsync();
-                //_auditRepository.Add(audit);
-                await _auditRepository.SaveChangesAsync();
-
-                var user = new AppUser
+                try
                 {
-                    Id = customerId,
-                    UserName = cvm.Email,
-                    Email = cvm.Email
-                };
-                var result = await _userManager.CreateAsync(user, cvm.Password);
+                    _customerRepository.Add(customer);
+                    await _customerRepository.SaveChangesAsync();
+                    //_auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
 
-                await _userManager.AddToRoleAsync(user, "Customer");
+                    var user = new AppUser
+                    {
+                        Id = customerId,
+                        UserName = cvm.Email,
+                        Email = cvm.Email
+                    };
+                    var result = await _userManager.CreateAsync(user, cvm.Password);
 
-                var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-                var auditId = Guid.NewGuid().ToString();
-                var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
-                _auditRepository.Add(audit);
+                    await _userManager.AddToRoleAsync(user, "Customer");
 
-                //Add Token to Verify the email....
-                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var encodedToken = confirmationLink.Replace("/", "%2F");
+                    var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+                    var auditId = Guid.NewGuid().ToString();
+                    var audit = new Audit { Audit_ID = auditId, Action = "Register Customer", CreatedDate = DateTime.Now, User = userEmail };
+                    _auditRepository.Add(audit);
 
-                var confirmationMail = new ConfirmEmail
+                    //Add Token to Verify the email....
+                    var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var encodedToken = confirmationLink.Replace("/", "%2F");
+
+                    var confirmationMail = new ConfirmEmail
+                    {
+                        Email = user.Email,
+                        Name = user.UserName,
+
+                        ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                    };
+
+                    var mail = await _mailController.ConfirmEmail(confirmationMail);
+
+                    /*var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
+                    var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
+                    _emailService.SendEmail(message);*/
+
+                    if (result.Errors.Count() > 0)
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                }
+                catch (Exception)
                 {
-                    Email = user.Email,
-                    Name = user.UserName,
+                    return BadRequest("Invalid transaction");
+                }
 
-                    ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
-                };
+                return Ok(customer);
 
-                var mail = await _mailController.ConfirmEmail(confirmationMail);
-
-                /*var confirmationLink = Url.Action(nameof(ConfirmEmail), "Authentication", new { token, email = user.Email }, Request.Scheme);
-                var message = new Message(new string[] { user.Email! }, "Confirmation email link", confirmationLink!);
-                _emailService.SendEmail(message);*/
-
-                if (result.Errors.Count() > 0) 
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
-            }
-            catch (Exception)
+            } else
             {
-                return BadRequest("Invalid transaction");
+                return BadRequest("Customer already exists");
             }
-
-            return Ok(customer);
+               
 
         }
 
