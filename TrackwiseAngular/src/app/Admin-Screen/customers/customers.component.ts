@@ -10,6 +10,7 @@ export class CustomersComponent implements OnInit {
   searchText: string = ''; // Property to store the search text
   customer: any[] = []; // Property to store the admin data
   originalCustomers: any[] = []; // Property to store the original admin data
+  showHelpModal: boolean = false;
   
   constructor(private dataService: DataService) { }
   
@@ -65,5 +66,15 @@ export class CustomersComponent implements OnInit {
     this.dataService.DeleteCustomer(admin_ID).subscribe({
       next: (response) => location.reload()
     })
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

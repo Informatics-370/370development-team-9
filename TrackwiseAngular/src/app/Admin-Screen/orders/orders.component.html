@@ -1,3 +1,4 @@
+
 <!-- NavBar/Searchbar -->
 
 <mat-toolbar class="search-navbar">
@@ -13,7 +14,7 @@
 </mat-toolbar>
 
 <div class="MainContent">
-
+  <button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 
 
   <!-- Current Orders -->
@@ -166,3 +167,25 @@
     </table>
   </div>
 </div> -->
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+   <p>
+    -	To view the details associated with the order, click on the “View” button.<br>
+    -	To mark an order as complete, view the order details, then proceed to click the “Complete” button.<br>
+    </p><br>
+    <b>If the new order can’t be completed, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the "Complete" button before closing the page.</li>
+      <li>Make sure that the fields are not left empty.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of your account and then proceed to log back in afterwards.</li>
+    </ol>
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
+
+  </div>
+</div>

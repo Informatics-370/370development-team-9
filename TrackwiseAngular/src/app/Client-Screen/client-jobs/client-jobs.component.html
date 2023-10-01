@@ -1,3 +1,4 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <br>
 
 
@@ -124,4 +125,34 @@
     </div>
   </form>
 </div>
+</div>
+
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+   <p>
+    -	To search for a job, enter your search query in the search bar then proceed to click on the “Search” button.<br>
+    -	To view a job, click on the “View” button besides the job.<br>
+    </p><br>
+    <ol>
+      <li>Refresh the webpage.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of the system and then log back into the system.</li>
+    </ol>
+    <p>
+      - Enter the new job's details in the associated form fields.<br>
+      - To create the job, click on the “Create Job” button.<br>
+    </p><br>
+    <b> If the new job can’t be created, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the “Create Job” button before closing the page.</li>
+      <li>Make sure that the fields are not left empty.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of your account and then proceed to log back in afterwards.</li>
+    </ol>
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
+
+  </div>
 </div>

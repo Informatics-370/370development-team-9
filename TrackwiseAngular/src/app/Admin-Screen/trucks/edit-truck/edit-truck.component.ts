@@ -28,6 +28,8 @@ export class EditTruckComponent implements OnInit{
     },
   };
 
+  showHelpModal: boolean = false;
+
   constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -55,4 +57,15 @@ export class EditTruckComponent implements OnInit{
     })
     console.log('yes')
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 }

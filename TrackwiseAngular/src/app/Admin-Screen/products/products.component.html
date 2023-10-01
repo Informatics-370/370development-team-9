@@ -1,4 +1,4 @@
-
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <div class="container container-fluid">
   <h2>Product List</h2>
       <!-- Search bar -->
@@ -94,3 +94,33 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - To <b>search</b> for an product, enter your search query in the search bar then proceed to click on the “Search” button.<br>
+      - To <b>add</b> a product, click on the “Add Product” button that will navigate you to the add product screen.<br>
+      - To <b>edit</b> a product, click on the “Edit” button beside the product you want to edit. The system will navigate you to
+      the edit product screen.<br>
+      - To <b>remove</b> a product, click on the remove button then confirm the removal.<br>
+    </p><br>
+    <b>If you can’t add, edit or remove a product, please follow these steps:</b>
+    <ol>
+      <li><b>Refresh</b> the webpage.</li>
+      <li><b>Log out</b> of the system and then <b>log back into</b> the system.</li>
+    </ol>
+    <b> If the product can’t be removed, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the “Yes” button on the confirmation modal.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of your account and then proceed to log back in afterwards.</li>
+    </ol>
+
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
+
+  </div>
+</div>

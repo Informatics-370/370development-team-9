@@ -82,6 +82,8 @@ export class ReportsComponent implements OnInit {
     description:""
   };
 
+  showHelpModal: boolean = false;
+
   constructor(private dataService: DataService, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
@@ -1041,4 +1043,13 @@ generateProductSalesReport(){
   }
 
 
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
 }

@@ -14,6 +14,7 @@ export class TrailersComponent {
   trailers: Trailer[] = [];
   searchText: string = ''; // Property to store the search text
   originalTrailers: Trailer[] = []; // Property to store the original trailer data
+  showHelpModal: boolean = false;
 
   constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
@@ -91,4 +92,15 @@ export class TrailersComponent {
       next: (response) => location.reload()
     })
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 }

@@ -17,6 +17,7 @@ export class TrucksComponent implements OnInit {
   trucks:Truck[] = []
   searchText: string = '';
   originalTrucks: Truck[]=[];
+  showHelpModal: boolean = false;
 
   constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
 
@@ -88,6 +89,16 @@ export class TrucksComponent implements OnInit {
     this.dataService.DeleteTruck(TruckID).subscribe({
       next: (response) => location.reload()
     })
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 
 }

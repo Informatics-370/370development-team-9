@@ -31,6 +31,8 @@ export class EditTrailerComponent {
     },
   };
 
+  showHelpModal: boolean = false;
+
   constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -56,5 +58,15 @@ export class EditTrailerComponent {
       next: (response) => {this.router.navigate(['/Admin-Screen/trailers']);
       this.snackBar.open(`Trailer successfully edited`, 'X', {duration: 3000});}
     })
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

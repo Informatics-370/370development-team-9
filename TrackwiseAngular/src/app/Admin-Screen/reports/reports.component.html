@@ -1,4 +1,4 @@
-
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
  <!-- #####################################################################################################-->
  <div class="card-container">
  <div class="viewDetails">
@@ -14,7 +14,7 @@
     </div>
     <mat-card-footer>
       <mat-card-actions>
-        <button (click)="generateStaffReport()">Generate Report</button> <!-- Add label for the button -->
+        <button class="Generatebtn" (click)="generateStaffReport()">Generate Report</button> <!-- Add label for the button -->
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
@@ -35,7 +35,7 @@
       </div>
       <mat-card-footer>
         <mat-card-actions>
-          <button (click)="generateStockReport()">Generate Report</button> <!-- Add label for the button -->
+          <button class="Generatebtn" (click)="generateStockReport()">Generate Report</button> <!-- Add label for the button -->
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
@@ -57,7 +57,7 @@
 
       <mat-card-footer>
         <mat-card-actions>
-          <button (click)="generateLoadsCarriedReport()">Generate Report</button> <!-- Add label for the button -->
+          <button class="Generatebtn" (click)="generateLoadsCarriedReport()">Generate Report</button> <!-- Add label for the button -->
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
@@ -83,7 +83,7 @@
               <option *ngFor="let truck of trucks" [value]="truck.truckID">{{truck.truck_License}}</option>
             </select>
           </div> -->
-          <button (click)="getMilageData()">Generate Report</button>
+          <button class="Generatebtn" (click)="getMilageData()">Generate Report</button>
         </mat-card-footer>        
       </mat-card-footer>
     </mat-card>
@@ -104,7 +104,7 @@
     </div>
     <mat-card-footer>
       <mat-card-actions>
-        <button (click)="generateJobdetailReport()">Generate Report</button> <!-- Add label for the button -->
+        <button class="Generatebtn" (click)="generateJobdetailReport()">Generate Report</button> <!-- Add label for the button -->
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
@@ -153,7 +153,7 @@
 
     <mat-card-footer>
       <mat-card-actions>
-        <button  (click)="generateJobListReport()">Generate Report</button> <!-- Add label for the button -->
+        <button class="Generatebtn" (click)="generateJobListReport()">Generate Report</button> <!-- Add label for the button -->
       </mat-card-actions>
     </mat-card-footer>
   </mat-card>
@@ -183,7 +183,7 @@
     
       <mat-card-footer>
         <mat-card-actions>
-          <button (click)="generateSalesReport()">Generate Report</button> <!-- Add label for the button -->
+          <button class="Generatebtn" (click)="generateSalesReport()">Generate Report</button> <!-- Add label for the button -->
         </mat-card-actions>
       </mat-card-footer>
     </mat-card>
@@ -205,4 +205,22 @@
 </div>
 
 
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+   <p>
+    -	To generate a report, click on the “Generate” button. This will open a pdf of the form you selected.<br>
+    </p><br>
+    <b>If the new form can’t be generated, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the <b>“Generate”</b> button.</li>
+      <li>Make sure that you are <b>connected</b> to the internet.</li>
+      <li><b>Log out</b> of your account and then proceed to <b>log back in</b> afterwards.</li>
+    </ol>
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
 
+  </div>
+</div>

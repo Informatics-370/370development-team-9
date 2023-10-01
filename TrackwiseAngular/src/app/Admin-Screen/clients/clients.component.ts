@@ -16,6 +16,7 @@ export class ClientsComponent implements OnInit {
   searchText: string = ''; // Property to store the search text
   clients: any[] = []; // Property to store the client data
   originalClients: any[] = []; // Property to store the original client data
+  showHelpModal: boolean = false;
   
   constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
@@ -85,4 +86,13 @@ export class ClientsComponent implements OnInit {
     })
   }
 
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
 }

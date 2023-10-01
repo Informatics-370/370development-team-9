@@ -31,6 +31,8 @@ constructor(private dataService: DataService, private dialog: MatDialog, private
 
   orders: Order[] = [];
 
+  showHelpModal: boolean = false;
+
   GetCustomerOrders() {
     this.dataService.GetCustomerOrders().subscribe(result => {
       let custOrderslist: any[] = result;
@@ -141,6 +143,16 @@ constructor(private dataService: DataService, private dialog: MatDialog, private
 
   CloseModal() {
     this.showModal = false;
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 
   }

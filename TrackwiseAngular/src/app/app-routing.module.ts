@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, importProvidersFrom } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 
@@ -42,6 +42,8 @@ import { RegisterComponent } from './Authentication/register/register.component'
 import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-factor-auth.component';
 import { ConfirmEmailComponent } from './Authentication/confirm-email/confirm-email.component';
 
+import { AdminHelpComponent } from './Admin-Screen/admin-help/admin-help.component';
+
 //Job components
 import { JobsComponent } from './Admin-Screen/jobs/jobs.component';
 import { ForgotpasswordComponent } from './password/forgotpassword/forgotpassword.component';
@@ -56,6 +58,7 @@ import { ProfileComponent } from './Customer-Screen/profile/profile.component';
 import { CustomerHomeComponent } from './Customer-Screen/customer-home/customer-home.component';
 import { JobDetailsComponent } from './Admin-Screen/jobs/job-details/job-details.component';
 import { EditJobComponent } from './Admin-Screen/jobs/edit-job/edit-job.component';
+import { HelpComponent } from './Customer-Screen/help/help.component';
 
 //Client components--------------------------------------------------------------
 import { ClientJobsComponent } from './Client-Screen/client-jobs/client-jobs.component';
@@ -117,7 +120,11 @@ const routes: Routes = [
   { path: 'Admin-Screen/products/add-product', component: AddProductComponent, canActivate: [AdminGuard] },
   { path: 'Admin-Screen/products/edit-product/:product_ID', component: EditProductComponent, canActivate: [AdminGuard] },
 
+  { path: 'Admin-Screen/admin-help', component: AdminHelpComponent, canActivate: [AdminGuard] },
+
   { path: '', redirectTo: 'Customer-Screen/customer-home', pathMatch:'full'},
+
+
 
   //Job components
   { path: 'Admin-Screen/jobs', component: JobsComponent, canActivate:[AdminGuard]},
@@ -135,6 +142,7 @@ const routes: Routes = [
   { path: 'Customer-Screen/cart', component: CartComponent, canActivate: [CustomerGuard] },
   { path: 'Customer-Screen/profile', component: ProfileComponent, canActivate: [CustomerGuard] },
   { path: 'Customer-Screen/customer-home', component: CustomerHomeComponent },
+  { path: 'Customer-Screen/help', component: HelpComponent },
 
   // Client components-------------------------------------------------
   { path: 'Client-Screen/client-jobs', component: ClientJobsComponent, canActivate: [ClientGuard]},

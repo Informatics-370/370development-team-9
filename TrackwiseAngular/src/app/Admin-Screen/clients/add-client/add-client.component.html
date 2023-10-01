@@ -1,3 +1,4 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <br>
 <div class="row">
   <div class="col-lg-3 main-content"></div>
@@ -40,5 +41,28 @@
       <br>
 
     </div>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - Enter the new client’s details in the associated form fields.<br>
+      - To save the client, click on the “Add Client” button.<br>
+    </p><br>
+    <b> If the new client can’t be created, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the “Add Client” button before closing the page.</li>
+      <li>Make sure that the fields are not left empty.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of your account and then proceed to log back in afterwards.</li>
+    </ol>
+
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
+
   </div>
 </div>

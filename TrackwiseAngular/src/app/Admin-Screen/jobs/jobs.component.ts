@@ -38,6 +38,7 @@ export class JobsComponent implements OnInit{
   showView: boolean = true;
   showAdd: boolean = false;
   minDateTime: string;
+  showHelpModal: boolean = false;
   
   constructor(private dataService: DataService, private router:Router, private dialog: MatDialog, private snackBar: MatSnackBar) {
     this.minDateTime = this.getCurrentDateTime();
@@ -225,5 +226,15 @@ export class JobsComponent implements OnInit{
     const minutes = String(now.getMinutes()).padStart(2, '0');
 
     return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

@@ -21,6 +21,7 @@ export class ProductsComponent {
     };
     searchText: string = ''; // Property to store the search text
     originalProducts: Product[] = []; // Property to store the original trailer data
+    showHelpModal: boolean = false;
   
   
     constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar,private http: HttpClient) { }
@@ -150,6 +151,16 @@ export class ProductsComponent {
             }
           );
       }
+    }
+
+    OpenHelpModal() {
+      this.showHelpModal = true;
+      document.body.style.overflow = 'hidden';
+    }
+  
+    CloseHelpModal() {
+      this.showHelpModal = false;
+      document.body.style.overflow = 'auto';
     }
 
 }
