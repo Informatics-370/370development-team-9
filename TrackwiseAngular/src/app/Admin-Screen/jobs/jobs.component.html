@@ -55,7 +55,7 @@
         <td> {{job.startDate | date: 'dd/MM/yyyy'}}</td>
         <td> {{job.dueDate | date: 'dd/MM/yyyy'}}</td>
         <td>{{job.jobType.name}}</td>
-        <td style="color: orange; font-weight: bold;">{{job.jobStatus.name}}</td>
+        <td style="color: rgb(142, 81, 255); font-weight: bold;">{{job.jobStatus.name}}</td>
         <td>
           <button class="view-job-btn" [routerLink]="['/Admin-Screen/jobs/job-details', job.job_ID, job.userName]">View</button>
         </td>
