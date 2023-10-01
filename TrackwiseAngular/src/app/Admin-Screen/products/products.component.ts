@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,7 +22,8 @@ export class ProductsComponent {
     searchText: string = ''; // Property to store the search text
     originalProducts: Product[] = []; // Property to store the original trailer data
   
-    constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  
+    constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar,private http: HttpClient) { }
   
     ngOnInit(): void {
       this.GetProducts();
@@ -129,5 +131,25 @@ export class ProductsComponent {
       })
     }
 
+    selectedFile: any | undefined;
+    onFileSelected(event: any) {
+      this.selectedFile = event.target.files[0];
+    }
+  
+    uploadFile() {
+      if (this.selectedFile) {
+        this.dataService.uploadCsv(this.selectedFile)
+          .subscribe(
+            (response) => {
+              console.log('Response:', response);
+              // Handle success (e.g., show a success message)
+              this.snackBar.open(` Product Successfully Added`, 'X', {duration: 3000});
+            },
+            (error) => {
+              this.snackBar.open(` Product Successfully Added`, 'X', {duration: 3000});
+            }
+          );
+      }
+    }
 
 }

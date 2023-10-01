@@ -1195,7 +1195,7 @@ namespace TrackwiseAPI.Controllers
         [HttpPut]
         [Route("UpdateBreakInterval/{updatedBreak}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> UpdateVAT(double updatedVAT)
+        public async Task<IActionResult> UpdateVAT(double updatedBreak)
         {
             try
             {
@@ -1205,7 +1205,7 @@ namespace TrackwiseAPI.Controllers
                     return NotFound(); // Handle VAT record not found scenario
                 }
 
-                VAT.Break_Amount = updatedVAT;
+                VAT.Break_Amount = updatedBreak;
 
                 _BreakIntervalRepository.Update(VAT);
 
@@ -1239,7 +1239,7 @@ namespace TrackwiseAPI.Controllers
         [HttpPut]
         [Route("UpdateRestPeriod/{updatedRest}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> UpdateRest(double updatedVAT)
+        public async Task<IActionResult> UpdateRest(double updatedRest)
         {
             try
             {
@@ -1249,7 +1249,7 @@ namespace TrackwiseAPI.Controllers
                     return NotFound(); // Handle VAT record not found scenario
                 }
 
-                VAT.Rest_Amount = updatedVAT;
+                VAT.Rest_Amount = updatedRest;
 
                 _restPeriodRepository.Update(VAT);
 
@@ -1283,7 +1283,7 @@ namespace TrackwiseAPI.Controllers
         [HttpPut]
         [Route("UpdateMaxHrs/{updatedHrs}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public async Task<IActionResult> UpdateHrs(double updatedVAT)
+        public async Task<IActionResult> UpdateHrs(double updatedHrs)
         {
             try
             {
@@ -1293,7 +1293,7 @@ namespace TrackwiseAPI.Controllers
                     return NotFound(); // Handle VAT record not found scenario
                 }
 
-                VAT.Hrs_Amount = updatedVAT;
+                VAT.Hrs_Amount = updatedHrs;
 
                 _hrsRepository.Update(VAT);
 
