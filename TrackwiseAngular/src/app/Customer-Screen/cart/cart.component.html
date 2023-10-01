@@ -19,7 +19,10 @@
     <table class="item-table">
       <tbody>
         <tr class="itemRow" *ngFor="let item of cartItems; let i = index">
-          <td><img [src]="item.image" [alt]="item.product_Name"></td>
+          <td>
+            <img [src]="'assets/Mail.jpg'" *ngIf="!item.image">
+            <img [src]="item.image" *ngIf="item.image">
+          </td>
           <td style="text-align: left;"><b>{{ item.product_Name }}</b><br>
             <p style="color: rgb(109, 109, 109);">{{item.product_Description}}</p>
           </td>
@@ -48,6 +51,8 @@
       <tbody class="CSBody">
         <td>
           <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
+          <div class="summary">Amount excl. VAT: R {{ this.total | number:"1.2-2"}}</div>
+          <div class="summary">VAT ({{VAT.vaT_Amount*100| number:"1.0-0"}}%): R {{this.total * VAT.vaT_Amount | number:"1.2-2"}}</div><br>
           <div class="total">Total: R {{ this.total + (this.total * VAT.vaT_Amount) | number:"1.2-2"}}</div>
         </td>
       </tbody>

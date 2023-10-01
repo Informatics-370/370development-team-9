@@ -459,6 +459,16 @@ namespace TrackwiseAPI.Controllers
 
                 existingOrder.Status = "Collected";
 
+                var confirmationMail = new ConfirmEmail
+                {
+                    Email = user.Email,
+                    Name = user.UserName,
+
+                    ConfirmationLink = "http://localhost:4200/Authentication/confirm-email/" + encodedToken + "/" + user.UserName
+                };
+
+                await _mailController.ConfirmEmail(confirmationMail);
+
 
                 if (await _orderRepository.SaveChangesAsync())
                 {
