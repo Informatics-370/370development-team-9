@@ -3,48 +3,49 @@
 
 
   <h2>Admin List</h2>
-      
-      <!-- Search bar -->
-      <br>
-      <div class="row">
-        <div class="col-lg-9">
-          <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-              aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
-            <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
-          </div>
-        </div>
-        <div class="col-lg-3">
-          <button type="button" class="btn create-btn" routerLink="add-admin">Add Admin</button>
-        </div>
+
+  <!-- Search bar -->
+  <br>
+  <div class="row">
+    <div class="col-lg-9">
+      <div class="input-group">
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
+          aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+        <button type="button" class="btn btn-outline-primary" (click)="search()">Search</button>
       </div>
-      <br>
-        
-            <!-- Table -->
-            <table class="table table-hover">
-              <thead id="header">
-                <tr>
-                  <th>Admin Name</th>
-                  <th>Admin Surname</th>
-                  <th>Email</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngIf="admins.length === 0">
-                  <td colspan="5">No results were found.</td>
-                </tr>
-                <tr *ngFor="let admin of admins">
-                  <td>{{admin.name}}</td>
-                  <td>{{admin.lastname}}</td>
-                  <td>{{admin.email}}</td>
-            <td><button type="button" class="btn edit-btn" [routerLink]="['edit-admin', admin.admin_ID]">Edit</button></td>
-            <td><button type="button" class="btn remove-btn" (click)="openConfirmationDialog(admin.admin_ID)">Remove</button></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
+    <div class="col-lg-3">
+      <button type="button" class="btn create-btn" routerLink="add-admin">Add Admin</button>
+    </div>
+  </div>
+  <br>
+
+  <!-- Table -->
+  <table class="table table-hover">
+    <thead id="header">
+      <tr>
+        <th>Admin Name</th>
+        <th>Admin Surname</th>
+        <th>Email</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="admins.length === 0">
+        <td colspan="5">No results were found.</td>
+      </tr>
+      <tr *ngFor="let admin of admins">
+        <td>{{admin.name}}</td>
+        <td>{{admin.lastname}}</td>
+        <td>{{admin.email}}</td>
+        <td><button type="button" class="btn edit-btn" [routerLink]="['edit-admin', admin.admin_ID]">Edit</button></td>
+        <td><button type="button" class="btn remove-btn"
+            (click)="openConfirmationDialog(admin.admin_ID)">Remove</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <!-- Help Modal -->
 <div *ngIf="showHelpModal" class="HelpModal">
@@ -52,19 +53,26 @@
     <span class="close" (click)="CloseHelpModal()">&times;</span>
     <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
     <p>
-      - To explore our variety of trailer and truck <b>components</b>, click on the “Products” tab in the top navigation bar.<br><br>
-      - To <b>learn more</b> about Limpopo Trailer & Truck, click on the “About Us” tab on the top navigation bar.<br><br>
-      - To <b>Register/Log In</b>, please click on the “My Account” dropdown and then click on the “Register” button, if you
-      already have an account click on the “Log In” button.
+      - To <b>search</b> for an admin, enter your search query in the search bar then proceed to click on the “Search” button.<br>
+      - To <b>add</b> an admin, click on the “Add Admin” button that will navigate you to the add admin screen.<br>
+      - To <b>edit</b> an admin, click on the “Edit” button beside the admin you want to edit. The system will navigate you to
+      the edit admin screen.<br>
+      - To <b>remove</b> an admin, click on the remove button then confirm the removal.<br>
     </p><br>
-    <p style="color: red;">
-      *-- Please Note: You must be registered and logged in to do the following: --*
-    </p>
-    <p>
-      - To <b>view you account</b>, click on the “My Account” dropdown and then click on the “View Profile” button.<br><br>
-      - To <b>log Out</b>, click on the “My Account” dropdown and then click on the “Log Out” button.<br><br>
-      - To view the items that are in your <b>cart</b>, click on the cart icon on the top navigation bar.<br><br>
-    </p>
+    <b>If you can not add, edit or remove an admin, please follow these steps:</b>
+    <ol>
+      <li><b>Refresh</b> the webpage.</li>
+      <li><b>Log out</b> of the system and then <b>log back into</b> the system.</li>
+    </ol>
+    <b> If the admin can’t be removed, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the “Yes” button on the confirmation modal.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of your account and then proceed to log back in afterwards.</li>
+    </ol>
+
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
 
   </div>
 </div>

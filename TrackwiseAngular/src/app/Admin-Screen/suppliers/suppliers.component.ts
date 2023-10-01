@@ -14,6 +14,8 @@ export class SuppliersComponent {
   searchText: string = ''; // Property to store the search text
   suppliers: any[] = []; // Property to store the driver data
   originalSuppliers: any[] = []; // Property to store the original driver data
+  showHelpModal: boolean = false;
+
   
   constructor(private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
   
@@ -84,5 +86,14 @@ export class SuppliersComponent {
     })
   }
 
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
 
 }

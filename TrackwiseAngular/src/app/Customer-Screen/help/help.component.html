@@ -1,0 +1,44 @@
+<div class="help-container">
+  
+    <!-- Search bar -->
+<div class="search-navbar">
+  <div class="navbar-container">
+    <div class="search-bar">
+      <input type="text" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" placeholder="Search for help...">
+      <button class="Searchbtn" (click)="search()">Search</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Display search results -->
+<div class="help-content" *ngIf="searchResults.length > 0">
+    
+  <h2>Search Results</h2>
+  <div *ngFor="let result of searchResults">
+    <h3>{{ result.topic }}</h3>
+    <p>{{ result.content }}</p>
+    <hr style="color: #333; width: 1000%; height: 2px ;margin: 20px auto;">
+  </div>
+</div>
+
+
+<!-- Display all help content -->
+<div class="help-content" *ngIf="!searchText || searchResults.length === 0 ">
+  <h2>Welcome to LTT Help Centre!</h2>
+  <div *ngFor="let section of helpContent">
+    <h3>{{ section.topic }}</h3>
+    <p>{{ section.content }}</p><br>
+    <hr style="color: #333; width: 1000%; height: 2px ;margin: 20px auto;">
+
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+

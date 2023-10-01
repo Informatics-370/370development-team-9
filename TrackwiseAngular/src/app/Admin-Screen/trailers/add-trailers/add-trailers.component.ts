@@ -29,6 +29,7 @@ export class AddTrailersComponent {
       description:""
     },
   };
+  showHelpModal: boolean = false;
 
   constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
@@ -42,5 +43,14 @@ export class AddTrailersComponent {
       next: (trailer) => {this.router.navigate(['/Admin-Screen/trailers']);
       this.snackBar.open(this.AddTrailerRequest.trailer_License + ` successfully registered`, 'X', {duration: 3000});}
     })
+  }
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

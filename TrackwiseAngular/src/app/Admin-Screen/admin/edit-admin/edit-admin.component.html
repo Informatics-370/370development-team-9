@@ -1,44 +1,65 @@
-<br>
-<div class="row">
-<div class="col-lg-3 main-content"></div>
-<div class="col-lg-7 main-content">
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <div class="container container-fluid">
 
-    <h2>Edit Admin</h2>
-      
-    <form #form="ngForm" (ngSubmit)="EditAdmin()" autocomplete="off">
+  <h2>Edit Admin</h2>
 
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" [(ngModel)]="adminDetails.email"  
-        name="email" [(ngModel)]="adminDetails.email" disabled>
-      </div>
+  <form #form="ngForm" (ngSubmit)="EditAdmin()" autocomplete="off">
 
-        <div class="mb-3">
-          <label for="password" class="form-label">Password</label>
-          <input type="text" class="form-control" id="password" [(ngModel)] = "adminDetails.password"  
-                  name="password" placeholder="********" [(ngModel)]="adminDetails.password" pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$">
-                  <small class="text-muted"> Password must contain at least 1 capital letter, at least 1 number and at least 8 characters.</small>
-          </div>
-
-        <div class="mb-3">
-          <label for="name" class="form-label">Name</label>
-          <input type="text" class="form-control" id="name" aria-describedby="name" [(ngModel)] = "adminDetails.name"     
-          name="name" [(ngModel)]="adminDetails.name" >
-        </div>
-      
-        <div class="mb-3">
-          <label for="lastname" class="form-label">Surname</label>
-          <input type="text" class="form-control" id="lastname" [(ngModel)] = "adminDetails.lastname"  
-                 name="lastname" [(ngModel)]="adminDetails.lastname">
-        </div>
-          
-        
-        <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
-        <button type="button" class="btn btn-danger" style="border-radius: 12px;" routerLink="/Admin-Screen/admins">Cancel</button>
-      </form>
-      <br>
-
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" [(ngModel)]="adminDetails.email" name="email"
+        [(ngModel)]="adminDetails.email" disabled>
     </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="text" class="form-control" id="password" [(ngModel)]="adminDetails.password" name="password"
+        placeholder="********" [(ngModel)]="adminDetails.password" pattern="^(?=.*[A-Z])(?=.*[0-9]).{8,}$">
+      <small class="text-muted"> Password must contain at least 1 capital letter, at least 1 number and at least 8
+        characters.</small>
+    </div>
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name" aria-describedby="name" [(ngModel)]="adminDetails.name"
+        name="name" [(ngModel)]="adminDetails.name">
+    </div>
+
+    <div class="mb-3">
+      <label for="lastname" class="form-label">Surname</label>
+      <input type="text" class="form-control" id="lastname" [(ngModel)]="adminDetails.lastname" name="lastname"
+        [(ngModel)]="adminDetails.lastname">
+    </div>
+
+
+    <button type="submit" class="btn btn-primary" style="border-radius: 12px;">Save</button>&nbsp;
+    <button type="button" class="btn btn-danger" style="border-radius: 12px;"
+      routerLink="/Admin-Screen/admins">Cancel</button>
+  </form>
+  <br>
+
+</div>
+
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - To save the changes you made, click on the “Save” button.<br>
+    </p><br>
+    <b>If your changes did not save, please do the following:</b>
+    <ol>
+      <li>Ensure that you clicked the “Save” button before closing the page.</li>
+      <li>Make sure that the fields are not left empty.</li>
+      <li>Make sure that you are connected to the internet.</li>
+      <li>Log out of your account and then proceed to log back in afterwards.</li>
+    </ol>
+
+    <br>
+    <p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.
+    </p>
+
   </div>
-</div>  
+</div>

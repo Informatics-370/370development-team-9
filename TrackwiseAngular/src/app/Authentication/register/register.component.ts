@@ -20,6 +20,7 @@ export class RegisterComponent {
 
   errorMessage: string = "";
   isLoading: boolean = false;
+  showHelpModal: boolean = false;
 
   constructor(public dataService: DataService, private router: Router, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
@@ -77,4 +78,15 @@ export class RegisterComponent {
       this.errorMessage = 'Passwords do not match.';
     }
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 }

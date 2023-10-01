@@ -19,6 +19,8 @@ export class EditClientComponent implements OnInit {
     password:"",
   };
   originalPhoneNumber = '';
+  showHelpModal: boolean = false;
+
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private router: Router, private snackBar: MatSnackBar) { }
 
@@ -49,5 +51,15 @@ export class EditClientComponent implements OnInit {
         this.snackBar.open(`Client successfully edited`, 'X', {duration: 3000});
       }
     });
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

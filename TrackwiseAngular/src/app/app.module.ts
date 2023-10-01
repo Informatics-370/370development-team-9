@@ -85,6 +85,8 @@ import { TwoFactorAuthComponent } from './Authentication/two-factor-auth/two-fac
 import { BusinessRulesComponent } from './Admin-Screen/business-rules/business-rules.component';
 
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HelpComponent } from './Customer-Screen/help/help.component';
+import { AdminHelpComponent } from './Admin-Screen/admin-help/admin-help.component';
 
 @NgModule({
   declarations: [
@@ -140,6 +142,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ConfirmEmailComponent,
     TwoFactorAuthComponent,
     BusinessRulesComponent,
+    HelpComponent,
+    AdminHelpComponent,
   ],
   imports: [
     BrowserModule,

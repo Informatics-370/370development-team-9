@@ -12,6 +12,7 @@ export class JobDetailsComponent implements OnInit{
   showDetails: boolean = true;
   showDocuments: boolean = false;
   jobs: any[] = [];
+  showHelpModal: boolean = false;
   
    constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute, private snackBar: MatSnackBar) { }
   
@@ -68,4 +69,15 @@ export class JobDetailsComponent implements OnInit{
     this.showDetails = false;
     this.showDocuments = true;
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 }

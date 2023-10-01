@@ -3,3 +3,83 @@
     border-radius: 10px;
     width: 100%;
   }
+
+  .helpbtn {
+    margin-top: 15px;
+    margin-left: 93%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent; /* Optional: If you want a transparent button background */
+    border: none; /* Optional: If you want to remove the button border */
+    cursor: pointer; /* Optional: Add a pointer cursor on hover */
+  }
+  
+  
+  .help-icon {
+    color: #004F9E;
+  }
+  
+  
+  /* help Modal */
+  .HelpModal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+  }
+  
+  /* Modal content container */
+  .modal-content {
+    margin-left: 4%;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 80%; /* Adjust the width as needed */
+    width: 100%;
+    max-width: 900px;
+    max-height: 80%; /* Adjust the height as needed */
+    overflow-y: auto; /* Add vertical scroll if content exceeds the height */
+  }
+  
+  /* Center the modal vertically and horizontally */
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Style the close button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  
+  .close:hover {
+    color: #555;
+  }
+  
+  .HelpHeader{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ContactSupport{
+    margin-left: auto;
+    margin-right: auto;
+    color: #004F9E;
+  }

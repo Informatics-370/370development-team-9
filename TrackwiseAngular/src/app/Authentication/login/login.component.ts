@@ -17,6 +17,7 @@ export class LoginComponent {
 
   isLoading:boolean = false
   errorMessage: string = '';
+  showHelpModal: boolean = false;
 
   constructor(private router: Router, public dataService: DataService, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
@@ -73,5 +74,16 @@ export class LoginComponent {
       );
     }
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
   
 }

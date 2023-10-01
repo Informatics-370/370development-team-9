@@ -20,6 +20,7 @@ export class AddAdminComponent {
     password:"",
    
   };
+  showHelpModal: boolean = false;
 
   constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
@@ -33,5 +34,15 @@ export class AddAdminComponent {
       next: (admin) => {this.router.navigate(['/Admin-Screen/admins']);
       this.snackBar.open(this.adminDetails.name + ` successfully registered`, 'X', {duration: 3000});}
     })
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

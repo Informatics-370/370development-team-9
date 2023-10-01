@@ -44,6 +44,7 @@ export class EditProductComponent {
     },
   
   };
+  showHelpModal: boolean = false;
 
   constructor(private route: ActivatedRoute, private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
@@ -184,5 +185,16 @@ export class EditProductComponent {
       this.productDetails.quantity = 0;
     }
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 
 }

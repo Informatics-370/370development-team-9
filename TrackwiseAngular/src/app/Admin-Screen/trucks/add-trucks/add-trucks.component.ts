@@ -22,6 +22,7 @@ export class AddTrucksComponent {
       description:""
     },
   };
+  showHelpModal: boolean = false;
 
   constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
@@ -36,4 +37,15 @@ export class AddTrucksComponent {
       this.snackBar.open(this.AddTruckRequest.truck_License +  ` successfully registered`, 'X', {duration: 3000});}
     })
   }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 }

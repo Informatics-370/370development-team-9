@@ -20,6 +20,7 @@ export class AddClientComponent {
     password:"",
     
   };
+  showHelpModal: boolean = false;
 
   constructor(private dataService: DataService, private router:Router, private snackBar: MatSnackBar) { }
 
@@ -35,4 +36,14 @@ export class AddClientComponent {
     }
     })
   }
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
+  }
+
 }

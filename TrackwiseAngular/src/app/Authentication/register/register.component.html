@@ -1,3 +1,4 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <br>
 
 <div class="container">
@@ -41,5 +42,28 @@
       </form>
     </mat-card>
     <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+   <p>
+    -	To <b>register</b>, please enter your details in the fields.<br>
+    -	To <b>finish registering</b>, click on the “Sign Up” button.<br>
+    
+    </p><br>
+    <b>If you can’t register, please try the following:</b>
+    <ol>
+      <li>Ensure that your <b>details are correctly</b> entered.</li>
+      <li>Ensure that no fields are left <b>empty</b>.</li>
+      <li>Make sure that the <b>passwords match</b>.</li>
+      <li>Make sure that you are <b>connected</b> to the internet.</li>
+    </ol>
+    
+    <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
+
   </div>
 </div>

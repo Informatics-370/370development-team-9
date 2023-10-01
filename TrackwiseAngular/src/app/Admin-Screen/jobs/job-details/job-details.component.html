@@ -1,3 +1,4 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <div class="details-container" *ngIf="showDetails==true">
 
     <button class="details-btn-selected" (click)="ShowDetails()">View Details</button>
@@ -112,3 +113,27 @@
     <button class="documents-btn-selected" (click)="ShowDocuments()">Documents</button>
 
 </div>
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+    <div class="modal-content">
+      <span class="close" (click)="CloseHelpModal()">&times;</span>
+      <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+     <p>
+        - To capture documents linked to the job, click the “Capture” button.<br>
+        -	To Mark a job as complete, click the “Complete Job” button.<br>
+      </p><br>
+      <b>Please Note:</b>
+      <p>-	The initial mileage entered can’t be more than the final mileage.</p><br>
+      <b>If you cannot capture or complete a job:</b>
+      <ol>
+        <li>Refresh the webpage.</li>
+        <li>Make sure that you are connected to the internet.</li>
+        <li>Log out of the system and then log back into the system.</li>
+      </ol>
+      
+      <br><p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.</p>
+  
+    </div>
+  </div>
+  

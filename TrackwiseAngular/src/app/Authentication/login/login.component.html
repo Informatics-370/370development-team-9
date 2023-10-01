@@ -1,7 +1,7 @@
 <br>
 <br>
 <br>
-
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <div class="container">
   <div class="login-wrapper">
     <mat-card class="box" *ngIf="!isLoading">
@@ -20,10 +20,41 @@
         </div>
         <button class="login-btn" (click)="LoginUser()">Log in</button><br>
         <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-        <div class="register-section">Don't have an account? Register <a [routerLink]="['/Authentication/register']">here.</a></div>
+        <div class="register-section">Don't have an account? Register <a
+            [routerLink]="['/Authentication/register']">here.</a></div>
         <div class="register-section">Forgot password <a [routerLink]="['/password/forgotpassword']">here.</a></div>
       </form>
     </mat-card>
     <mat-progress-spinner mode="indeterminate" value="50" *ngIf="isLoading"></mat-progress-spinner>
+  </div>
+</div>
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - To log into your account, enter your email address and password in the <b>correct fields</b>.<br>
+      - Then click on the<b> “Log In” button</b>.<br>
+
+    </p><br>
+    <p style="color: red;">*--Please note that you need to be registered before you can log in--*</p>
+    <p>
+      - If you are not yet <b>registered</b>, click on the “Register here” link at the bottom.<br>
+      - If you <b>forgot your password</b>, click on the “Forgot password” link at the bottom.
+      <br>
+
+    </p><br>
+    <b>If you can’t log in, please try the following:</b>
+    <ol>
+      <li>Ensure that your details are <b>correctly entered</b>.</li>
+      <li>Make sure that you are <b>connected</b> to the internet.</li>
+    </ol>
+
+    <br>
+    <p class="ContactSupport">If the issue still persists, please contact our support team at <b>hanru@limtt.co.za</b>.
+    </p>
+
   </div>
 </div>

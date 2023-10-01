@@ -1,3 +1,4 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <mat-card class="user-card">
   <div class="grid-container">
     <div class="profile-photo">
@@ -65,3 +66,25 @@
     </div> -->
   
 </mat-card>
+
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <b>To edit your profile:</b>
+    <ol>
+      <li> To <b>edit</b> your profile, click on the “Edit Profile” button on the bottom of the screen.</li>
+      <li> A <b>form</b> will display where you can update your <b>profile details</b>.</li>
+      <li> To <b>save</b> the changes you made, click on the “Save Changes” button.</li>
+    </ol>
+
+    <b>If your changes did not save, please do the following:</b>
+    <ol>
+      <li>Ensure that you <b>clicked</b> the “Save Changes” button before closing the page.</li>
+      <li>Make sure that the Name, Surname and Password fields are not <b>left empty</b>.</li>
+      <li>Make sure that you are <b>connected</b> to the internet.</li>
+      <li><b>Log out</b> of your account and then proceed to <b>log back in</b> afterwards.</li>
+    </ol>
+
+  </div>
+</div>
