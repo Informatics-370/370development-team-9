@@ -459,6 +459,15 @@ namespace TrackwiseAPI.Controllers
 
                 existingOrder.Status = "Collected";
 
+                var collectMail = new CollectedEmail
+                {
+                    Email = userEmail,
+                    Name = userEmail,
+                    OrderNumber = orderId,
+                };
+
+                await _mailController.CollectedEmail(collectMail);
+
 
                 if (await _orderRepository.SaveChangesAsync())
                 {

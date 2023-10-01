@@ -230,7 +230,55 @@ namespace TrackwiseAPI.Models.Email
             }
          }
 
-         [HttpPost("Message")]
+        [HttpPost]
+        [Route("CollectedEmail")]
+        public async Task<IActionResult> CollectedEmail(CollectedEmail collectedEmail)
+        {
+
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { collectedEmail.Email },
+                "Coollected Order Email",
+                _mail.GetEmailTemplate("CollectMail", collectedEmail));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
+        [HttpPost]
+        [Route("CancelledEmail")]
+        public async Task<IActionResult> CancelledEmail(ConfirmEmail confirmEmail)
+        {
+
+            // Create MailData object
+            MailData mailData = new MailData(
+                new List<string> { confirmEmail.Email },
+                "Confirm Email",
+                _mail.GetEmailTemplate("ConfirmMail", confirmEmail));
+
+
+            bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
+
+            if (sendResult)
+            {
+                return StatusCode(StatusCodes.Status200OK, "Mail has successfully been sent using template.");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occured. The Mail could not be sent.");
+            }
+        }
+
+        [HttpPost("Message")]
         public async Task<IActionResult> SendMessage([FromBody] MessageModel messageModel)
         {
             if (messageModel == null)
