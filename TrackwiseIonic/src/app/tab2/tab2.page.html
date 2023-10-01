@@ -19,7 +19,7 @@
   <table>
       <tr  *ngFor="let row of weightRows; let i = index">
         <td>
-          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files,'Weight')">
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files,'Weight')" accept="image/*">
         </td>
       </tr>
       <tr>
@@ -37,7 +37,7 @@
   <table>
       <tr  *ngFor="let row of milageRows; let i = index">
         <td>
-          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files, 'Mileage')">
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files, 'Mileage')" accept="image/*">
         </td>
       </tr>
       <tr>
@@ -55,7 +55,7 @@
   <table>
       <tr  *ngFor="let row of fuelRows; let i = index">
         <td>
-          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files, 'Fuel')">
+          <input type="file" id="file{{ i }}" #file placeholder="Choose file" (change)="addToSelectedFiles(file.files, 'Fuel')" accept="image/*">
         </td>
       </tr>
       <tr>
