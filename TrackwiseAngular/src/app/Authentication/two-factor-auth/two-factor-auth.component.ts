@@ -109,11 +109,12 @@ export class TwoFactorAuthComponent implements OnInit, OnDestroy{
   
     // Subscribe to the observable
     confirmTwoFactor$.subscribe(
-      (result) => {
+      async (result) => {
         sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
         sessionStorage.setItem('Token', result.token.value.token);
         let role = result.role;
         sessionStorage.setItem('Role', JSON.stringify(role));
+        await this.dataService.GetUserName()
         this.twoFactorFormGroup.reset();
 
         sessionStorage.removeItem('OTPtime');

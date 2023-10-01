@@ -49,33 +49,9 @@ export class DataService {
   isCustomer = false;
   isClient = false;
   isDriver = false;
+  username: string = '';
 
-  // TEMPORARY LOCALSTORAGE
   constructor(private httpClient: HttpClient, private router: Router) {
-
-    if(!localStorage.getItem('product')){
-      let product = [
-        {
-          "id": 1,
-          "product_Name": "Oil",
-          "description": "American",
-          "product_Price": 499,
-        },
-        {
-          "id": 2,
-          "product_Name": "Grease VXP-2",
-          "description": "American",
-          "product_Price": 250,
-        },
-        {
-        "id": 3,
-        "product_Name": "Oil Filter",
-        "description": "American",
-        "product_Price": 365,
-        }
-      ]
-      localStorage.setItem('product', JSON.stringify(product))
-    }
 
    }
 
@@ -107,6 +83,7 @@ export class DataService {
   ConfirmEmail(confirmEmail: ConfirmEmail): Observable<ConfirmEmail>{
     return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail)
   }
+  
 
   /* Logout */
     logout(){
@@ -149,6 +126,35 @@ export class DataService {
       this.isDriver = true;
     }
   } 
+
+  async GetUserName(){
+    let role = JSON.parse(sessionStorage.getItem("Role")!)
+    if(role == "Customer"){
+      await this.GetCustomerProfile().subscribe((result) => {
+
+        if (result != null)
+        {
+          this.username = result.name
+        }
+      
+        console.log(result)
+      }) 
+    } else if (role == "Admin"){
+      await this.GetAdminProfile().subscribe((result) => {
+
+        if (result != null)
+        {
+          this.username = result.name
+        }
+      
+  
+      })
+    } else {
+      console.log("result")
+      this.username = ""
+    }
+
+  }
 
   /*DRIVER SECTION*/
   GetDrivers(): Observable<any>{

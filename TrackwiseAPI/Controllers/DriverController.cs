@@ -88,38 +88,42 @@ namespace TrackwiseAPI.Controllers
             var driver = new Driver { Driver_ID = driverId, Name = dvm.Name, Lastname = dvm.Lastname, Email = dvm.Email ,PhoneNumber = dvm.PhoneNumber, Driver_Status_ID = "1" };
             var newdrivermail = new NewDriverMail { Email = driver.Email, Name = driver.Name, PhoneNumber = driver.PhoneNumber, Driver_Status_ID = "1", Password = dvm.Password };
             var existingadmin = await _userManager.FindByNameAsync(dvm.Email);
-            if (existingadmin != null) return BadRequest("User already exists");
-
-            try
+            if (existingadmin == null)
             {
-                _driverRepository.Add(driver);
-                await _driverRepository.SaveChangesAsync();
-                _auditRepository.Add(audit);
-                await _auditRepository.SaveChangesAsync();
-
-                var user = new AppUser
+                try
                 {
-                    Id = driverId,
-                    UserName = dvm.Email,
-                    Email = dvm.Email,
-                    EmailConfirmed = true
-            };
+                    _driverRepository.Add(driver);
+                    await _driverRepository.SaveChangesAsync();
+                    _auditRepository.Add(audit);
+                    await _auditRepository.SaveChangesAsync();
 
-                var result = await _userManager.CreateAsync(user, dvm.Password);
-                var mail = await _mailController.SendDriverEmail(newdrivermail);
+                    var user = new AppUser
+                    {
+                        Id = driverId,
+                        UserName = dvm.Email,
+                        Email = dvm.Email,
+                        EmailConfirmed = true
+                    };
 
-                await _userManager.AddToRoleAsync(user, "Driver");
+                    var result = await _userManager.CreateAsync(user, dvm.Password);
+                    var mail = await _mailController.SendDriverEmail(newdrivermail);
 
-                if (result.Errors.Count() > 0)
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+                    await _userManager.AddToRoleAsync(user, "Driver");
 
-            }
-            catch (Exception)
+                    if (result.Errors.Count() > 0)
+                        return StatusCode(StatusCodes.Status500InternalServerError, "Internal Server Error. Please contact support.");
+
+                }
+                catch (Exception)
+                {
+                    return BadRequest("Invalid transaction");
+                }
+
+                return Ok(driver);
+            } else
             {
-                return BadRequest("Invalid transaction");
+                return BadRequest("User already exists");
             }
-
-            return Ok(driver);
         }
 
         //update Driver

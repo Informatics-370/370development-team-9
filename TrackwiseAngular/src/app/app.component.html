@@ -12,9 +12,9 @@
         <button mat-menu-item (click)="dataService.logout()"><mat-icon class="menu-icon">exit_to_app</mat-icon>Log Out</button>
     </mat-menu>
 
-    <div class="admin-info">
+    <div class="user-info" *ngIf="dataService.isLoggedIn == true">
       <img class="profile-photo" src="assets/User Icon.jpg" alt="Profile Photo">
-      <p class="user-info">{{ admin.name }}</p>
+      <p class="user-info">{{ dataService.username }}</p> &nbsp;
     </div>
 </mat-toolbar>
 
@@ -93,7 +93,7 @@
   
           <div class="user-info" *ngIf="dataService.isLoggedIn == true">
           <img class="profile-photo" src="assets/User Icon.jpg" alt="Profile Photo">
-          <p class="user-info">{{ customer.name }}</p>
+          <p class="user-info">{{ dataService.username }}</p> &nbsp;
         </div>
 
 

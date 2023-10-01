@@ -18,7 +18,7 @@ export class LoginComponent {
   isLoading:boolean = false
   errorMessage: string = '';
 
-  constructor(private router: Router, private dataService: DataService, private fb: FormBuilder, private snackBar: MatSnackBar) { }
+  constructor(private router: Router, public dataService: DataService, private fb: FormBuilder, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +28,7 @@ export class LoginComponent {
       this.isLoading = true;
   
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
-        (result) => {
+        async (result) => {
           console.log(result)
           // Handle successful login
           if(result.isEmailConfirmed == false){
@@ -46,6 +46,7 @@ export class LoginComponent {
           sessionStorage.setItem('Token', result.token.value.token);
           const role = result.role;
           sessionStorage.setItem('Role', JSON.stringify(role));
+          await this.dataService.GetUserName()
           this.loginFormGroup.reset();
   
           if (role == "Admin") {

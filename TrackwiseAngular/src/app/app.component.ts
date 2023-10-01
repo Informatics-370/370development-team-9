@@ -13,6 +13,7 @@ import { Admin } from './shared/admin';
 })
 export class AppComponent implements AfterContentChecked{
   title: any;
+  username:string = ''
 
   customer : Customer =
   {
@@ -35,11 +36,10 @@ export class AppComponent implements AfterContentChecked{
   
   @ViewChild('sidenav', {static:true}) sidenav!: MatSidenav;
 
-  ngOnInit(): void{
+  async ngOnInit(): Promise<void> {
     this.dataService.calculateQuantity();
-    this.GetCustomerProfile();
-    this.GetAdminProfile();
-
+    await this.dataService.GetUserName(); // Wait for GetUserName to complete
+    console.log(this.dataService.username);
   }
 
   isLoginPageOrRegisterPage(): boolean {
@@ -64,21 +64,36 @@ export class AppComponent implements AfterContentChecked{
   isCustomerScreen(): boolean {
     return this.router.url.includes('/Customer-Screen');
   }
+  
 
-  GetCustomerProfile(){
-    this.dataService.GetCustomerProfile().subscribe((result) => {
-      this.customer = result;
-      this.customer = { ...this.customer };
-      console.log(result)
-    })
+  async GetUserName(){
+    let role = JSON.parse(sessionStorage.getItem("Role")!)
+    if(role == "Customer"){
+      await this.dataService.GetCustomerProfile().subscribe((result) => {
+
+        if (result != null)
+        {
+          this.username = result.name
+        }
+      
+        console.log(result)
+      }) 
+    } else if (role == "Admin"){
+      await this.dataService.GetAdminProfile().subscribe((result) => {
+
+        if (result != null)
+        {
+          this.username = result.name
+        }
+      
+  
+      })
+    } else {
+      console.log("result")
+      this.username = ""
+    }
+
   }
 
-  GetAdminProfile(){
-    this.dataService.GetAdminProfile().subscribe((result) => {
-      this.admin = result;
-      this.admin = { ...this.admin };
-      console.log(result)
-    })
-  }
 
 }
