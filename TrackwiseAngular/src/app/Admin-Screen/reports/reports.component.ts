@@ -847,18 +847,17 @@ generateProductSalesReport(){
         data => {
           const startDate = new Date(this.startYear, this.startMonth - 1);
           const endDate = new Date(this.endYear, this.endMonth);
-          
+                    
           // Filter data based on selected date range
           const filteredData = data.filter((sale: any) => {
             const saleDate = new Date(sale.date);
             return saleDate >= startDate && saleDate <= endDate;
           });
-          filteredData.sort((a: any, b: any) => {
-            const dateA:any = new Date(a.date);
-            const dateB:any = new Date(b.date);
-            return dateA - dateB;
-          });
-    
+
+          // Sort the filtered data by sale date
+          filteredData.sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
+
+
           this.salesArray = data.map((sale: any) => sale.total);
           // Calculate and set average sales
           const totalSalesSum = this.salesArray.reduce((sum, sale) => sum + sale, 0);
@@ -869,8 +868,10 @@ generateProductSalesReport(){
           // Update chart data
           this.lineChartData[0].data = filteredData.map((sale: any) => sale.total);
           this.lineChartData[1].data = this.average;
-          this.lineChartLabels = filteredData.map((sale: any) => new Date(sale.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }));
-          
+          //this.lineChartLabels = filteredData.map((sale: any) => new Date(sale.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' }));
+          this.lineChartLabels = filteredData.map((sale: any) =>
+  new Date(sale.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+);
 
         },
         error => {

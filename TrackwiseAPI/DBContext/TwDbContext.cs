@@ -393,15 +393,21 @@ namespace TrackwiseAPI.DBContext
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Order_ID = "1", Date = DateTime.ParseExact("2023-07-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status="Ordered", Total = 2897, Customer_ID = "1" },
-                new Order { Order_ID = "2", Date = DateTime.ParseExact("2023-07-30 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2997, Customer_ID = "2" },
-                new Order { Order_ID = "3", Date = DateTime.ParseExact("2023-07-15 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2998, Customer_ID = "3" },
-                new Order { Order_ID = "4", Date = DateTime.ParseExact("2023-06-28 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 1110, Customer_ID = "3" },
+                 new Order { Order_ID = "1", Date = DateTime.ParseExact("2023-04-28 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 3030, Customer_ID = "3" },
+                new Order { Order_ID = "2", Date = DateTime.ParseExact("2023-05-01 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 5302, Customer_ID = "3" },
+                new Order { Order_ID = "3", Date = DateTime.ParseExact("2023-05-10 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 10000, Customer_ID = "3" },
+                 new Order { Order_ID = "4", Date = DateTime.ParseExact("2023-05-28 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 1210, Customer_ID = "3" },
                 new Order { Order_ID = "5", Date = DateTime.ParseExact("2023-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 500, Customer_ID = "3" },
-                new Order { Order_ID = "6", Date = DateTime.ParseExact("2023-06-10 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 10000, Customer_ID = "3" },
-                new Order { Order_ID = "7", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 900, Customer_ID = "3" },
-                new Order { Order_ID = "8", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 5000, Customer_ID = "3" },
-                new Order { Order_ID = "9", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 3333, Customer_ID = "3" }
+                new Order { Order_ID = "6", Date = DateTime.ParseExact("2023-06-10 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2000, Customer_ID = "3" },
+                new Order { Order_ID = "7", Date = DateTime.ParseExact("2023-06-28 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 9210, Customer_ID = "3" },
+                new Order { Order_ID = "8", Date = DateTime.ParseExact("2023-06-01 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 500, Customer_ID = "3" },
+                new Order { Order_ID = "9", Date = DateTime.ParseExact("2023-06-10 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 10000, Customer_ID = "3" },
+                new Order { Order_ID = "10", Date = DateTime.ParseExact("2023-07-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status="Ordered", Total = 2897, Customer_ID = "1" },
+                new Order { Order_ID = "11", Date = DateTime.ParseExact("2023-07-30 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2997, Customer_ID = "2" },
+                new Order { Order_ID = "12", Date = DateTime.ParseExact("2023-07-15 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 2998, Customer_ID = "3" },
+                new Order { Order_ID = "13", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 900, Customer_ID = "3" },
+                new Order { Order_ID = "14", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 5000, Customer_ID = "3" },
+                new Order { Order_ID = "15", Date = DateTime.ParseExact("2023-08-23 00:00:00", "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), Status = "Ordered", Total = 3333, Customer_ID = "3" }
             );
 
             modelBuilder.Entity<Order_Line>().HasData(

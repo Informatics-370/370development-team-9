@@ -1,17 +1,52 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content class="ion-padding" [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Home</ion-title>
     </ion-toolbar>
   </ion-header>
+    <div>
+      <ion-card>
+        <ion-card-content>
+           <ion-img class="LTTLogo" src="/assets/icon/LTTLogo.jpg" alt="Logo"></ion-img>
+        </ion-card-content>
+      </ion-card>
+    </div><br>
+ 
+    <ion-card>    
+      <ion-card-content>
+        <ion-text color="primary">
+          <h2> <h1>Welcome</h1><br> <br>
+            
+              From here you can navigate to the Job tab where you can proceed to upload the necessary documents
+              and indicate that a job has been completed. <br><br>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+              Steps: <br><br>
+
+              1. Take photo of Weigh-Bridge, Milage and Fuel Slips <br><br>
+              2. Upload documents via dropdowns on Job screen <br><br>
+              3. If delivery has been completed, select complete delivery button <br><br>
+              4. If all deliveries have been complete, select complete job button
+          </h2>
+        </ion-text>
+      </ion-card-content>
+    </ion-card>
+
 </ion-content>
+
+<ion-footer [translucent]="true">
+  <ion-card>    
+    <ion-card-content>
+      <ion-text color="warning"><ion-icon name="warning"></ion-icon>
+        ONLY upload the required documents
+      </ion-text>
+    </ion-card-content>
+  </ion-card>
+</ion-footer>
