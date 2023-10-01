@@ -232,14 +232,14 @@ namespace TrackwiseAPI.Models.Email
 
         [HttpPost]
         [Route("CollectedEmail")]
-        public async Task<IActionResult> CollectedEmail(ConfirmEmail confirmEmail)
+        public async Task<IActionResult> CollectedEmail(CollectedEmail collectedEmail)
         {
 
             // Create MailData object
             MailData mailData = new MailData(
-                new List<string> { confirmEmail.Email },
-                "Confirm Email",
-                _mail.GetEmailTemplate("ConfirmMail", confirmEmail));
+                new List<string> { collectedEmail.Email },
+                "Coollected Order Email",
+                _mail.GetEmailTemplate("CollectMail", collectedEmail));
 
 
             bool sendResult = await _mail.SendAsync(mailData, new CancellationToken());
