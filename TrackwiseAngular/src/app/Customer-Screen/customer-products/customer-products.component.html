@@ -3,12 +3,14 @@
 <mat-toolbar class="search-navbar">
   <div class="navbar-container">
     <div class="search-bar">
-      <input type="text" placeholder="Search for a product" aria-label="Search"
-      aria-describedby="search-addon" [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
-    <button type="button" class="btn btn-outline-primary" (click)="search()">
-      <i class="material-icons">search</i>
-    </button>
+      <input type="text" placeholder="Search for a product" aria-label="Search" aria-describedby="search-addon"
+        [(ngModel)]="searchText" (keyup)="handleKeyUp($event)" />
+      <button type="button" class="btn btn-outline-primary" (click)="search()">
+        <i class="material-icons">search</i>
+      </button>
     </div>
+
+
   </div>
 </mat-toolbar>
 
@@ -28,9 +30,11 @@
     <h4>Filter by:</h4>
     <div class="category-filter">
       <label for="CategoryDropdown">Category:&nbsp;</label>
-      <select name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="selectedCategory" (change)="onCategoryChange()">
+      <select name="CategoryDropdown" id="CategoryDropdown" [(ngModel)]="selectedCategory"
+        (change)="onCategoryChange()">
 
-        <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}</option>
+        <option *ngFor="let prodCat of productCategories" [value]="prodCat.product_Category_ID">{{prodCat.name}}
+        </option>
       </select>
     </div>
 
@@ -42,11 +46,13 @@
       </select>
     </div><br>
     <button class="resetBtn" (click)="filterProducts()">Apply</button> &nbsp;
-    <button class="resetBtn"(click)="resetFilters()">Reset All</button>
+    <button class="resetBtn" (click)="resetFilters()">Reset All</button>
   </form>
 </div>
 
 <div class="main-content">
+  <button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
+
   <div class="card-container">
     <div class="viewDetails" *ngFor="let product of products" (click)="OpenModal(product)">
       <mat-card class="card">
@@ -67,9 +73,10 @@
 
           <mat-card-footer>
             <mat-card-actions>
-              <button mat-button class="AddToCartBtn" [disabled]="isOutOfStock(product)" (click)="AddItemToCart($event, product)" [ngClass]="{ 'OutOfStockBtn': isOutOfStock(product) }">
+              <button mat-button class="AddToCartBtn" [disabled]="isOutOfStock(product)"
+                (click)="AddItemToCart($event, product)" [ngClass]="{ 'OutOfStockBtn': isOutOfStock(product) }">
                 {{ isOutOfStock(product) ? 'Out of Stock' : 'Add to Cart' }}
-              </button>              
+              </button>
             </mat-card-actions>
           </mat-card-footer>
         </div>
@@ -89,5 +96,32 @@
     <h4>{{ selectedProduct.product_Name }}</h4>
     <p>{{ selectedProduct.product_Description }}</p>
     <p class="price">R {{selectedProduct.product_Price | number:"1.2-2"}}</p>
+  </div>
+</div>
+
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - To view a <b>product’s details</b>, please click anywhere on the card of the product to display its details.<br><br>
+      - If you want to <b>search</b> for a specific product, please insert your search query in the search bar below the top
+      navigation bar.<br><br>
+      - To <b>sort</b> the products, please select the sorting criteria by selecting one of the options provided on the left
+      sidebar. To apply the selected sorting criteria, please click on the “Apply” button on the bottom of the sidebar.<br><br>
+      - To <b>filter</b> the products, please select and category and/or type to filter it by on the left sidebar. To apply the
+      filtering criteria, please click the “Apply” button on the bottom of the sidebar.<br><br>
+      - To <b>remove applied sorting and filters</b>, click on the “Reset All” button on the bottom of the sidebar.<br>
+
+    </p><br>
+    <p style="color: red;">
+      *-- Please Note: You must be registered and logged in to do the following: --*
+    </p>
+    <p>
+      -	To <b>add a product to your cart</b>, click on the “Add to Cart” button beneath the product. Please note that you can only add a product if there is enough stock of the product. The quantity is displayed beneath the product’s price.
+    </p>
+
   </div>
 </div>

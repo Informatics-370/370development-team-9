@@ -1,9 +1,12 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
+
 <div class="container">
 
   <div class="top-row">
     <img src="/assets/LTTLogo.jpg">
     <h3>All Things Trailer & Truck</h3>
     <p>Supplier of parts for all manufacturers of heavy vehicles and trailers</p>
+
   </div>
 
   <div class="bottom-row">
@@ -21,9 +24,17 @@
         We supply top quality products and parts from the biggest brands at the best prices.
       </p>
     </div>
+
+    <div class="video-container">
+      <video controls>
+        <source src="/assets/CustHome/LTTVideo.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
   </div>
 
-  <div class="logo-row">
+  <div class="logo-row" fxLayout="row" fxLayoutAlign="center center">
     <img class="logo-img" src="/assets/CustHome/l1.jpg">
     <img class="logo-img" src="/assets/CustHome/l2.jpg">
     <img class="logo-img" src="/assets/CustHome/l3.png">
@@ -57,7 +68,8 @@
             <img class="rating-img" src="/assets/CustHome/RatingImg.jpg" alt="Rating Image">
             <div class="rating-text">
               <mat-icon>star</mat-icon><mat-icon>star</mat-icon><mat-icon>star</mat-icon><mat-icon>star</mat-icon><mat-icon>star</mat-icon>
-              <p>Amazing service! Great prices! Best in the business! Would recommend to anyone! Louis Johann Botha (Customer)</p>
+              <p>Amazing service! Great prices! Best in the business! Would recommend to anyone! Louis Johann Botha
+                (Customer)</p>
             </div>
           </div>
         </div>
@@ -65,7 +77,7 @@
 
       <td>
         <div class="trading-hours">
-          
+
           <div class="hours-details">
             <p class="title">
               Trading Hours:
@@ -73,7 +85,7 @@
             <p>
               <b>Mon - Fri:</b> 08:00 - 16:30 <br><br>
               <b>Sat - Sun:</b> Closed <br><br>
-              <b>Public<br> Holidays:</b>  Closed <br>
+              <b>Public<br> Holidays:</b> Closed <br>
             </p>
           </div>
         </div>
@@ -86,4 +98,28 @@
     <img class="logo-img2" src="/assets/CustHome/l6.jpg">
     <img class="logo-img2" src="/assets/CustHome/l7.jpg">
     <img class="logo-img2" src="/assets/CustHome/l8.png">
+  </div>
+
+
+  <!-- Help Modal -->
+  <div *ngIf="showHelpModal" class="HelpModal">
+    <div class="modal-content">
+      <span class="close" (click)="CloseHelpModal()">&times;</span>
+      <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+      <p>
+        - To explore our variety of trailer and truck <b>components</b>, click on the “Products” tab in the top navigation bar.<br><br>
+        - To <b>learn more</b> about Limpopo Trailer & Truck, click on the “About Us” tab on the top navigation bar.<br><br>
+        - To <b>Register/Log In</b>, please click on the “My Account” dropdown and then click on the “Register” button, if you
+        already have an account click on the “Log In” button.
+      </p><br>
+      <p style="color: red;">
+        *-- Please Note: You must be registered and logged in to do the following: --*
+      </p>
+      <p>
+        - To <b>view your account</b>, click on the “My Account” dropdown and then click on the “View Profile” button.<br><br>
+        - To <b>log Out</b>, click on the “My Account” dropdown and then click on the “Log Out” button.<br><br>
+        - To view the items that are in your <b>cart</b>, click on the cart icon on the top navigation bar.<br><br>
+      </p>
+
+    </div>
   </div>

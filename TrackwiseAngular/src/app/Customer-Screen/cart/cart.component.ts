@@ -26,6 +26,7 @@ export class CartComponent implements OnInit {
   total: number = 0;
   isPayment = false;
   isLoading:boolean = false
+  showHelpModal: boolean = false;
 
   orderLines: OrderLines = {
     orderLines: [] // Initialize the orderLines property as an empty array
@@ -158,5 +159,15 @@ export class CartComponent implements OnInit {
         console.error('Error creating order:', error);
       }
     );
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

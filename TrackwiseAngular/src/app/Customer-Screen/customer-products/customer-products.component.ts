@@ -21,6 +21,8 @@ export class CustomerProductComponent {
   showModal: boolean = false;
   selectedProduct: Product | null = null;
 
+  showHelpModal: boolean = false;
+
   constructor(private dataService: DataService, private router: Router) {}
 
   ngOnInit(): void {
@@ -212,5 +214,15 @@ export class CustomerProductComponent {
 
   onTypeChange() {
     this.filterProducts();
+  }
+
+  OpenHelpModal() {
+    this.showHelpModal = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  CloseHelpModal() {
+    this.showHelpModal = false;
+    document.body.style.overflow = 'auto';
   }
 }

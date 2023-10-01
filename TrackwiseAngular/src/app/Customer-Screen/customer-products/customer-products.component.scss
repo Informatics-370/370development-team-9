@@ -3,12 +3,12 @@
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
   perspective: 800px;
-  margin-top: 80px;
+  margin-top: 10px;
   margin-left: 70px;
   margin-right: 70px;
 }
 
-.product-card{
+.product-card {
   cursor: pointer;
 }
 
@@ -43,12 +43,15 @@ img {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin: 0 -10px; /* Adjust margin as needed */
+  margin: 0 -10px;
+  /* Adjust margin as needed */
 }
 
 .product-card {
-  width: 20%; /* Adjust width as needed */
-  margin: 10px; /* Adjust margin as needed */
+  width: 20%;
+  /* Adjust width as needed */
+  margin: 10px;
+  /* Adjust margin as needed */
 }
 
 .card {
@@ -56,8 +59,10 @@ img {
   border-radius: 4px;
   padding: 10px;
   width: 200px;
-  height: 300px; /* Adjust width as needed */
-  margin: 10px; /* Adjust margin as needed */
+  height: 300px;
+  /* Adjust width as needed */
+  margin: 10px;
+  /* Adjust margin as needed */
   transition: transform 1500ms;
   transform-style: preserve-3d;
 }
@@ -69,10 +74,14 @@ img {
 }
 
 .card-content {
-  padding: 5px; /* Adjust the padding as needed */
-  max-height: 120px; /* Limit the maximum height of the card content */
-  overflow: hidden; /* Hide any overflowing content */
-  word-wrap: break-word; /* Add this property to allow text wrapping */
+  padding: 5px;
+  /* Adjust the padding as needed */
+  max-height: 120px;
+  /* Limit the maximum height of the card content */
+  overflow: hidden;
+  /* Hide any overflowing content */
+  word-wrap: break-word;
+  /* Add this property to allow text wrapping */
   white-space: nowrap;
 }
 
@@ -143,11 +152,13 @@ img {
   top: 0;
   left: 0;
   bottom: 0;
-  margin-top: 64px; /* Adjust this value based on the navbar height */
+  margin-top: 64px;
+  /* Adjust this value based on the navbar height */
 }
 
 .main-content {
-  margin-left: 220px; /* Adjust this value based on the sidebar width */
+  margin-left: 220px;
+  /* Adjust this value based on the sidebar width */
   padding: 20px;
   position: relative;
   top: 30px;
@@ -167,7 +178,8 @@ img {
 }
 
 .form-container {
-  padding: 10px; /* Add padding value as per your preference */
+  padding: 10px;
+  /* Add padding value as per your preference */
 }
 
 .resetBtn {
@@ -293,6 +305,7 @@ img {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -302,6 +315,7 @@ img {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -316,7 +330,7 @@ img {
   cursor: pointer;
 }
 
-.body{
+.body {
   background-color: #f4f4f4;
 }
 
@@ -326,6 +340,79 @@ img {
 }
 
 .checkbox-item input {
-  margin-right: 8px; /* Adjust the spacing between the checkbox and label as needed */
+  margin-right: 8px;
+  /* Adjust the spacing between the checkbox and label as needed */
 }
 
+.helpbtn {
+  margin-top: 75px;
+  margin-left: 93%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent; /* Optional: If you want a transparent button background */
+  border: none; /* Optional: If you want to remove the button border */
+  cursor: pointer; /* Optional: Add a pointer cursor on hover */
+}
+
+
+.help-icon {
+  color: #004F9E;
+}
+
+
+/* help Modal */
+.HelpModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Modal content container */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  max-width: 80%; /* Adjust the width as needed */
+  width: 100%;
+  max-width: 900px;
+  max-height: 80%; /* Adjust the height as needed */
+  overflow-y: auto; /* Add vertical scroll if content exceeds the height */
+}
+
+/* Center the modal vertically and horizontally */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Style the close button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 35px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close:hover {
+  color: #555;
+}
+
+.HelpHeader{
+  margin-left: auto;
+  margin-right: auto;
+}

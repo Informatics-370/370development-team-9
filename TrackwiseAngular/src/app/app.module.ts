@@ -81,6 +81,8 @@ import { CollectNotificationComponent } from './ConfirmationNotifications/collec
 import { RemoveNotificationComponent } from './ConfirmationNotifications/remove-notification/remove-notification.component';
 import { AuditComponent } from './Admin-Screen/audit/audit.component';
 
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -153,6 +155,7 @@ import { AuditComponent } from './Admin-Screen/audit/audit.component';
     MatMenuModule,
     NgChartsModule,
     MatDatepickerModule,
+    FlexLayoutModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

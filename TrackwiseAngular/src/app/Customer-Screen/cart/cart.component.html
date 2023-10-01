@@ -1,3 +1,5 @@
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
+
 <div class="container" *ngIf="isPayment == false">
   <div class="cart-items">
 
@@ -66,67 +68,71 @@
 </div>
 
 <div class="container " *ngIf="isPayment ==true ">
-<div class=" paygate offset-md-3 " >
-  <form (ngSubmit)="checkout(f)" #f="ngForm">
-    <div class="row mb-4 mt-4">
-      <h4 class="cardTitle">Add new card</h4>
-    </div>
-    <div class="form-group">
-      <label for="firstName">First name</label>
-      <input required type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="newCard.firstName">
-    </div>
-    <div class="form-group">
-      <label for="lastName">Last name</label>
-      <input required type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="newCard.lastName">
-    </div>
-    <div class="form-group">
-      <label for="email">Email address</label>
-      <input required type="email" class="form-control" id="email" name="email" [(ngModel)]="newCard.email">
-    </div>
-    <div class="form-group">
-      <label for="cardNumber">Card number</label>
-      <input required type="text" class="form-control" id="cardNumber" name="cardNumber" [(ngModel)]="newCard.cardNumber">
-      <small class="form-text text-muted">16-digital card number</small>
-    </div>
-    <div class="form-group">
-      <label for="cardExp">Card expiry</label>
-      <input required type="text" class="form-control" id="cardExp" name="cardExpiry" [(ngModel)]="newCard.cardExpiry">
-      <small class="form-text text-muted">e.g 112024</small>
-    </div>
-    <div class="form-group">
-      <label for="cvv">Cvv</label>
-      <input required type="text" class="form-control" id="cvv" name="cvv" [(ngModel)]="newCard.cvv">
-      <small class="form-text text-muted">3-digits found on back of the card</small>
-    </div>
+  <div class=" paygate offset-md-3 ">
+    <form (ngSubmit)="checkout(f)" #f="ngForm">
+      <div class="row mb-4 mt-4">
+        <h4 class="cardTitle">Add new card</h4>
+      </div>
+      <div class="form-group">
+        <label for="firstName">First name</label>
+        <input required type="text" class="form-control" id="firstName" name="firstName"
+          [(ngModel)]="newCard.firstName">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last name</label>
+        <input required type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="newCard.lastName">
+      </div>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input required type="email" class="form-control" id="email" name="email" [(ngModel)]="newCard.email">
+      </div>
+      <div class="form-group">
+        <label for="cardNumber">Card number</label>
+        <input required type="text" class="form-control" id="cardNumber" name="cardNumber"
+          [(ngModel)]="newCard.cardNumber">
+        <small class="form-text text-muted">16-digital card number</small>
+      </div>
+      <div class="form-group">
+        <label for="cardExp">Card expiry</label>
+        <input required type="text" class="form-control" id="cardExp" name="cardExpiry"
+          [(ngModel)]="newCard.cardExpiry">
+        <small class="form-text text-muted">e.g 112024</small>
+      </div>
+      <div class="form-group">
+        <label for="cvv">Cvv</label>
+        <input required type="text" class="form-control" id="cvv" name="cvv" [(ngModel)]="newCard.cvv">
+        <small class="form-text text-muted">3-digits found on back of the card</small>
+      </div>
       <button *ngIf="!isLoading" class="btn btn-danger" (click)="cancelPayment()">Cancel</button>
-      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total| number:"1.2-2"}}</button>
+      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total|
+        number:"1.2-2"}}</button>
 
-    
-    <div *ngIf="isLoading" class="spinner-border" role="status">
-      <span class="sr-only">Loading...</span>
-    </div>
-  </form>
-</div>
-<div class="cart-summary">
-  <table class="summary-table">
-    <thead class="CSHead">
-      <tr>
-        <th>Cart Summary</th>
-      </tr>
-    </thead>
-    <div class="payment">
-       Secured with PayGate
-       <img src="https://www.paygate.co.za/wp-content/uploads/logo_285x110.png">
-    </div>
-   
-    <tbody class="CSBody">
-      <td>
-        <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
-        <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
-      </td>
-    </tbody>
-  </table>
-</div>
+
+      <div *ngIf="isLoading" class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </form>
+  </div>
+  <div class="cart-summary">
+    <table class="summary-table">
+      <thead class="CSHead">
+        <tr>
+          <th>Cart Summary</th>
+        </tr>
+      </thead>
+      <div class="payment">
+        Secured with PayGate
+        <img src="https://www.paygate.co.za/wp-content/uploads/logo_285x110.png">
+      </div>
+
+      <tbody class="CSBody">
+        <td>
+          <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
+          <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
+        </td>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- <div class="ion-padding" *ngIf="Secure3DHTML">
@@ -144,3 +150,29 @@
     {{ paymentResult | json }}
   </div>
 </div> -->
+
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - To proceed to the <b>checkout</b>, click on the “Checkout” button at the bottom of the cart summary
+      section.<br><br>
+      - To <b>remove</b> an item from your cart, click on the “Remove” button of the product you wish to remove.<br><br>
+      - To <b>change the quantity</b> of a product, click on the “-” or ”+” buttons beside the quantity number that is
+      indicated.<br><br>
+    </p>
+
+    <p><b>If the quantity does not increase:</b></p>
+    <ol>
+      <li>Please make sure that there is <b>enough stock available</b> of the product. This can be viewed on the <b>Products
+        screen.</b><br>
+        <i>To navigate to the product screen, click on the <b>“Products” tab</b> on the top navigation bar.</i></li>
+      <li> If the <b>issue persists</b>, log out of your account and then log back into your account. <p style="color: red;">Please note that all
+        items
+        added to your cart will be lost when doing this!</p></li>
+    </ol>
+
+  </div>
+</div>

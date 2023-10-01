@@ -1,5 +1,7 @@
-
+<button class="helpbtn" (click)="OpenHelpModal()"><mat-icon class="help-icon">help</mat-icon></button>
 <div class="container container-fluid">
+
+
   <h2>Admin List</h2>
       
       <!-- Search bar -->
@@ -44,3 +46,25 @@
       </table>
     </div>
 
+<!-- Help Modal -->
+<div *ngIf="showHelpModal" class="HelpModal">
+  <div class="modal-content">
+    <span class="close" (click)="CloseHelpModal()">&times;</span>
+    <h3 class="HelpHeader" style="color:#004F9E;">Welcome to LTT Help Centre!</h3><br>
+    <p>
+      - To explore our variety of trailer and truck <b>components</b>, click on the “Products” tab in the top navigation bar.<br><br>
+      - To <b>learn more</b> about Limpopo Trailer & Truck, click on the “About Us” tab on the top navigation bar.<br><br>
+      - To <b>Register/Log In</b>, please click on the “My Account” dropdown and then click on the “Register” button, if you
+      already have an account click on the “Log In” button.
+    </p><br>
+    <p style="color: red;">
+      *-- Please Note: You must be registered and logged in to do the following: --*
+    </p>
+    <p>
+      - To <b>view you account</b>, click on the “My Account” dropdown and then click on the “View Profile” button.<br><br>
+      - To <b>log Out</b>, click on the “My Account” dropdown and then click on the “Log Out” button.<br><br>
+      - To view the items that are in your <b>cart</b>, click on the cart icon on the top navigation bar.<br><br>
+    </p>
+
+  </div>
+</div>
