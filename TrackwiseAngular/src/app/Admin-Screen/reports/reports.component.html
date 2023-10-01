@@ -76,9 +76,15 @@
         <!-- Add your card content here -->
       </div>
       <mat-card-footer>
-        <mat-card-actions>
-          <button (click)="generateMileageFuelReport()">Generate Report</button> <!-- Add label for the button -->
-        </mat-card-actions>
+        <mat-card-footer>
+          <!-- <div class="truck-filter">
+            <label for="TruckDropdown">Select Truck:&nbsp;</label>
+            <select name="TruckDropdown" id="TruckDropdown" [(ngModel)]="selectedTruckId">
+              <option *ngFor="let truck of trucks" [value]="truck.truckID">{{truck.truck_License}}</option>
+            </select>
+          </div> -->
+          <button (click)="getMilageData()">Generate Report</button>
+        </mat-card-footer>        
       </mat-card-footer>
     </mat-card>
   </div>
@@ -184,7 +190,7 @@
   </div>
 </div>
 
-<div class="chart-wrapper" id="htmlData">
+<div class="chart-wrapper" id="htmlData" style="position: absolute; left: -9999px;">
   <canvas baseChart
         [datasets]="[
         { data: lineChartData[0].data, label: 'Sales', type: 'line' ,borderColor: 'rgba(0, 0, 255, 1)'},

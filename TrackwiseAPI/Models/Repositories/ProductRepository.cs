@@ -23,6 +23,16 @@ namespace TrackwiseAPI.Models.Repositories
         {
             _context.Remove(entity);
         }
+        public ProductCategory FindByName(string categoryID)
+        {
+            // Assuming you have a ProductCategories DbSet in your DbContext
+            return _context.ProductCategories.FirstOrDefault(pc => pc.Product_Category_ID == categoryID);
+        }
+        public ProductType FindTypeByName(string TypeID)
+        {
+            // Assuming you have a ProductCategories DbSet in your DbContext
+            return _context.ProductTypes.FirstOrDefault(pc => pc.Product_Type_ID == TypeID);
+        }
 
         public async Task<Product[]> GetAllProductsAsync()
         {
@@ -45,6 +55,24 @@ namespace TrackwiseAPI.Models.Repositories
         public async Task<ProductCategory[]> GetProductCategoryAsync()
         {
             IQueryable<ProductCategory> query = _context.ProductCategories;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<ProductTypeCategories[]> GetSpesificProductTypeAsync(string typeID)
+        {
+            IQueryable<ProductTypeCategories> query = _context.ProductTypeCategories
+                .Where(c => c.Product_Type_ID == typeID)
+                .Include(o => o.ProductType)
+                .Include(o => o.ProductCategory);
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<ProductTypeCategories[]> GetSpesificProductCategoryAsync(string categoryID)
+        {
+            IQueryable<ProductTypeCategories> query = _context.ProductTypeCategories
+                .Where(c => c.Product_Category_ID == categoryID)
+                .Include(o => o.ProductCategory)
+                .Include(o => o.ProductType);
             return await query.ToArrayAsync();
         }
 

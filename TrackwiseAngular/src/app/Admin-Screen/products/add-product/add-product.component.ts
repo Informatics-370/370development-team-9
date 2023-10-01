@@ -3,6 +3,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Product } from 'src/app/shared/product';
+import { ProductCategoriesFilter } from 'src/app/shared/productCategoriesFilter';
+import { ProductCategory } from 'src/app/shared/productCategory';
+import { ProductType } from 'src/app/shared/productType';
+import { ProductTypeFilter } from 'src/app/shared/productTypesFilter';
 
 @Component({
   selector: 'app-add-product',
@@ -10,18 +14,18 @@ import { Product } from 'src/app/shared/product';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent {
-  productTypes: any[] = []; 
-  productCategories: any[] = []; 
+  
+  productTypes: ProductType[] = []; // This holds the list of available product types
+
+  productCategories: ProductCategory[] = []; // This holds the list of available product types
+
+
   selectedImage: File | null = null;
   
-  // AddProductRequest: {
-  //   product_Name: string; 
-  //   product_Description:string;
-  //   product_Price: number;
-  //   quantity: number; 
-  //   product_Category_ID:string;
-  //   product_Type_ID:string;
-  // }[] = [];
+  ProductTypeFilter : ProductTypeFilter[] = [];
+
+  ProductCategoryFilter : ProductCategoriesFilter[] = [];
+ 
 
   AddProductRequest: Product =
   {
@@ -43,9 +47,7 @@ export class AddProductComponent {
       name:"",
       description:""
     },
-
   };
-
 
 
 
@@ -80,6 +82,22 @@ export class AddProductComponent {
       });
     }
 
+    // GetFilteredTypes(typeID: string){
+    //   this.dataService.GetSpesificProductType(typeID).subscribe({
+    //     next: (response) => {
+    //       this.ProductTypeFilter = response;
+    //     }
+    //   })
+    // }
+
+    // GetFilteredCategories(categoryID: string){
+    //   this.dataService.GetSpesificProductCategory(categoryID).subscribe({
+    //     next: (response) => {
+    //       this.ProductCategoryFilter = response;
+    //     }
+    //   })
+    // }
+
     onImageSelected(event: any): void {
       if (event.target.files && event.target.files.length > 0) {
         const file: File = event.target.files[0];
@@ -90,6 +108,41 @@ export class AddProductComponent {
         };
     
         reader.readAsDataURL(file);
+      }
+    }
+
+    onTypeChange(event: any) {
+      const selectedTypeId = event.target.value;
+      console.log(selectedTypeId);
+    
+      this.GetFilteredTypes(selectedTypeId);
+    }
+    
+    async GetFilteredTypes(typeID: string) {
+      try {
+        const response = await this.dataService.GetSpesificProductType(typeID).toPromise();
+        if (response) {
+          this.ProductTypeFilter = response;
+          console.log(this.ProductTypeFilter);
+    
+          // Clear productCategories
+          this.productCategories = [];
+    
+          // Add values from ProductTypeFilter to productCategories
+          this.ProductTypeFilter.forEach(productfilter => {
+            this.productCategories.push({
+              name: productfilter.product_Category.name,
+              description: productfilter.product_Category.description,
+              product_Category_ID: productfilter.product_Category.product_Category_ID
+            });
+          });
+    
+          console.log(this.productCategories);
+        } else {
+          console.error("GetFilteredTypes did not return data.");
+        }
+      } catch (error) {
+        console.error("Error fetching filtered types:", error);
       }
     }
 

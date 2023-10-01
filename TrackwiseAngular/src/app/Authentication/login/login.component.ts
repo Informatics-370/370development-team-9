@@ -29,7 +29,19 @@ export class LoginComponent {
   
       await this.dataService.LoginUser(this.loginFormGroup.value).subscribe(
         (result) => {
+          console.log(result)
           // Handle successful login
+          if(result.isEmailConfirmed == false){
+            this.isLoading = false;
+            this.errorMessage = 'Please confirm your email address.';
+          }
+          else if(result.isTwoFactor == true)
+          {
+            this.router.navigateByUrl('Authentication/two-factor-auth');
+            const user = result.token.value.user;
+            sessionStorage.setItem('User', JSON.stringify(user));
+            sessionStorage.setItem('OTPtime', JSON.stringify(result.expireOTPtime));
+          } else{
           sessionStorage.setItem('User', JSON.stringify(result.token.value.user));
           sessionStorage.setItem('Token', result.token.value.token);
           const role = result.role;
@@ -45,6 +57,8 @@ export class LoginComponent {
           } else {
             this.router.navigateByUrl('Customer-Screen/customer-products');
           }
+          }
+
         },
         (error) => {
           // Handle login error

@@ -28,7 +28,7 @@
             <span>{{ item.cartQuantity }}</span>&nbsp;
             <button class="qtyBtn" (click)="increaseQuantity(item)">+</button>
           </td>
-          <td style="font-weight: bold;">R {{ item.product_Price * item.cartQuantity | number:"1.2-2"}}</td>
+          <td style="font-weight: bold;">R {{ (item.product_Price + (item.product_Price * VAT.vaT_Amount)) * item.cartQuantity | number:"1.2-2"}}</td>
           <td>
             <button class="removeBtn" (click)="removeFromCart(i)">Remove</button>
           </td>
@@ -48,7 +48,7 @@
       <tbody class="CSBody">
         <td>
           <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
-          <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
+          <div class="total">Total: R {{ this.total + (this.total * VAT.vaT_Amount) | number:"1.2-2"}}</div>
         </td>
       </tbody>
       <tfoot>
@@ -104,35 +104,37 @@
         <small class="form-text text-muted">3-digits found on back of the card</small>
       </div>
       <button *ngIf="!isLoading" class="btn btn-danger" (click)="cancelPayment()">Cancel</button>
-      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total|
-        number:"1.2-2"}}</button>
+      
+      <button *ngIf="!isLoading" type="submit" class="btn btn-primary" [disabled]="!f.valid">Pay R {{ this.total + (this.total * VAT.vaT_Amount)| number:"1.2-2"}}</button>
 
-
-      <div *ngIf="isLoading" class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
-    </form>
-  </div>
-  <div class="cart-summary">
-    <table class="summary-table">
-      <thead class="CSHead">
-        <tr>
-          <th>Cart Summary</th>
-        </tr>
-      </thead>
-      <div class="payment">
-        Secured with PayGate
-        <img src="https://www.paygate.co.za/wp-content/uploads/logo_285x110.png">
-      </div>
-
-      <tbody class="CSBody">
-        <td>
-          <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
-          <div class="total">Total: R {{ this.total| number:"1.2-2"}}</div>
-        </td>
-      </tbody>
-    </table>
-  </div>
+    
+    <div *ngIf="isLoading" class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </form>
+</div>
+<div class="cart-summary">
+  <table class="summary-table">
+    <thead class="CSHead">
+      <tr>
+        <th>Cart Summary</th>
+      </tr>
+    </thead>
+    <div class="payment">
+       Secured with PayGate
+       <img src="https://www.paygate.co.za/wp-content/uploads/logo_285x110.png">
+    </div>
+   
+    <tbody class="CSBody">
+      <td>
+        <div class="summary">Items ({{this.dataService.itemsInCart}})</div>
+        <div class="summary">Amount excl. VAT: R {{ this.total | number:"1.2-2"}}</div>
+        <div class="summary">VAT ({{VAT.vaT_Amount*100| number:"1.0-0"}}%): R {{this.total * VAT.vaT_Amount | number:"1.2-2"}}</div><br>
+        <div class="total">Total: R {{ this.total + (this.total * VAT.vaT_Amount) | number:"1.2-2"}}</div>
+      </td>
+    </tbody>
+  </table>
+</div>
 </div>
 
 <!-- <div class="ion-padding" *ngIf="Secure3DHTML">

@@ -101,8 +101,9 @@ namespace TrackwiseAPI.Controllers
                 {
                     Id = driverId,
                     UserName = dvm.Email,
-                    Email = dvm.Email
-                };
+                    Email = dvm.Email,
+                    EmailConfirmed = true
+            };
 
                 var result = await _userManager.CreateAsync(user, dvm.Password);
                 var mail = await _mailController.SendDriverEmail(newdrivermail);

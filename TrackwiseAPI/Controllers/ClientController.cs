@@ -113,6 +113,18 @@ namespace TrackwiseAPI.Controllers
                 var result = await _userManager.CreateAsync(user, cvm.Password);
                 var mail = await _mailController.SendClientEmail(newclientmail);
 
+                //Add Token to Verify the email....
+                var confirmationLink = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                var confirmationMail = new ConfirmEmail
+                {
+                    Email = user.Email,
+                    Name = user.UserName,
+                    ConfirmationLink = confirmationLink
+                };
+
+                var CconfirmMail = await _mailController.ConfirmEmail(confirmationMail);
+
 
                 await _userManager.AddToRoleAsync(user, "Client");
 

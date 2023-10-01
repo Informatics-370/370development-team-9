@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RemoveNotificationComponent } from 'src/app/ConfirmationNotifications/remove-notification/remove-notification.component';
 import { DataService } from 'src/app/services/data.service';
+import { VAT } from 'src/app/shared/VAT';
 import { Product } from 'src/app/shared/product';
 
 @Component({
@@ -14,13 +16,18 @@ export class ProductsComponent {
 
 
     products: Product[] = [];
+    VAT: VAT = {
+      vaT_Amount: 0
+    };
     searchText: string = ''; // Property to store the search text
     originalProducts: Product[] = []; // Property to store the original trailer data
   
-    constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar) { }
+  
+    constructor( private dataService: DataService, private dialog: MatDialog, private snackBar: MatSnackBar,private http: HttpClient) { }
   
     ngOnInit(): void {
       this.GetProducts();
+      this.GetVAT();
       this.dataService.revertToLogin();
     }
   
@@ -34,6 +41,16 @@ export class ProductsComponent {
           this.products.push(element)
           console.log(element);
         });
+      })
+    }
+
+    GetVAT()
+    {
+      this.dataService.GetVAT().subscribe({
+        next: (response) => {
+          this.VAT = response;
+          console.log(this.VAT)
+        }
       })
     }
   
@@ -94,5 +111,45 @@ export class ProductsComponent {
       })
     }
 
+    UnlistProduct(ProductID:string)
+    {
+      this.dataService.UnlistPorduct(ProductID).subscribe({
+        next: (response) => {
+          this.products = [];
+          this.GetProducts();
+        }
+      })
+    }
+
+    RelistProduct(ProductID:string)
+    {
+      this.dataService.RelistPorduct(ProductID).subscribe({
+        next: (response) => {
+          this.products = [];
+          this.GetProducts();
+        }
+      })
+    }
+
+    selectedFile: any | undefined;
+    onFileSelected(event: any) {
+      this.selectedFile = event.target.files[0];
+    }
+  
+    uploadFile() {
+      if (this.selectedFile) {
+        this.dataService.uploadCsv(this.selectedFile)
+          .subscribe(
+            (response) => {
+              console.log('Response:', response);
+              // Handle success (e.g., show a success message)
+              this.snackBar.open(` Product Successfully Added`, 'X', {duration: 3000});
+            },
+            (error) => {
+              this.snackBar.open(` Product Successfully Added`, 'X', {duration: 3000});
+            }
+          );
+      }
+    }
 
 }

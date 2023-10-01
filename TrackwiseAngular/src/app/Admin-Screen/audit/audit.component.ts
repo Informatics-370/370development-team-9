@@ -17,6 +17,7 @@ export class AuditComponent implements AfterViewInit{
   dataSource = new MatTableDataSource<Audit>();
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort!: MatSort;
+  
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -34,5 +35,8 @@ export class AuditComponent implements AfterViewInit{
     this.dataService.GetAudits().subscribe((products:any) => {this.dataSource.data = products});
   } */
   constructor( private dataService: DataService) { }
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }

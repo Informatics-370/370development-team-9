@@ -7,7 +7,7 @@ import { Trailer } from '../shared/trailer';
 import { Admin } from '../shared/admin';
 import { Client } from '../shared/client';
 import { Supplier } from '../shared/supplier';
-import { Product } from '../shared/product';
+import { Product, ProductCategories } from '../shared/product';
 import { LoginUser } from '../shared/login-user';
 import { Customer } from '../shared/customer';
 import { User } from '../shared/user';
@@ -23,6 +23,13 @@ import { Weight } from '../shared/weight';
 import { MileageFuel } from '../shared/mileage_fuel';
 import { Fuel } from '../shared/fuel';
 import { Delivery } from '../shared/delivery';
+import { VAT } from '../shared/VAT';
+import { ProductType } from '../shared/productType';
+import { TwoFactor } from '../shared/twoFactor';
+import { ConfirmEmail } from '../shared/confirmEmail';
+import { BreakInterval } from '../shared/BreakInterval';
+import { Rest } from '../shared/Rest';
+import { MaxHrs } from '../shared/MaxHrs';
 
 @Injectable({
   providedIn: 'root'
@@ -74,11 +81,31 @@ export class DataService {
 
   /*LOGIN*/
   LoginUser(loginUser: LoginUser){
+    console.log(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
     return this.httpClient.post<User>(`${this.apiUrl}User/Login`, loginUser, this.httpOptions)
   }
 
+
   Register( registerUser: RegisterUser ) {
     return this.httpClient.post(`${this.apiUrl}User/Register`, registerUser);
+  }
+
+  // ConfirmTwoFactor(twoFactor: TwoFactor): Observable<TwoFactor>{
+  //   console.log(`${this.apiUrl}User/login-2FA`, twoFactor)
+  //   return this.httpClient.post<TwoFactor>(`${this.apiUrl}User/login-2FA`, twoFactor)
+  // }
+
+  ConfirmTwoFactor(twoFactor: TwoFactor): Observable<User>{
+    console.log(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
+    return this.httpClient.post<User>(`${this.apiUrl}User/TwoStepVerification`, twoFactor)
+  }
+
+  ResendTwoFactor(username:string): Observable<any>{
+    return this.httpClient.post<any>(`${this.apiUrl}User/ResendTwoFactor/${username}`, {})
+  }
+
+  ConfirmEmail(confirmEmail: ConfirmEmail): Observable<ConfirmEmail>{
+    return this.httpClient.post<ConfirmEmail>(`${this.apiUrl}User/ConfirmEmail`, confirmEmail)
   }
 
   /* Logout */
@@ -428,6 +455,13 @@ export class DataService {
   }
 
   /*Product Section */
+  uploadCsv(file: File): Observable<any> {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.httpClient.post(`${this.apiUrl}Product/UploadProducts`, formData, {headers});
+  }
 
   GetProducts(): Observable<any>{
     let token = sessionStorage.getItem('Token');
@@ -458,6 +492,20 @@ export class DataService {
       return this.httpClient.put<Product>(`${this.apiUrl}Product/EditProduct/${product_ID}`, EditProductReq, {headers});
   }
 
+  UnlistPorduct(product_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Product/UnlistProduct/${product_ID}`, {} , {headers});
+  }
+
+  RelistPorduct(product_ID: string):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Product/RelistProduct/${product_ID}`, {} , {headers});
+  }
+
   DeleteProduct(product_ID: string):Observable<Product>
   {
     let token = sessionStorage.getItem('Token');
@@ -468,16 +516,74 @@ export class DataService {
   GetProductTypes(): Observable<any>{
     let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.get(`${this.apiUrl}Product/GetProductType`,{headers})
+    return this.httpClient.get<ProductType>(`${this.apiUrl}Product/GetProductType`,{headers})
     .pipe(map(result => result))
   }
 
   GetProductCategories(): Observable<any>{
     let token = sessionStorage.getItem('Token'); // Retrieve the token from localStorage
     let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.httpClient.get(`${this.apiUrl}Product/GetProductCategory`,{headers})
+    return this.httpClient.get<ProductCategories>(`${this.apiUrl}Product/GetProductCategory`,{headers})
     .pipe(map(result => result))
   }
+
+  GetSpesificProductType(typeID: string): Observable<any>
+  {
+    return this.httpClient.get<any>(`${this.apiUrl}Product/GetSpesificProductType/${typeID}`);
+  }
+
+  GetSpesificProductCategory(categoryID: string): Observable<any>
+  {
+    return this.httpClient.get<any>(`${this.apiUrl}Product/GetSpesificProductCategory/${categoryID}`);
+  }
+
+  /*VAT Section*/
+  GetVAT(): Observable<VAT>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<VAT>(`${this.apiUrl}VAT/GetVAT`, {headers});
+  }
+  UpdateVAT(updatedVAT: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}VAT/UpdateVAT/${updatedVAT}`, {}, {headers});
+  }
+  GetBreak(): Observable<BreakInterval>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<BreakInterval>(`${this.apiUrl}Job/GetBreakInterval`, {headers});
+  }
+  UpdateBreak(updatedBreak: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/UpdateBreakInterval/${updatedBreak}`, {}, {headers});
+  }
+  GetRest(): Observable<Rest>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<Rest>(`${this.apiUrl}Job/GetRestperiod`, {headers});
+  }
+  UpdateRest(updatedRest: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/UpdateRestPeriod/${updatedRest}`, {}, {headers});
+  }
+  GetMax(): Observable<MaxHrs>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get<MaxHrs>(`${this.apiUrl}Job/GetMaxHrs`, {headers});
+  }
+  UpdateMax(updatedMax: number):Observable<any>
+  {
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.put<any>(`${this.apiUrl}Job/UpdateMaxHrs/${updatedMax}`, {}, {headers});
+  }
+
+
 
   /*Customer Section*/
   GetCustomers(): Observable<any>{
@@ -604,6 +710,13 @@ export class DataService {
 
   GetJobList(): Observable<any>{
     return this.httpClient.get(`${this.apiUrl}Report/GetJobListing`)
+    .pipe(map(result => result))
+  }
+
+  GetCompleteJobs(truckID:string): Observable<any>{
+    let token = sessionStorage.getItem('Token');
+    let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.httpClient.get(`${this.apiUrl}Report/GetCompleteJobs/${truckID}`, {headers})
     .pipe(map(result => result))
   }
 

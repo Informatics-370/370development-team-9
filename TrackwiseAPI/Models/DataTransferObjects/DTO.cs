@@ -21,6 +21,13 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public int Quantity { get; set; }
         public double SubTotal { get; set; }
     }
+    public class OrderLineInvoiceDTO
+    {
+        public string Order_line_ID { get; set; }
+        public string ProductName { get; set; }
+        public int Quantity { get; set; }
+        public double SubTotal { get; set; }
+    }
 
     public class CustomerDTO
     {
@@ -37,6 +44,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Product_Description { get; set; }
         public double Product_Price { get; set; }
         public int Quantity { get; set; }
+        public bool? ListStatus { get; set; }
         public string? Image { get; set; }
         public ProductTypeDTO Product_Type { get; set; }
         public ProductCategoryDTO Product_Category { get; set; }
@@ -55,6 +63,23 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string Name { get; set; }
         public string Description { get; set; }
     }
+
+    public class ProductSpesificTypeDTO
+    {
+        public string Product_Type_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ProductSpesificCategoryDTO Product_Category { get; set; }
+    }
+
+    public class ProductSpesificCategoryDTO
+    {
+        public string Product_Category_ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public ProductSpesificTypeDTO Product_Type { get; set; }
+    }
+
     public class DeliveryDTO
     {
         public string Delivery_ID { get; set; }
@@ -86,7 +111,7 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string DocType { get; set; }
     }
 
-    public class LoadsDTO
+    public class CompleteJobsDTO
     {
         public string Job_ID { get; set; }
         public DateTime StartDate { get; set; }
@@ -98,6 +123,10 @@ namespace TrackwiseAPI.Models.DataTransferObjects
         public string type { get; set; }
         public string Job_Status_ID { get; set; }
         public JobStatusDTO JobStatus { get; set; }
+        public string Delivery_ID { get; set; }
+        public Delivery Deliveries { get; set; }
+        public string TruckID { get; set; }
+        public Truck Truck { get; set; }
     }
 
     public class JobStatusDTO

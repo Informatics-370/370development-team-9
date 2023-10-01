@@ -5,11 +5,11 @@ import { Jobs } from 'src/app/shared/jobs';
 import { Order, OrderLine } from 'src/app/shared/order';
 import  jsPDF from 'jspdf';
 import autoTable, { Row } from 'jspdf-autotable';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DatePipe, formatDate } from '@angular/common';
 import { LoadsCarried } from 'src/app/shared/loadsCarried';
-import { MileageFuel } from 'src/app/shared/mileage_fuel';
+import { KiloLitres, MileageFuel } from 'src/app/shared/mileage_fuel';
 import { TruckData } from 'src/app/shared/mileage_fuel';  
 
 import { ChartType, ChartOptions, ChartDataset } from 'chart.js';
@@ -21,6 +21,8 @@ import { admindto, driverdto } from 'src/app/shared/Staff';
 import { JobDetailDTO } from 'src/app/shared/jobDetail';
 import 'jspdf-autotable';
 import { style } from '@angular/animations';
+import { CompletedJob } from 'src/app/shared/completedJobs';
+import { Truck } from 'src/app/shared/truck';
 
 declare module 'jspdf' {
   interface jsPDF {
@@ -38,13 +40,32 @@ export class ReportsComponent implements OnInit {
   productCategories: any[] = []; 
   selectedCategory: string = '';
   jobs: any[] = [];
+  kilolitres: KiloLitres[] = [];
   orders: OrderLine[] = [];
   users : string = "";
   originalJobs: any[] = [];
   loadsCarried : LoadsCarried[] = [];
-  mileageFuel : MileageFuel[] = [];
+  mileageFuel : any[] = [];
   truckData: TruckData[] = [];
   pdfSrc: string | null = null;
+  trucks: Truck[] = [];
+  selectedTruckId: any;
+
+  completedJobs: CompletedJob[] = [];
+
+  truckDetails: Truck =
+  {
+    truckID:"",
+    truck_License:"",
+    model:"",
+    mileage:0,
+    truck_Status_ID:"",
+    truckStatus:{
+      truck_Status_ID:"",
+      status:"",
+      description:""
+    },
+  };
 
 
   GetProductType: ProductTypes =
@@ -76,6 +97,7 @@ export class ReportsComponent implements OnInit {
     this.getAdmins();
     this.getDrivers();
     this.getJobDetail();
+    this.GetAllTrucks();
   }
 
   // Methods-------------------------------------------------------------------------
@@ -83,6 +105,12 @@ export class ReportsComponent implements OnInit {
   getProducts() {
     this.dataService.GetProducts().subscribe(result => {
       this.products = result;
+    });
+  }
+
+  GetAllTrucks(){
+    this.dataService.GetTrucks().subscribe(result => {
+      this.trucks = result;
     });
   }
 
@@ -103,6 +131,17 @@ export class ReportsComponent implements OnInit {
     });
   }
 
+  async GetCompleteJobs(truckid: string) {
+    try {
+      const result = await this.dataService.GetCompleteJobs(truckid).toPromise();
+      this.completedJobs = result;
+      // Now, this.completedJobs contains the fetched data
+      // You can proceed with further processing if needed
+    } catch (error) {
+      console.error('Error in GetCompleteJobs:', error);
+      // Handle the error as needed
+    }
+  }
 
   GetJobs() {
     this.dataService.GetJobs().subscribe((result) => {
@@ -233,7 +272,7 @@ jobsdata: JobDetailDTO[]=[];
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
     doc.setFont('helvetica', 'bold');
-    doc.text('Staff Report', 130, 20);
+    doc.text('Job Details', 130, 20);
 
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
@@ -242,7 +281,6 @@ jobsdata: JobDetailDTO[]=[];
     doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
       
     var body = []; // Initialize the body array
-    
     // Iterate through each job
     this.jobsdata.forEach(job => {
       var jobSubtotal = job.deliveryList.reduce((sum, delivery) => sum + delivery.delivery_Weight, 0);
@@ -257,34 +295,24 @@ jobsdata: JobDetailDTO[]=[];
           body.push(['', index + 1, '', '', delivery.delivery_Weight]); // Empty cells for DeliveryID, Pickup Location, and Drop-off Location on subsequent rows
         }
       });
-    
       // Add job subtotal row
-      body.push(['Job Subtotal', '', '', '', jobSubtotal]);
-  
+      body.push(['', '', '', 'Job Subtotal', jobSubtotal]);
       // Add an empty row for spacing
       body.push(['', '', '', '', '']);
     });
     
     // Calculate total of all job subtotals
     var total = this.jobsdata.reduce((sum, job) => sum + job.deliveryList.reduce((subSum, delivery) => subSum + delivery.delivery_Weight, 0), 0);
-    
-    // Add total row
-    body.push(['', '', '', { content: 'Total', styles: { font: 'bold' } }, total]); // Make the "Total" text bold
-
+    body.push(['', '', '', 'Total Weight', total]); // Make the "Total" text bold
   
   // Generate the PDF table
   const table = doc.autoTable({
+    theme: 'grid',
+    columnStyles: { 4: { halign: 'center' } },
+    lineWidth: 2,  
     head: [['JobID', 'DeliveryID', 'Pickup Location', 'Drop-off Location','Weight (T)']], // Header row
     body: body,
     startY: 50,
-    didParseCell: function(data: { row: { section: string; index: number; }; cell: { styles: { fillColor: number[]; fontStyle:string; };  text: any; }; }) {
-      if (data.row.section === 'body' && data.cell.text === 'Total') {
-        data.cell.styles.fontStyle = 'bold'; // Apply bold font style to "Total" cells
-      }
-      if (data.row.section === 'body' && (data.row.index + 1)) {
-        data.cell.styles.fillColor = [223, 237, 250]; // Apply light blue to every third row
-      }
-    }
   });
     // Opening of the PDF
     const pdfData = doc.output('datauristring');
@@ -298,22 +326,6 @@ jobsdata: JobDetailDTO[]=[];
     }
   }
   
-  
-  
-  
-  
-  
-  
-  
-
-
-
-
-
-
-
-
-
 
 // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   getAdmins() {
@@ -448,55 +460,155 @@ jobsdata: JobDetailDTO[]=[];
   }
   // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Mileage/Fuel Report
+  job_ID:string = ''
+  truckID:string=''
+  kilosDriven:number = 0
+  fuelInput:number = 0
+  allTruckData: KiloLitres[] = [];
+  
+  async getMilageData() {
+    // Initialize the array to hold all truck data
+    this.allTruckData = [];
+  
+    // Loop through all trucks to fetch data
+    for (const truck of this.trucks) {
+      console.log(truck);
+  
+      // Use await to wait for data retrieval to complete
+      await this.GetCompleteJobs(truck.truckID);
+  
+      // Initialize fields with default values (0)
+      let job_ID = '';
+      let truckID = truck.truckID; // Use the current truck's ID
+      let kilosDriven = 0;
+      let fuelInput = 0;
+  
+      // Check if there are completed jobs for the current truck
+      if (this.completedJobs.length > 0) {
+        // Process completed jobs for the current truck
+        this.completedJobs.forEach((element) => {
+          if (element.deliveries) {
+            element.deliveries.forEach((del) => {
+              if (del.truckID === truck.truckID) {
+                kilosDriven += del.final_Mileage - del.initial_Mileage;
+                fuelInput += del.totalFuel;
+                job_ID = del.job_ID;
+              }
+            });
+          }
+        });
+      }
+  
+      // Fetch truck details
+      const truckDetails = await this.dataService.GetTruck(truck.truckID).toPromise();
+  
+      // Create a new KiloLitres object
+      const kiloLitresEntry: KiloLitres = {
+        truck_License: truckDetails?.truck_License ?? 'N/A',
+        job_ID,
+        kilosDriven,
+        fuelInput,
+      };
+  
+      // Push the KiloLitres object into the allTruckData array
+      this.allTruckData.push(kiloLitresEntry);
+  
+      // Check if it's the last truck before generating the report
+      if (this.allTruckData.length === this.trucks.length) {
+        // All data for all trucks has been collected, generate the report
+        this.generateMileageFuelReport();
+      }
+    }
+  }
+  
   generateMileageFuelReport() {
     const doc = new jsPDF();
-    // Image
     const img = new Image();
     img.src = "assets/LTTLogo.jpg";
     doc.addImage(img, 'JPG', 10, 5, 50, 30);
+  
     // Text
     doc.setFontSize(18);
     doc.setTextColor(0, 79, 158);
     doc.setFont('helvetica', 'bold');
-    doc.text('Loads Carried Report', 130, 20);
-
+    doc.text('Mileage/Fuel Report', 130, 20);
+  
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
     doc.setFont('helvetica');
     const currentDate = new Date();
     doc.text('Generated On: ' + currentDate.toLocaleDateString(), 130, 27);
+  
     // Table and table data
-    const header = ['Registration', 'Delivery', 'Mileage', 'Fuel Consumed'];
-    const tableData: any[] = [];
-    this.truckData.forEach(truck => {
-      truck.mFList.forEach(delivery => {
-        tableData.push([
-          truck.registration,
-          delivery.delivery_ID,
-          delivery.mileage !== undefined ? delivery.mileage: 0,
-          delivery.fuel !== null ? delivery.fuel : 0
-        ]);
-      });
-    });
+    const header = ['Truck Registration', 'Job ID', 'Kilometres Driven', 'Amount refueled'];
+    let tableData = [];
+    let subtotalKilosDriven = 0;
+    let subtotalFuelInput = 0;
+    let totalKilosDriven = 0;
+    let totalFuelInput = 0;
     
+  
+    // Iterate through each truck in allTruckData
+    this.allTruckData.forEach((result) => {
+      const row = [
+        result.truck_License,
+        result.job_ID,
+        result.kilosDriven + " km",
+        result.fuelInput + "l",
+      ];
+
+      // Calculate subtotals for each truck
+      subtotalKilosDriven = result.kilosDriven;
+      subtotalFuelInput = result.fuelInput;      
+  
+      
+      // Calculate subtotals for each truck
+      totalKilosDriven += result.kilosDriven;
+      totalFuelInput += result.fuelInput;
+  
+      tableData.push(row);
+  
+      // Add a row for subtotals after each truck
+      tableData.push([
+        '',
+        'Subtotals',
+        subtotalKilosDriven + ' km',
+        subtotalFuelInput + 'l',
+      ]);
+      tableData.push(['', '', '', '']);
+      
+    });
+  
+    // Add a row for the total of all trucks at the end
+    tableData.push([
+      '',
+      'Total',
+      totalKilosDriven + ' km',
+      totalFuelInput + 'l',
+    ]);
+  
     // Autotable layout
     autoTable(doc, {
       head: [header],
       body: tableData,
       startY: 50, // Adjust the starting Y-coordinate for the table
     });
+  
     // Opening of the PDF
     const pdfData = doc.output('datauristring');
     this.pdfSrc = pdfData;
+  
     const pdfWindow = window.open();
+  
     // Validation for PDF load
     if (pdfWindow) {
       pdfWindow.document.write('<iframe width="100%" height="100%" src="' + pdfData + '"></iframe>');
     } else {
       console.error('Failed to open PDF preview window.');
     }
-
   }
+  
+  
 
   // Generate PDFs----------------------------------------------------------------------------------------------------------------------------------------
   // Generate Job list report 
@@ -741,7 +853,12 @@ generateProductSalesReport(){
             const saleDate = new Date(sale.date);
             return saleDate >= startDate && saleDate <= endDate;
           });
-
+          filteredData.sort((a: any, b: any) => {
+            const dateA:any = new Date(a.date);
+            const dateB:any = new Date(b.date);
+            return dateA - dateB;
+          });
+    
           this.salesArray = data.map((sale: any) => sale.total);
           // Calculate and set average sales
           const totalSalesSum = this.salesArray.reduce((sum, sale) => sum + sale, 0);
@@ -800,7 +917,7 @@ generateProductSalesReport(){
     },
     elements: {
       line: {
-        tension: 0.5, // Adjust the tension value (between 0 and 1)
+        tension: 0, // Adjust the tension value (between 0 and 1)
       },
       point: {
         radius: 4,
@@ -813,6 +930,7 @@ generateProductSalesReport(){
   lineChartLegend = true;
   lineChartPlugins = [];
   lineChartType: ChartType = 'line';
+
 
   generateSalesReport() {
     this.getTotalSales();
@@ -838,8 +956,8 @@ generateProductSalesReport(){
     let Graph = '';
   // Canvas Options
 
-  html2canvas(Data).then(canvas => {
-  
+  setTimeout(() => {
+    html2canvas(Data).then(canvas => {
     // Convert canvas to image and add to PDF
     let Graph = canvas.toDataURL('image/png');
     const img1 = new Image();
@@ -857,8 +975,9 @@ generateProductSalesReport(){
     } else {
       console.error('Failed to open PDF preview window.');
     }
-  });
-  }
+    });
+  }, 1000); // Adjust the delay time as needed.
+}
 
 
   //##################################################################################################################

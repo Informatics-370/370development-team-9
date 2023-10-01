@@ -31,6 +31,7 @@ namespace TrackwiseAPI.Controllers
         private readonly IPaymentRepository _paymentRepository;
         private readonly MailController _mailController;
         private readonly IAuditRepository _auditRepository;
+        private readonly IVATRepository _VATRepository;
 
         public OrderController(
             TwDbContext dbContext,
@@ -39,7 +40,8 @@ namespace TrackwiseAPI.Controllers
             IPaymentRepository paymentRepository,
             UserManager<AppUser> userManager,
             MailController mailController,
-            IAuditRepository auditRepository)
+            IAuditRepository auditRepository,
+            IVATRepository vATRepository)
         {
             _dbContext = dbContext;
             _productRepository = productRepository;
@@ -48,6 +50,7 @@ namespace TrackwiseAPI.Controllers
             _paymentRepository = paymentRepository;
             _mailController = mailController;
             _auditRepository = auditRepository;
+            _VATRepository = vATRepository;
         }
 
         [HttpGet]
@@ -127,6 +130,9 @@ namespace TrackwiseAPI.Controllers
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             var auditId = Guid.NewGuid().ToString();
             var audit = new Audit { Audit_ID = auditId, Action = "Create Order", CreatedDate = DateTime.Now, User = userEmail };
+           
+            var VAT = await _VATRepository.GetVATAsync();
+
             // Query the customer repository to get the customer ID
             var customer = await _userManager.FindByEmailAsync(userEmail);
 
@@ -147,7 +153,7 @@ namespace TrackwiseAPI.Controllers
             foreach (var orderLine in orderDto.OrderLines)
             {
                 var product = await _productRepository.GetProductAsync(orderLine.Product.Product_ID);
-                decimal subtotal = (decimal)(orderLine.Quantity * product.Product_Price);
+                decimal subtotal = (decimal)(orderLine.Quantity * (product.Product_Price + (product.Product_Price * (double)VAT.VAT_Amount)));
                 total += subtotal;
             }
 
@@ -162,6 +168,7 @@ namespace TrackwiseAPI.Controllers
             };
 
 
+            var orderLinesForInvoice = new List<OrderLineInvoiceDTO>();
 
             foreach (var orderLineDto in orderDto.OrderLines)
             {
@@ -181,10 +188,19 @@ namespace TrackwiseAPI.Controllers
                     Order_line_ID = Guid.NewGuid().ToString(),
                     Productid = orderLineDto.Product.Product_ID,
                     Quantity = orderLineDto.Quantity,
-                    SubTotal = product.Product_Price * orderLineDto.Quantity
+                    SubTotal = orderLineDto.Quantity * (product.Product_Price + (product.Product_Price * (double)VAT.VAT_Amount))
                 };
 
                 order.OrderLines.Add(orderLine);
+                // Add order line details to the list for the invoice
+                var subtotal = (decimal)(orderLineDto.Quantity * product.Product_Price);
+                orderLinesForInvoice.Add(new OrderLineInvoiceDTO
+                {
+                    ProductName = product.Product_Name,
+                    Quantity = orderLineDto.Quantity,
+                    SubTotal = (double)subtotal,
+                    // Add other relevant properties here
+                });
 
                 // Update the product quantity
                 product.Quantity -= orderLineDto.Quantity;
@@ -202,13 +218,17 @@ namespace TrackwiseAPI.Controllers
             // Call the AddNewCard method to process the payment and pass the newCard model
           
             var paymentResponse = await _paymentRepository.AddNewCard(checkoutRequest.newCard);
-            /*
+            
             var InvoiceNumber = Guid.NewGuid().ToString();
-            var Invoice1 = new Invoice { InvoiceNumber = InvoiceNumber, Email = userEmail, 
-                CustomerName = customer.UserName, TotalAmount =  order.Total };
+            var Invoice1 = new newInvoice { InvoiceNumber = InvoiceNumber, Email = userEmail, 
+                Name = customer.UserName, Total =  order.Total,
+                OrderLines = orderLinesForInvoice,
+                OrderNumber = order.Order_ID,
+                OrderDate = order.Date
+            };
 
             var mail = await _mailController.SendInvoiceEmail(Invoice1);
-            */
+            
             // Save the order and update the product quantities
             _dbContext.Orders.Add(order);
 
