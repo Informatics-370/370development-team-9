@@ -15,7 +15,7 @@ using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
 using static System.Net.Mime.MediaTypeNames;
-
+using System.Text.Json;
 
 namespace TrackwiseAPI.Controllers
 {
@@ -268,6 +268,36 @@ namespace TrackwiseAPI.Controllers
             }
             return Ok("Addded");
         }
+
+        [HttpGet]
+        [Route("Getjson")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<IActionResult> GetProductsJson()
+        {
+
+            var products = _productRepository.GetAllProductsAsync();
+            
+            var json1 = JsonSerializer.Serialize(products);
+            string filePath = "C:/Users/Renier/Downloads/products.json";
+            System.IO.File.WriteAllText(filePath, json1);
+            /*
+            // Retrieve and serialize your product data
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(products);
+
+            // Set the response content type to JSON
+            System.Net.Http.HttpResponseMessage response = new System.Net.Http.HttpResponseMessage();
+            response.Content = new System.Net.Http.StringContent(json);
+            response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+            // Set the file name for download
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "products.json"
+            };
+            */
+            return Ok();
+        }
+
 
         [HttpPut]
         [Route("EditProduct/{productId}")]

@@ -14,7 +14,9 @@
         <div class="col-lg-3">
           <button type="button" class="btn create-btn" routerLink="add-product">Add Product</button>
         </div>
-        <div>
+        <br>
+        <br>
+        <div class="import">
           <h2>CSV Product Import</h2>
           <input type="file" (change)="onFileSelected($event)" accept=".csv">
           <button (click)="uploadFile()">Upload CSV</button>
